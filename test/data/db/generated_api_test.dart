@@ -6,6 +6,7 @@
 import 'package:drift/drift.dart' hide isNotNull, isNull;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/db/journal_db.dart';
 import 'package:prosoche/data/db/user_db.dart';
 import 'package:prosoche/domain/common/common.dart';
 
@@ -132,18 +133,24 @@ void main() {
       ts: t,
     );
     await db.savedCardDao.save(CardId.parse('quote:q_0002'), t);
-    await db.journalDao.add(
-      date: d,
-      kind: JournalKind.evening,
-      body: 'b',
-      now: t,
-      promptId: 'prompt:x',
-      prompt: 'p',
-    );
-    await db.journalDao.markDone(d, JournalKind.morning, t);
+    await db.practiceLogDao.markDone(d, JournalKind.morning, t);
     await db.readingDao.savePosition('w', 'w.1', t, offset: 0.5);
     await db.readingDao.addBookmark('w.1', 'w', t);
 
+    await _exercise(db);
+  });
+
+  test('journal.db generated API on every table', () async {
+    final db = JournalDb.memory();
+    addTearDown(db.close);
+    await db.journalDao.add(
+      date: LocalDate(2026, 10, 29),
+      kind: JournalKind.evening,
+      body: 'b',
+      now: DateTime.utc(2026, 10, 29),
+      promptId: 'prompt:x',
+      prompt: 'p',
+    );
     await _exercise(db);
   });
 }

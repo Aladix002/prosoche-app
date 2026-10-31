@@ -20,7 +20,8 @@ We have not appointed a data protection officer. [OVERIT: not required for this 
 
 - No account. No ads. No advertising or data-broker SDKs.
 - Your journal (morning and evening answers, notes) never leaves your phone through the app:
-  it is not sent to us, not included in usage statistics, crash reports or logs.
+  it is not sent to us, not included in usage statistics, crash reports, logs or Android
+  backups.
 - Saved cards, bookmarks, reading position, streak, intention and settings are stored only
   on your phone. We do not receive them.
 - Anonymous usage statistics and crash reports are **off by default**. They are sent only if
@@ -40,11 +41,13 @@ We have not appointed a data protection officer. [OVERIT: not required for this 
 We have no access to this data. [OVERIT: whether the developer is a controller of purely
 local data.]
 
-**Backups.** On Android 12 and newer, Android may include the app database (with your
-journal) and settings in your own encrypted Google backup or in a transfer to a new phone,
-only if the backup can be encrypted. This is between you and Google; we cannot read it. You
-can turn backup off in Android settings. [OVERIT: owner decision whether to exclude the
-journal from cloud backup entirely.]
+**Backups.** Your journal is kept in a separate file that is **never** included in Android
+backups: not in your Google backup and not in a transfer to a new phone. If you change
+phones, export your journal first (see Export below). Other app data (saved cards,
+bookmarks, reading position, streak, settings) may be included in your own Google backup or
+in a transfer to a new phone, on Android 9 and newer and only if the backup can be
+encrypted. This is between you and Google; we cannot read it. You can turn backup off in
+Android settings.
 
 **Export.** You can export your journal yourself (Practice > Journal). The file goes only
 where you send it.

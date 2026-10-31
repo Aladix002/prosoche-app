@@ -5,8 +5,10 @@ import 'package:prosoche/core/flags/feature_flags.dart';
 import 'package:prosoche/data/blocker/blocker_gateway.dart';
 import 'package:prosoche/data/blocker/blocker_gateway_provider.dart';
 import 'package:prosoche/data/blocker/fake_blocker_gateway.dart';
+import 'package:prosoche/data/db/journal_db.dart';
 import 'package:prosoche/data/db/user_db.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/onboarding/onboarding_guard.dart';
 import 'package:prosoche/features/settings/privacy_settings_screen.dart';
@@ -131,6 +133,14 @@ void main() {
     test('turns off the gate, recreates the onboarding guard', () async {
       final user = UserDb.memory();
       addTearDown(user.close);
+      final journal = JournalDb.memory();
+      addTearDown(journal.close);
+      await journal.journalDao.add(
+        date: LocalDate(2026, 10, 31),
+        kind: JournalKind.note,
+        body: 'private',
+        now: DateTime.utc(2026, 10, 31),
+      );
       final blocker = FakeBlockerGateway()
         ..enabled = true
         ..targets = const [
@@ -139,6 +149,7 @@ void main() {
       final container = ProviderContainer(
         overrides: [
           userDbProvider.overrideWithValue(user),
+          journalDbProvider.overrideWithValue(journal),
           featureFlagsProvider.overrideWithValue(FeatureFlags.all),
           blockerGatewayProvider.overrideWithValue(blocker),
           afterDataDeletedProvider.overrideWithValue(
@@ -159,6 +170,7 @@ void main() {
       expect(await settings.get(SettingsKeys.onboardingCompleted), isFalse);
       expect(await settings.get(SettingsKeys.simpleMode), isFalse);
       expect(container.read(onboardingGuardProvider), isNot(same(guard)));
+      expect(await journal.journalDao.all(), isEmpty);
     });
   });
 }

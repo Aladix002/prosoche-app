@@ -41,10 +41,10 @@ final class LibraryWork {
   /// Meno autora ("Marcus Aurelius").
   final String author;
 
-  /// Nazov z prekladu ("Of Anger").
+  /// Nazov diela ("On Anger", "To Marcia, On Consolation").
   final String title;
 
-  /// Ustaleny nazov pre referencie ("On Anger").
+  /// Kratky nazov pre referencie ("On Anger", "To Marcia").
   final String shortRef;
   final String translator;
   final int? editionYear;

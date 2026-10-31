@@ -2,6 +2,7 @@ import 'package:clock/clock.dart';
 import 'package:drift/drift.dart' show driftRuntimeOptions;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/db/journal_db.dart';
 import 'package:prosoche/data/db/user_db.dart';
 import 'package:prosoche/data/repositories/catalog/content_catalog.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
@@ -14,6 +15,7 @@ void main() {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
   late ContentDb content;
   late UserDb user;
+  late JournalDb journal;
   late DriftLibraryRepository library;
   late DriftPracticeRepository practice;
   final day = LocalDate(2026, 10, 31);
@@ -22,6 +24,7 @@ void main() {
   setUp(() {
     content = openContentFixture();
     user = UserDb.memory();
+    journal = JournalDb.memory();
     library = DriftLibraryRepository(
       content: Future.value(content),
       userDb: user,
@@ -30,6 +33,7 @@ void main() {
     practice = DriftPracticeRepository(
       content: Future.value(content),
       userDb: user,
+      journalDb: journal,
       library: library,
       clock: clock,
     );
@@ -37,6 +41,7 @@ void main() {
   tearDown(() async {
     await content.close();
     await user.close();
+    await journal.close();
   });
 
   group('LibraryRepository', () {
@@ -164,6 +169,9 @@ void main() {
       await practice.addNote(day, 'private');
       await library.savePosition('work-flat', 'work-flat.1');
       await user.deleteAllData();
+      // Dennik je v journal.db (C-02), user.db ho uz neobsahuje.
+      expect(await practice.watchJournal().first, hasLength(1));
+      await journal.deleteAllData();
       expect(await practice.watchJournal().first, isEmpty);
       expect(await library.watchPositions().first, isEmpty);
     });

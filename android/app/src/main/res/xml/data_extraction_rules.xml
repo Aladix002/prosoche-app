@@ -2,6 +2,11 @@
 <!-- Android 12+ (docs/06 B.5). Zalohuje sa len user.db (aj WAL) a nastavenia;
      cloud zaloha len ak ju zariadenie vie sifrovat. content.db, logy, cache
      a installId (patri do no_backup) sa nezalohuju.
+     DENNIK (journal.db, C-02) sa NEZALOHUJE ani neprenasa do noveho
+     telefonu: je to samostatny subor mimo include zoznamu (appka slubuje,
+     ze dennik neopusti zariadenie). Nikdy sem nepridavat journal.db ani
+     sirsi include (path="."). Strazi tool/check_manifest.sh a
+     test/android/backup_rules_test.dart.
      Umiestnenie user.db urci D-02 (UserDb.open(File)), preto su uvedene obe
      bezne cesty: databases/ a files/ (getApplicationSupportDirectory).
      Nastavenia: shared_preferences legacy (XML) aj SharedPreferencesAsync

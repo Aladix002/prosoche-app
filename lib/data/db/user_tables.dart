@@ -1,9 +1,10 @@
 // Deklaracie tabuliek cita len drift_dev pri generovani, za behu sa
 // nevykonavaju.
 // coverage:ignore-file
-// Drift tabulky user.db, schema v2 (plan 5.2 + docs/02 D1, D7, D8, D12, D13
+// Drift tabulky user.db, schema v3 (plan 5.2 + docs/02 D1, D7, D8, D12, D13
 // + 07 ADR-06 Z2). v2 (F-01): dennik, prax dna, pozicia citania a zalozky
-// sekcii v Library.
+// sekcii v Library. v3 (C-02): dennik presunuty do journal.db
+// (journal_tables.dart), ktora sa nezalohuje.
 //
 // Konvencie:
 //  * datum dna (`date`) = TEXT `YYYY-MM-DD` ([LocalDateConverter]),
@@ -226,31 +227,6 @@ class SavedCards extends Table {
 }
 
 // ------------------------------------------------------------------ F-01
-
-/// Lokalny dennik (ranna priprava, vecerna reflexia, poznamky). Nikdy
-/// neopusti zariadenie: nie je v analytike ani v logoch, je v exporte
-/// a v "Delete all my data".
-@DataClassName('JournalEntryRow')
-@TableIndex(name: 'journal_entry_date', columns: {#date})
-class JournalEntries extends Table {
-  @override
-  String get tableName => 'journal_entry';
-
-  IntColumn get id => integer().autoIncrement()();
-  TextColumn get date => text().map(const LocalDateConverter())();
-  TextColumn get kind => text()
-      .check(kind.isIn(JournalKind.values.map((e) => e.wire)))
-      .map(const WireEnumConverter(JournalKind.values))();
-
-  /// `card.id` otazky (prompt), ak zaznam odpoveda na otazku z obsahu.
-  TextColumn get promptId => text().nullable()();
-
-  /// Text otazky v case zapisu (export je citatelny aj bez content.db).
-  TextColumn get prompt => text().nullable()();
-  TextColumn get body => text()();
-  IntColumn get createdAt => integer().map(const UtcMillisConverter())();
-  IntColumn get updatedAt => integer().map(const UtcMillisConverter())();
-}
 
 /// Dokoncena ranna/vecerna prax dna (Practice, F-01).
 @DataClassName('PracticeLogRow')

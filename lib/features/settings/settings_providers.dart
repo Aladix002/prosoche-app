@@ -203,12 +203,13 @@ class SettingsActions {
   final Ref ref;
 
   /// "Delete all my data" (A10.9): zmaze user.db (vratane `settings`, teda
-  /// aj `onboarding.completed`), vypne branu, zavola
+  /// aj `onboarding.completed`) a dennik v journal.db, vypne branu, zavola
   /// [afterDataDeletedProvider] a znovu vytvori router, ktory presmeruje do
   /// onboardingu (O1).
   Future<void> deleteAllData() async {
     final log = ref.read(appLoggerProvider);
     await ref.read(userDbProvider).deleteAllData();
+    await ref.read(journalDbProvider).deleteAllData();
     if (ref.read(featureFlagsProvider).gate) {
       final blocker = ref.read(blockerGatewayProvider);
       await blocker.setTargets(const []);

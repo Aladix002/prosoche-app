@@ -62,6 +62,27 @@ void main() {
       final quote = (await db.cardDao.ofType('quote')).first;
       final section = await db.libraryDao.sectionByKey(quote.sectionKey!);
       expect(section!.textContent, contains(quote.textContent));
+
+      // C-02: quote a passage koncia celou vetou (kontrakt kap. 6).
+      final end = RegExp(r"""[.!?]["')\]]*$""");
+      for (final type in ['quote', 'passage']) {
+        for (final c in await db.cardDao.ofType(type)) {
+          expect(c.textContent, matches(end), reason: c.id);
+        }
+      }
+      // C-02: nazvy diel v Library sedia s referenciami kariet ("On Anger"),
+      // nie nazvy z prekladu ("Of Anger").
+      for (final w in await db.libraryDao.allWorks()) {
+        expect(w.title, startsWith(w.shortRef), reason: w.id);
+        expect(w.title, isNot(startsWith('Of ')), reason: w.id);
+      }
+      // C-02: normalizacia ws2, "--" z Longovho prepisu je em dash.
+      final dashes = await db
+          .customSelect(
+            "SELECT count(*) AS n FROM section WHERE text LIKE '%--%'",
+          )
+          .getSingle();
+      expect(dashes.read<int>('n'), 0);
     },
   );
 }

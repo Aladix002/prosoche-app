@@ -75,6 +75,9 @@ check_absent "kluce a tajomstva" \
   --exclude-dir=.git --exclude-dir=build --exclude-dir=.dart_tool
 [[ $violations -eq 0 ]] || fail "Zakazane vzory"
 
+step "pravidla Android zalohy (C-02: dennik sa nezalohuje)"
+./tool/check_manifest.sh --rules
+
 step "flutter test --coverage"
 flutter test --coverage
 

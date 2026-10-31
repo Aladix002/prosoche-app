@@ -27,16 +27,42 @@ MigrationStrategy userDbMigration() => MigrationStrategy(
 
 /// Kroky `vN -> vN+1` podla zdrojovej verzie N. v1 je prva verzia.
 ///
-/// v1 -> v2 (F-01): dennik, prax dna, pozicia citania, zalozky sekcii.
-/// Len nove tabulky, existujuce data sa nemenia.
+/// v1 -> v2 (F-01): prax dna, pozicia citania, zalozky sekcii (a v2 aj
+/// dennik `journal_entry`, ktory v3 uz v user.db nie je, preto ho tento
+/// krok nevytvara). Len nove tabulky, existujuce data sa nemenia.
+///
+/// v2 -> v3 (C-02): dennik sa presuva do journal.db (nezalohuje sa).
+/// Riadky `journal_entry` sa najprv zapisu cez [UserDb.legacyJournal]
+/// (idempotentne), az potom sa tabulka v user.db zmaze. Bez prijemcu a s
+/// neprazdnym dennikom migracia zlyha, aby sa dennik nestratil.
 final Map<int, Future<void> Function(Migrator m)> userDbSteps = {
   1: (m) async {
     final db = m.database as UserDb;
-    await m.createTable(db.journalEntries);
-    await m.createIndex(db.journalEntryDate);
     await m.createTable(db.practiceLogs);
     await m.createTable(db.readingPositions);
     await m.createTable(db.sectionBookmarks);
     await m.createIndex(db.sectionBookmarkCreated);
+  },
+  2: (m) async {
+    final db = m.database as UserDb;
+    final exists = await db
+        .customSelect(
+          "SELECT 1 FROM sqlite_master WHERE type = 'table' "
+          "AND name = 'journal_entry'",
+        )
+        .get();
+    if (exists.isEmpty) return;
+    final rows = await db
+        .customSelect('SELECT * FROM journal_entry ORDER BY id')
+        .get();
+    if (rows.isNotEmpty) {
+      final sink = db.legacyJournal;
+      if (sink == null) {
+        throw StateError('user.db v2 -> v3: no target for journal entries');
+      }
+      await sink([for (final r in rows) r.data]);
+    }
+    await db.customStatement('DROP INDEX IF EXISTS journal_entry_date');
+    await db.customStatement('DROP TABLE journal_entry');
   },
 };

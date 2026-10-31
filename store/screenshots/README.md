@@ -22,7 +22,7 @@
 | 4 | `04_card_concept.png` | Feed: concept card | Greek term and explanation |
 | 5 | `05_library_reader.png` | Library reader | Meditations, section with reference |
 | 6 | `06_practice.png` | Practice | morning and evening, journal, memento mori |
-| 7 | `07_evening_review.png` | Evening review | Seneca, Of Anger 3.36 with questions |
+| 7 | `07_evening_review.png` | Evening review | Seneca, On Anger 3.36 with questions |
 | 8 | `08_journey.png` | Journey | streak and calendar |
 
 Copies: `/home/aladix/prosoche/screenshots/i01/`.

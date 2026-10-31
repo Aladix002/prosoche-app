@@ -75,6 +75,7 @@ final Provider<PracticeRepository> practiceRepositoryProvider =
       (ref) => DriftPracticeRepository(
         content: ref.watch(contentDbProvider.future),
         userDb: ref.watch(userDbProvider),
+        journalDb: ref.watch(journalDbProvider),
         library: ref.watch(libraryRepositoryProvider),
         clock: ref.watch(appClockProvider),
       ),

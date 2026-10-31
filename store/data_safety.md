@@ -36,7 +36,7 @@ Super properties on every PostHog event: only `app_version`, `content_version`, 
 
 | Data | Why not | Evidence |
 |---|---|---|
-| Personal info > Other info, **journal** (evening/morning answers, notes) | Stored only in local `user.db`; never in analytics, crash reports or logs. Export is user-initiated via the share sheet. | `lib/data/db/daos/journal_dao.dart`, `AnalyticsSchema`, `scrubEvent` |
+| Personal info > Other info, **journal** (evening/morning answers, notes) | Stored only in local `journal.db`, which is excluded from Android cloud backup and device transfer; never in analytics, crash reports or logs. Export is user-initiated via the share sheet. | `lib/data/db/journal_db.dart`, `lib/data/db/daos/journal_dao.dart`, `data_extraction_rules.xml`, `AnalyticsSchema`, `scrubEvent` |
 | Saved cards, bookmarks, reading position, intention, birth year (memento mori) | Local only. Analytics carries no content IDs or text. | `lib/data/db/` |
 | Location | Not used. No location permission in any flavor (`tool/check_manifest.sh`). GeoIP disabled on PostHog events. | manifests, `posthogGuard` |
 | Personal info (name, e-mail, user IDs) | No account, no form. `sendDefaultPii=false` in Sentry. | `configureSentry` |
@@ -46,10 +46,13 @@ Super properties on every PostHog event: only `app_version`, `content_version`, 
 Notes for the owner:
 - **Content updates** (signed `manifest.json` and `content.db` from jsDelivr/GitHub,
   `lib/data/content/content_pack_service.dart`) send no user data. Not declared.
-- **Backups**: Android backup of `user.db` (including the journal) to the user's own Google
-  account (`data_extraction_rules.xml`), only when encrypted. Not "collected" by us;
-  mentioned in the privacy policy. Owner decision: exclude `user.db` from cloud backup if
-  "the journal never leaves the device" must hold literally.
+- **Backups** (C-02): the journal is in a separate `journal.db` that Android backup never
+  includes (cloud backup and device-to-device transfer, all API levels). Only `user.db`
+  (saved cards, bookmarks, reading position, streak, settings) and preferences go to the
+  user's own Google backup, only when encrypted (`data_extraction_rules.xml` for Android 12+,
+  `xml-v28/backup_rules_legacy.xml` for 9-11, nothing on 8.x). Not "collected" by us;
+  mentioned in the privacy policy. Checked by `tool/check_manifest.sh --rules` and
+  `test/android/backup_rules_test.dart`.
 - **Report a problem**: user sees the report and sends it via the share sheet; the app sends
   nothing.
 - Turn on "Discard client IP data" in PostHog; Sentry region must be EU.

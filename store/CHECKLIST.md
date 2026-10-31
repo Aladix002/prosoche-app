@@ -33,7 +33,7 @@
 - [ ] Final reviewed `content.db` (today `dev_content=1`, all cards `draft`; prod
       build refuses dev content by design).
 - [ ] Screenshots again with the final `content.db` (`store/screenshots/README.md`).
-- [ ] Decide on cloud backup of `user.db` (journal) - see `data_safety.md`.
+- [x] Cloud backup of the journal: excluded (C-02, separate `journal.db`) - see `data_safety.md`.
 
 ## C. Owner (Play Console and outside)
 

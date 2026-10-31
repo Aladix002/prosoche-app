@@ -3,7 +3,6 @@
 part of 'journal_dao.dart';
 
 // ignore_for_file: type=lint
-mixin _$JournalDaoMixin on DatabaseAccessor<UserDb> {
+mixin _$JournalDaoMixin on DatabaseAccessor<JournalDb> {
   $JournalEntriesTable get journalEntries => attachedDatabase.journalEntries;
-  $PracticeLogsTable get practiceLogs => attachedDatabase.practiceLogs;
 }
