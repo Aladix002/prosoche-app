@@ -1,14 +1,15 @@
 import 'package:drift/drift.dart';
-import 'package:prosoche/data/db/user_db.dart';
+import 'package:prosoche/data/db/journal_db.dart';
 import 'package:prosoche/domain/common/common.dart';
 
 part 'journal_dao.g.dart';
 
-/// Lokalny dennik a dokoncena prax dna (Practice, F-01).
+/// Lokalny dennik (Practice, F-01) v journal.db (C-02).
 ///
-/// Texty dennika sa nikdy nelogovanu ani neposielaju do analytiky.
-@DriftAccessor(tables: [JournalEntries, PracticeLogs])
-class JournalDao extends DatabaseAccessor<UserDb> with _$JournalDaoMixin {
+/// Texty dennika sa nikdy nelogovanu ani neposielaju do analytiky a nie su
+/// v Android zalohe.
+@DriftAccessor(tables: [JournalEntries])
+class JournalDao extends DatabaseAccessor<JournalDb> with _$JournalDaoMixin {
   JournalDao(super.attachedDatabase);
 
   /// Novy zaznam; vrati jeho `id`.
@@ -76,25 +77,4 @@ class JournalDao extends DatabaseAccessor<UserDb> with _$JournalDaoMixin {
           .get();
 
   Future<void> deleteAll() => delete(journalEntries).go();
-
-  // ------------------------------------------------------------- prax dna
-
-  /// Oznaci rannu/vecernu prax dna ako dokoncenu (opakovane = bez zmeny).
-  Future<void> markDone(LocalDate date, JournalKind routine, DateTime now) =>
-      into(practiceLogs).insert(
-        PracticeLogsCompanion.insert(date: date, routine: routine, doneAt: now),
-        onConflict: DoNothing(),
-      );
-
-  Future<void> unmarkDone(LocalDate date, JournalKind routine) =>
-      (delete(practiceLogs)..where(
-            (t) => t.date.equalsValue(date) & t.routine.equalsValue(routine),
-          ))
-          .go();
-
-  /// Dokoncene praxe dna.
-  Stream<Set<JournalKind>> watchDone(LocalDate date) =>
-      (select(practiceLogs)..where((t) => t.date.equalsValue(date)))
-          .watch()
-          .map((rows) => {for (final r in rows) r.routine});
 }

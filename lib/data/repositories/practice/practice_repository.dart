@@ -1,6 +1,7 @@
 import 'package:clock/clock.dart';
 import 'package:meta/meta.dart';
 import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/db/journal_db.dart';
 import 'package:prosoche/data/db/user_db.dart';
 import 'package:prosoche/data/repositories/cards/card_content_repository.dart';
 import 'package:prosoche/data/repositories/library/library_repository.dart';
@@ -113,17 +114,21 @@ abstract interface class PracticeRepository {
   Future<void> setDone(LocalDate date, RoutineKind kind, {required bool done});
 }
 
-/// [PracticeRepository] nad content.db a user.db.
+/// [PracticeRepository] nad content.db, user.db (prax dna) a journal.db
+/// (dennik, C-02).
 class DriftPracticeRepository implements PracticeRepository {
   DriftPracticeRepository({
     required this._content,
     required UserDb userDb,
+    required JournalDb journalDb,
     required this._library,
     this._clock = const Clock(),
-  }) : _user = userDb;
+  }) : _user = userDb,
+       _journal = journalDb;
 
   final Future<ContentDb> _content;
   final UserDb _user;
+  final JournalDb _journal;
   final LibraryRepository _library;
   final Clock _clock;
 
@@ -210,7 +215,7 @@ class DriftPracticeRepository implements PracticeRepository {
 
   @override
   Stream<List<JournalEntry>> watchJournal() =>
-      _user.journalDao.watchAll().map((rows) => rows.map(_entry).toList());
+      _journal.journalDao.watchAll().map((rows) => rows.map(_entry).toList());
 
   static JournalEntry _entry(JournalEntryRow r) => JournalEntry(
     id: r.id,
@@ -229,7 +234,7 @@ class DriftPracticeRepository implements PracticeRepository {
     RoutineKind kind,
     RoutineQuestion question,
   ) async {
-    final r = await _user.journalDao.find(
+    final r = await _journal.journalDao.find(
       date,
       journalKind(kind),
       promptId: question.id,
@@ -245,7 +250,7 @@ class DriftPracticeRepository implements PracticeRepository {
     String body,
   ) async {
     final text = body.trim();
-    final dao = _user.journalDao;
+    final dao = _journal.journalDao;
     final existing = await dao.find(
       date,
       journalKind(kind),
@@ -279,7 +284,7 @@ class DriftPracticeRepository implements PracticeRepository {
   }) async {
     final text = body.trim();
     if (text.isEmpty) return;
-    await _user.journalDao.add(
+    await _journal.journalDao.add(
       date: date,
       kind: JournalKind.note,
       body: text,
@@ -290,16 +295,16 @@ class DriftPracticeRepository implements PracticeRepository {
   }
 
   @override
-  Future<void> deleteEntry(int id) => _user.journalDao.remove(id);
+  Future<void> deleteEntry(int id) => _journal.journalDao.remove(id);
 
   @override
-  Future<void> deleteJournal() => _user.journalDao.deleteAll();
+  Future<void> deleteJournal() => _journal.journalDao.deleteAll();
 
   @override
   Future<String> exportJournal({required String title}) async {
     final out = StringBuffer(title);
     LocalDate? day;
-    for (final e in (await _user.journalDao.all()).map(_entry)) {
+    for (final e in (await _journal.journalDao.all()).map(_entry)) {
       if (e.date != day) {
         day = e.date;
         out.write('\n\n$day');
@@ -312,7 +317,7 @@ class DriftPracticeRepository implements PracticeRepository {
   }
 
   @override
-  Stream<Set<RoutineKind>> watchDone(LocalDate date) => _user.journalDao
+  Stream<Set<RoutineKind>> watchDone(LocalDate date) => _user.practiceLogDao
       .watchDone(date)
       .map(
         (kinds) => {
@@ -327,6 +332,6 @@ class DriftPracticeRepository implements PracticeRepository {
     RoutineKind kind, {
     required bool done,
   }) => done
-      ? _user.journalDao.markDone(date, journalKind(kind), _clock.now())
-      : _user.journalDao.unmarkDone(date, journalKind(kind));
+      ? _user.practiceLogDao.markDone(date, journalKind(kind), _clock.now())
+      : _user.practiceLogDao.unmarkDone(date, journalKind(kind));
 }

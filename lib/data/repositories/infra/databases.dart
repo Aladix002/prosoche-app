@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/db/journal_db.dart';
 import 'package:prosoche/data/db/user_db.dart';
 import 'package:prosoche/domain/common/common.dart';
 
@@ -62,6 +63,14 @@ final Provider<UserDb> userDbProvider = Provider<UserDb>((ref) {
         setup: configureUserDbConnection,
       );
     }),
+    // Migracia v2 -> v3 (C-02): dennik zo starej user.db do journal.db.
+    legacyJournal: (rows) async {
+      final dir = await getApplicationSupportDirectory();
+      await importLegacyJournal(
+        File(p.join(dir.path, journalDbFileName)),
+        rows,
+      );
+    },
   );
   ref.onDispose(db.close);
   return db;
@@ -69,3 +78,25 @@ final Provider<UserDb> userDbProvider = Provider<UserDb>((ref) {
 
 /// Nazov suboru user.db (export F-09 a "Delete all my data" ho potrebuju).
 const userDbFileName = 'user.db';
+
+/// journal.db (dennik, C-02) v `getApplicationSupportDirectory()`. Android
+/// zaloha ju nezahrna (zalohuje sa len user.db). V testoch
+/// `journalDbProvider.overrideWithValue(JournalDb.memory())`.
+///
+/// Pred prvym dotazom pocka na otvorenie user.db, aby migracia v2 -> v3
+/// stihla presunut stary dennik.
+final Provider<JournalDb> journalDbProvider = Provider<JournalDb>((ref) {
+  final user = ref.watch(userDbProvider);
+  final db = JournalDb(
+    LazyDatabase(() async {
+      await user.customSelect('SELECT 1').get();
+      final dir = await getApplicationSupportDirectory();
+      return NativeDatabase.createInBackground(
+        File(p.join(dir.path, journalDbFileName)),
+        setup: configureJournalDbConnection,
+      );
+    }),
+  );
+  ref.onDispose(db.close);
+  return db;
+}, name: 'journalDbProvider');

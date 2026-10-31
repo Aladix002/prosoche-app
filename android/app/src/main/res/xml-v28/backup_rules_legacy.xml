@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Android 9-11 (docs/06 B.5): rovnaky rozsah ako data_extraction_rules,
-     len so sifrovanim na strane klienta. -->
+     len so sifrovanim na strane klienta. Dennik (journal.db, C-02) nie je
+     v include zozname, teda sa nezalohuje. -->
 <full-backup-content>
     <include domain="database" path="user.db" requireFlags="clientSideEncryption" />
     <include domain="database" path="user.db-wal" requireFlags="clientSideEncryption" />
