@@ -14,7 +14,7 @@
 #   FEEDBACK_URL        napr. mailto:<EMAIL> alebo https://.../feedback; bez nej
 #                       riadok "Send feedback" chyba
 #   CONTENT_REPO        <org>/prosoche-content; bez nej release nema aktualizacie
-#                       obsahu ani stahovanie vysvetliviek hadisov
+#                       obsahu (content.db)
 # Placeholdery: kym MAJITEL hodnoty nenastavi, build zlyha (kontrola nizsie).
 # APP_VERSION netreba: appka ju cita z FLUTTER_BUILD_NAME (--build-name z pubspec).
 name: Release Android

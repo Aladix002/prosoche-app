@@ -33,8 +33,10 @@ class _NotificationsStepState extends ConsumerState<NotificationsStep> {
 
   // Nastavenia (zapisu sa pri Continue).
   bool? _morning;
+  bool? _evening;
   bool? _private;
   String _morningTime = SettingsKeys.notifMorningTime.defaultValue;
+  String _eveningTime = SettingsKeys.notifEveningTime.defaultValue;
 
   OnboardingNotifications get _platform =>
       ref.read(onboardingNotificationsProvider);
@@ -63,11 +65,15 @@ class _NotificationsStepState extends ConsumerState<NotificationsStep> {
     final morning = await s.get(SettingsKeys.notifMorningEnabled);
     final private = await s.get(SettingsKeys.notifPrivateLockscreen);
     final time = await s.get(SettingsKeys.notifMorningTime);
+    final evening = await s.get(SettingsKeys.notifEveningEnabled);
+    final eveningTime = await s.get(SettingsKeys.notifEveningTime);
     if (!mounted) return;
     setState(() {
       _morning ??= morning;
+      _evening ??= evening;
       _private ??= private;
       _morningTime = time;
+      _eveningTime = eveningTime;
     });
   }
 
@@ -94,6 +100,9 @@ class _NotificationsStepState extends ConsumerState<NotificationsStep> {
       if (_morning != null) {
         await s.set(SettingsKeys.notifMorningEnabled, _morning!);
       }
+      if (_evening != null) {
+        await s.set(SettingsKeys.notifEveningEnabled, _evening!);
+      }
       if (_private != null) {
         await s.set(SettingsKeys.notifPrivateLockscreen, _private!);
       }
@@ -105,8 +114,8 @@ class _NotificationsStepState extends ConsumerState<NotificationsStep> {
     }
   }
 
-  String _formatMorning(BuildContext context) {
-    final [h, m] = _morningTime.split(':').map(int.parse).toList();
+  String _format(BuildContext context, String hhmm) {
+    final [h, m] = hhmm.split(':').map(int.parse).toList();
     return ProsocheFormats(Localizations.localeOf(context))
         .time(DateTime(2000, 1, 1, h, m));
   }
@@ -157,9 +166,18 @@ class _NotificationsStepState extends ConsumerState<NotificationsStep> {
         SwitchListTile(
           key: const ValueKey('notif:morning'),
           contentPadding: EdgeInsetsDirectional.zero,
-          title: Text(l10n.onbNotifMorning(_formatMorning(context))),
+          title: Text(l10n.onbNotifMorning(_format(context, _morningTime))),
           value: _morning ?? true,
           onChanged: (v) => setState(() => _morning = v),
+        ),
+        // Vecerna reflexia: opt-in, default vypnute (I-01).
+        SwitchListTile(
+          key: const ValueKey('notif:evening'),
+          contentPadding: EdgeInsetsDirectional.zero,
+          title: Text(l10n.onbNotifEvening(_format(context, _eveningTime))),
+          subtitle: Text(l10n.onbNotifEveningHelp),
+          value: _evening ?? false,
+          onChanged: (v) => setState(() => _evening = v),
         ),
         SwitchListTile(
           key: const ValueKey('notif:private'),

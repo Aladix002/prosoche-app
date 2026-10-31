@@ -20,16 +20,27 @@ enum SkQuoteStyle {
 /// Text filozofa alebo karty. Nikdy neoreze (bez `maxLines`, bez
 /// `overflow`), zarovnany na zaciatok riadku, bez pridanych uvodzoviek
 /// (docs/DESIGN.md 3.4).
+/// Velkost textu citatu.
+enum SkQuoteSize {
+  normal,
+
+  /// Kratky citat na plnej karte: 26/36 (pri velkom pisme systemu
+  /// zostava normalna velkost, text uz je velky).
+  large,
+}
+
 class SkQuoteText extends StatelessWidget {
   const SkQuoteText(
     this.text, {
     this.style = SkQuoteStyle.quote,
+    this.size = SkQuoteSize.normal,
     this.color,
     super.key,
   });
 
   final String text;
   final SkQuoteStyle style;
+  final SkQuoteSize size;
 
   /// Default `lead`.
   final Color? color;
@@ -46,7 +57,10 @@ class SkQuoteText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final s = styleOf(context, style);
+    var s = styleOf(context, style);
+    if (size == SkQuoteSize.large && !context.sk.largeText) {
+      s = s.copyWith(fontSize: 26, height: 36 / 26);
+    }
     return Text(
       text,
       style: color == null ? s : s.copyWith(color: color),
@@ -202,6 +216,13 @@ class SkQuoteCard extends StatelessWidget {
   /// Napr. "Card 5 of 12, quote".
   final String? semanticLabel;
 
+  /// Kratky citat (do [shortQuoteMaxChars] znakov) dostane na plnej karte
+  /// vacsie pismo, aby karta posobila vyvazene (I-01).
+  static bool shortQuote(String text) =>
+      text.trim().length <= shortQuoteMaxChars;
+
+  static const shortQuoteMaxChars = 160;
+
   /// Len compact (detail).
   final VoidCallback? onTap;
 
@@ -217,7 +238,13 @@ class SkQuoteCard extends StatelessWidget {
       headerActions: headerActions,
       translation: compact
           ? Text(text, maxLines: 3, overflow: TextOverflow.ellipsis)
-          : SkQuoteText(text, style: style),
+          : SkQuoteText(
+              text,
+              style: style,
+              size: shortQuote(text) && style == SkQuoteStyle.quote
+                  ? SkQuoteSize.large
+                  : SkQuoteSize.normal,
+            ),
       footer: (!compact && hasAttribution) || footer != null
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

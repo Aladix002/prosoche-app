@@ -1936,6 +1936,40 @@
   "@setFeedback": {
     "description": "Row that opens the feedback form in the browser."
   },
+  "readerTextSize": "Reading size",
+  "@readerTextSize": {
+    "description": "Tooltip of the text size button in the Library reader, title of the size picker, and the section in Settings > Display."
+  },
+  "readerTextSizeName": "{value, select, s{Small} m{Medium} l{Large} xl{Extra large} other{Medium}}",
+  "@readerTextSizeName": {
+    "description": "Name of a reading size option (S, M, L, XL) in the Library reader.",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "setReaderSizeHelp": "Text size in the Library reader. It adds to your phone's text size.",
+  "@setReaderSizeHelp": {
+    "description": "Help text under the Reading size section in Settings > Display."
+  },
+  "onbNotifEvening": "Evening reflection at {time}",
+  "@onbNotifEvening": {
+    "description": "Onboarding switch: a reminder in the evening to review the day. Off by default. time = local time, e.g. '21:00'.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "onbNotifEveningHelp": "Optional. A quiet reminder to review the day.",
+  "@onbNotifEveningHelp": {
+    "description": "Subtitle under the evening reflection switch in onboarding."
+  },
+  "practiceOtherExercises": "Other exercises",
+  "@practiceOtherExercises": {
+    "description": "Section heading on Practice under the morning and evening cards: the remaining exercises."
+  },
   "cardSourceLine": "Source: {attribution}",
   "@cardSourceLine": {
     "description": "Small line under a card with the source of the text, e.g. 'Source: Project Gutenberg'. The attribution comes from the content database and is not translated.",

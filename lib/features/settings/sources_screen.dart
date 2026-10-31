@@ -184,7 +184,7 @@ class SourceLink extends ConsumerWidget {
     );
   }
 
-  /// `https://tanzil.net/` -> `tanzil.net`.
+  /// `https://example.org/a` -> `example.org/a`.
   static String _display(String url) {
     final uri = Uri.tryParse(url);
     if (uri == null || uri.host.isEmpty) return url;

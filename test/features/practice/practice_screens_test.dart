@@ -34,6 +34,12 @@ void main() {
       scrollable: find.byType(Scrollable).first,
     );
     expect(find.byKey(const ValueKey('exercise:memento-mori')), findsOneWidget);
+    // Ranna priprava je hore ako karta, v zozname cviceni sa neopakuje.
+    expect(find.text('Other exercises'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('exercise:morning-preparation')),
+      findsNothing,
+    );
     expectNoTextClipping(tester);
   });
 

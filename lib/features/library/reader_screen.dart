@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
 import 'package:prosoche/domain/library/library.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/library/library_routes.dart';
 import 'package:prosoche/features/library/widgets/library_widgets.dart';
 import 'package:prosoche/features/library/widgets/reader_page.dart';
@@ -177,6 +178,9 @@ class _ReaderState extends ConsumerState<_Reader> {
         b.sectionKey,
     };
     final bookmarked = marked.contains(_current.key);
+    final size = readerSizeOf(
+      ref.watch(settingOf(SettingsKeys.readerScale)).value,
+    );
     final progress = readingProgress(_index + 1, _sections.length);
     return Scaffold(
       appBar: AppBar(
@@ -190,6 +194,12 @@ class _ReaderState extends ConsumerState<_Reader> {
                 ? l10n.readerRemoveBookmark
                 : l10n.readerAddBookmark,
             onPressed: () => unawaited(_toggleBookmark(on: !bookmarked)),
+          ),
+          SkIconButton(
+            key: const ValueKey('reader:text_size'),
+            icon: Icons.format_size,
+            tooltip: l10n.readerTextSize,
+            onPressed: () => unawaited(showReaderSizeSheet(context, ref)),
           ),
           SkIconButton(
             key: const ValueKey('reader:contents'),
@@ -241,6 +251,7 @@ class _ReaderState extends ConsumerState<_Reader> {
                         ? widget.highlight
                         : null,
                     targeted: s.key == widget.highlightKey,
+                    size: size,
                   );
                 },
               ),
@@ -254,6 +265,79 @@ class _ReaderState extends ConsumerState<_Reader> {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Vyber velkosti pisma citacky (S-XL), uklada `reader.scale` (I-01).
+/// To iste nastavenie je v Settings > Display.
+Future<void> showReaderSizeSheet(BuildContext context, WidgetRef ref) =>
+    showModalBottomSheet<void>(
+      context: context,
+      useSafeArea: true,
+      showDragHandle: true,
+      isScrollControlled: true,
+      builder: (sheet) => const SafeArea(
+        child: SingleChildScrollView(child: ReaderSizePicker()),
+      ),
+    );
+
+/// Radio S, M, L, XL nad nastavenim `reader.scale`.
+class ReaderSizePicker extends ConsumerWidget {
+  const ReaderSizePicker({this.showTitle = true, super.key});
+
+  final bool showTitle;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final sk = context.sk;
+    final value =
+        ref.watch(settingOf(SettingsKeys.readerScale)).value ??
+        SettingsKeys.readerScale.defaultValue;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (showTitle)
+          Padding(
+            padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: SkSpace.space16,
+            ),
+            child: Semantics(
+              header: true,
+              child: Text(l10n.readerTextSize, style: sk.text.titleLarge),
+            ),
+          ),
+        RadioGroup<String>(
+          groupValue: value,
+          onChanged: (v) {
+            if (v != null) {
+              unawaited(
+                ref
+                    .read(settingsRepositoryProvider)
+                    .set(SettingsKeys.readerScale, v),
+              );
+            }
+          },
+          child: Column(
+            children: [
+              for (final v in SettingsKeys.readerScales)
+                RadioListTile<String>(
+                  key: ValueKey('reader_scale:$v'),
+                  value: v,
+                  title: Text(
+                    l10n.readerTextSizeName(v),
+                    style: sk.type.reader.copyWith(
+                      fontSize:
+                          sk.type.reader.fontSize! * readerSizeOf(v).factor,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

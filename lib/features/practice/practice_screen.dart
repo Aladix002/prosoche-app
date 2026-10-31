@@ -20,6 +20,12 @@ class PracticeScreen extends ConsumerWidget {
     final done =
         ref.watch(practiceDoneProvider(today)).value ?? const <RoutineKind>{};
     final practices = ref.watch(practicesProvider);
+    // Ranna priprava a vecerna reflexia su hore ako velke karty, v zozname
+    // cviceni sa neopakuju (I-01).
+    final routineIds = {
+      for (final kind in RoutineKind.values)
+        ?ref.watch(practiceRoutineProvider(kind)).value?.practice?.id.key,
+    };
     final journal = ref.watch(journalProvider).value;
     return Scaffold(
       appBar: AppBar(),
@@ -34,7 +40,6 @@ class PracticeScreen extends ConsumerWidget {
               _RoutineTile(kind: kind, done: done.contains(kind)),
               const SizedBox(height: SkSpace.space12),
             ],
-            const SizedBox(height: SkSpace.space8),
             _HubTile(
               key: const ValueKey('practice:journal'),
               icon: Icons.edit_note,
@@ -55,22 +60,26 @@ class PracticeScreen extends ConsumerWidget {
             const SizedBox(height: SkSpace.space24),
             Semantics(
               header: true,
-              child: Text(l10n.practiceExercises, style: sk.text.titleLarge),
+              child: Text(
+                l10n.practiceOtherExercises,
+                style: sk.text.titleLarge,
+              ),
             ),
             const SizedBox(height: SkSpace.space8),
             ...switch (practices) {
               AsyncValue(:final value?) => [
                 for (final p in value)
-                  ListTile(
-                    key: ValueKey('exercise:${p.id.key}'),
-                    contentPadding: EdgeInsetsDirectional.zero,
-                    minTileHeight: SkSpace.minTouchTarget,
-                    title: Text(p.title, style: sk.text.titleMedium),
-                    subtitle: p.subtitle == null ? null : Text(p.subtitle!),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () =>
-                        context.push(PracticeRoutes.exercise(p.id.key)),
-                  ),
+                  if (!routineIds.contains(p.id.key))
+                    ListTile(
+                      key: ValueKey('exercise:${p.id.key}'),
+                      contentPadding: EdgeInsetsDirectional.zero,
+                      minTileHeight: SkSpace.minTouchTarget,
+                      title: Text(p.title, style: sk.text.titleMedium),
+                      subtitle: p.subtitle == null ? null : Text(p.subtitle!),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () =>
+                          context.push(PracticeRoutes.exercise(p.id.key)),
+                    ),
               ],
               AsyncValue(hasError: true, isLoading: false) => [
                 SkErrorState(
@@ -177,17 +186,39 @@ class _HubTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sk = context.sk;
+    // Rovnaky tvar a typografia ako karty rannej a vecernej praxe (I-01):
+    // radius lg, serifovy nadpis, sekundarny podnadpis, ikona namiesto
+    // eyebrow.
     return Material(
       color: sk.colors.surface,
-      borderRadius: BorderRadius.circular(SkRadius.md),
+      borderRadius: BorderRadius.circular(SkRadius.lg),
       clipBehavior: Clip.antiAlias,
-      child: ListTile(
-        minTileHeight: SkSpace.minTouchTarget,
-        leading: ExcludeSemantics(child: Icon(icon, color: sk.colors.primary)),
-        title: Text(title, style: sk.text.titleMedium),
-        subtitle: Text(subtitle),
-        trailing: const Icon(Icons.chevron_right),
+      child: InkWell(
         onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsetsDirectional.all(SkSpace.space16),
+          child: Row(
+            children: [
+              ExcludeSemantics(child: Icon(icon, color: sk.colors.accentText)),
+              const SizedBox(width: SkSpace.space16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: sk.text.headlineSmall),
+                    Text(
+                      subtitle,
+                      style: sk.text.bodyMedium!.copyWith(
+                        color: sk.colors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right),
+            ],
+          ),
+        ),
       ),
     );
   }

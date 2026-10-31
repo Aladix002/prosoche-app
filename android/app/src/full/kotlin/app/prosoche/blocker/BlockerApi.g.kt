@@ -528,7 +528,7 @@ interface BlockerHostApi {
    * Flutter UI nad [installedApps]).
    */
   suspend fun pickTargets(): List<BlockedTarget>
-  /** Spustitelne appky okrem samotnej Mursy, zoradene podla nazvu. */
+  /** Spustitelne appky okrem samotnej Prosoche, zoradene podla nazvu. */
   suspend fun installedApps(): List<InstalledApp>
   /** PNG ikona appky (cca 96 px) alebo null, ak appka neexistuje. */
   suspend fun appIcon(ref: String): ByteArray?

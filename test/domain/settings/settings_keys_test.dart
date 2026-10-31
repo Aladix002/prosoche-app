@@ -10,6 +10,7 @@ void main() {
       'install_id',
       'ui.locale',
       'display.theme',
+      'reader.scale',
       'intention.text',
       'intention.preset',
       'feed.cards_count',
@@ -26,7 +27,7 @@ void main() {
       'analytics_opt_in',
       'crash_reports',
     });
-    expect(SettingsKeys.all.map((k) => k.name).toSet(), hasLength(21));
+    expect(SettingsKeys.all.map((k) => k.name).toSet(), hasLength(22));
   });
 
   test('defaults', () {

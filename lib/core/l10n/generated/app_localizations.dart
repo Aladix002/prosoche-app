@@ -2332,6 +2332,42 @@ abstract class AppLocalizations {
   /// **'Send feedback'**
   String get setFeedback;
 
+  /// Tooltip of the text size button in the Library reader, title of the size picker, and the section in Settings > Display.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading size'**
+  String get readerTextSize;
+
+  /// Name of a reading size option (S, M, L, XL) in the Library reader.
+  ///
+  /// In en, this message translates to:
+  /// **'{value, select, s{Small} m{Medium} l{Large} xl{Extra large} other{Medium}}'**
+  String readerTextSizeName(String value);
+
+  /// Help text under the Reading size section in Settings > Display.
+  ///
+  /// In en, this message translates to:
+  /// **'Text size in the Library reader. It adds to your phone\'s text size.'**
+  String get setReaderSizeHelp;
+
+  /// Onboarding switch: a reminder in the evening to review the day. Off by default. time = local time, e.g. '21:00'.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening reflection at {time}'**
+  String onbNotifEvening(String time);
+
+  /// Subtitle under the evening reflection switch in onboarding.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional. A quiet reminder to review the day.'**
+  String get onbNotifEveningHelp;
+
+  /// Section heading on Practice under the morning and evening cards: the remaining exercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Other exercises'**
+  String get practiceOtherExercises;
+
   /// Small line under a card with the source of the text, e.g. 'Source: Project Gutenberg'. The attribution comes from the content database and is not translated.
   ///
   /// In en, this message translates to:

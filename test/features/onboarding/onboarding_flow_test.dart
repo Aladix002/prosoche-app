@@ -52,8 +52,17 @@ void main() {
     expect(h.notifications.requests, 1);
     expect(find.text('Notifications are on'), findsOneWidget);
     await tapVisible(tester, find.byKey(const ValueKey('notif:morning')));
+    // Vecerna reflexia: opt-in, default vypnute (I-01).
+    expect(
+      tester
+          .widget<SwitchListTile>(find.byKey(const ValueKey('notif:evening')))
+          .value,
+      isFalse,
+    );
+    await tapVisible(tester, find.byKey(const ValueKey('notif:evening')));
     await tapPrimary(tester, 'Continue');
     expect(await settings.get(SettingsKeys.notifMorningEnabled), isFalse);
+    expect(await settings.get(SettingsKeys.notifEveningEnabled), isTrue);
 
     // O7: suhlas az po veku 16+, dve samostatne volby.
     expect(find.byType(PrivacyStep), findsOneWidget);

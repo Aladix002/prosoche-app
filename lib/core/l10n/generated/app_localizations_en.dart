@@ -1524,6 +1524,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String get setFeedback => 'Send feedback';
 
   @override
+  String get readerTextSize => 'Reading size';
+
+  @override
+  String readerTextSizeName(String value) {
+    String _temp0 = intl.Intl.selectLogic(value, {
+      's': 'Small',
+      'm': 'Medium',
+      'l': 'Large',
+      'xl': 'Extra large',
+      'other': 'Medium',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get setReaderSizeHelp =>
+      'Text size in the Library reader. It adds to your phone\'s text size.';
+
+  @override
+  String onbNotifEvening(String time) {
+    return 'Evening reflection at $time';
+  }
+
+  @override
+  String get onbNotifEveningHelp =>
+      'Optional. A quiet reminder to review the day.';
+
+  @override
+  String get practiceOtherExercises => 'Other exercises';
+
+  @override
   String cardSourceLine(String attribution) {
     return 'Source: $attribution';
   }

@@ -125,7 +125,7 @@ abstract class BlockerHostApi {
   @async
   List<BlockedTarget> pickTargets();
 
-  /// Spustitelne appky okrem samotnej Mursy, zoradene podla nazvu.
+  /// Spustitelne appky okrem samotnej Prosoche, zoradene podla nazvu.
   @async
   List<InstalledApp> installedApps();
 
