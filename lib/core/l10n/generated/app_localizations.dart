@@ -2380,7 +2380,7 @@ abstract class AppLocalizations {
   /// **'Written for Prosoche'**
   String get setLicenseOwn;
 
-  /// Small line under a card with the source of the text, e.g. 'Source: Project Gutenberg'. The attribution comes from the content database and is not translated.
+  /// Small line under a card with the source of the text, e.g. 'Source: English Wikisource'. The attribution comes from the content database and is not translated.
   ///
   /// In en, this message translates to:
   /// **'Source: {attribution}'**
