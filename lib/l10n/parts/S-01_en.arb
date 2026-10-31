@@ -1,0 +1,21 @@
+{
+  "@@locale": "en",
+  "appTitle": "Mursa",
+  "@appTitle": {"description": "Application name."},
+  "tabToday": "Today",
+  "@tabToday": {"description": "Bottom navigation label for the Today tab."},
+  "tabQuran": "Quran",
+  "@tabQuran": {"description": "Bottom navigation label for the Quran tab."},
+  "tabPrayer": "Prayer",
+  "@tabPrayer": {"description": "Bottom navigation label for the Prayer tab."},
+  "tabJourney": "Journey",
+  "@tabJourney": {"description": "Bottom navigation label for the Journey tab."},
+  "feedTitle": "Daily cards",
+  "@feedTitle": {"description": "Title of the fullscreen daily card feed."},
+  "gateTitle": "Pause",
+  "@gateTitle": {"description": "Title of the gate screen shown before a blocked app."},
+  "beginTodaysCards": "Begin today's cards",
+  "@beginTodaysCards": {"description": "Call to action on Today that opens the feed."},
+  "errorGeneric": "This part could not be loaded.",
+  "@errorGeneric": {"description": "Neutral fallback shown instead of a broken widget."}
+}

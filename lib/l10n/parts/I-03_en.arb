@@ -1,0 +1,42 @@
+{
+  "@@locale": "en",
+  "cardSourceLine": "Source: {attribution}",
+  "@cardSourceLine": {
+    "description": "Small line under a hadith with the source of the text and its version, e.g. 'Source: HadeethEnc.com - Encyclopedia of Translated Prophetic Hadiths, version snapshot-2026-10-29'. The attribution comes from the content database and is not translated.",
+    "placeholders": {"attribution": {"type": "String"}}
+  },
+  "cardSourceLineVersion": "Source: {attribution}, version {version}",
+  "@cardSourceLineVersion": {
+    "description": "Like cardSourceLine, used when the attribution text from the database does not contain the version number.",
+    "placeholders": {"attribution": {"type": "String"}, "version": {"type": "String"}}
+  },
+  "reportBody": "The report is a text file that you send yourself, for example by e-mail. It contains the card reference and technical details from the app. Your prayers, reading and location are not included.",
+  "@reportBody": {"description": "Report a problem sheet: explains what the report contains and that the user sends it."},
+  "reportDescriptionLabel": "What is wrong? (optional)",
+  "@reportDescriptionLabel": {"description": "Report a problem sheet: label of the free text field."},
+  "reportIncludeLog": "Attach technical log",
+  "@reportIncludeLog": {"description": "Report a problem sheet: checkbox to include the app's technical log."},
+  "reportIncludeLogHelp": "Errors and app events, without your data.",
+  "@reportIncludeLogHelp": {"description": "Report a problem sheet: help text under the technical log checkbox."},
+  "reportPreview": "Show the exact text",
+  "@reportPreview": {"description": "Report a problem sheet: expandable preview of the exact report text."},
+  "reportShare": "Share report",
+  "@reportShare": {"description": "Report a problem sheet: opens the system share sheet with the report file."},
+  "reportShareFailed": "Sharing did not open. Try again.",
+  "@reportShareFailed": {"description": "Report a problem sheet: error when the share sheet could not be opened."},
+  "reportShareSubject": "{app} problem report",
+  "@reportShareSubject": {
+    "description": "Subject of the shared report (e.g. e-mail subject).",
+    "placeholders": {"app": {"type": "String"}}
+  },
+  "setReportProblem": "Report a problem",
+  "@setReportProblem": {"description": "Settings > About: opens the report a problem sheet."},
+  "todayGatePaused": "The gate is paused",
+  "@todayGatePaused": {"description": "Banner on Today when the app gate is on but a needed permission is missing."},
+  "todayGatePausedBody": "A permission it needs is off.",
+  "@todayGatePausedBody": {"description": "Banner on Today: body under 'The gate is paused'."},
+  "todayGateFix": "Fix",
+  "@todayGateFix": {"description": "Banner on Today: opens the gate permissions screen."},
+  "setGateNeedsAttention": "Needs attention",
+  "@setGateNeedsAttention": {"description": "Settings: tooltip/label of the warning icon next to 'The gate' when a permission is missing."}
+}

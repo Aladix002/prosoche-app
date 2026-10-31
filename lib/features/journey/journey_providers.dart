@@ -1,0 +1,28 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart';
+import 'package:sakina/data/repositories/repositories.dart';
+import 'package:sakina/domain/common/common.dart';
+
+/// Ulozene karty, najnovsie prve; [CardType] null = vsetky (A8.3).
+final StreamProviderFamily<List<SavedCard>, CardType?> savedCardsProvider =
+    StreamProvider.family<List<SavedCard>, CardType?>(
+      (ref, type) =>
+          ref.watch(cardActionsRepositoryProvider).watchSaved(type: type),
+      name: 'savedCardsProvider',
+    );
+
+/// Pocet dokoncenych khatmov (`khatm_log`, D7). Prepocita sa so zmenou
+/// pozicie citania (po 114:6 sa pozicia vrati na zaciatok).
+final FutureProvider<int> completedKhatmsProvider = FutureProvider<int>((
+  ref,
+) async {
+  ref.watch(readingPositionProvider);
+  return await ref.watch(quranRepositoryProvider).completedKhatms();
+}, name: 'completedKhatmsProvider');
+
+/// Ulozena sada dna bez generovania (detail dna A8.2); null = sada nie je.
+final StreamProviderFamily<DailySetState?, LocalDate> journeyDaySetProvider =
+    StreamProvider.family<DailySetState?, LocalDate>(
+      (ref, date) => ref.watch(dailySetRepositoryProvider).watch(date),
+      name: 'journeyDaySetProvider',
+    );

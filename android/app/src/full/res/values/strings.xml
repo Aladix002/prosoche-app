@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Texty nativneho blockeru (B-01, B-02). Len EN, preklady robia ludia (K-04). -->
+<resources>
+    <string name="blocker_channel_name">App gate</string>
+    <string name="blocker_channel_description">Keeps the app gate running in the background.</string>
+    <string name="blocker_notification_title">App gate is on</string>
+    <string name="blocker_notification_text">Chosen apps open after a few cards.</string>
+    <!-- Nativny fallback brany, ked Flutter nenabehne do 5 s (docs/01 5.3, D5). -->
+    <string name="gate_fallback_title">We couldn\'t load your cards</string>
+    <string name="gate_fallback_body">This is our mistake, not yours. You can continue.</string>
+    <string name="gate_fallback_continue">Continue</string>
+    <string name="gate_fallback_back">Go back</string>
+</resources>

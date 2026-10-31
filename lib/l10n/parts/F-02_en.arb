@@ -1,0 +1,308 @@
+{
+  "@@locale": "en",
+  "todaySettings": "Settings",
+  "@todaySettings": {"description": "Tooltip of the gear button on Today that opens Settings."},
+  "todayCalendarHint": "Open the calendar",
+  "@todayCalendarHint": {"description": "Screen reader hint of the Hijri date on Today."},
+  "todayHijriDate": "{day} {month} {year}",
+  "@todayHijriDate": {
+    "description": "Hijri date on Today and on the intro card, e.g. '17 Jumada al-Ula 1448'. Digits are already localized.",
+    "placeholders": {"day": {"type": "String"}, "month": {"type": "String"}, "year": {"type": "String"}}
+  },
+  "todayHijriMonth": "{month, select, m1{Muharram} m2{Safar} m3{Rabi al-Awwal} m4{Rabi al-Thani} m5{Jumada al-Ula} m6{Jumada al-Akhirah} m7{Rajab} m8{Shaban} m9{Ramadan} m10{Shawwal} m11{Dhul Qadah} m12{Dhul Hijjah} other{-}}",
+  "@todayHijriMonth": {
+    "description": "Name of the Hijri month (calendar name, transliterated). The value is m1..m12.",
+    "placeholders": {"month": {"type": "String"}}
+  },
+  "todayNextPrayer": "{prayer} in {duration}",
+  "@todayNextPrayer": {
+    "description": "Next prayer chip on Today, e.g. 'Asr in 1 h 12 min'.",
+    "placeholders": {"prayer": {"type": "String"}, "duration": {"type": "String"}}
+  },
+  "todayPrayerNow": "{prayer} now",
+  "@todayPrayerNow": {
+    "description": "Next prayer chip when the prayer time is now.",
+    "placeholders": {"prayer": {"type": "String"}}
+  },
+  "todayDurationHoursMinutes": "{hours} h {minutes} min",
+  "@todayDurationHoursMinutes": {
+    "description": "Countdown with hours and minutes.",
+    "placeholders": {"hours": {"type": "int"}, "minutes": {"type": "int"}}
+  },
+  "todayDurationMinutes": "{minutes} min",
+  "@todayDurationMinutes": {
+    "description": "Countdown with minutes only.",
+    "placeholders": {"minutes": {"type": "int"}}
+  },
+  "todaySetLocation": "Set your location to see prayer times",
+  "@todaySetLocation": {"description": "Prayer chip on Today when no location is set."},
+  "todayQuestsTitle": "Today's intentions",
+  "@todayQuestsTitle": {"description": "Section title of the daily quests on Today."},
+  "todayQuestSlotRead": "Read",
+  "@todayQuestSlotRead": {"description": "Fallback title of the READ quest when no text is available."},
+  "todayQuestSlotLearn": "Learn",
+  "@todayQuestSlotLearn": {"description": "Fallback title of the LEARN quest when no text is available."},
+  "todayQuestSlotAct": "Today's deed",
+  "@todayQuestSlotAct": {"description": "Fallback title of the ACT quest when no text is available."},
+  "todayQuestMarked": "Marked as done.",
+  "@todayQuestMarked": {"description": "Snackbar after the user marks the ACT quest as done."},
+  "todayQuestSkip": "Skip for today",
+  "@todayQuestSkip": {"description": "Action in the ACT quest menu that skips it for today."},
+  "todayCtaBegin": "Begin today's cards",
+  "@todayCtaBegin": {"description": "Today call to action before the daily set is started."},
+  "todayCtaBeginCount": "{count, plural, one{1 card} other{{count} cards}}",
+  "@todayCtaBeginCount": {
+    "description": "Number of cards under the begin call to action.",
+    "placeholders": {"count": {"type": "int"}}
+  },
+  "todayCtaContinue": "Continue · {done} of {total}",
+  "@todayCtaContinue": {
+    "description": "Today call to action when the daily set is in progress.",
+    "placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}
+  },
+  "todayCtaComplete": "Today's cards are complete",
+  "@todayCtaComplete": {"description": "Shown on Today after the daily set is finished."},
+  "todayCtaReadQuran": "Read the Quran",
+  "@todayCtaReadQuran": {"description": "Button on Today after the set is finished; opens free reading."},
+  "todayStreak": "{count, plural, one{1-day streak} other{{count}-day streak}}",
+  "@todayStreak": {
+    "description": "Private streak of completed days.",
+    "placeholders": {"count": {"type": "int"}}
+  },
+  "todayGraceDays": "{count, plural, =0{no grace days left} one{1 grace day} other{{count} grace days}}",
+  "@todayGraceDays": {
+    "description": "Remaining grace days next to the streak.",
+    "placeholders": {"count": {"type": "int"}}
+  },
+  "todayNiyyah": "“{text}”",
+  "@todayNiyyah": {
+    "description": "The user's own intention shown in quotes on Today.",
+    "placeholders": {"text": {"type": "String"}}
+  },
+  "feedErrorTitle": "Today's cards didn't load",
+  "@feedErrorTitle": {"description": "E-FEED-1 title when the daily set could not be prepared."},
+  "feedErrorBody": "Please try again. Your progress is safe.",
+  "@feedErrorBody": {"description": "E-FEED-1 body."},
+  "feedClose": "Close",
+  "@feedClose": {"description": "Tooltip of the close button of the feed."},
+  "feedBackToToday": "Back to Today",
+  "@feedBackToToday": {"description": "Returns from the feed to Today."},
+  "feedTakeAMoment": "Take a moment",
+  "@feedTakeAMoment": {"description": "Hint when the user swipes on before the card was read."},
+  "feedSwipeUp": "Swipe up for the next card",
+  "@feedSwipeUp": {"description": "Hint on the first card."},
+  "feedNextCard": "Next card",
+  "@feedNextCard": {"description": "Screen reader action that moves to the next card."},
+  "feedPreviousCard": "Previous card",
+  "@feedPreviousCard": {"description": "Screen reader action that moves to the previous card."},
+  "feedCardPosition": "Card {n} of {total}",
+  "@feedCardPosition": {
+    "description": "Screen reader position of a card in the daily set.",
+    "placeholders": {"n": {"type": "int"}, "total": {"type": "int"}}
+  },
+  "feedCardErrorTitle": "This card didn't load",
+  "@feedCardErrorTitle": {"description": "Error inside a single card."},
+  "feedSkipCard": "Skip this card",
+  "@feedSkipCard": {"description": "Skips a card that failed to load."},
+  "feedNewDayTitle": "A new day has started",
+  "@feedNewDayTitle": {"description": "Dialog when the date changed while the feed was open."},
+  "feedNewDayBody": "Continue yesterday's cards or start today's?",
+  "@feedNewDayBody": {"description": "Body of the new day dialog."},
+  "feedNewDayContinue": "Continue yesterday's",
+  "@feedNewDayContinue": {"description": "Keeps the previous day's set."},
+  "feedNewDayToday": "Start today's",
+  "@feedNewDayToday": {"description": "Switches the feed to today's set."},
+  "cardTypeVerse": "VERSE",
+  "@cardTypeVerse": {"description": "Type label of a verse card."},
+  "cardTypeHadith": "HADITH",
+  "@cardTypeHadith": {"description": "Type label of a hadith card."},
+  "cardTypeDua": "DUA",
+  "@cardTypeDua": {"description": "Type label of a dua (supplication) card."},
+  "cardTypeName": "NAME OF ALLAH",
+  "@cardTypeName": {"description": "Type label of a card with one of the 99 names."},
+  "cardTypeReflection": "REFLECTION",
+  "@cardTypeReflection": {"description": "Type label of a reflection card."},
+  "cardTypeEvent": "SPECIAL DAY",
+  "@cardTypeEvent": {"description": "Type label of an event card when the event has no title."},
+  "cardTypeFreeReading": "FREE READING",
+  "@cardTypeFreeReading": {"description": "Type label of a verse outside the daily set."},
+  "cardEyebrow": "{type} · {context}",
+  "@cardEyebrow": {
+    "description": "Card header: type label and reference, e.g. 'VERSE · Al-Baqarah 2:255'.",
+    "placeholders": {"type": {"type": "String"}, "context": {"type": "String"}}
+  },
+  "cardAyahReference": "{surah} {ref}",
+  "@cardAyahReference": {
+    "description": "Verse reference, e.g. 'Al-Baqarah 2:255'. The surah name comes from the content database.",
+    "placeholders": {"surah": {"type": "String"}, "ref": {"type": "String"}}
+  },
+  "cardAyahA11y": "{surah}, verse {ayah}",
+  "@cardAyahA11y": {
+    "description": "Screen reader label of a verse card, e.g. 'Al-Baqarah, verse 255'.",
+    "placeholders": {"surah": {"type": "String"}, "ayah": {"type": "String"}}
+  },
+  "cardSave": "Save",
+  "@cardSave": {"description": "Saves a card (bookmark)."},
+  "cardUnsave": "Remove from saved",
+  "@cardUnsave": {"description": "Removes a saved card."},
+  "cardSaved": "Saved",
+  "@cardSaved": {"description": "Snackbar after a card was saved."},
+  "cardRemoved": "Removed from saved",
+  "@cardRemoved": {"description": "Snackbar after a card was removed from saved."},
+  "cardShare": "Share",
+  "@cardShare": {"description": "Shares a card."},
+  "cardMore": "More options",
+  "@cardMore": {"description": "Opens the card options sheet."},
+  "cardTranslationLabel": "Translation: {translator}",
+  "@cardTranslationLabel": {
+    "description": "Attribution of the translation of meaning.",
+    "placeholders": {"translator": {"type": "String"}}
+  },
+  "cardFallbackTag": "EN",
+  "@cardFallbackTag": {"description": "Tag on a translation shown in English because it is missing in the user's language."},
+  "cardFallbackA11y": "English translation",
+  "@cardFallbackA11y": {"description": "Screen reader text of the EN tag."},
+  "cardNoTranslation": "Translation not available in your language",
+  "@cardNoTranslation": {"description": "Shown when a card has no translation in the user's language or English."},
+  "cardReadInContext": "Read in context",
+  "@cardReadInContext": {"description": "Opens the verse in the Quran reader."},
+  "cardSourceRef": "Source: {source}",
+  "@cardSourceRef": {
+    "description": "Source reference of a dua or hadith.",
+    "placeholders": {"source": {"type": "String"}}
+  },
+  "cardHadithReference": "{collection} {number}",
+  "@cardHadithReference": {
+    "description": "Hadith reference, e.g. 'Sahih al-Bukhari 1'. Values come from the content database.",
+    "placeholders": {"collection": {"type": "String"}, "number": {"type": "String"}}
+  },
+  "cardHadithGrade": "Grade: {grade}",
+  "@cardHadithGrade": {
+    "description": "Authenticity grade of a hadith.",
+    "placeholders": {"grade": {"type": "String"}}
+  },
+  "cardHadithGradeName": "{grade, select, sahih{Sahih} hasan{Hasan} other{Other}}",
+  "@cardHadithGradeName": {
+    "description": "Localized hadith grade label (technical term).",
+    "placeholders": {"grade": {"type": "String"}}
+  },
+  "cardHadithExplanation": "Explanation",
+  "@cardHadithExplanation": {"description": "Opens the explanation of a hadith (only when available)."},
+  "cardDuaRepeat": "×{count}",
+  "@cardDuaRepeat": {
+    "description": "How many times a dua is usually repeated.",
+    "placeholders": {"count": {"type": "int"}}
+  },
+  "cardDuaCounter": "{n} / {total}",
+  "@cardDuaCounter": {
+    "description": "Local repetition counter of a dua.",
+    "placeholders": {"n": {"type": "int"}, "total": {"type": "int"}}
+  },
+  "cardDuaCounterHint": "Count a repetition",
+  "@cardDuaCounterHint": {"description": "Screen reader hint of the repetition counter."},
+  "cardNameIndex": "{n} of 99",
+  "@cardNameIndex": {
+    "description": "Position of the name among the 99 names.",
+    "placeholders": {"n": {"type": "String"}}
+  },
+  "cardNameMentionedIn": "Mentioned in {ref}",
+  "@cardNameMentionedIn": {
+    "description": "Verse where the name is mentioned, e.g. 'Mentioned in 59:23'.",
+    "placeholders": {"ref": {"type": "String"}}
+  },
+  "cardOpen": "Open",
+  "@cardOpen": {"description": "Opens the referenced verse."},
+  "cardReflectionAttribution": "Mursa reflection · reviewed",
+  "@cardReflectionAttribution": {"description": "Attribution of a reflection card (reviewed by a content reviewer)."},
+  "cardEventSurah": "{surah} · {count, plural, one{1 verse} other{{count} verses}}",
+  "@cardEventSurah": {
+    "description": "Surah info on an event card. The surah name comes from the content database.",
+    "placeholders": {"surah": {"type": "String"}, "count": {"type": "int"}}
+  },
+  "cardEventReadSurah": "Read {surah}",
+  "@cardEventReadSurah": {
+    "description": "Opens the surah of the event in the reader. The surah name comes from the content database.",
+    "placeholders": {"surah": {"type": "String"}}
+  },
+  "cardIntroEstimate": "Today: {count} cards · ~{minutes} min",
+  "@cardIntroEstimate": {
+    "description": "Size of the daily set on the intro card.",
+    "placeholders": {"count": {"type": "int"}, "minutes": {"type": "int"}}
+  },
+  "cardIntroQuests": "Your intentions: {slots}",
+  "@cardIntroQuests": {
+    "description": "Quest slots on the intro card, e.g. 'read · learn · act'.",
+    "placeholders": {"slots": {"type": "String"}}
+  },
+  "cardIntroMoreEvents": "+{count} more",
+  "@cardIntroMoreEvents": {
+    "description": "More special days today.",
+    "placeholders": {"count": {"type": "int"}}
+  },
+  "cardSheetCopy": "Copy text",
+  "@cardSheetCopy": {"description": "Card options: copy the text."},
+  "cardSheetShareImage": "Share as image",
+  "@cardSheetShareImage": {"description": "Card options: share the card as an image."},
+  "cardSheetShareText": "Share as text",
+  "@cardSheetShareText": {"description": "Card options: share the card as text."},
+  "cardSheetSource": "Show source",
+  "@cardSheetSource": {"description": "Card options: show the source of the content."},
+  "cardSheetReport": "Report a problem",
+  "@cardSheetReport": {"description": "Card options: report a problem with the card."},
+  "cardCopied": "Copied",
+  "@cardCopied": {"description": "Snackbar after copying card text."},
+  "cardTooLongForImage": "Too long for an image. Share as text instead.",
+  "@cardTooLongForImage": {"description": "Shown when a card is too long to be shared as an image."},
+  "cardSourceTitle": "Source",
+  "@cardSourceTitle": {"description": "Title of the source sheet."},
+  "cardSourceLicense": "License: {license}",
+  "@cardSourceLicense": {
+    "description": "License of the content source.",
+    "placeholders": {"license": {"type": "String"}}
+  },
+  "cardShareVia": "via {appName}",
+  "@cardShareVia": {
+    "description": "Last line of shared text and images.",
+    "placeholders": {"appName": {"type": "String"}}
+  },
+  "doneTitle": "You're done for today",
+  "@doneTitle": {"description": "Title of the final card of the daily set."},
+  "doneSummary": "{cards, plural, one{1 card} other{{cards} cards}} · {verses, plural, one{1 verse} other{{verses} verses}}",
+  "@doneSummary": {
+    "description": "Summary on the done card (word cards are off).",
+    "placeholders": {"cards": {"type": "int"}, "verses": {"type": "int"}}
+  },
+  "doneQuests": "Intentions: {done} of {total}",
+  "@doneQuests": {
+    "description": "Quest summary on the done card.",
+    "placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}
+  },
+  "doneNextPrayer": "Next: {prayer} at {time}",
+  "@doneNextPrayer": {
+    "description": "Next prayer on the done card.",
+    "placeholders": {"prayer": {"type": "String"}, "time": {"type": "String"}}
+  },
+  "doneClosed": "The cards are closed until tomorrow.",
+  "@doneClosed": {"description": "The feed ends; nothing more to load today."},
+  "doneKeepReading": "Keep reading the Quran",
+  "@doneKeepReading": {"description": "Opens free reading from the reading position."},
+  "doneCountedFor": "Counted for {weekday}",
+  "@doneCountedFor": {
+    "description": "Shown when the set was finished after midnight and counts for the previous day.",
+    "placeholders": {"weekday": {"type": "String"}}
+  },
+  "doneOpenDeed": "Still open: {title}",
+  "@doneOpenDeed": {
+    "description": "The open ACT quest on the done card. The title comes from the content database.",
+    "placeholders": {"title": {"type": "String"}}
+  },
+  "khatmTitle": "You completed the Quran.",
+  "@khatmTitle": {"description": "Title of the card after reading the last verse of the Quran in order."},
+  "khatmNumber": "Completion #{n}",
+  "@khatmNumber": {
+    "description": "Which completion this is.",
+    "placeholders": {"n": {"type": "int"}}
+  },
+  "khatmStartAgain": "Start again from the beginning",
+  "@khatmStartAgain": {"description": "Opens the reader at the first verse."}
+}

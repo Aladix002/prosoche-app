@@ -1,0 +1,8 @@
+<en-US>
+First test version of Mursa.
+- Daily set of cards with Quran verses and hadith
+- Quran reader with translations of the meanings and search
+- Prayer times, reminders, Qibla and Islamic calendar
+- My journey: prayer log, saved cards, private streak
+Please report anything that looks wrong, especially prayer times and texts.
+</en-US>

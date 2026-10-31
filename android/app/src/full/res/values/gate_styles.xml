@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Temy GateActivity (B-02, ADR-16). Farby = token `bg` (docs/01 2.1). -->
+<resources>
+    <color name="gate_splash_bg">#F7F4EC</color>
+
+    <!-- Nativny splash, kym engine brany nevykresli prvy frame. -->
+    <style name="GateLaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">@drawable/gate_launch_background</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
+    <!-- Pozadie za Flutter UI brany. -->
+    <style name="GateNormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">@color/gate_splash_bg</item>
+    </style>
+</resources>

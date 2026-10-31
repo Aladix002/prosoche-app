@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "keys": [
+    {
+      "kid": "test-root-1",
+      "alg": "Ed25519",
+      "role": "root",
+      "public_key_b64": "D58KEBfag1qPOZvB2Wa4szTWc38dPqGtkhuerWn4H5g="
+    },
+    {
+      "kid": "test-content-a",
+      "alg": "Ed25519",
+      "role": "content",
+      "public_key_b64": "whDA2dMAPlTvCu2JPxeI5eU73cx+HdFaHyC1vuX70Uw="
+    },
+    {
+      "kid": "test-content-b",
+      "alg": "Ed25519",
+      "role": "content",
+      "public_key_b64": "8QTD82I4/ZpK2H/pzA3pjLQyNFlIWFSJnnNoZh9o38M="
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 12+ (docs/06 B.5). Zalohuje sa len user.db (aj WAL) a nastavenia;
+     cloud zaloha len ak ju zariadenie vie sifrovat. content.db, logy, cache
+     a installId (patri do no_backup) sa nezalohuju.
+     Umiestnenie user.db urci D-02 (UserDb.open(File)), preto su uvedene obe
+     bezne cesty: databases/ a files/ (getApplicationSupportDirectory).
+     Nastavenia: shared_preferences legacy (XML) aj SharedPreferencesAsync
+     (DataStore). Neexistujuca cesta v include nevadi. Pri explicitnych
+     include sa vsetko ostatne (sentry.xml, logs/, content.db) nezalohuje,
+     exclude by bol redundantny (lint FullBackupContent). -->
+<data-extraction-rules>
+    <cloud-backup disableIfNoEncryptionCapabilities="true">
+        <include domain="database" path="user.db" />
+        <include domain="database" path="user.db-wal" />
+        <include domain="file" path="user.db" />
+        <include domain="file" path="user.db-wal" />
+        <include domain="sharedpref" path="FlutterSharedPreferences.xml" />
+        <include domain="file" path="datastore/FlutterSharedPreferences.preferences_pb" />
+    </cloud-backup>
+    <device-transfer>
+        <include domain="database" path="user.db" />
+        <include domain="database" path="user.db-wal" />
+        <include domain="file" path="user.db" />
+        <include domain="file" path="user.db-wal" />
+        <include domain="sharedpref" path="FlutterSharedPreferences.xml" />
+        <include domain="file" path="datastore/FlutterSharedPreferences.preferences_pb" />
+    </device-transfer>
+</data-extraction-rules>

@@ -1,0 +1,62 @@
+{
+  "@@locale": "en",
+  "notifChannelPrayer": "Prayer times",
+  "@notifChannelPrayer": {"description": "Android notification channel name for prayer time reminders (system settings)."},
+  "notifChannelPrayerDescription": "A quiet notice at each prayer time.",
+  "@notifChannelPrayerDescription": {"description": "Android notification channel description for prayer time reminders."},
+  "notifChannelDaily": "Daily reminder",
+  "@notifChannelDaily": {"description": "Android notification channel name for the morning reminder."},
+  "notifChannelDailyDescription": "One reminder in the morning when your cards are ready.",
+  "@notifChannelDailyDescription": {"description": "Android notification channel description for the morning reminder."},
+  "notifChannelSystem": "App messages",
+  "@notifChannelSystem": {"description": "Android notification channel name for app messages (reminders paused soon, missing permissions)."},
+  "notifChannelSystemDescription": "Rare messages about reminders and permissions.",
+  "@notifChannelSystemDescription": {"description": "Android notification channel description for app messages."},
+  "notifPrayerName": "{prayer, select, fajr{Fajr} dhuhr{Dhuhr} asr{Asr} maghrib{Maghrib} isha{Isha} jumuah{Jumu'ah} other{Prayer}}",
+  "@notifPrayerName": {
+    "description": "Prayer name used in prayer notifications. Transliteration as in the prayer screen.",
+    "placeholders": {"prayer": {"type": "String"}}
+  },
+  "notifPrayerTitle": "{prayer} · {time}",
+  "@notifPrayerTitle": {
+    "description": "Title of a prayer notification, e.g. 'Asr · 15:12'. No verses or names of Allah.",
+    "placeholders": {"prayer": {"type": "String"}, "time": {"type": "String"}}
+  },
+  "notifPrayerBody": "It's time for {prayer}.",
+  "@notifPrayerBody": {
+    "description": "Body of a prayer notification. No verses or names of Allah.",
+    "placeholders": {"prayer": {"type": "String"}}
+  },
+  "notifPrivateTitle": "{appName} · {time}",
+  "@notifPrivateTitle": {
+    "description": "Neutral title of a prayer notification in private mode (lock screen), e.g. 'Mursa · 15:12'.",
+    "placeholders": {"appName": {"type": "String"}, "time": {"type": "String"}}
+  },
+  "notifPrivateBody": "Reminder",
+  "@notifPrivateBody": {"description": "Neutral body of a prayer notification in private mode."},
+  "notifMorningTitle": "Good morning",
+  "@notifMorningTitle": {"description": "Title of the morning reminder."},
+  "notifMorningBody": "Today's cards are ready. {minutes, plural, =1{About 1 minute.} other{About {minutes} minutes.}}",
+  "@notifMorningBody": {
+    "description": "Body of the morning reminder.",
+    "placeholders": {"minutes": {"type": "int"}}
+  },
+  "notifMorningEventBody": "Today's cards are ready, with something special for {eventName}.",
+  "@notifMorningEventBody": {
+    "description": "Body of the morning reminder on an event day. Title is the event name.",
+    "placeholders": {"eventName": {"type": "String"}}
+  },
+  "notifMorningPrivateBody": "Your daily reminder",
+  "@notifMorningPrivateBody": {"description": "Neutral body of the morning reminder in private mode. Title is the app name."},
+  "notifOpenAppTitle": "Prayer reminders paused soon",
+  "@notifOpenAppTitle": {"description": "Last planned notification when the app was not opened for 10 days."},
+  "notifOpenAppBody": "Open {appName} to keep your prayer reminders coming.",
+  "@notifOpenAppBody": {
+    "description": "Body of the last planned notification.",
+    "placeholders": {"appName": {"type": "String"}}
+  },
+  "notifOpenAppPrivateBody": "Open the app to keep reminders on",
+  "@notifOpenAppPrivateBody": {"description": "Neutral body of the last planned notification in private mode. Title is the app name."},
+  "notifInexactNote": "Reminders may arrive up to 10 minutes late or more. Allow \"Alarms & reminders\" for exact times.",
+  "@notifInexactNote": {"description": "Info line in Settings and Prayer screen when exact alarms are not allowed (not a notification)."}
+}

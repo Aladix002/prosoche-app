@@ -1,0 +1,14 @@
+{
+  "@@locale": "en",
+  "cardHadithGradeLabel": "{grade, select, sahih{Sahih (authentic)} hasan{Hasan (good)} daif{Da'if (weak)} other{Other}}",
+  "@cardHadithGradeLabel": {
+    "description": "Authenticity grade of a hadith: the technical term and its meaning in brackets. In the Arabic UI the app shows the Arabic original from the source instead.",
+    "placeholders": {"grade": {"type": "String"}}
+  },
+  "cardHadithAgreedUpon": "Agreed upon (Bukhari & Muslim)",
+  "@cardHadithAgreedUpon": {"description": "Hadith reference for 'muttafaq alayh': the hadith is narrated by both al-Bukhari and Muslim. Shown in the card header."},
+  "cardHadithExplanationsFailed": "Couldn't download explanations. Check your connection and try again.",
+  "@cardHadithExplanationsFailed": {"description": "Inline message on a hadith card when downloading the optional hadith explanations pack failed."},
+  "cardHadithExplanationsRetry": "Retry",
+  "@cardHadithExplanationsRetry": {"description": "Button under the failed-download message that downloads the hadith explanations pack again."}
+}

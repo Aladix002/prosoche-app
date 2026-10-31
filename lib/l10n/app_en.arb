@@ -1,0 +1,3743 @@
+{
+  "@@locale": "en",
+  "gatePauseTitle": "A pause before {app}",
+  "@gatePauseTitle": {
+    "description": "Gate header before a blocked app. {app} is the app name, e.g. 'A pause before Instagram'. Never judge the app or the user.",
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "gatePauseTitleGeneric": "A pause before this app",
+  "@gatePauseTitleGeneric": {
+    "description": "Gate header when the app name is unknown."
+  },
+  "gateSubtitle": "{count, plural, one{1 card, then {app} opens.} other{{count} cards, then {app} opens.}}",
+  "@gateSubtitle": {
+    "description": "Gate subtitle: how many cards before the app opens.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "gateSubtitleGeneric": "{count, plural, one{1 card, then the app opens.} other{{count} cards, then the app opens.}}",
+  "@gateSubtitleGeneric": {
+    "description": "Gate subtitle when the app name is unknown.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "gateProgress": "{done} of {total}",
+  "@gateProgress": {
+    "description": "Screen reader progress of the gate cards, e.g. '1 of 3'.",
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "gateNext": "Next",
+  "@gateNext": {
+    "description": "Button that moves to the next card in the gate."
+  },
+  "gateDwellLeft": "{seconds} s",
+  "@gateDwellLeft": {
+    "description": "Short countdown under the current gate card, e.g. '3 s'.",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "gateDwellA11y": "{seconds, plural, one{Next card in 1 second} other{Next card in {seconds} seconds}}",
+  "@gateDwellA11y": {
+    "description": "Screen reader text of the card countdown.",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "gateBack": "Go back",
+  "@gateBack": {
+    "description": "Closes the gate and goes to the home screen. The blocked app does not open. No guilt."
+  },
+  "gateEmergency": "Emergency",
+  "@gateEmergency": {
+    "description": "Hold-to-confirm button that opens the app without cards after a 10 second countdown."
+  },
+  "gateEmergencyTitle": "Opening {app}",
+  "@gateEmergencyTitle": {
+    "description": "Title of the emergency countdown.",
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "gateEmergencyTitleGeneric": "Opening the app",
+  "@gateEmergencyTitleGeneric": {
+    "description": "Title of the emergency countdown when the app name is unknown."
+  },
+  "gateEmergencyBody": "Opening in {seconds, plural, one{1 second} other{{seconds} seconds}}.",
+  "@gateEmergencyBody": {
+    "description": "Emergency countdown text.",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "gateEmergencyCancel": "Cancel",
+  "@gateEmergencyCancel": {
+    "description": "Cancels the emergency countdown; nothing is unlocked."
+  },
+  "gateEmergencyA11yDialog": "Open {app} without cards? It opens in 10 seconds for {minutes} minutes.",
+  "@gateEmergencyA11yDialog": {
+    "description": "Dialog shown instead of hold-to-confirm when a screen reader is on.",
+    "placeholders": {
+      "app": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "gateEmergencyA11yDialogGeneric": "Open the app without cards? It opens in 10 seconds for {minutes} minutes.",
+  "@gateEmergencyA11yDialogGeneric": {
+    "description": "Screen reader emergency dialog when the app name is unknown.",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "gateUnlockedTitle": "{minutes, plural, one{{app} is open for 1 minute} other{{app} is open for {minutes} minutes}}",
+  "@gateUnlockedTitle": {
+    "description": "Shown after the required cards.",
+    "placeholders": {
+      "app": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "gateUnlockedTitleGeneric": "{minutes, plural, one{The app is open for 1 minute} other{The app is open for {minutes} minutes}}",
+  "@gateUnlockedTitleGeneric": {
+    "description": "Unlocked title when the app name is unknown.",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "gateUnlockedBody": "Use them well.",
+  "@gateUnlockedBody": {
+    "description": "Short line under the unlocked title."
+  },
+  "gateSetFinished": "You finished today's set.",
+  "@gateSetFinished": {
+    "description": "Extra line on the unlocked screen when the gate cards completed the daily set."
+  },
+  "gateContinueTo": "Continue to {app}",
+  "@gateContinueTo": {
+    "description": "Opens the blocked app (after cards, or after an error).",
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "gateContinue": "Continue",
+  "@gateContinue": {
+    "description": "Opens the blocked app when its name is unknown."
+  },
+  "gateUnlockedClose": "Close {app} instead",
+  "@gateUnlockedClose": {
+    "description": "Goes to the home screen instead of the app. Equal option, no guilt.",
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "gateUnlockedCloseGeneric": "Go to home screen",
+  "@gateUnlockedCloseGeneric": {
+    "description": "Goes to the home screen when the app name is unknown."
+  },
+  "gateKeepReading": "Keep reading",
+  "@gateKeepReading": {
+    "description": "Continues with more cards after the app is unlocked."
+  },
+  "gateFreeReadingNote": "Today's cards are done. Here are a few verses from where you left off.",
+  "@gateFreeReadingNote": {
+    "description": "Shown above free reading verses in the gate."
+  },
+  "gatePrayerTitle": "It's time for {prayer}",
+  "@gatePrayerTitle": {
+    "description": "Prayer reminder in the gate. {prayer} is the prayer name, e.g. 'Asr'.",
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
+  "gatePrayerBody": "{app} will still be here after you pray.",
+  "@gatePrayerBody": {
+    "description": "Prayer reminder text.",
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "gatePrayerBodyGeneric": "The app will still be here after you pray.",
+  "@gatePrayerBodyGeneric": {
+    "description": "Prayer reminder text when the app name is unknown."
+  },
+  "gatePrayerPray": "I'll pray first",
+  "@gatePrayerPray": {
+    "description": "Goes to the home screen."
+  },
+  "gatePrayerContinue": "Show cards anyway",
+  "@gatePrayerContinue": {
+    "description": "Continues to the normal gate with cards."
+  },
+  "gateErrorTitle": "We couldn't load your cards",
+  "@gateErrorTitle": {
+    "description": "Gate error state (database or timeout)."
+  },
+  "gateErrorBody": "This is our mistake, not yours. You can continue.",
+  "@gateErrorBody": {
+    "description": "Gate error body."
+  },
+  "gateLoadingSlow": "Still loading…",
+  "@gateLoadingSlow": {
+    "description": "Shown when the gate takes long to load."
+  },
+  "gateEmpty": "Nothing to show right now. {app} is open.",
+  "@gateEmpty": {
+    "description": "Gate empty state; the app will open.",
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "gateEmptyGeneric": "Nothing to show right now. The app is open.",
+  "@gateEmptyGeneric": {
+    "description": "Gate empty state when the app name is unknown."
+  },
+  "blkAppsTitle": "Which apps should wait?",
+  "@blkAppsTitle": {
+    "description": "O5 title: choose apps for the gate."
+  },
+  "blkAppsBody": "When you open an app you choose, Mursa shows you a few cards first. After that, the app opens for a while. There's always an emergency way through, and you can turn it off anytime.",
+  "@blkAppsBody": {
+    "description": "O5 body: explains the gate before choosing apps."
+  },
+  "blkAppsSearch": "Search apps",
+  "@blkAppsSearch": {
+    "description": "Hint of the app search field."
+  },
+  "blkAppsSuggested": "Often chosen",
+  "@blkAppsSuggested": {
+    "description": "Section header: social apps that are installed."
+  },
+  "blkAppsAll": "All apps",
+  "@blkAppsAll": {
+    "description": "Section header: all other launchable apps."
+  },
+  "blkAppsEmpty": "No apps found",
+  "@blkAppsEmpty": {
+    "description": "Empty app list or no search result."
+  },
+  "blkAppsError": "Couldn't load your apps.",
+  "@blkAppsError": {
+    "description": "Error loading the list of installed apps."
+  },
+  "blkAppsCta": "{count, plural, =0{Continue without the gate} one{Continue with 1 app} other{Continue with {count} apps}}",
+  "@blkAppsCta": {
+    "description": "O5 primary button.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "blkAddCta": "{count, plural, =0{Add apps} one{Add 1 app} other{Add {count} apps}}",
+  "@blkAddCta": {
+    "description": "Primary button of the 'Add apps' picker in settings.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "blkCardsLabel": "Cards to unlock",
+  "@blkCardsLabel": {
+    "description": "Label of the number of cards before an app opens."
+  },
+  "blkMinutesLabel": "Unlock for",
+  "@blkMinutesLabel": {
+    "description": "Label of how long the app stays open after the cards."
+  },
+  "blkMinutes": "{minutes} min",
+  "@blkMinutes": {
+    "description": "Duration in minutes.",
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "blkDecrease": "Decrease {what}",
+  "@blkDecrease": {
+    "description": "Screen reader label of the minus button.",
+    "placeholders": {
+      "what": {
+        "type": "String"
+      }
+    }
+  },
+  "blkIncrease": "Increase {what}",
+  "@blkIncrease": {
+    "description": "Screen reader label of the plus button.",
+    "placeholders": {
+      "what": {
+        "type": "String"
+      }
+    }
+  },
+  "blkPermTitle": "Permissions for the gate",
+  "@blkPermTitle": {
+    "description": "O6 title and title of the permissions screen in settings."
+  },
+  "blkPermIntro": "Mursa checks which app is open, only to show the gate. This never leaves your phone.",
+  "@blkPermIntro": {
+    "description": "O6 intro, part of the prominent disclosure."
+  },
+  "permUsageTitle": "Usage access",
+  "@permUsageTitle": {
+    "description": "Name of the Android usage access permission."
+  },
+  "permUsageBody": "Mursa uses Usage Access to notice when you open one of the apps you chose for the gate, so it can show your cards first.",
+  "@permUsageBody": {
+    "description": "Prominent disclosure for usage access (Google Play)."
+  },
+  "permUsageDoes": "What Mursa does: checks which app is on screen, only while your screen is on.",
+  "@permUsageDoes": {
+    "description": "Prominent disclosure: what is done with usage access."
+  },
+  "permUsageNever": "What Mursa never does: it doesn't store or send your app history, time spent, or anything you do inside other apps.",
+  "@permUsageNever": {
+    "description": "Prominent disclosure: what is never done."
+  },
+  "permUsageSteps": "On the next screen, find Mursa and turn on \"Permit usage access\". Then come back.",
+  "@permUsageSteps": {
+    "description": "Steps in system settings for usage access."
+  },
+  "permOverlayTitle": "Display over other apps",
+  "@permOverlayTitle": {
+    "description": "Name of the Android overlay permission."
+  },
+  "permOverlayBody": "This lets Mursa open its gate screen on top of the app you just opened.",
+  "@permOverlayBody": {
+    "description": "Prominent disclosure for the overlay permission."
+  },
+  "permOverlayNever": "What Mursa never does: read, record or change what's on your screen.",
+  "@permOverlayNever": {
+    "description": "Prominent disclosure: what is never done with overlay."
+  },
+  "permNotifTitle": "Notifications",
+  "@permNotifTitle": {
+    "description": "Name of the notification permission."
+  },
+  "permNotifBody": "While the gate is on, Android shows a small, silent notification. It means Mursa is ready to pause the apps you chose.",
+  "@permNotifBody": {
+    "description": "Why notifications matter for the gate (foreground service)."
+  },
+  "permLocal": "This stays on your phone and is not shared with anyone.",
+  "@permLocal": {
+    "description": "Prominent disclosure: data is not shared."
+  },
+  "permAllow": "Allow in settings",
+  "@permAllow": {
+    "description": "Button that opens the system settings for a permission."
+  },
+  "permGranted": "On",
+  "@permGranted": {
+    "description": "Permission state: granted."
+  },
+  "permNotYet": "Not allowed yet",
+  "@permNotYet": {
+    "description": "Permission state after coming back without granting it."
+  },
+  "permStateLabel": "{name}: {state, select, true{on} other{off}}",
+  "@permStateLabel": {
+    "description": "Screen reader label of a permission row.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "blkTurnOn": "Turn on the gate",
+  "@blkTurnOn": {
+    "description": "O6 primary button; enabled when usage access and overlay are on."
+  },
+  "blkTurnOnFailed": "The gate couldn't start. Please try again.",
+  "@blkTurnOnFailed": {
+    "description": "Error when the gate service couldn't start."
+  },
+  "batteryTitle": "Battery",
+  "@batteryTitle": {
+    "description": "Battery row in the permissions list."
+  },
+  "batteryVendorTitle": "Battery ({manufacturer})",
+  "@batteryVendorTitle": {
+    "description": "Battery row with the phone maker.",
+    "placeholders": {
+      "manufacturer": {
+        "type": "String"
+      }
+    }
+  },
+  "batteryGuide": "Guide",
+  "@batteryGuide": {
+    "description": "Button that opens the battery guide."
+  },
+  "batteryBodyGeneric": "Some phones stop apps running in the background to save battery. If the gate stops appearing, allow Mursa to run in the background.",
+  "@batteryBodyGeneric": {
+    "description": "Generic battery guide."
+  },
+  "batteryBodyVendor": "{manufacturer} phones often stop background apps. These steps keep the gate working:",
+  "@batteryBodyVendor": {
+    "description": "Intro of the vendor battery guide.",
+    "placeholders": {
+      "manufacturer": {
+        "type": "String"
+      }
+    }
+  },
+  "batteryStepsSamsung": "1. Open battery settings below.\n2. Find Mursa and choose \"Unrestricted\".\n3. In Settings > Battery > Background usage limits, make sure Mursa is not in \"Sleeping apps\".",
+  "@batteryStepsSamsung": {
+    "description": "Battery guide steps for Samsung (One UI). Check the paths on current devices."
+  },
+  "batteryStepsXiaomi": "1. Open battery settings below.\n2. Find Mursa and choose \"No restrictions\".\n3. In the app info of Mursa, turn on \"Autostart\".",
+  "@batteryStepsXiaomi": {
+    "description": "Battery guide steps for Xiaomi, Redmi, POCO (HyperOS/MIUI). Check the paths on current devices."
+  },
+  "batteryStepsHuawei": "1. Open battery settings below.\n2. Find Mursa in App launch and turn off \"Manage automatically\".\n3. Allow auto-launch and running in background.",
+  "@batteryStepsHuawei": {
+    "description": "Battery guide steps for Huawei and Honor. Check the paths on current devices."
+  },
+  "batteryStepsOppo": "1. Open battery settings below.\n2. Find Mursa and allow background activity.\n3. In the app info of Mursa, turn on \"Allow auto launch\".",
+  "@batteryStepsOppo": {
+    "description": "Battery guide steps for Oppo, Realme, OnePlus (ColorOS). Check the paths on current devices."
+  },
+  "batteryOpen": "Open battery settings",
+  "@batteryOpen": {
+    "description": "Button that opens the battery optimization list."
+  },
+  "batteryDone": "I've done this",
+  "@batteryDone": {
+    "description": "Checkbox: user confirms the battery steps (can't be verified)."
+  },
+  "batteryNote": "Mursa uses very little battery.",
+  "@batteryNote": {
+    "description": "Short reassurance under the battery guide."
+  },
+  "blkTitle": "The gate",
+  "@blkTitle": {
+    "description": "Title of the gate settings screen."
+  },
+  "blkSwitch": "Pause before chosen apps",
+  "@blkSwitch": {
+    "description": "Main switch of the gate."
+  },
+  "blkStatusRunning": "Running",
+  "@blkStatusRunning": {
+    "description": "Gate status: service running."
+  },
+  "blkStatusOff": "Off",
+  "@blkStatusOff": {
+    "description": "Gate status: turned off."
+  },
+  "blkStatusNoUsage": "Paused - usage access missing",
+  "@blkStatusNoUsage": {
+    "description": "Gate status: usage access was removed."
+  },
+  "blkStatusNoOverlay": "Paused - \"Display over other apps\" missing",
+  "@blkStatusNoOverlay": {
+    "description": "Gate status: overlay permission was removed."
+  },
+  "blkStatusStopped": "Paused - Android stopped the service",
+  "@blkStatusStopped": {
+    "description": "Gate status: the background service is not running."
+  },
+  "blkFix": "Fix",
+  "@blkFix": {
+    "description": "Button that fixes the paused gate."
+  },
+  "blkPermissions": "Permissions",
+  "@blkPermissions": {
+    "description": "Row that opens the permissions screen."
+  },
+  "blkPermissionsMissing": "Some are off",
+  "@blkPermissionsMissing": {
+    "description": "Value of the permissions row when something is missing."
+  },
+  "blkPermissionsOk": "All on",
+  "@blkPermissionsOk": {
+    "description": "Value of the permissions row when all needed permissions are on."
+  },
+  "blkApps": "Apps",
+  "@blkApps": {
+    "description": "Section header: blocked apps."
+  },
+  "blkAppsNone": "No apps yet. Add the apps that should wait.",
+  "@blkAppsNone": {
+    "description": "Empty list of blocked apps."
+  },
+  "blkAddApps": "Add apps",
+  "@blkAddApps": {
+    "description": "Button that opens the app picker."
+  },
+  "blkAppSummary": "{cards, plural, one{1 card} other{{cards} cards}} · {minutes} min{prayer, select, true{ · prayer reminder} other{}}",
+  "@blkAppSummary": {
+    "description": "Summary of one blocked app.",
+    "placeholders": {
+      "cards": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "String"
+      },
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
+  "blkPrayerSection": "Prayer reminder",
+  "@blkPrayerSection": {
+    "description": "Section header: prayer reminder in the gate."
+  },
+  "blkPrayerHelp": "For apps with prayer reminder on, the gate first reminds you of the prayer for this many minutes after its time begins. You can always continue.",
+  "@blkPrayerHelp": {
+    "description": "Explains the prayer reminder (not a lock)."
+  },
+  "blkPrayerMinutes": "Remind for",
+  "@blkPrayerMinutes": {
+    "description": "Label of the prayer reminder window."
+  },
+  "blkStatsSection": "Last 7 days",
+  "@blkStatsSection": {
+    "description": "Section header: local gate statistics."
+  },
+  "blkStatsHelp": "Only on this phone.",
+  "@blkStatsHelp": {
+    "description": "Statistics are local and never sent."
+  },
+  "blkStatsGates": "Pauses",
+  "@blkStatsGates": {
+    "description": "Number of times the gate was shown."
+  },
+  "blkStatsCards": "Opened after cards",
+  "@blkStatsCards": {
+    "description": "Unlocks after reading the cards."
+  },
+  "blkStatsEmergency": "Emergency",
+  "@blkStatsEmergency": {
+    "description": "Emergency unlocks."
+  },
+  "blkStatsError": "Opened after an error",
+  "@blkStatsError": {
+    "description": "Unlocks because the gate failed."
+  },
+  "blkStatsEmpty": "No pauses yet.",
+  "@blkStatsEmpty": {
+    "description": "No gate statistics yet."
+  },
+  "blkStatsPerApp": "{count, plural, one{1 unlock} other{{count} unlocks}}",
+  "@blkStatsPerApp": {
+    "description": "Unlocks of one app in the last 7 days.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "blkLoadError": "Couldn't load the gate settings.",
+  "@blkLoadError": {
+    "description": "Error state of the gate settings."
+  },
+  "blkAppPrayerLock": "Prayer reminder",
+  "@blkAppPrayerLock": {
+    "description": "Switch: remind of the prayer before this app."
+  },
+  "blkAppPrayerLockHelp": "Around prayer times, the gate asks if you'd like to pray first.",
+  "@blkAppPrayerLockHelp": {
+    "description": "Explains the per-app prayer reminder."
+  },
+  "blkAppRemove": "Remove from the gate",
+  "@blkAppRemove": {
+    "description": "Button: remove the app from the gate."
+  },
+  "blkAppRemoveTitle": "Remove {app}?",
+  "@blkAppRemoveTitle": {
+    "description": "Confirm dialog title.",
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "blkAppRemoveConfirm": "Remove",
+  "@blkAppRemoveConfirm": {
+    "description": "Confirm remove."
+  },
+  "blkAppNotFound": "This app is no longer in the gate.",
+  "@blkAppNotFound": {
+    "description": "Detail of an app that was removed."
+  },
+  "cardTranslationNotYetAvailable": "Translation not yet available in your language",
+  "@cardTranslationNotYetAvailable": {
+    "description": "Small note under the Arabic original of a card (hadith, dua, name of Allah, verse) when there is no translation in the user's language yet. Religious text is never shown in English instead."
+  },
+  "cardTranslatorNoteTitle": "Translator's note",
+  "@cardTranslatorNoteTitle": {
+    "description": "Title of the sheet opened by tapping a footnote marker like [2] in a verse translation."
+  },
+  "cardTranslatorNoteA11y": "Translator's note {number}",
+  "@cardTranslatorNoteA11y": {
+    "description": "Screen reader label of a tappable footnote marker in a verse translation.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "cardHadithDownloadExplanations": "Download explanations",
+  "@cardHadithDownloadExplanations": {
+    "description": "Button on a hadith card when the optional hadith explanations pack is not downloaded yet."
+  },
+  "cardHadithGradeLabel": "{grade, select, sahih{Sahih (authentic)} hasan{Hasan (good)} daif{Da'if (weak)} other{Other}}",
+  "@cardHadithGradeLabel": {
+    "description": "Authenticity grade of a hadith: the technical term and its meaning in brackets. In the Arabic UI the app shows the Arabic original from the source instead.",
+    "placeholders": {
+      "grade": {
+        "type": "String"
+      }
+    }
+  },
+  "cardHadithAgreedUpon": "Agreed upon (Bukhari & Muslim)",
+  "@cardHadithAgreedUpon": {
+    "description": "Hadith reference for 'muttafaq alayh': the hadith is narrated by both al-Bukhari and Muslim. Shown in the card header."
+  },
+  "cardHadithExplanationsFailed": "Couldn't download explanations. Check your connection and try again.",
+  "@cardHadithExplanationsFailed": {
+    "description": "Inline message on a hadith card when downloading the optional hadith explanations pack failed."
+  },
+  "cardHadithExplanationsRetry": "Retry",
+  "@cardHadithExplanationsRetry": {
+    "description": "Button under the failed-download message that downloads the hadith explanations pack again."
+  },
+  "questGenericReadVerses": "{count, plural, =1{Read 1 verse} other{Read {count} verses}}",
+  "@questGenericReadVerses": {
+    "description": "Generic READ quest shown when no quest text exists in the user's language. Neutral UI text, no religious content.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "questGenericLearnWords": "{count, plural, =1{Learn 1 new word} other{Learn {count} new words}}",
+  "@questGenericLearnWords": {
+    "description": "Generic LEARN quest (word cards enabled) shown when no quest text exists in the user's language.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "questGenericLearnCards": "{count, plural, =1{Read 1 hadith or dua card} other{Read {count} hadith or dua cards}}",
+  "@questGenericLearnCards": {
+    "description": "Generic LEARN quest (word cards disabled) shown when no quest text exists in the user's language.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "shellSettings": "Settings",
+  "@shellSettings": {
+    "description": "Tooltip and screen reader label of the gear icon that opens Settings (app bar of Today and Journey)."
+  },
+  "onbStepProgress": "Step {current} of {total}",
+  "@onbStepProgress": {
+    "description": "Onboarding progress at the top of each step, e.g. 'Step 2 of 5'. Numbers come formatted in the digits of the language.",
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "onbBack": "Back",
+  "@onbBack": {
+    "description": "Onboarding: go to the previous step."
+  },
+  "onbSkip": "Skip",
+  "@onbSkip": {
+    "description": "Onboarding: skip the current step."
+  },
+  "onbContinue": "Continue",
+  "@onbContinue": {
+    "description": "Onboarding: save the step and go to the next one."
+  },
+  "onbWelcomeBody": "A few quiet minutes with the Quran each day. Then you're done.",
+  "@onbWelcomeBody": {
+    "description": "Welcome text in the header of the first onboarding step (language)."
+  },
+  "onbWelcomeNote": "No account. No ads. Your data stays on this phone.",
+  "@onbWelcomeNote": {
+    "description": "Short privacy note under the welcome text."
+  },
+  "onbLanguageTitle": "Choose your language",
+  "@onbLanguageTitle": {
+    "description": "Title of the language step."
+  },
+  "onbLanguageBody": "You can change this later in Settings.",
+  "@onbLanguageBody": {
+    "description": "Body of the language step."
+  },
+  "onbLanguageName": "{lang, select, en{English} ar{العربية} id{Bahasa Indonesia} ur{اردو} bn{বাংলা} tr{Türkçe} other{{lang}}}",
+  "@onbLanguageName": {
+    "description": "Name of a language in that language (endonym). Do not translate: every language shows the same names.",
+    "placeholders": {
+      "lang": {
+        "type": "String"
+      }
+    }
+  },
+  "onbTranslationLabel": "Quran translation",
+  "@onbTranslationLabel": {
+    "description": "Label of the Quran translation picker on the language step."
+  },
+  "onbTranslationNone": "No translation is available for this language yet.",
+  "@onbTranslationNone": {
+    "description": "Shown instead of the translation picker when the content has no translation for the chosen language."
+  },
+  "onbFatalTitle": "Something went wrong",
+  "@onbFatalTitle": {
+    "description": "Title of the fatal state when the bundled content cannot be opened."
+  },
+  "onbFatalBody": "Please reinstall the app.",
+  "@onbFatalBody": {
+    "description": "Body of the fatal state when the bundled content cannot be opened."
+  },
+  "onbNiyyahTitle": "Why are you here?",
+  "@onbNiyyahTitle": {
+    "description": "Title of the intention step."
+  },
+  "onbNiyyahBody": "Choose what matters to you. You can pick more than one. It stays on this phone.",
+  "@onbNiyyahBody": {
+    "description": "Body of the intention step."
+  },
+  "onbNiyyahOption": "{option, select, khatm{Read the Quran regularly} arabic{Understand Quranic Arabic} prayer{Pray on time} less_social{Spend less time scrolling} other{Write my own}}",
+  "@onbNiyyahOption": {
+    "description": "Options of the intention step. 'other' opens a text field for the user's own words.",
+    "placeholders": {
+      "option": {
+        "type": "String"
+      }
+    }
+  },
+  "onbNiyyahOwnHint": "In your own words",
+  "@onbNiyyahOwnHint": {
+    "description": "Hint of the text field for the user's own intention (max 140 characters)."
+  },
+  "onbLocationTitle": "Prayer times for where you are",
+  "@onbLocationTitle": {
+    "description": "Title of the location step."
+  },
+  "onbLocationBody": "Prayer times are calculated on your phone. Your location is rounded to about 1 km and never leaves your device.",
+  "@onbLocationBody": {
+    "description": "Body of the location step (prominent disclosure before the system location dialog)."
+  },
+  "onbLocationGps": "Use my location",
+  "@onbLocationGps": {
+    "description": "Button: get the location once from the phone."
+  },
+  "onbLocationCity": "Choose a city instead",
+  "@onbLocationCity": {
+    "description": "Button: open the offline city search."
+  },
+  "onbLocationFinding": "Finding your location…",
+  "@onbLocationFinding": {
+    "description": "Shown while the phone is getting the location (max 10 s)."
+  },
+  "onbLocationDenied": "Location is off. Choose your city instead.",
+  "@onbLocationDenied": {
+    "description": "Shown when the location permission is denied or location is turned off."
+  },
+  "onbLocationFailed": "Couldn't get your location. Choose your city instead.",
+  "@onbLocationFailed": {
+    "description": "Shown when getting the location fails or times out after 10 s."
+  },
+  "onbLocationNoCity": "No city found nearby. Choose your city instead.",
+  "@onbLocationNoCity": {
+    "description": "Shown when the location is known but no city from the offline list is near."
+  },
+  "onbCitySearchHint": "Search for a city",
+  "@onbCitySearchHint": {
+    "description": "Hint of the city search field."
+  },
+  "onbCitySearchEmpty": "No city found. Try a nearby larger city.",
+  "@onbCitySearchEmpty": {
+    "description": "City search without results."
+  },
+  "onbCitySearchError": "Cities could not be loaded.",
+  "@onbCitySearchError": {
+    "description": "City search failed to read the offline city list."
+  },
+  "onbMethodBody": "We picked the method most often used in {country}. If your local mosque uses another, choose it here.",
+  "@onbMethodBody": {
+    "description": "Explains the preselected calculation method. country = country name, e.g. 'Slovakia'.",
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "onbMethodLabel": "Calculation method",
+  "@onbMethodLabel": {
+    "description": "Label of the prayer time calculation method picker."
+  },
+  "onbMethodName": "{method, select, muslimWorldLeague{Muslim World League} northAmerica{ISNA (North America)} egyptian{Egyptian General Authority} ummAlQura{Umm al-Qura, Makkah} karachi{University of Islamic Sciences, Karachi} turkiye{Diyanet, Türkiye} indonesian{Kemenag, Indonesia} singapore{MUIS, Singapore} dubai{Dubai} qatar{Qatar} kuwait{Kuwait} gulfRegion{Gulf region} algerian{Algeria} morocco{Morocco} tunisia{Tunisia} jordan{Jordan} france{UOIF, France} portugal{Portugal} russia{Spiritual Administration, Russia} tehran{Institute of Geophysics, Tehran} jafari{Shia Ithna Ashari (Jafari)} moonsightingCommittee{Moonsighting Committee} jakim{JAKIM, Malaysia} other{{method}}}",
+  "@onbMethodName": {
+    "description": "Names of prayer time calculation methods (official bodies, keep proper names).",
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "onbAsrLabel": "Asr time",
+  "@onbAsrLabel": {
+    "description": "Label of the Asr calculation picker."
+  },
+  "onbAsrShafi": "Standard (Shafi'i, Maliki, Hanbali)",
+  "@onbAsrShafi": {
+    "description": "Asr calculation option: standard shadow length."
+  },
+  "onbAsrHanafi": "Hanafi",
+  "@onbAsrHanafi": {
+    "description": "Asr calculation option: Hanafi."
+  },
+  "onbHighLatNote": "In summer, Isha and Fajr can be hard to calculate this far north. We use: Middle of the night. You can change this later in Settings.",
+  "@onbHighLatNote": {
+    "description": "Info box on the location step for latitudes above 48 degrees."
+  },
+  "onbTodayTimes": "Today",
+  "@onbTodayTimes": {
+    "description": "Heading of the preview of today's prayer times on the location step."
+  },
+  "onbNotifTitle": "Gentle reminders",
+  "@onbNotifTitle": {
+    "description": "Title of the notifications step."
+  },
+  "onbNotifBody": "Get a quiet notice at each prayer time and one in the morning when your cards are ready. Nothing else.",
+  "@onbNotifBody": {
+    "description": "Body of the notifications step (shown before the system dialog)."
+  },
+  "onbNotifPrayers": "Prayer times (5 a day)",
+  "@onbNotifPrayers": {
+    "description": "Switch: reminders at each prayer time."
+  },
+  "onbNotifPrayersNoLocation": "Set your location first",
+  "@onbNotifPrayersNoLocation": {
+    "description": "Subtitle of the disabled prayer reminder switch when the location step was skipped."
+  },
+  "onbNotifMorning": "Morning reminder at {time}",
+  "@onbNotifMorning": {
+    "description": "Switch: one reminder in the morning. time = local time, e.g. '07:30'.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "onbNotifPrivate": "Private text on lock screen",
+  "@onbNotifPrivate": {
+    "description": "Switch: notifications show neutral text on the lock screen."
+  },
+  "onbNotifAllow": "Allow notifications",
+  "@onbNotifAllow": {
+    "description": "Button: asks for the notification permission."
+  },
+  "onbNotifOn": "Notifications are on",
+  "@onbNotifOn": {
+    "description": "Shown instead of the allow button when notifications are already allowed."
+  },
+  "onbNotifDenied": "Notifications are off. You can turn them on anytime in Settings.",
+  "@onbNotifDenied": {
+    "description": "Shown after the notification permission was denied."
+  },
+  "onbOpenSettings": "Open settings",
+  "@onbOpenSettings": {
+    "description": "Button: opens the system settings of the app."
+  },
+  "onbExactTitle": "On-time prayer reminders",
+  "@onbExactTitle": {
+    "description": "Title of the exact alarm section on the notifications step."
+  },
+  "onbExactBody": "To remind you at the exact minute, Android needs \"Alarms & reminders\" to be allowed. Without it, reminders may arrive up to 10 minutes late or more.",
+  "@onbExactBody": {
+    "description": "Explains the exact alarm permission (Android 12+)."
+  },
+  "onbExactCta": "Allow in settings",
+  "@onbExactCta": {
+    "description": "Button: opens the system 'Alarms & reminders' setting."
+  },
+  "onbPrivacyTitle": "Your data stays here",
+  "@onbPrivacyTitle": {
+    "description": "Title of the privacy step (last step)."
+  },
+  "onbPrivacyPoint1": "No account. No ads.",
+  "@onbPrivacyPoint1": {
+    "description": "Privacy step, first point."
+  },
+  "onbPrivacyPoint2": "Prayers, reading and progress never leave this phone.",
+  "@onbPrivacyPoint2": {
+    "description": "Privacy step, second point."
+  },
+  "onbAgeConfirm": "I am 16 or older",
+  "@onbAgeConfirm": {
+    "description": "Checkbox: sharing choices are available only after confirming the age."
+  },
+  "onbAgeNote": "Sharing is available only if you are 16 or older.",
+  "@onbAgeNote": {
+    "description": "Shown while the age is not confirmed."
+  },
+  "onbAnalyticsTitle": "Help improve the app?",
+  "@onbAnalyticsTitle": {
+    "description": "Title of the anonymous usage choice."
+  },
+  "onbAnalyticsBody": "Share anonymous usage, like which screens are used. Never your prayers, your reading, your location, or which apps you use.",
+  "@onbAnalyticsBody": {
+    "description": "Explains the anonymous usage choice."
+  },
+  "onbAnalyticsYes": "Share",
+  "@onbAnalyticsYes": {
+    "description": "Choice: share anonymous usage."
+  },
+  "onbAnalyticsNo": "Don't share",
+  "@onbAnalyticsNo": {
+    "description": "Choice: do not share anonymous usage (equal to 'Share')."
+  },
+  "onbCrashTitle": "Send crash reports?",
+  "@onbCrashTitle": {
+    "description": "Title of the crash report choice."
+  },
+  "onbCrashBody": "If the app crashes, send a technical report without your content.",
+  "@onbCrashBody": {
+    "description": "Explains the crash report choice."
+  },
+  "onbCrashYes": "Send",
+  "@onbCrashYes": {
+    "description": "Choice: send crash reports."
+  },
+  "onbCrashNo": "Don't send",
+  "@onbCrashNo": {
+    "description": "Choice: do not send crash reports (equal to 'Send')."
+  },
+  "onbWhatWeCollect": "What we collect",
+  "@onbWhatWeCollect": {
+    "description": "Button: opens a sheet with the list of collected anonymous events."
+  },
+  "onbWhatWeCollectBody": "Only if you choose to share: anonymous events such as \"onboarding finished\" or \"daily cards completed\", the app version and the language. Never what you read or pray, your location, or which apps you use.",
+  "@onbWhatWeCollectBody": {
+    "description": "Content of the 'What we collect' sheet."
+  },
+  "onbPrivacyNote": "You can change this anytime in Settings > Privacy.",
+  "@onbPrivacyNote": {
+    "description": "Note under the sharing choices."
+  },
+  "onbFinish": "Finish",
+  "@onbFinish": {
+    "description": "Button on the last onboarding step: finish and open Today."
+  },
+  "todaySettings": "Settings",
+  "@todaySettings": {
+    "description": "Tooltip of the gear button on Today that opens Settings."
+  },
+  "todayCalendarHint": "Open the calendar",
+  "@todayCalendarHint": {
+    "description": "Screen reader hint of the Hijri date on Today."
+  },
+  "todayHijriDate": "{day} {month} {year}",
+  "@todayHijriDate": {
+    "description": "Hijri date on Today and on the intro card, e.g. '17 Jumada al-Ula 1448'. Digits are already localized.",
+    "placeholders": {
+      "day": {
+        "type": "String"
+      },
+      "month": {
+        "type": "String"
+      },
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "todayHijriMonth": "{month, select, m1{Muharram} m2{Safar} m3{Rabi al-Awwal} m4{Rabi al-Thani} m5{Jumada al-Ula} m6{Jumada al-Akhirah} m7{Rajab} m8{Shaban} m9{Ramadan} m10{Shawwal} m11{Dhul Qadah} m12{Dhul Hijjah} other{-}}",
+  "@todayHijriMonth": {
+    "description": "Name of the Hijri month (calendar name, transliterated). The value is m1..m12.",
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
+  "todayNextPrayer": "{prayer} in {duration}",
+  "@todayNextPrayer": {
+    "description": "Next prayer chip on Today, e.g. 'Asr in 1 h 12 min'.",
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      },
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "todayPrayerNow": "{prayer} now",
+  "@todayPrayerNow": {
+    "description": "Next prayer chip when the prayer time is now.",
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
+  "todayDurationHoursMinutes": "{hours} h {minutes} min",
+  "@todayDurationHoursMinutes": {
+    "description": "Countdown with hours and minutes.",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "todayDurationMinutes": "{minutes} min",
+  "@todayDurationMinutes": {
+    "description": "Countdown with minutes only.",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "todaySetLocation": "Set your location to see prayer times",
+  "@todaySetLocation": {
+    "description": "Prayer chip on Today when no location is set."
+  },
+  "todayQuestsTitle": "Today's intentions",
+  "@todayQuestsTitle": {
+    "description": "Section title of the daily quests on Today."
+  },
+  "todayQuestSlotRead": "Read",
+  "@todayQuestSlotRead": {
+    "description": "Fallback title of the READ quest when no text is available."
+  },
+  "todayQuestSlotLearn": "Learn",
+  "@todayQuestSlotLearn": {
+    "description": "Fallback title of the LEARN quest when no text is available."
+  },
+  "todayQuestSlotAct": "Today's deed",
+  "@todayQuestSlotAct": {
+    "description": "Fallback title of the ACT quest when no text is available."
+  },
+  "todayQuestMarked": "Marked as done.",
+  "@todayQuestMarked": {
+    "description": "Snackbar after the user marks the ACT quest as done."
+  },
+  "todayQuestSkip": "Skip for today",
+  "@todayQuestSkip": {
+    "description": "Action in the ACT quest menu that skips it for today."
+  },
+  "todayCtaBegin": "Begin today's cards",
+  "@todayCtaBegin": {
+    "description": "Today call to action before the daily set is started."
+  },
+  "todayCtaBeginCount": "{count, plural, one{1 card} other{{count} cards}}",
+  "@todayCtaBeginCount": {
+    "description": "Number of cards under the begin call to action.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "todayCtaContinue": "Continue · {done} of {total}",
+  "@todayCtaContinue": {
+    "description": "Today call to action when the daily set is in progress.",
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "todayCtaComplete": "Today's cards are complete",
+  "@todayCtaComplete": {
+    "description": "Shown on Today after the daily set is finished."
+  },
+  "todayCtaReadQuran": "Read the Quran",
+  "@todayCtaReadQuran": {
+    "description": "Button on Today after the set is finished; opens free reading."
+  },
+  "todayStreak": "{count, plural, one{1-day streak} other{{count}-day streak}}",
+  "@todayStreak": {
+    "description": "Private streak of completed days.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "todayGraceDays": "{count, plural, =0{no grace days left} one{1 grace day} other{{count} grace days}}",
+  "@todayGraceDays": {
+    "description": "Remaining grace days next to the streak.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "todayNiyyah": "“{text}”",
+  "@todayNiyyah": {
+    "description": "The user's own intention shown in quotes on Today.",
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "feedErrorTitle": "Today's cards didn't load",
+  "@feedErrorTitle": {
+    "description": "E-FEED-1 title when the daily set could not be prepared."
+  },
+  "feedErrorBody": "Please try again. Your progress is safe.",
+  "@feedErrorBody": {
+    "description": "E-FEED-1 body."
+  },
+  "feedClose": "Close",
+  "@feedClose": {
+    "description": "Tooltip of the close button of the feed."
+  },
+  "feedBackToToday": "Back to Today",
+  "@feedBackToToday": {
+    "description": "Returns from the feed to Today."
+  },
+  "feedTakeAMoment": "Take a moment",
+  "@feedTakeAMoment": {
+    "description": "Hint when the user swipes on before the card was read."
+  },
+  "feedSwipeUp": "Swipe up for the next card",
+  "@feedSwipeUp": {
+    "description": "Hint on the first card."
+  },
+  "feedNextCard": "Next card",
+  "@feedNextCard": {
+    "description": "Screen reader action that moves to the next card."
+  },
+  "feedPreviousCard": "Previous card",
+  "@feedPreviousCard": {
+    "description": "Screen reader action that moves to the previous card."
+  },
+  "feedCardPosition": "Card {n} of {total}",
+  "@feedCardPosition": {
+    "description": "Screen reader position of a card in the daily set.",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "feedCardErrorTitle": "This card didn't load",
+  "@feedCardErrorTitle": {
+    "description": "Error inside a single card."
+  },
+  "feedSkipCard": "Skip this card",
+  "@feedSkipCard": {
+    "description": "Skips a card that failed to load."
+  },
+  "feedNewDayTitle": "A new day has started",
+  "@feedNewDayTitle": {
+    "description": "Dialog when the date changed while the feed was open."
+  },
+  "feedNewDayBody": "Continue yesterday's cards or start today's?",
+  "@feedNewDayBody": {
+    "description": "Body of the new day dialog."
+  },
+  "feedNewDayContinue": "Continue yesterday's",
+  "@feedNewDayContinue": {
+    "description": "Keeps the previous day's set."
+  },
+  "feedNewDayToday": "Start today's",
+  "@feedNewDayToday": {
+    "description": "Switches the feed to today's set."
+  },
+  "cardTypeVerse": "VERSE",
+  "@cardTypeVerse": {
+    "description": "Type label of a verse card."
+  },
+  "cardTypeHadith": "HADITH",
+  "@cardTypeHadith": {
+    "description": "Type label of a hadith card."
+  },
+  "cardTypeDua": "DUA",
+  "@cardTypeDua": {
+    "description": "Type label of a dua (supplication) card."
+  },
+  "cardTypeName": "NAME OF ALLAH",
+  "@cardTypeName": {
+    "description": "Type label of a card with one of the 99 names."
+  },
+  "cardTypeReflection": "REFLECTION",
+  "@cardTypeReflection": {
+    "description": "Type label of a reflection card."
+  },
+  "cardTypeEvent": "SPECIAL DAY",
+  "@cardTypeEvent": {
+    "description": "Type label of an event card when the event has no title."
+  },
+  "cardTypeFreeReading": "FREE READING",
+  "@cardTypeFreeReading": {
+    "description": "Type label of a verse outside the daily set."
+  },
+  "cardEyebrow": "{type} · {context}",
+  "@cardEyebrow": {
+    "description": "Card header: type label and reference, e.g. 'VERSE · Al-Baqarah 2:255'.",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      },
+      "context": {
+        "type": "String"
+      }
+    }
+  },
+  "cardAyahReference": "{surah} {ref}",
+  "@cardAyahReference": {
+    "description": "Verse reference, e.g. 'Al-Baqarah 2:255'. The surah name comes from the content database.",
+    "placeholders": {
+      "surah": {
+        "type": "String"
+      },
+      "ref": {
+        "type": "String"
+      }
+    }
+  },
+  "cardAyahA11y": "{surah}, verse {ayah}",
+  "@cardAyahA11y": {
+    "description": "Screen reader label of a verse card, e.g. 'Al-Baqarah, verse 255'.",
+    "placeholders": {
+      "surah": {
+        "type": "String"
+      },
+      "ayah": {
+        "type": "String"
+      }
+    }
+  },
+  "cardSave": "Save",
+  "@cardSave": {
+    "description": "Saves a card (bookmark)."
+  },
+  "cardUnsave": "Remove from saved",
+  "@cardUnsave": {
+    "description": "Removes a saved card."
+  },
+  "cardSaved": "Saved",
+  "@cardSaved": {
+    "description": "Snackbar after a card was saved."
+  },
+  "cardRemoved": "Removed from saved",
+  "@cardRemoved": {
+    "description": "Snackbar after a card was removed from saved."
+  },
+  "cardShare": "Share",
+  "@cardShare": {
+    "description": "Shares a card."
+  },
+  "cardMore": "More options",
+  "@cardMore": {
+    "description": "Opens the card options sheet."
+  },
+  "cardTranslationLabel": "Translation: {translator}",
+  "@cardTranslationLabel": {
+    "description": "Attribution of the translation of meaning.",
+    "placeholders": {
+      "translator": {
+        "type": "String"
+      }
+    }
+  },
+  "cardFallbackTag": "EN",
+  "@cardFallbackTag": {
+    "description": "Tag on a translation shown in English because it is missing in the user's language."
+  },
+  "cardFallbackA11y": "English translation",
+  "@cardFallbackA11y": {
+    "description": "Screen reader text of the EN tag."
+  },
+  "cardNoTranslation": "Translation not available in your language",
+  "@cardNoTranslation": {
+    "description": "Shown when a card has no translation in the user's language or English."
+  },
+  "cardReadInContext": "Read in context",
+  "@cardReadInContext": {
+    "description": "Opens the verse in the Quran reader."
+  },
+  "cardSourceRef": "Source: {source}",
+  "@cardSourceRef": {
+    "description": "Source reference of a dua or hadith.",
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "cardHadithReference": "{collection} {number}",
+  "@cardHadithReference": {
+    "description": "Hadith reference, e.g. 'Sahih al-Bukhari 1'. Values come from the content database.",
+    "placeholders": {
+      "collection": {
+        "type": "String"
+      },
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "cardHadithGrade": "Grade: {grade}",
+  "@cardHadithGrade": {
+    "description": "Authenticity grade of a hadith.",
+    "placeholders": {
+      "grade": {
+        "type": "String"
+      }
+    }
+  },
+  "cardHadithGradeName": "{grade, select, sahih{Sahih} hasan{Hasan} other{Other}}",
+  "@cardHadithGradeName": {
+    "description": "Localized hadith grade label (technical term).",
+    "placeholders": {
+      "grade": {
+        "type": "String"
+      }
+    }
+  },
+  "cardHadithExplanation": "Explanation",
+  "@cardHadithExplanation": {
+    "description": "Opens the explanation of a hadith (only when available)."
+  },
+  "cardDuaRepeat": "×{count}",
+  "@cardDuaRepeat": {
+    "description": "How many times a dua is usually repeated.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cardDuaCounter": "{n} / {total}",
+  "@cardDuaCounter": {
+    "description": "Local repetition counter of a dua.",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "cardDuaCounterHint": "Count a repetition",
+  "@cardDuaCounterHint": {
+    "description": "Screen reader hint of the repetition counter."
+  },
+  "cardNameIndex": "{n} of 99",
+  "@cardNameIndex": {
+    "description": "Position of the name among the 99 names.",
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "cardNameMentionedIn": "Mentioned in {ref}",
+  "@cardNameMentionedIn": {
+    "description": "Verse where the name is mentioned, e.g. 'Mentioned in 59:23'.",
+    "placeholders": {
+      "ref": {
+        "type": "String"
+      }
+    }
+  },
+  "cardOpen": "Open",
+  "@cardOpen": {
+    "description": "Opens the referenced verse."
+  },
+  "cardReflectionAttribution": "Mursa reflection · reviewed",
+  "@cardReflectionAttribution": {
+    "description": "Attribution of a reflection card (reviewed by a content reviewer)."
+  },
+  "cardEventSurah": "{surah} · {count, plural, one{1 verse} other{{count} verses}}",
+  "@cardEventSurah": {
+    "description": "Surah info on an event card. The surah name comes from the content database.",
+    "placeholders": {
+      "surah": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cardEventReadSurah": "Read {surah}",
+  "@cardEventReadSurah": {
+    "description": "Opens the surah of the event in the reader. The surah name comes from the content database.",
+    "placeholders": {
+      "surah": {
+        "type": "String"
+      }
+    }
+  },
+  "cardIntroEstimate": "Today: {count} cards · ~{minutes} min",
+  "@cardIntroEstimate": {
+    "description": "Size of the daily set on the intro card.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "cardIntroQuests": "Your intentions: {slots}",
+  "@cardIntroQuests": {
+    "description": "Quest slots on the intro card, e.g. 'read · learn · act'.",
+    "placeholders": {
+      "slots": {
+        "type": "String"
+      }
+    }
+  },
+  "cardIntroMoreEvents": "+{count} more",
+  "@cardIntroMoreEvents": {
+    "description": "More special days today.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cardSheetCopy": "Copy text",
+  "@cardSheetCopy": {
+    "description": "Card options: copy the text."
+  },
+  "cardSheetShareImage": "Share as image",
+  "@cardSheetShareImage": {
+    "description": "Card options: share the card as an image."
+  },
+  "cardSheetShareText": "Share as text",
+  "@cardSheetShareText": {
+    "description": "Card options: share the card as text."
+  },
+  "cardSheetSource": "Show source",
+  "@cardSheetSource": {
+    "description": "Card options: show the source of the content."
+  },
+  "cardSheetReport": "Report a problem",
+  "@cardSheetReport": {
+    "description": "Card options: report a problem with the card."
+  },
+  "cardCopied": "Copied",
+  "@cardCopied": {
+    "description": "Snackbar after copying card text."
+  },
+  "cardTooLongForImage": "Too long for an image. Share as text instead.",
+  "@cardTooLongForImage": {
+    "description": "Shown when a card is too long to be shared as an image."
+  },
+  "cardSourceTitle": "Source",
+  "@cardSourceTitle": {
+    "description": "Title of the source sheet."
+  },
+  "cardSourceLicense": "License: {license}",
+  "@cardSourceLicense": {
+    "description": "License of the content source.",
+    "placeholders": {
+      "license": {
+        "type": "String"
+      }
+    }
+  },
+  "cardShareVia": "via {appName}",
+  "@cardShareVia": {
+    "description": "Last line of shared text and images.",
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "doneTitle": "You're done for today",
+  "@doneTitle": {
+    "description": "Title of the final card of the daily set."
+  },
+  "doneSummary": "{cards, plural, one{1 card} other{{cards} cards}} · {verses, plural, one{1 verse} other{{verses} verses}}",
+  "@doneSummary": {
+    "description": "Summary on the done card (word cards are off).",
+    "placeholders": {
+      "cards": {
+        "type": "int"
+      },
+      "verses": {
+        "type": "int"
+      }
+    }
+  },
+  "doneQuests": "Intentions: {done} of {total}",
+  "@doneQuests": {
+    "description": "Quest summary on the done card.",
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "doneNextPrayer": "Next: {prayer} at {time}",
+  "@doneNextPrayer": {
+    "description": "Next prayer on the done card.",
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "doneClosed": "The cards are closed until tomorrow.",
+  "@doneClosed": {
+    "description": "The feed ends; nothing more to load today."
+  },
+  "doneKeepReading": "Keep reading the Quran",
+  "@doneKeepReading": {
+    "description": "Opens free reading from the reading position."
+  },
+  "doneCountedFor": "Counted for {weekday}",
+  "@doneCountedFor": {
+    "description": "Shown when the set was finished after midnight and counts for the previous day.",
+    "placeholders": {
+      "weekday": {
+        "type": "String"
+      }
+    }
+  },
+  "doneOpenDeed": "Still open: {title}",
+  "@doneOpenDeed": {
+    "description": "The open ACT quest on the done card. The title comes from the content database.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "khatmTitle": "You completed the Quran.",
+  "@khatmTitle": {
+    "description": "Title of the card after reading the last verse of the Quran in order."
+  },
+  "khatmNumber": "Completion #{n}",
+  "@khatmNumber": {
+    "description": "Which completion this is.",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "khatmStartAgain": "Start again from the beginning",
+  "@khatmStartAgain": {
+    "description": "Opens the reader at the first verse."
+  },
+  "quranSearchTooltip": "Search the Quran",
+  "@quranSearchTooltip": {
+    "description": "Tooltip and label of the search button on the surah list."
+  },
+  "quranContinue": "Continue: {reference}",
+  "@quranContinue": {
+    "description": "Continue reading banner on the surah list (khatm order). reference = surah name and verse, e.g. 'Al-Baqarah 2:144'.",
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "quranStartReading": "Start reading: {reference}",
+  "@quranStartReading": {
+    "description": "Continue banner when nothing has been read yet (starts at 1:1).",
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "quranLastOpened": "Last opened: {reference}",
+  "@quranLastOpened": {
+    "description": "Second line of the continue banner: last verse opened while browsing.",
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "quranTabSurahs": "Surahs",
+  "@quranTabSurahs": {
+    "description": "Segment on the Quran list: list of the 114 surahs."
+  },
+  "quranTabJuz": "Juz",
+  "@quranTabJuz": {
+    "description": "Segment on the Quran list: list of the 30 juz (parts)."
+  },
+  "quranJuzTitle": "Juz {number}",
+  "@quranJuzTitle": {
+    "description": "Title of a juz row. number is already formatted in the digits of the language.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "quranRevelationMeccan": "Meccan",
+  "@quranRevelationMeccan": {
+    "description": "Place of revelation of a surah (Mecca)."
+  },
+  "quranRevelationMedinan": "Medinan",
+  "@quranRevelationMedinan": {
+    "description": "Place of revelation of a surah (Medina)."
+  },
+  "quranAyahCount": "{count, plural, =1{1 verse} other{{count} verses}}",
+  "@quranAyahCount": {
+    "description": "Number of verses of a surah.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quranProgressRead": "{percent} read",
+  "@quranProgressRead": {
+    "description": "Reading progress of a surah. percent is formatted, e.g. '43 %'.",
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "quranSurahNumber": "Surah {number}",
+  "@quranSurahNumber": {
+    "description": "Screen reader prefix of a surah row. number is formatted.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "quranJuzPage": "Juz {juz} · Page {page}",
+  "@quranJuzPage": {
+    "description": "Reader header subtitle: juz and mushaf page of the verse at the top. Values are formatted.",
+    "placeholders": {
+      "juz": {
+        "type": "String"
+      },
+      "page": {
+        "type": "String"
+      }
+    }
+  },
+  "quranTextSettings": "Text settings",
+  "@quranTextSettings": {
+    "description": "Tooltip of the Aa button in the reader and title of its sheet."
+  },
+  "quranArabicSize": "Arabic text size",
+  "@quranArabicSize": {
+    "description": "Label of the Arabic font size selector in the reader sheet."
+  },
+  "quranArabicSizeS": "S",
+  "@quranArabicSizeS": {
+    "description": "Arabic text size: small (short label in a segmented control)."
+  },
+  "quranArabicSizeM": "M",
+  "@quranArabicSizeM": {
+    "description": "Arabic text size: medium."
+  },
+  "quranArabicSizeL": "L",
+  "@quranArabicSizeL": {
+    "description": "Arabic text size: large."
+  },
+  "quranArabicSizeXL": "XL",
+  "@quranArabicSizeXL": {
+    "description": "Arabic text size: extra large."
+  },
+  "quranShowTranslation": "Show translation",
+  "@quranShowTranslation": {
+    "description": "Switch in the reader sheet that shows or hides the translation of meaning."
+  },
+  "quranTranslationSource": "Translation",
+  "@quranTranslationSource": {
+    "description": "Header of the list of available translations in the reader sheet."
+  },
+  "quranTranslationOfMeaning": "Translation of meaning: {name}",
+  "@quranTranslationOfMeaning": {
+    "description": "Attribution of the translation under the text. name = translator or publisher from the content database. Never call it 'the Quran in English'.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "quranTranslationVersion": "Version {version} · {attribution}",
+  "@quranTranslationVersion": {
+    "description": "Version and source of the translation (required by the source licence). Values come from the content database.",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "attribution": {
+        "type": "String"
+      }
+    }
+  },
+  "quranTranslationMissing": "Translation not available in your language",
+  "@quranTranslationMissing": {
+    "description": "Shown under the Arabic text when no translation exists in the user's language or in English."
+  },
+  "quranTranslationFallbackTag": "EN",
+  "@quranTranslationFallbackTag": {
+    "description": "Small tag on a translation shown in English because the user's language has none."
+  },
+  "quranTranslationFallbackLabel": "English translation",
+  "@quranTranslationFallbackLabel": {
+    "description": "Screen reader label of the EN tag."
+  },
+  "quranFootnotesShow": "Translator's notes",
+  "@quranFootnotesShow": {
+    "description": "Button that shows the footnotes of the translator under a verse."
+  },
+  "quranFootnotesHide": "Hide notes",
+  "@quranFootnotesHide": {
+    "description": "Button that hides the footnotes of the translator."
+  },
+  "quranSajda": "Prostration verse",
+  "@quranSajda": {
+    "description": "Tooltip of the icon on a verse of prostration (sajda)."
+  },
+  "quranVerseActions": "Verse actions",
+  "@quranVerseActions": {
+    "description": "Tooltip of the more button of a verse and title of its sheet."
+  },
+  "quranCopy": "Copy",
+  "@quranCopy": {
+    "description": "Action: copy the verse with translation, reference and attribution."
+  },
+  "quranCopied": "Verse copied",
+  "@quranCopied": {
+    "description": "Snackbar after copying a verse."
+  },
+  "quranSave": "Save",
+  "@quranSave": {
+    "description": "Action: save the verse (bookmark)."
+  },
+  "quranRemoveSaved": "Remove from saved",
+  "@quranRemoveSaved": {
+    "description": "Action: remove the verse from saved."
+  },
+  "quranShareVia": "via {appName}",
+  "@quranShareVia": {
+    "description": "Last line of copied text.",
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "quranNextSurah": "Next: {name}",
+  "@quranNextSurah": {
+    "description": "Card at the end of a surah that opens the next surah.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "quranBackToSurahs": "Back to surahs",
+  "@quranBackToSurahs": {
+    "description": "Button at the end of the last surah."
+  },
+  "quranVerseNotFound": "That verse could not be found.",
+  "@quranVerseNotFound": {
+    "description": "Snackbar when a link points to a verse that does not exist (E-LINK-1)."
+  },
+  "quranKhatmTitle": "You completed the Quran",
+  "@quranKhatmTitle": {
+    "description": "Shown after reading the last verse in continuous reading."
+  },
+  "quranKhatmStartAgain": "Start again from {name}",
+  "@quranKhatmStartAgain": {
+    "description": "Button after completing the Quran. name = name of surah 1 from the content database.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "quranAyahSemantics": "Surah {surah}, verse {ayah}",
+  "@quranAyahSemantics": {
+    "description": "Screen reader reference of a verse, read in words (not '2 colon 255').",
+    "placeholders": {
+      "surah": {
+        "type": "String"
+      },
+      "ayah": {
+        "type": "String"
+      }
+    }
+  },
+  "quranSearchHint": "Word, surah or 2:255",
+  "@quranSearchHint": {
+    "description": "Hint in the Quran search field."
+  },
+  "quranSearchTips": "Try a word like 'mercy' or a surah name.",
+  "@quranSearchTips": {
+    "description": "Shown before searching. Nothing is stored about past searches."
+  },
+  "quranSearchEmptyTitle": "No results for \"{query}\"",
+  "@quranSearchEmptyTitle": {
+    "description": "EMPTY-SEARCH title.",
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "quranSearchEmptyBody": "Try another word, a surah name or a number like 2:255.",
+  "@quranSearchEmptyBody": {
+    "description": "EMPTY-SEARCH body."
+  },
+  "quranSearchErrorTitle": "Search isn't working right now",
+  "@quranSearchErrorTitle": {
+    "description": "E-SEARCH-1 title."
+  },
+  "quranSearchErrorBody": "Please try again.",
+  "@quranSearchErrorBody": {
+    "description": "E-SEARCH-1 body."
+  },
+  "quranGoTo": "Go to {reference}",
+  "@quranGoTo": {
+    "description": "First search result when the query is a verse reference.",
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "quranSearchVerses": "Verses",
+  "@quranSearchVerses": {
+    "description": "Header of full text search results."
+  },
+  "quranClearSearch": "Clear",
+  "@quranClearSearch": {
+    "description": "Tooltip of the button that clears the search field."
+  },
+  "quranBack": "Back",
+  "@quranBack": {
+    "description": "Tooltip of the back button in the reader."
+  },
+  "quranClose": "Close",
+  "@quranClose": {
+    "description": "Tooltip of the close button of sheets in the Quran screens."
+  },
+  "prayerTimeName": "{prayer, select, fajr{Fajr} sunrise{Sunrise} dhuhr{Dhuhr} asr{Asr} maghrib{Maghrib} isha{Isha} other{Prayer}}",
+  "@prayerTimeName": {
+    "description": "Name of a prayer time row on the prayer screen (transliteration as in docs/01 T8). Sunrise is not a prayer, it ends Fajr.",
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerQiblaTooltip": "Qibla direction",
+  "@prayerQiblaTooltip": {
+    "description": "Icon button in the prayer screen app bar that opens the qibla compass."
+  },
+  "prayerCalendarTooltip": "Islamic calendar",
+  "@prayerCalendarTooltip": {
+    "description": "Icon button in the prayer screen app bar that opens the hijri calendar."
+  },
+  "prayerSettingsTooltip": "Prayer settings",
+  "@prayerSettingsTooltip": {
+    "description": "Icon button that opens prayer time settings."
+  },
+  "prayerPreviousDay": "Previous day",
+  "@prayerPreviousDay": {
+    "description": "Tooltip of the arrow that shows the previous day on the prayer screen."
+  },
+  "prayerNextDay": "Next day",
+  "@prayerNextDay": {
+    "description": "Tooltip of the arrow that shows the next day on the prayer screen."
+  },
+  "prayerInHoursMinutes": "in {hours} h {minutes} min",
+  "@prayerInHoursMinutes": {
+    "description": "Time until the next prayer, e.g. 'in 1 h 12 min'.",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "prayerInMinutes": "in {minutes} min",
+  "@prayerInMinutes": {
+    "description": "Time until the next prayer under one hour, e.g. 'in 12 min'.",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "prayerAdjustedLabel": "{value} min",
+  "@prayerAdjustedLabel": {
+    "description": "Manual adjustment of a prayer time shown in its row, e.g. '+2 min'. value includes the sign.",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerInfoLine": "{method} · Asr {asr} · {adjust}",
+  "@prayerInfoLine": {
+    "description": "Summary of calculation settings under the prayer times, e.g. 'Muslim World League · Asr Shafi'i · no adjustments'. Tapping it opens prayer settings.",
+    "placeholders": {
+      "method": {
+        "type": "String"
+      },
+      "asr": {
+        "type": "String"
+      },
+      "adjust": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerInfoNoAdjust": "no adjustments",
+  "@prayerInfoNoAdjust": {
+    "description": "Part of the settings summary when no prayer time is manually adjusted."
+  },
+  "prayerInfoAdjusted": "{count, plural, =1{1 time adjusted} other{{count} times adjusted}}",
+  "@prayerInfoAdjusted": {
+    "description": "Part of the settings summary when some prayer times are manually adjusted.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "prayerLocationChange": "Change location",
+  "@prayerLocationChange": {
+    "description": "Tooltip/semantics of the city name in the prayer screen header that opens the city search."
+  },
+  "prayerLocationTitle": "Set your location",
+  "@prayerLocationTitle": {
+    "description": "Empty state title on the prayer screen without a location (EMPTY-PRAYER-LOC)."
+  },
+  "prayerLocationBody": "Prayer times are calculated on your phone for where you are.",
+  "@prayerLocationBody": {
+    "description": "Empty state body without a location (EMPTY-PRAYER-LOC)."
+  },
+  "prayerUseMyLocation": "Use my location",
+  "@prayerUseMyLocation": {
+    "description": "Button that uses the phone location once to find the nearest city."
+  },
+  "prayerChooseCity": "Choose a city",
+  "@prayerChooseCity": {
+    "description": "Button that opens the offline city search."
+  },
+  "prayerNoTimesHint": "You can still log your prayers without times.",
+  "@prayerNoTimesHint": {
+    "description": "Hint above the tracker when no location is set."
+  },
+  "prayerErrorTitle": "Prayer times couldn't be calculated",
+  "@prayerErrorTitle": {
+    "description": "Error state title (E-PRAYER-1)."
+  },
+  "prayerErrorBody": "Check your location and calculation method.",
+  "@prayerErrorBody": {
+    "description": "Error state body (E-PRAYER-1)."
+  },
+  "prayerIshaContinues": "Isha time continues until Fajr",
+  "@prayerIshaContinues": {
+    "description": "Banner after midnight before Fajr: the screen shows yesterday so Isha can still be logged."
+  },
+  "prayerTimeZoneTitle": "New time zone detected",
+  "@prayerTimeZoneTitle": {
+    "description": "Banner when the phone time zone differs from the saved prayer location (TZ-CHANGE)."
+  },
+  "prayerTimeZoneBody": "Update prayer times for where you are now?",
+  "@prayerTimeZoneBody": {
+    "description": "Banner body when the phone time zone differs from the saved location."
+  },
+  "prayerRemindersOffTitle": "Prayer reminders are off",
+  "@prayerRemindersOffTitle": {
+    "description": "Banner when notifications are blocked (P-NOTIF-BANNER)."
+  },
+  "prayerRemindersOffBody": "Turn on notifications to be reminded at each prayer time.",
+  "@prayerRemindersOffBody": {
+    "description": "Banner body when notifications are blocked."
+  },
+  "prayerRemindersTurnOn": "Turn on",
+  "@prayerRemindersTurnOn": {
+    "description": "Action of the reminders-off banner."
+  },
+  "prayerExactInfo": "Reminders may arrive up to 10 minutes late or more.",
+  "@prayerExactInfo": {
+    "description": "Info line when exact alarms are not allowed (P-EXACT-INFO)."
+  },
+  "prayerExactAllow": "Allow exact times",
+  "@prayerExactAllow": {
+    "description": "Action of the exact alarm info line."
+  },
+  "prayerEstimatedTitle": "Estimated time",
+  "@prayerEstimatedTitle": {
+    "description": "Title of the sheet explaining a high latitude estimate."
+  },
+  "prayerEstimatedBody": "On some nights the sun doesn't go low enough here to calculate {prayer}. The time is estimated using: {rule}.",
+  "@prayerEstimatedBody": {
+    "description": "Body of the high latitude sheet.",
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      },
+      "rule": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerEstimatedInfo": "Why is this estimated?",
+  "@prayerEstimatedInfo": {
+    "description": "Tooltip of the info button next to estimated prayer times."
+  },
+  "prayerChangeRule": "Change rule",
+  "@prayerChangeRule": {
+    "description": "Button that opens prayer settings to change the high latitude rule."
+  },
+  "prayerMarkOnTime": "Mark on time",
+  "@prayerMarkOnTime": {
+    "description": "Screen reader action and sheet option: log the prayer as prayed on time."
+  },
+  "prayerMarkLate": "Mark late",
+  "@prayerMarkLate": {
+    "description": "Screen reader action and sheet option: log the prayer as prayed late."
+  },
+  "prayerMarkMissed": "Mark missed",
+  "@prayerMarkMissed": {
+    "description": "Screen reader action and sheet option: log the prayer as missed."
+  },
+  "prayerMarkQada": "Made up (qada)",
+  "@prayerMarkQada": {
+    "description": "Sheet option: log a missed prayer as made up later."
+  },
+  "prayerMarkQadaAction": "Mark made up",
+  "@prayerMarkQadaAction": {
+    "description": "Screen reader action: log the prayer as made up later."
+  },
+  "prayerClearLog": "Clear",
+  "@prayerClearLog": {
+    "description": "Sheet option and screen reader action: remove the log for this prayer."
+  },
+  "prayerLogCleared": "{prayer} log cleared.",
+  "@prayerLogCleared": {
+    "description": "Snackbar after clearing a prayer log, shown with Undo.",
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerFutureHint": "You can log it after it begins.",
+  "@prayerFutureHint": {
+    "description": "Shown in the status sheet of a prayer that has not started yet."
+  },
+  "prayerUpdatedFor": "Prayer times updated for {city}.",
+  "@prayerUpdatedFor": {
+    "description": "Snackbar after choosing a new city (UPDATED-PRAYER).",
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerMethodName": "{method, select, muslimWorldLeague{Muslim World League} northAmerica{ISNA (North America)} egyptian{Egyptian General Authority of Survey} ummAlQura{Umm al-Qura, Makkah} karachi{University of Islamic Sciences, Karachi} turkiye{Diyanet (Türkiye)} indonesian{Kemenag (Indonesia)} singapore{MUIS (Singapore)} dubai{Dubai} qatar{Qatar} kuwait{Kuwait} gulfRegion{Gulf region} algerian{Algeria} morocco{Morocco} tunisia{Tunisia} jordan{Jordan} france{France (UOIF)} portugal{Portugal} russia{Russia} tehran{Institute of Geophysics, Tehran} jafari{Shia Ithna Ashari (Jafari)} moonsightingCommittee{Moonsighting Committee} jakim{JAKIM (Malaysia)} other{Other}}",
+  "@prayerMethodName": {
+    "description": "Name of a prayer time calculation method.",
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerMethodAngles": "Fajr {fajr}°, Isha {isha}°",
+  "@prayerMethodAngles": {
+    "description": "Description of a calculation method by its sun angles.",
+    "placeholders": {
+      "fajr": {
+        "type": "String"
+      },
+      "isha": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerMethodInterval": "Fajr {fajr}°, Isha {minutes} min after Maghrib",
+  "@prayerMethodInterval": {
+    "description": "Description of a method where Isha is a fixed time after Maghrib.",
+    "placeholders": {
+      "fajr": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerMethodAutomatic": "Automatic",
+  "@prayerMethodAutomatic": {
+    "description": "Method option: use the usual method of the country of the location."
+  },
+  "prayerMethodAutomaticFor": "Usual method for your location: {method}",
+  "@prayerMethodAutomaticFor": {
+    "description": "Subtitle of the automatic method option.",
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerAsrShafi": "Standard (Shafi'i, Maliki, Hanbali)",
+  "@prayerAsrShafi": {
+    "description": "Asr calculation option: shadow length equals object length."
+  },
+  "prayerAsrHanafi": "Hanafi",
+  "@prayerAsrHanafi": {
+    "description": "Asr calculation option: shadow length is twice the object length."
+  },
+  "prayerAsrShortShafi": "Shafi'i",
+  "@prayerAsrShortShafi": {
+    "description": "Short Asr method name in the settings summary."
+  },
+  "prayerAsrShortHanafi": "Hanafi",
+  "@prayerAsrShortHanafi": {
+    "description": "Short Asr method name in the settings summary."
+  },
+  "prayerHighLatName": "{rule, select, middle_of_night{Middle of the night} seventh_of_night{One seventh of the night} twilight_angle{Twilight angle} other{Automatic}}",
+  "@prayerHighLatName": {
+    "description": "Name of a high latitude rule.",
+    "placeholders": {
+      "rule": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerHighLatDescription": "{rule, select, middle_of_night{Fajr and Isha stay within the halves of the night.} seventh_of_night{Isha at most one seventh of the night after Maghrib, Fajr at most one seventh before sunrise.} twilight_angle{The night portion follows the angle of the method.} other{}}",
+  "@prayerHighLatDescription": {
+    "description": "Short explanation of a high latitude rule.",
+    "placeholders": {
+      "rule": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerSettingsTitle": "Prayer times",
+  "@prayerSettingsTitle": {
+    "description": "Title of the prayer settings screen."
+  },
+  "prayerSettingsLocation": "Location",
+  "@prayerSettingsLocation": {
+    "description": "Section title: location."
+  },
+  "prayerSettingsMethod": "Calculation method",
+  "@prayerSettingsMethod": {
+    "description": "Section title: calculation method."
+  },
+  "prayerSettingsAsr": "Asr",
+  "@prayerSettingsAsr": {
+    "description": "Section title: Asr calculation."
+  },
+  "prayerSettingsHighLat": "High latitude rule",
+  "@prayerSettingsHighLat": {
+    "description": "Section title: rule for places where Fajr or Isha can't always be calculated."
+  },
+  "prayerSettingsHighLatHelp": "Used when the sun doesn't go low enough for Fajr or Isha.",
+  "@prayerSettingsHighLatHelp": {
+    "description": "Help text of the high latitude section."
+  },
+  "prayerSettingsAdjust": "Manual adjustments",
+  "@prayerSettingsAdjust": {
+    "description": "Section title: manual minute adjustments per prayer."
+  },
+  "prayerSettingsAdjustHelp": "Move a time if your local mosque uses a different one.",
+  "@prayerSettingsAdjustHelp": {
+    "description": "Help text of the manual adjustments section."
+  },
+  "prayerSettingsPreview": "Today",
+  "@prayerSettingsPreview": {
+    "description": "Section title: preview of today's prayer times."
+  },
+  "prayerAdjustMinutes": "{value} min",
+  "@prayerAdjustMinutes": {
+    "description": "Value of a manual adjustment stepper, e.g. '+2 min' or '0 min'.",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerAdjustEarlier": "Earlier by 1 minute",
+  "@prayerAdjustEarlier": {
+    "description": "Tooltip of the minus button of an adjustment stepper."
+  },
+  "prayerAdjustLater": "Later by 1 minute",
+  "@prayerAdjustLater": {
+    "description": "Tooltip of the plus button of an adjustment stepper."
+  },
+  "prayerAdjustSemantics": "{prayer} adjustment, {value} minutes",
+  "@prayerAdjustSemantics": {
+    "description": "Screen reader label of an adjustment stepper.",
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerMethodSuggestTitle": "{method} is common in {country}",
+  "@prayerMethodSuggestTitle": {
+    "description": "Sheet after moving to another country when the method was chosen manually (METHOD-SUGGEST).",
+    "placeholders": {
+      "method": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "prayerMethodSuggestBody": "Switch the calculation method?",
+  "@prayerMethodSuggestBody": {
+    "description": "Body of the method suggestion sheet."
+  },
+  "prayerMethodSuggestSwitch": "Switch",
+  "@prayerMethodSuggestSwitch": {
+    "description": "Accept the suggested method."
+  },
+  "prayerMethodSuggestKeep": "Keep {method}",
+  "@prayerMethodSuggestKeep": {
+    "description": "Keep the current method.",
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "citySearchTitle": "Choose a city",
+  "@citySearchTitle": {
+    "description": "Title of the offline city search screen."
+  },
+  "citySearchHint": "Search for a city",
+  "@citySearchHint": {
+    "description": "Placeholder of the city search field."
+  },
+  "citySearchTips": "Type the first letters of your city. The list works offline.",
+  "@citySearchTips": {
+    "description": "Shown before typing in the city search."
+  },
+  "citySearchEmptyTitle": "No cities found for \"{query}\"",
+  "@citySearchEmptyTitle": {
+    "description": "Empty result of the city search.",
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "citySearchEmptyBody": "Check the spelling or try a bigger city nearby.",
+  "@citySearchEmptyBody": {
+    "description": "Body of the empty city search result."
+  },
+  "citySearchClear": "Clear search",
+  "@citySearchClear": {
+    "description": "Tooltip of the button that clears the search field."
+  },
+  "citySearchCurrent": "Current: {city}",
+  "@citySearchCurrent": {
+    "description": "Currently saved city shown above the search results.",
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "cityLocating": "Finding your location…",
+  "@cityLocating": {
+    "description": "Shown while the phone location is being read."
+  },
+  "cityLocationErrorTitle": "We couldn't find your location",
+  "@cityLocationErrorTitle": {
+    "description": "Error after the phone location failed (E-LOC-1)."
+  },
+  "cityLocationErrorBody": "Choose your city instead. It works just as well.",
+  "@cityLocationErrorBody": {
+    "description": "Body of the location error (E-LOC-1)."
+  },
+  "qiblaTitle": "Qibla",
+  "@qiblaTitle": {
+    "description": "Title of the qibla compass screen."
+  },
+  "qiblaTurnRight": "Turn right {degrees}°",
+  "@qiblaTurnRight": {
+    "description": "Instruction to rotate the phone towards the qibla.",
+    "placeholders": {
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "qiblaTurnLeft": "Turn left {degrees}°",
+  "@qiblaTurnLeft": {
+    "description": "Instruction to rotate the phone towards the qibla.",
+    "placeholders": {
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "qiblaFacing": "Facing the Qibla",
+  "@qiblaFacing": {
+    "description": "Shown when the phone points to the qibla (within 5 degrees)."
+  },
+  "qiblaBearing": "Qibla {degrees}° from north",
+  "@qiblaBearing": {
+    "description": "Qibla direction in degrees clockwise from north.",
+    "placeholders": {
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "qiblaCalibrateTitle": "Calibrating…",
+  "@qiblaCalibrateTitle": {
+    "description": "Compass accuracy is low (Q-CALIBRATE)."
+  },
+  "qiblaCalibrateBody": "Move your phone in a figure 8.",
+  "@qiblaCalibrateBody": {
+    "description": "Calibration instruction (Q-CALIBRATE)."
+  },
+  "qiblaNoSensorTitle": "Compass not available",
+  "@qiblaNoSensorTitle": {
+    "description": "The phone has no compass sensor (Q-NOSENSOR)."
+  },
+  "qiblaNoSensorBody": "The Qibla is {degrees}° from north.",
+  "@qiblaNoSensorBody": {
+    "description": "Fallback without a compass (Q-NOSENSOR).",
+    "placeholders": {
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "qiblaHint": "Hold your phone flat, away from metal and magnets.",
+  "@qiblaHint": {
+    "description": "Hint under the compass."
+  },
+  "qiblaDialSemantics": "Compass. Qibla is {degrees}° from north.",
+  "@qiblaDialSemantics": {
+    "description": "Screen reader label of the compass dial.",
+    "placeholders": {
+      "degrees": {
+        "type": "String"
+      }
+    }
+  },
+  "qiblaFrom": "From {city}",
+  "@qiblaFrom": {
+    "description": "Location the qibla direction is calculated for.",
+    "placeholders": {
+      "city": {
+        "type": "String"
+      }
+    }
+  },
+  "qiblaNorth": "N",
+  "@qiblaNorth": {
+    "description": "Letter for north on the compass dial."
+  },
+  "calendarTitle": "Islamic calendar",
+  "@calendarTitle": {
+    "description": "Title of the hijri calendar screen."
+  },
+  "calendarPreviousMonth": "Previous month",
+  "@calendarPreviousMonth": {
+    "description": "Tooltip of the previous month button."
+  },
+  "calendarNextMonth": "Next month",
+  "@calendarNextMonth": {
+    "description": "Tooltip of the next month button."
+  },
+  "calendarMonthTitle": "{month} {year}",
+  "@calendarMonthTitle": {
+    "description": "Hijri month header, e.g. 'Jumada al-Ula 1448'.",
+    "placeholders": {
+      "month": {
+        "type": "String"
+      },
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "calendarEventsTitle": "Events this month",
+  "@calendarEventsTitle": {
+    "description": "Section title above the list of events in the shown month."
+  },
+  "calendarEmptyTitle": "No special days this month",
+  "@calendarEmptyTitle": {
+    "description": "Shown when the month has no events (EMPTY-CAL-MONTH)."
+  },
+  "calendarEmptyNext": "Next: {event} on {date}.",
+  "@calendarEmptyNext": {
+    "description": "Next event after an empty month (EMPTY-CAL-MONTH).",
+    "placeholders": {
+      "event": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "calendarErrorTitle": "The calendar couldn't load",
+  "@calendarErrorTitle": {
+    "description": "Error state of the calendar (E-CAL-1)."
+  },
+  "calendarErrorBody": "Please try again.",
+  "@calendarErrorBody": {
+    "description": "Error state body of the calendar (E-CAL-1)."
+  },
+  "calendarOffsetLine": "Hijri date offset: {offset}",
+  "@calendarOffsetLine": {
+    "description": "Line under the calendar with the current hijri offset, e.g. '+1 day'.",
+    "placeholders": {
+      "offset": {
+        "type": "String"
+      }
+    }
+  },
+  "calendarOffsetChange": "Change",
+  "@calendarOffsetChange": {
+    "description": "Button that changes the hijri offset."
+  },
+  "calendarOffsetTitle": "Hijri date",
+  "@calendarOffsetTitle": {
+    "description": "Title of the hijri offset setting."
+  },
+  "calendarOffsetHelp": "If your community began the month a day earlier or later, adjust the date here. Events move with it.",
+  "@calendarOffsetHelp": {
+    "description": "Help text of the hijri offset setting."
+  },
+  "calendarOffsetPreview": "Today is {date}",
+  "@calendarOffsetPreview": {
+    "description": "Preview of today's hijri date in the offset setting.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "calendarOffsetDays": "{value, select, p0{0 days} p1{+1 day} p2{+2 days} m1{−1 day} m2{−2 days} other{}}",
+  "@calendarOffsetDays": {
+    "description": "Hijri offset value. Keys: p0, p1, p2 (plus), m1, m2 (minus).",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "calendarOffsetEarlier": "One day earlier",
+  "@calendarOffsetEarlier": {
+    "description": "Tooltip of the minus button of the hijri offset stepper."
+  },
+  "calendarOffsetLater": "One day later",
+  "@calendarOffsetLater": {
+    "description": "Tooltip of the plus button of the hijri offset stepper."
+  },
+  "calendarToday": "Today",
+  "@calendarToday": {
+    "description": "Marks today in the calendar (screen reader) and the button that returns to the current month."
+  },
+  "calendarHasEvents": "has events",
+  "@calendarHasEvents": {
+    "description": "Screen reader suffix of a calendar day with an event."
+  },
+  "calendarDayEmpty": "No special events on this day.",
+  "@calendarDayEmpty": {
+    "description": "Day sheet without events."
+  },
+  "calendarEnglishTag": "EN",
+  "@calendarEnglishTag": {
+    "description": "Tag next to an event text shown in English because the user's language is missing."
+  },
+  "hijriDate": "{day} {month} {year}",
+  "@hijriDate": {
+    "description": "Hijri date, e.g. '17 Jumada al-Ula 1448'.",
+    "placeholders": {
+      "day": {
+        "type": "String"
+      },
+      "month": {
+        "type": "String"
+      },
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "hijriMonthName": "{month, select, m1{Muharram} m2{Safar} m3{Rabi al-Awwal} m4{Rabi al-Thani} m5{Jumada al-Ula} m6{Jumada al-Akhirah} m7{Rajab} m8{Sha'ban} m9{Ramadan} m10{Shawwal} m11{Dhu al-Qa'dah} m12{Dhu al-Hijjah} other{}}",
+  "@hijriMonthName": {
+    "description": "Hijri month name (transliteration). Key m1..m12 is the month number.",
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
+  "journeyTitle": "My journey",
+  "@journeyTitle": {
+    "description": "Title of the private progress tab (Journey, docs/02 A8.1)."
+  },
+  "journeyNiyyahEmpty": "Add your intention",
+  "@journeyNiyyahEmpty": {
+    "description": "Shown on Journey instead of the intention when the user has not written one. Tapping opens the intention editor."
+  },
+  "journeyNiyyahEdit": "Edit intention",
+  "@journeyNiyyahEdit": {
+    "description": "Tooltip of the pencil button next to the intention on Journey."
+  },
+  "journeyNiyyahDialogTitle": "Your intention",
+  "@journeyNiyyahDialogTitle": {
+    "description": "Title of the dialog that edits the intention (same choices as in onboarding). It stays on the phone."
+  },
+  "journeyNiyyahSave": "Save",
+  "@journeyNiyyahSave": {
+    "description": "Saves the edited intention."
+  },
+  "journeyNiyyahCancel": "Cancel",
+  "@journeyNiyyahCancel": {
+    "description": "Closes the intention dialog without saving."
+  },
+  "journeyPreviousMonth": "Previous month",
+  "@journeyPreviousMonth": {
+    "description": "Tooltip of the arrow that shows the previous month of the personal calendar."
+  },
+  "journeyNextMonth": "Next month",
+  "@journeyNextMonth": {
+    "description": "Tooltip of the arrow that shows the next month of the personal calendar."
+  },
+  "journeyDayState": "{state, select, done{Completed} grace{Covered by a grace day} missed{Not completed} excused{Excused} today{Today} future{Upcoming} other{No record}}",
+  "@journeyDayState": {
+    "description": "State of a day in the personal calendar, read by the screen reader after the date and shown in the day detail. 'missed' must stay neutral, never blaming.",
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "journeyLegendDone": "Completed",
+  "@journeyLegendDone": {
+    "description": "Calendar legend: a filled circle means the day was completed (daily cards or an intention)."
+  },
+  "journeyLegendGrace": "Grace day",
+  "@journeyLegendGrace": {
+    "description": "Calendar legend: a half filled circle means a grace day covered the day."
+  },
+  "journeyLegendMissed": "Not completed",
+  "@journeyLegendMissed": {
+    "description": "Calendar legend: a small dot means the day was not completed. Neutral wording."
+  },
+  "journeyStreak": "{count, plural, one{1-day streak} other{{count}-day streak}}",
+  "@journeyStreak": {
+    "description": "Private streak of completed days on Journey. Hidden in Simple mode.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "journeyLongest": "Longest {count}",
+  "@journeyLongest": {
+    "description": "Longest streak, shown after the current streak, e.g. '6-day streak · Longest 14'. count is already formatted.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "journeyGraceLeft": "{count, plural, =0{no grace days left} one{1 grace day} other{{count} grace days}}",
+  "@journeyGraceLeft": {
+    "description": "Remaining grace days on Journey.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "journeyGraceRefill": "Grace days refill on {date}",
+  "@journeyGraceRefill": {
+    "description": "When the used grace days come back, e.g. 'Grace days refill on Monday, November 2'.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "journeyEmptyTitle": "Your journey starts today",
+  "@journeyEmptyTitle": {
+    "description": "EMPTY-JOURNEY title for a new user (docs/01 7.7)."
+  },
+  "journeyEmptyBody": "Each day you complete your cards or an intention will appear here.",
+  "@journeyEmptyBody": {
+    "description": "EMPTY-JOURNEY body (docs/01 7.7)."
+  },
+  "journeyErrorTitle": "Something went wrong",
+  "@journeyErrorTitle": {
+    "description": "E-DB-1 title on Journey, Saved and the day detail."
+  },
+  "journeyErrorBody": "Your data is safe. Please try again.",
+  "@journeyErrorBody": {
+    "description": "E-DB-1 body."
+  },
+  "journeyQuranTitle": "Quran",
+  "@journeyQuranTitle": {
+    "description": "Section title of the surah map on Journey."
+  },
+  "journeyQuranPercent": "{percent}% read",
+  "@journeyQuranPercent": {
+    "description": "Share of all verses the user has read, e.g. '12% read'. percent is already formatted.",
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "journeyQuranMapEmpty": "Verses you read will fill this map.",
+  "@journeyQuranMapEmpty": {
+    "description": "Shown above the empty surah map before the user reads any verse."
+  },
+  "journeyQuranMapLegend": "Each square is a surah. The fuller it is, the more of it you have read.",
+  "@journeyQuranMapLegend": {
+    "description": "Text legend of the surah map (not only color)."
+  },
+  "journeySurahProgress": "{surah}, {percent}% read",
+  "@journeySurahProgress": {
+    "description": "Screen reader label of one surah square, e.g. 'Al-Baqarah, 43% read'.",
+    "placeholders": {
+      "surah": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "journeySurahFallback": "Surah {number}",
+  "@journeySurahFallback": {
+    "description": "Surah label when its name is not available.",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "journeyKhatm": "Khatm: {count}",
+  "@journeyKhatm": {
+    "description": "Number of completed readings of the whole Quran. count is already formatted.",
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "journeyNextVerse": "Next verse {ref}",
+  "@journeyNextVerse": {
+    "description": "Button with the next verse in the user's reading of the whole Quran, e.g. 'Next verse 2:144'.",
+    "placeholders": {
+      "ref": {
+        "type": "String"
+      }
+    }
+  },
+  "journeyWords": "Words",
+  "@journeyWords": {
+    "description": "Row that opens the word review (only when words are enabled)."
+  },
+  "journeySavedButton": "{count, plural, =0{Saved cards} other{Saved cards ({count})}}",
+  "@journeySavedButton": {
+    "description": "Button on Journey that opens the saved cards.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "journeySavedTitle": "Saved cards",
+  "@journeySavedTitle": {
+    "description": "Title of the saved cards screen."
+  },
+  "journeySavedFilter": "{type, select, all{All} ayah{Verses} hadith{Hadith} dua{Dua} name{Names} reflection{Reflections} other{All}}",
+  "@journeySavedFilter": {
+    "description": "Filter chips on the saved cards screen.",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "journeyCardType": "{type, select, ayah{Verse} hadith{Hadith} dua{Dua} name{Name of Allah} reflection{Reflection} other{Card}}",
+  "@journeyCardType": {
+    "description": "Type of a saved card shown in its row.",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "journeySavedEmptyTitle": "Nothing saved yet",
+  "@journeySavedEmptyTitle": {
+    "description": "EMPTY-SAVED title (docs/01 7.7)."
+  },
+  "journeySavedEmptyBody": "Tap the bookmark on any card to keep it here.",
+  "@journeySavedEmptyBody": {
+    "description": "EMPTY-SAVED body (docs/01 7.7)."
+  },
+  "journeySavedRemove": "Remove",
+  "@journeySavedRemove": {
+    "description": "Screen reader action and swipe action that removes a card from saved."
+  },
+  "journeySavedRemoved": "Removed from saved",
+  "@journeySavedRemoved": {
+    "description": "Snackbar after a card was removed from saved."
+  },
+  "journeyUndo": "Undo",
+  "@journeyUndo": {
+    "description": "Snackbar action that brings back the removed card."
+  },
+  "journeyClose": "Close",
+  "@journeyClose": {
+    "description": "Tooltip of the button that closes the fullscreen card view."
+  },
+  "journeyCardPosition": "{n} of {total}",
+  "@journeyCardPosition": {
+    "description": "Position in the fullscreen card view, e.g. '3 of 18'. Numbers are already formatted.",
+    "placeholders": {
+      "n": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "journeyDaySet": "Daily cards: {done}/{total}",
+  "@journeyDaySet": {
+    "description": "Progress of the daily cards on that day, e.g. 'Daily cards: 10/10'. Numbers are already formatted.",
+    "placeholders": {
+      "done": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "journeyDayCompletedAt": "Completed at {time}",
+  "@journeyDayCompletedAt": {
+    "description": "Local time when the daily cards were completed.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "journeyDayNoSet": "No daily cards on this day.",
+  "@journeyDayNoSet": {
+    "description": "Day detail when no daily set exists for that day."
+  },
+  "journeyDayViewCards": "View cards",
+  "@journeyDayViewCards": {
+    "description": "Opens a read-only view of the cards of that day."
+  },
+  "journeyDaySources": "{source, select, set{Daily cards completed} quest{An intention completed} other{-}}",
+  "@journeyDaySources": {
+    "description": "What completed the day in the day detail.",
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "journeyDayPrayers": "Prayers",
+  "@journeyDayPrayers": {
+    "description": "Section title of the logged prayers in the day detail."
+  },
+  "journeyPrayerStatus": "{status, select, on_time{On time} late{Late} missed{Missed} qada{Made up} other{Not logged}}",
+  "@journeyPrayerStatus": {
+    "description": "Logged state of a prayer in the day detail (neutral wording).",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "setTitle": "Settings",
+  "@setTitle": {
+    "description": "Title of the settings screen (docs/02 A10.0)."
+  },
+  "setGate": "The gate",
+  "@setGate": {
+    "description": "Settings row that opens app blocking settings (only in the full edition)."
+  },
+  "setOnOff": "{value, select, true{On} other{Off}}",
+  "@setOnOff": {
+    "description": "Current state shown in a settings row.",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "setPrayerTimes": "Prayer times",
+  "@setPrayerTimes": {
+    "description": "Settings row that opens prayer time settings."
+  },
+  "setNotifications": "Notifications",
+  "@setNotifications": {
+    "description": "Settings row and screen title for notification settings."
+  },
+  "setLanguage": "Language & translation",
+  "@setLanguage": {
+    "description": "Settings row and screen title for app language and Quran translation."
+  },
+  "setDisplay": "Daily set & display",
+  "@setDisplay": {
+    "description": "Settings row and screen title for theme, Arabic text size and daily set options."
+  },
+  "setAudio": "Audio",
+  "@setAudio": {
+    "description": "Settings row for recitation audio settings."
+  },
+  "setHijriCalendar": "Hijri calendar",
+  "@setHijriCalendar": {
+    "description": "Settings row that opens the hijri date adjustment."
+  },
+  "setPrivacy": "Privacy",
+  "@setPrivacy": {
+    "description": "Settings row and screen title for privacy settings."
+  },
+  "setSources": "Sources & licenses",
+  "@setSources": {
+    "description": "Settings row and screen title listing content sources, their versions and licenses."
+  },
+  "setAbout": "About",
+  "@setAbout": {
+    "description": "Settings row and screen title with app version and disclaimers."
+  },
+  "setAppLanguage": "App language",
+  "@setAppLanguage": {
+    "description": "Section header for choosing the language of the app."
+  },
+  "setDeviceLanguage": "Phone language",
+  "@setDeviceLanguage": {
+    "description": "Option to follow the language of the phone."
+  },
+  "setTranslation": "Quran translation",
+  "@setTranslation": {
+    "description": "Section header for choosing the Quran translation in the current language."
+  },
+  "setDisplayOptions": "Display",
+  "@setDisplayOptions": {
+    "description": "Section header for text display options."
+  },
+  "setTranslit": "Transliteration",
+  "@setTranslit": {
+    "description": "Switch that shows Latin transliteration of Arabic text."
+  },
+  "setTranslitHelp": "Show Arabic in Latin letters where available.",
+  "@setTranslitHelp": {
+    "description": "Explanation under the transliteration switch."
+  },
+  "setTranslationArabic": "In Arabic, the Quran is shown without a translation.",
+  "@setTranslationArabic": {
+    "description": "Shown instead of the translation choice when the app language is Arabic."
+  },
+  "setTranslationNone": "No translation is available in this language yet. English is shown instead.",
+  "@setTranslationNone": {
+    "description": "Shown when the content has no Quran translation in the current language."
+  },
+  "setSourceVersionLicense": "Version {version} · License: {license}",
+  "@setSourceVersionLicense": {
+    "description": "Version and license of a content source, e.g. 'Version 1.1 · License: CC BY 3.0'.",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "license": {
+        "type": "String"
+      }
+    }
+  },
+  "setTranslationDisclaimer": "Translations convey the meanings of the Qur'an; they are not the Qur'an itself.",
+  "@setTranslationDisclaimer": {
+    "description": "Required note under Quran translations (docs/11 12.2). Legal text, translate faithfully."
+  },
+  "setLoadErrorTitle": "Couldn't load this",
+  "@setLoadErrorTitle": {
+    "description": "Error state title on settings screens that read content."
+  },
+  "setLoadErrorBody": "Please try again.",
+  "@setLoadErrorBody": {
+    "description": "Error state body on settings screens that read content."
+  },
+  "setTheme": "Theme",
+  "@setTheme": {
+    "description": "Section header for light/dark theme choice."
+  },
+  "setHighContrastNote": "High contrast follows your phone settings.",
+  "@setHighContrastNote": {
+    "description": "Note under the theme header: high contrast is taken from Android accessibility settings."
+  },
+  "setThemeName": "{value, select, light{Light} dark{Dark} other{Same as phone}}",
+  "@setThemeName": {
+    "description": "Theme option name.",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "setArabicSize": "Arabic text size",
+  "@setArabicSize": {
+    "description": "Section header for the size of Arabic text, with a preview."
+  },
+  "setDailySet": "Daily set",
+  "@setDailySet": {
+    "description": "Section header for daily set options."
+  },
+  "setSimpleMode": "Simple mode",
+  "@setSimpleMode": {
+    "description": "Switch that hides streaks and grace days."
+  },
+  "setSimpleModeHelp": "Hide streaks and counters.",
+  "@setSimpleModeHelp": {
+    "description": "Explanation under the simple mode switch."
+  },
+  "setCardsCount": "Cards per day",
+  "@setCardsCount": {
+    "description": "Section header for the number of cards in the daily set."
+  },
+  "setCardsCountHelp": "Changes apply from tomorrow. Today's set stays the same.",
+  "@setCardsCountHelp": {
+    "description": "Explanation that the number of cards changes from the next day."
+  },
+  "setCardsCountValue": "{count} cards",
+  "@setCardsCountValue": {
+    "description": "Option for the number of daily cards.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "setNotifBlocked": "Notifications are blocked by Android.",
+  "@setNotifBlocked": {
+    "description": "Banner when the system blocks notifications of the app."
+  },
+  "setOpenSettings": "Open settings",
+  "@setOpenSettings": {
+    "description": "Button that opens the Android settings of the app."
+  },
+  "setPrayerReminders": "Prayer reminders",
+  "@setPrayerReminders": {
+    "description": "Section header with a switch for each of the five prayers."
+  },
+  "setMorning": "Morning",
+  "@setMorning": {
+    "description": "Section header for the morning notification."
+  },
+  "setMorningToggle": "Morning reminder",
+  "@setMorningToggle": {
+    "description": "Switch for the daily morning notification."
+  },
+  "setMorningHelp": "A reminder that your daily cards are ready.",
+  "@setMorningHelp": {
+    "description": "Explanation under the morning reminder switch."
+  },
+  "setMorningTime": "Time",
+  "@setMorningTime": {
+    "description": "Row that opens a time picker for the morning reminder."
+  },
+  "setLockScreen": "Lock screen",
+  "@setLockScreen": {
+    "description": "Section header for how notifications look on the lock screen."
+  },
+  "setPrivateText": "Private text",
+  "@setPrivateText": {
+    "description": "Switch: notifications show only 'it's time' without the prayer name."
+  },
+  "setPrivateTextHelp": "Show only the app name and time on the lock screen, without what the reminder is about.",
+  "@setPrivateTextHelp": {
+    "description": "Explanation under the private text switch."
+  },
+  "setExactAlarms": "Exact reminders",
+  "@setExactAlarms": {
+    "description": "Section header for the Android exact alarm permission."
+  },
+  "setStatusUnknown": "Checking…",
+  "@setStatusUnknown": {
+    "description": "Shown while the permission state is being read."
+  },
+  "setExactOn": "Allowed",
+  "@setExactOn": {
+    "description": "Exact alarms are allowed."
+  },
+  "setExactOff": "Not allowed",
+  "@setExactOff": {
+    "description": "Exact alarms are not allowed."
+  },
+  "setExactHelp": "Without exact reminders, prayer reminders may arrive up to 10 minutes late or more.",
+  "@setExactHelp": {
+    "description": "Explanation of the exact alarm permission."
+  },
+  "setAllow": "Allow",
+  "@setAllow": {
+    "description": "Button that opens the Android screen to allow exact alarms."
+  },
+  "setOsDelayNote": "Reminders may be delayed by Android or battery settings.",
+  "@setOsDelayNote": {
+    "description": "Note at the end of notification settings (docs/11 12.1)."
+  },
+  "setPrivacyIntro": "Your prayers, reading and other logs stay on this phone. We do not receive them.",
+  "@setPrivacyIntro": {
+    "description": "Intro on the privacy screen (docs/11 12.4)."
+  },
+  "setSharing": "Sharing",
+  "@setSharing": {
+    "description": "Section header for analytics and crash report consent."
+  },
+  "setSharingHelp": "Both are off unless you turn them on. You can turn them off at any time.",
+  "@setSharingHelp": {
+    "description": "Explanation under the sharing header."
+  },
+  "setAnalytics": "Anonymous usage",
+  "@setAnalytics": {
+    "description": "Switch for anonymous analytics (opt-in)."
+  },
+  "setCrashReports": "Crash reports",
+  "@setCrashReports": {
+    "description": "Switch for sending crash reports (opt-in)."
+  },
+  "setPrivacyPolicy": "Privacy policy",
+  "@setPrivacyPolicy": {
+    "description": "Row that opens the privacy policy in the browser."
+  },
+  "setYourData": "Your data",
+  "@setYourData": {
+    "description": "Section header for deleting all data."
+  },
+  "setYourDataHelp": "Deleting removes everything you saved in the app and starts again from the beginning.",
+  "@setYourDataHelp": {
+    "description": "Explanation above the delete all data button."
+  },
+  "setDeleteAll": "Delete all my data",
+  "@setDeleteAll": {
+    "description": "Destructive button that deletes all user data."
+  },
+  "setDeleteTitle": "Delete all data?",
+  "@setDeleteTitle": {
+    "description": "Title of the delete confirmation dialog."
+  },
+  "setDeleteBody": "Your logs, saved cards, settings and progress will be deleted from this phone. This can't be undone.",
+  "@setDeleteBody": {
+    "description": "Body of the delete confirmation dialog."
+  },
+  "setDeleteTypeLabel": "Type {word} to confirm",
+  "@setDeleteTypeLabel": {
+    "description": "Label of the text field in the delete dialog. word is always DELETE (not translated).",
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "setDeleteConfirm": "Delete",
+  "@setDeleteConfirm": {
+    "description": "Confirm button of the delete dialog."
+  },
+  "setSourcesIntro": "Mursa shows these texts without any changes, as published by their sources.",
+  "@setSourcesIntro": {
+    "description": "Intro of the sources and licenses screen (docs/09 4)."
+  },
+  "setSourcesEmpty": "No sources found",
+  "@setSourcesEmpty": {
+    "description": "Empty state when content has no source records."
+  },
+  "setSourceKind": "{kind, select, quran_text{Quran text} quran_text_search{Quran text for search} quran_metadata{Quran metadata} translation{Translations of the meanings} word{Word by word} hadith{Hadith} dua{Dua} name{Names of Allah} reflection{Reflections} curated{Mursa content} audio{Recitations} city{Places} font{Fonts} other{Other}}",
+  "@setSourceKind": {
+    "description": "Group header on the sources screen by type of content.",
+    "placeholders": {
+      "kind": {
+        "type": "String"
+      }
+    }
+  },
+  "setContentVersion": "Content version {version}",
+  "@setContentVersion": {
+    "description": "Version of the bundled content, e.g. 'Content version 2026.11.1'.",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "setSourcesReport": "If you notice an error in a text, please report it. We will review it and pass it on to the source.",
+  "@setSourcesReport": {
+    "description": "Note at the end of the sources screen."
+  },
+  "setLicenseLink": "License",
+  "@setLicenseLink": {
+    "description": "Link to the full license text in the source detail."
+  },
+  "setLinkFailed": "Couldn't open {url}",
+  "@setLinkFailed": {
+    "description": "Snackbar when the browser can't be opened.",
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "setOpenSourceLicenses": "Open-source licenses",
+  "@setOpenSourceLicenses": {
+    "description": "Button that opens the list of open-source licenses (packages and fonts)."
+  },
+  "setAppVersion": "App version",
+  "@setAppVersion": {
+    "description": "Row title with the app version."
+  },
+  "setContentVersionTitle": "Content version",
+  "@setContentVersionTitle": {
+    "description": "Row title with the version of the bundled content."
+  },
+  "setUnavailable": "Unavailable",
+  "@setUnavailable": {
+    "description": "Shown when a value can't be read."
+  },
+  "setDisclaimers": "Please note",
+  "@setDisclaimers": {
+    "description": "Section header for disclaimers on the About screen."
+  },
+  "setDisclaimerPrayer": "Prayer times are calculated on your device using the method you selected. Results can differ from your local mosque by several minutes, especially at high latitudes and around daylight saving changes. Please confirm times with your local mosque or Islamic authority and adjust them in Settings if needed. Reminders may be delayed by the operating system or battery settings.",
+  "@setDisclaimerPrayer": {
+    "description": "Prayer times disclaimer (docs/11 12.1). Legal text, translate faithfully."
+  },
+  "setDisclaimerQuran": "The Arabic text of the Qur'an is the Tanzil Uthmani text (Tanzil Project, tanzil.net), shown without any modification. Translations convey the meanings of the Qur'an; they are not the Qur'an itself.",
+  "@setDisclaimerQuran": {
+    "description": "Quran text and translation disclaimer (docs/11 12.2). Legal text, translate faithfully."
+  },
+  "setDisclaimerRulings": "Mursa is a reminder and habit tool. It does not issue religious rulings (fatwas). For questions of religious practice, please consult a qualified scholar.",
+  "@setDisclaimerRulings": {
+    "description": "Religious content disclaimer (docs/11 12.3). Legal text, translate faithfully."
+  },
+  "setMore": "More",
+  "@setMore": {
+    "description": "Section header with links on the About screen."
+  },
+  "setFeedback": "Send feedback",
+  "@setFeedback": {
+    "description": "Row that opens the feedback form in the browser."
+  },
+  "setHadithExtra": "Hadith explanations",
+  "@setHadithExtra": {
+    "description": "Row on the About screen for the downloaded hadith explanations pack."
+  },
+  "setSizeMb": "{size} MB on this phone",
+  "@setSizeMb": {
+    "description": "Size of downloaded content, e.g. '12.4 MB on this phone'.",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "setHadithExtraDeleteTitle": "Delete hadith explanations?",
+  "@setHadithExtraDeleteTitle": {
+    "description": "Confirm dialog title for deleting the downloaded explanations pack."
+  },
+  "setHadithExtraDeleteBody": "You can download them again from a hadith card.",
+  "@setHadithExtraDeleteBody": {
+    "description": "Confirm dialog body for deleting the downloaded explanations pack."
+  },
+  "ramadanDayLabel": "Ramadan · day {day}",
+  "@ramadanDayLabel": {
+    "description": "Header of the Ramadan card on Today during the fasting day (fajr to maghrib), e.g. 'Ramadan · day 12'.",
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "ramadanNightLabel": "Ramadan · night {night}",
+  "@ramadanNightLabel": {
+    "description": "Header of the Ramadan card on Today between maghrib and fajr. The Islamic day starts at maghrib, so the evening of day 26 is night 27.",
+    "placeholders": {
+      "night": {
+        "type": "int"
+      }
+    }
+  },
+  "ramadanSuhurEndsAt": "Suhur ends at {time}",
+  "@ramadanSuhurEndsAt": {
+    "description": "Main line of the Ramadan card before fajr: time when suhur (pre-dawn meal) ends, e.g. 'Suhur ends at 05:12'.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "ramadanIftarAt": "Iftar at {time}",
+  "@ramadanIftarAt": {
+    "description": "Main line of the Ramadan card during the day: time of iftar (maghrib), e.g. 'Iftar at 17:02'.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "ramadanInHoursMinutes": "in {hours} h {minutes} min",
+  "@ramadanInHoursMinutes": {
+    "description": "Countdown under the suhur/iftar time, e.g. 'in 2 h 14 min'.",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "ramadanInMinutes": "in {minutes} min",
+  "@ramadanInMinutes": {
+    "description": "Countdown under one hour, e.g. 'in 12 min'.",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "ramadanSetLocation": "Set your location to see suhur and iftar times.",
+  "@ramadanSetLocation": {
+    "description": "Shown in the Ramadan card when no location is set (no prayer times)."
+  },
+  "ramadanSetLocationAction": "Set location",
+  "@ramadanSetLocationAction": {
+    "description": "Button in the Ramadan card that opens location settings."
+  },
+  "ramadanExpectedStart": "Ramadan is expected to start on {date}.",
+  "@ramadanExpectedStart": {
+    "description": "Info line a few days before Ramadan (calculated start date).",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "ramadanStartsOn": "Ramadan starts on {date}.",
+  "@ramadanStartsOn": {
+    "description": "Info line after the start date was confirmed.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "ramadanStartQuestion": "When does Ramadan start in your community?",
+  "@ramadanStartQuestion": {
+    "description": "Question card on 29 Shaban afternoon. The user answers according to the local moon sighting."
+  },
+  "ramadanStartTomorrow": "Tomorrow",
+  "@ramadanStartTomorrow": {
+    "description": "Answer: Ramadan (first fast) starts tomorrow."
+  },
+  "ramadanStartDayAfter": "Day after tomorrow",
+  "@ramadanStartDayAfter": {
+    "description": "Answer: Ramadan (first fast) starts the day after tomorrow."
+  },
+  "ramadanUseCalculation": "I don't know, use the calculation",
+  "@ramadanUseCalculation": {
+    "description": "Answer: keep the calculated date (Umm al-Qura calendar with the user's offset)."
+  },
+  "ramadanEndQuestion": "Is Eid tomorrow in your community?",
+  "@ramadanEndQuestion": {
+    "description": "Question card on the afternoon of day 29 of Ramadan. Eid = Eid al-Fitr."
+  },
+  "ramadanAnswerYes": "Yes",
+  "@ramadanAnswerYes": {
+    "description": "Answer yes to the Eid question."
+  },
+  "ramadanAnswerNo": "No",
+  "@ramadanAnswerNo": {
+    "description": "Answer no to the Eid question (Ramadan has 30 days)."
+  },
+  "ramadanFastTitle": "Your fast on day {day}",
+  "@ramadanFastTitle": {
+    "description": "Title of the optional fast log after iftar. Neutral, no judgement.",
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "ramadanFastFasted": "Fasted",
+  "@ramadanFastFasted": {
+    "description": "Fast log option: I fasted."
+  },
+  "ramadanFastNotFasted": "Not today",
+  "@ramadanFastNotFasted": {
+    "description": "Fast log option: I did not fast today. Neutral wording, no judgement."
+  },
+  "ramadanFastExcused": "Excused",
+  "@ramadanFastExcused": {
+    "description": "Fast log option: excused from fasting (no reason is asked or stored)."
+  },
+  "ramadanNotifSuhurTitle": "Suhur · {time}",
+  "@ramadanNotifSuhurTitle": {
+    "description": "Title of the suhur reminder notification (replaces the morning reminder during Ramadan), e.g. 'Suhur · 04:27'. No verses or names of Allah.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "ramadanNotifSuhurBody": "{minutes, plural, =1{Suhur ends in 1 minute.} other{Suhur ends in {minutes} minutes.}}",
+  "@ramadanNotifSuhurBody": {
+    "description": "Body of the suhur reminder notification.",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "ramadanNotifIftarTitle": "Iftar · {time}",
+  "@ramadanNotifIftarTitle": {
+    "description": "Title of the maghrib notification on a fasting day (merged with iftar), e.g. 'Iftar · 17:02'. No verses or names of Allah.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "cardSourceLine": "Source: {attribution}",
+  "@cardSourceLine": {
+    "description": "Small line under a hadith with the source of the text and its version, e.g. 'Source: HadeethEnc.com - Encyclopedia of Translated Prophetic Hadiths, version snapshot-2026-10-29'. The attribution comes from the content database and is not translated.",
+    "placeholders": {
+      "attribution": {
+        "type": "String"
+      }
+    }
+  },
+  "cardSourceLineVersion": "Source: {attribution}, version {version}",
+  "@cardSourceLineVersion": {
+    "description": "Like cardSourceLine, used when the attribution text from the database does not contain the version number.",
+    "placeholders": {
+      "attribution": {
+        "type": "String"
+      },
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "reportBody": "The report is a text file that you send yourself, for example by e-mail. It contains the card reference and technical details from the app. Your prayers, reading and location are not included.",
+  "@reportBody": {
+    "description": "Report a problem sheet: explains what the report contains and that the user sends it."
+  },
+  "reportDescriptionLabel": "What is wrong? (optional)",
+  "@reportDescriptionLabel": {
+    "description": "Report a problem sheet: label of the free text field."
+  },
+  "reportIncludeLog": "Attach technical log",
+  "@reportIncludeLog": {
+    "description": "Report a problem sheet: checkbox to include the app's technical log."
+  },
+  "reportIncludeLogHelp": "Errors and app events, without your data.",
+  "@reportIncludeLogHelp": {
+    "description": "Report a problem sheet: help text under the technical log checkbox."
+  },
+  "reportPreview": "Show the exact text",
+  "@reportPreview": {
+    "description": "Report a problem sheet: expandable preview of the exact report text."
+  },
+  "reportShare": "Share report",
+  "@reportShare": {
+    "description": "Report a problem sheet: opens the system share sheet with the report file."
+  },
+  "reportShareFailed": "Sharing did not open. Try again.",
+  "@reportShareFailed": {
+    "description": "Report a problem sheet: error when the share sheet could not be opened."
+  },
+  "reportShareSubject": "{app} problem report",
+  "@reportShareSubject": {
+    "description": "Subject of the shared report (e.g. e-mail subject).",
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "setReportProblem": "Report a problem",
+  "@setReportProblem": {
+    "description": "Settings > About: opens the report a problem sheet."
+  },
+  "todayGatePaused": "The gate is paused",
+  "@todayGatePaused": {
+    "description": "Banner on Today when the app gate is on but a needed permission is missing."
+  },
+  "todayGatePausedBody": "A permission it needs is off.",
+  "@todayGatePausedBody": {
+    "description": "Banner on Today: body under 'The gate is paused'."
+  },
+  "todayGateFix": "Fix",
+  "@todayGateFix": {
+    "description": "Banner on Today: opens the gate permissions screen."
+  },
+  "setGateNeedsAttention": "Needs attention",
+  "@setGateNeedsAttention": {
+    "description": "Settings: tooltip/label of the warning icon next to 'The gate' when a permission is missing."
+  },
+  "notifChannelPrayer": "Prayer times",
+  "@notifChannelPrayer": {
+    "description": "Android notification channel name for prayer time reminders (system settings)."
+  },
+  "notifChannelPrayerDescription": "A quiet notice at each prayer time.",
+  "@notifChannelPrayerDescription": {
+    "description": "Android notification channel description for prayer time reminders."
+  },
+  "notifChannelDaily": "Daily reminder",
+  "@notifChannelDaily": {
+    "description": "Android notification channel name for the morning reminder."
+  },
+  "notifChannelDailyDescription": "One reminder in the morning when your cards are ready.",
+  "@notifChannelDailyDescription": {
+    "description": "Android notification channel description for the morning reminder."
+  },
+  "notifChannelSystem": "App messages",
+  "@notifChannelSystem": {
+    "description": "Android notification channel name for app messages (reminders paused soon, missing permissions)."
+  },
+  "notifChannelSystemDescription": "Rare messages about reminders and permissions.",
+  "@notifChannelSystemDescription": {
+    "description": "Android notification channel description for app messages."
+  },
+  "notifPrayerName": "{prayer, select, fajr{Fajr} dhuhr{Dhuhr} asr{Asr} maghrib{Maghrib} isha{Isha} jumuah{Jumu'ah} other{Prayer}}",
+  "@notifPrayerName": {
+    "description": "Prayer name used in prayer notifications. Transliteration as in the prayer screen.",
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
+  "notifPrayerTitle": "{prayer} · {time}",
+  "@notifPrayerTitle": {
+    "description": "Title of a prayer notification, e.g. 'Asr · 15:12'. No verses or names of Allah.",
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "notifPrayerBody": "It's time for {prayer}.",
+  "@notifPrayerBody": {
+    "description": "Body of a prayer notification. No verses or names of Allah.",
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
+  "notifPrivateTitle": "{appName} · {time}",
+  "@notifPrivateTitle": {
+    "description": "Neutral title of a prayer notification in private mode (lock screen), e.g. 'Mursa · 15:12'.",
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "notifPrivateBody": "Reminder",
+  "@notifPrivateBody": {
+    "description": "Neutral body of a prayer notification in private mode."
+  },
+  "notifMorningTitle": "Good morning",
+  "@notifMorningTitle": {
+    "description": "Title of the morning reminder."
+  },
+  "notifMorningBody": "Today's cards are ready. {minutes, plural, =1{About 1 minute.} other{About {minutes} minutes.}}",
+  "@notifMorningBody": {
+    "description": "Body of the morning reminder.",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "notifMorningEventBody": "Today's cards are ready, with something special for {eventName}.",
+  "@notifMorningEventBody": {
+    "description": "Body of the morning reminder on an event day. Title is the event name.",
+    "placeholders": {
+      "eventName": {
+        "type": "String"
+      }
+    }
+  },
+  "notifMorningPrivateBody": "Your daily reminder",
+  "@notifMorningPrivateBody": {
+    "description": "Neutral body of the morning reminder in private mode. Title is the app name."
+  },
+  "notifOpenAppTitle": "Prayer reminders paused soon",
+  "@notifOpenAppTitle": {
+    "description": "Last planned notification when the app was not opened for 10 days."
+  },
+  "notifOpenAppBody": "Open {appName} to keep your prayer reminders coming.",
+  "@notifOpenAppBody": {
+    "description": "Body of the last planned notification.",
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "notifOpenAppPrivateBody": "Open the app to keep reminders on",
+  "@notifOpenAppPrivateBody": {
+    "description": "Neutral body of the last planned notification in private mode. Title is the app name."
+  },
+  "notifInexactNote": "Reminders may arrive up to 10 minutes late or more. Allow \"Alarms & reminders\" for exact times.",
+  "@notifInexactNote": {
+    "description": "Info line in Settings and Prayer screen when exact alarms are not allowed (not a notification)."
+  },
+  "appTitle": "Mursa",
+  "@appTitle": {
+    "description": "Application name."
+  },
+  "tabToday": "Today",
+  "@tabToday": {
+    "description": "Bottom navigation label for the Today tab."
+  },
+  "tabQuran": "Quran",
+  "@tabQuran": {
+    "description": "Bottom navigation label for the Quran tab."
+  },
+  "tabPrayer": "Prayer",
+  "@tabPrayer": {
+    "description": "Bottom navigation label for the Prayer tab."
+  },
+  "tabJourney": "Journey",
+  "@tabJourney": {
+    "description": "Bottom navigation label for the Journey tab."
+  },
+  "feedTitle": "Daily cards",
+  "@feedTitle": {
+    "description": "Title of the fullscreen daily card feed."
+  },
+  "gateTitle": "Pause",
+  "@gateTitle": {
+    "description": "Title of the gate screen shown before a blocked app."
+  },
+  "beginTodaysCards": "Begin today's cards",
+  "@beginTodaysCards": {
+    "description": "Call to action on Today that opens the feed."
+  },
+  "errorGeneric": "This part could not be loaded.",
+  "@errorGeneric": {
+    "description": "Neutral fallback shown instead of a broken widget."
+  },
+  "skLoading": "Loading",
+  "@skLoading": {
+    "description": "Screen reader label of a loading indicator (SkLoadingState)."
+  },
+  "skStillLoading": "Still loading…",
+  "@skStillLoading": {
+    "description": "Shown when loading takes longer than expected."
+  },
+  "skTryAgain": "Try again",
+  "@skTryAgain": {
+    "description": "Retry button in error states."
+  },
+  "skDismiss": "Dismiss",
+  "@skDismiss": {
+    "description": "Closes a banner or hint."
+  },
+  "skUndo": "Undo",
+  "@skUndo": {
+    "description": "Snackbar action that reverts the last action."
+  },
+  "skCancel": "Cancel",
+  "@skCancel": {
+    "description": "Cancels a dialog or sheet."
+  },
+  "skDone": "Done",
+  "@skDone": {
+    "description": "Status of a completed quest or item."
+  },
+  "skSkippedForToday": "Skipped for today",
+  "@skSkippedForToday": {
+    "description": "Status of a quest the user skipped today."
+  },
+  "skIDidIt": "I did it",
+  "@skIDidIt": {
+    "description": "Button that marks a quest as completed."
+  },
+  "skNow": "Now",
+  "@skNow": {
+    "description": "Label of the current prayer time row."
+  },
+  "skFreeReading": "Free reading",
+  "@skFreeReading": {
+    "description": "Label of reading outside the daily plan."
+  },
+  "skDailyCards": "Daily cards",
+  "@skDailyCards": {
+    "description": "Name of the daily card set in progress components."
+  },
+  "skScrollForMore": "Scroll for more",
+  "@skScrollForMore": {
+    "description": "Hint that more content is below."
+  },
+  "skNotificationsOff": "Notifications off",
+  "@skNotificationsOff": {
+    "description": "Indicator that notifications for a prayer are turned off."
+  },
+  "skEstimated": "Estimated",
+  "@skEstimated": {
+    "description": "Marks a time that is calculated, not confirmed."
+  },
+  "skHoldToConfirm": "Press and hold to confirm",
+  "@skHoldToConfirm": {
+    "description": "Hint of a press-and-hold confirmation button."
+  },
+  "skContentUnavailableTitle": "This text can’t be shown",
+  "@skContentUnavailableTitle": {
+    "description": "Title shown when content failed its integrity check."
+  },
+  "skContentUnavailableBody": "Mursa couldn’t verify this content. Please try again later.",
+  "@skContentUnavailableBody": {
+    "description": "Body shown when content failed its integrity check."
+  },
+  "skProgressOf": "{n} of {total}",
+  "@skProgressOf": {
+    "description": "Progress such as '5 of 12'.",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "skPrayerStatusUnlogged": "Not logged",
+  "@skPrayerStatusUnlogged": {
+    "description": "Prayer log status: nothing recorded yet."
+  },
+  "skPrayerStatusOnTime": "On time",
+  "@skPrayerStatusOnTime": {
+    "description": "Prayer log status: on time."
+  },
+  "skPrayerStatusLate": "Late",
+  "@skPrayerStatusLate": {
+    "description": "Prayer log status: late."
+  },
+  "skPrayerStatusMissed": "Missed",
+  "@skPrayerStatusMissed": {
+    "description": "Prayer log status: missed."
+  },
+  "skPrayerStatusQada": "Made up",
+  "@skPrayerStatusQada": {
+    "description": "Prayer log status: made up later."
+  }
+}

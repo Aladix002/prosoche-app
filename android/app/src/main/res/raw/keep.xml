@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Resource shrinking (isShrinkResources) nevidi zdroje odkazovane menom
+     z Dartu, napr. ikonu notifikacie vo flutter_local_notifications
+     (AndroidInitializationSettings('ic_stat_...')). Bez toho by notifikacie
+     v release builde ticho zlyhali. -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@drawable/*,@mipmap/ic_launcher,@raw/*" />

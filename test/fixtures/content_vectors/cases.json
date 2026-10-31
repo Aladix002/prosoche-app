@@ -1,0 +1,372 @@
+{
+  "_comment": "TEST VEKTORY, len testovacie kluce (tests/vectors/generate.py). Poradie kontrol: malformedSignature (obalka nie je JSON objekt) -> unknownAlgorithm -> unknownKey -> wrongKeyRole -> revokedKey -> malformedSignature (sig nie je base64 alebo nema 64 B) -> badSignature -> (manifest) invalidManifest -> dbHashMismatch nad gz (gz_sha256/gz_size) aj rozbalenym (sha256/size) -> (pack, C-06) unknownPack (id nie je v manifest.packs) -> packHashMismatch (rovnako nad gz aj rozbalenym). expect = vysledok overenia podpisu a hashov; app_expect = co ma dalej rozhodnut logika appky.",
+  "public_keys": "public_keys.json",
+  "cases": [
+    {
+      "name": "manifest_ok",
+      "kind": "manifest",
+      "payload": "cases/manifest_ok/manifest.json",
+      "sig": "cases/manifest_ok/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "ok",
+      "gz": "content.db.gz",
+      "note": "platny manifest + content.db.gz (sha256/size sedia)"
+    },
+    {
+      "name": "manifest_ok_successor_key",
+      "kind": "manifest",
+      "payload": "cases/manifest_ok_successor_key/manifest.json",
+      "sig": "cases/manifest_ok_successor_key/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "ok",
+      "note": "rotacia: podpis nasledovnikom"
+    },
+    {
+      "name": "manifest_signed_by_root",
+      "kind": "manifest",
+      "payload": "cases/manifest_signed_by_root/manifest.json",
+      "sig": "cases/manifest_signed_by_root/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "ok",
+      "note": "root smie v nudzi podpisat obsah (06 B.2)"
+    },
+    {
+      "name": "manifest_bad_signature",
+      "kind": "manifest",
+      "payload": "cases/manifest_bad_signature/manifest.json",
+      "sig": "cases/manifest_bad_signature/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "badSignature",
+      "note": "1 bit v podpise"
+    },
+    {
+      "name": "manifest_tampered_byte",
+      "kind": "manifest",
+      "payload": "cases/manifest_tampered_byte/manifest.json",
+      "sig": "cases/manifest_tampered_byte/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "badSignature",
+      "note": "zmeneny bajt v manifeste po podpise"
+    },
+    {
+      "name": "manifest_reformatted_json",
+      "kind": "manifest",
+      "payload": "cases/manifest_reformatted_json/manifest.json",
+      "sig": "cases/manifest_reformatted_json/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "badSignature",
+      "note": "rovnaky JSON, ine bajty: podpis je nad surovymi bajtmi, ziadna kanonikalizacia"
+    },
+    {
+      "name": "manifest_wrong_key_same_kid",
+      "kind": "manifest",
+      "payload": "cases/manifest_wrong_key_same_kid/manifest.json",
+      "sig": "cases/manifest_wrong_key_same_kid/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "badSignature",
+      "note": "kid test-content-a, ale podpisane inym klucom"
+    },
+    {
+      "name": "manifest_unknown_kid",
+      "kind": "manifest",
+      "payload": "cases/manifest_unknown_kid/manifest.json",
+      "sig": "cases/manifest_unknown_kid/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "unknownKey"
+    },
+    {
+      "name": "manifest_revoked_kid",
+      "kind": "manifest",
+      "payload": "cases/manifest_revoked_kid/manifest.json",
+      "sig": "cases/manifest_revoked_kid/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [
+        "test-content-a"
+      ],
+      "expect": "revokedKey",
+      "note": "revoked = perzistentna mnozina v appke"
+    },
+    {
+      "name": "manifest_wrong_alg",
+      "kind": "manifest",
+      "payload": "cases/manifest_wrong_alg/manifest.json",
+      "sig": "cases/manifest_wrong_alg/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "unknownAlgorithm"
+    },
+    {
+      "name": "manifest_envelope_not_json",
+      "kind": "manifest",
+      "payload": "cases/manifest_envelope_not_json/manifest.json",
+      "sig": "cases/manifest_envelope_not_json/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "malformedSignature"
+    },
+    {
+      "name": "manifest_sig_not_base64",
+      "kind": "manifest",
+      "payload": "cases/manifest_sig_not_base64/manifest.json",
+      "sig": "cases/manifest_sig_not_base64/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "malformedSignature"
+    },
+    {
+      "name": "manifest_sig_wrong_length",
+      "kind": "manifest",
+      "payload": "cases/manifest_sig_wrong_length/manifest.json",
+      "sig": "cases/manifest_sig_wrong_length/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "malformedSignature",
+      "note": "podpis musi mat 64 B"
+    },
+    {
+      "name": "manifest_db_corrupt",
+      "kind": "manifest",
+      "payload": "cases/manifest_db_corrupt/manifest.json",
+      "sig": "cases/manifest_db_corrupt/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "dbHashMismatch",
+      "gz": "content_corrupt.db.gz",
+      "note": "podpis OK, stiahnuty subor nesedi"
+    },
+    {
+      "name": "manifest_min_app_too_high",
+      "kind": "manifest",
+      "payload": "cases/manifest_min_app_too_high/manifest.json",
+      "sig": "cases/manifest_min_app_too_high/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "ok",
+      "app_expect": {
+        "app_version": "1.0.0",
+        "result": "appTooOld"
+      }
+    },
+    {
+      "name": "manifest_not_newer",
+      "kind": "manifest",
+      "payload": "cases/manifest_not_newer/manifest.json",
+      "sig": "cases/manifest_not_newer/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "ok",
+      "app_expect": {
+        "installed_content_version": 2026010101,
+        "result": "notNewer"
+      },
+      "note": "anti-rollback: akceptuje len vyssiu content_version"
+    },
+    {
+      "name": "manifest_pack_ok",
+      "kind": "manifest",
+      "payload": "cases/manifest_pack_ok/manifest.json",
+      "sig": "cases/manifest_pack_ok/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "ok",
+      "gz": "content.db.gz",
+      "pack": {
+        "id": "hadith_extra",
+        "gz": "hadith_extra.db.gz"
+      },
+      "note": "manifest.packs[hadith_extra] + hadith_extra.db.gz (sha256/size sedia)"
+    },
+    {
+      "name": "manifest_pack_hash_mismatch",
+      "kind": "manifest",
+      "payload": "cases/manifest_pack_hash_mismatch/manifest.json",
+      "sig": "cases/manifest_pack_hash_mismatch/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "packHashMismatch",
+      "gz": "content.db.gz",
+      "pack": {
+        "id": "hadith_extra",
+        "gz": "hadith_extra_corrupt.db.gz"
+      },
+      "note": "podpis aj content.db OK, stiahnuty balik nesedi: zahodit balik, content.db ostava"
+    },
+    {
+      "name": "manifest_pack_unknown",
+      "kind": "manifest",
+      "payload": "cases/manifest_pack_unknown/manifest.json",
+      "sig": "cases/manifest_pack_unknown/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "unknownPack",
+      "pack": {
+        "id": "hadith_extra",
+        "gz": "hadith_extra.db.gz"
+      },
+      "note": "manifest bez packs (format C-05): balik nie je k dispozicii"
+    },
+    {
+      "name": "manifest_pack_tampered",
+      "kind": "manifest",
+      "payload": "cases/manifest_pack_tampered/manifest.json",
+      "sig": "cases/manifest_pack_tampered/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "badSignature",
+      "pack": {
+        "id": "hadith_extra",
+        "gz": "hadith_extra.db.gz"
+      },
+      "note": "packs su sucastou podpisanych bajtov"
+    },
+    {
+      "name": "manifest_pack_invalid_entry",
+      "kind": "manifest",
+      "payload": "cases/manifest_pack_invalid_entry/manifest.json",
+      "sig": "cases/manifest_pack_invalid_entry/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "invalidManifest",
+      "pack": {
+        "id": "hadith_extra",
+        "gz": "hadith_extra.db.gz"
+      },
+      "note": "platny podpis, packs[0].optional nie je bool"
+    },
+    {
+      "name": "remote_config_ok",
+      "kind": "remote_config",
+      "payload": "cases/remote_config_ok/remote_config.json",
+      "sig": "cases/remote_config_ok/remote_config.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "ok"
+    },
+    {
+      "name": "remote_config_tampered",
+      "kind": "remote_config",
+      "payload": "cases/remote_config_tampered/remote_config.json",
+      "sig": "cases/remote_config_tampered/remote_config.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "badSignature"
+    },
+    {
+      "name": "remote_config_expired",
+      "kind": "remote_config",
+      "payload": "cases/remote_config_expired/remote_config.json",
+      "sig": "cases/remote_config_expired/remote_config.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "revoked": [],
+      "expect": "ok",
+      "app_expect": {
+        "now": "2026-05-01T00:00:00Z",
+        "result": "expired"
+      },
+      "note": "po expires_at appka pouzije defaulty z kodu"
+    },
+    {
+      "name": "revocations_ok",
+      "kind": "revocations",
+      "payload": "cases/revocations_ok/revocations.json",
+      "sig": "cases/revocations_ok/revocations.json.sig",
+      "allowed_roles": [
+        "root"
+      ],
+      "revoked": [],
+      "expect": "ok"
+    },
+    {
+      "name": "revocations_signed_by_content",
+      "kind": "revocations",
+      "payload": "cases/revocations_signed_by_content/revocations.json",
+      "sig": "cases/revocations_signed_by_content/revocations.json.sig",
+      "allowed_roles": [
+        "root"
+      ],
+      "revoked": [],
+      "expect": "wrongKeyRole",
+      "note": "online kluc nesmie revokovat"
+    }
+  ]
+}

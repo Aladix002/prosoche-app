@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Manifest overlay edicie full (B-01): brana pred appkami, TECHNICKY_PLAN 9.
+     Gradle ho zluci so src/main. V lite nic z tohto nesmie byt
+     (tool/check_manifest.sh). Nepouzivat AccessibilityService,
+     QUERY_ALL_PACKAGES ani REQUEST_IGNORE_BATTERY_OPTIMIZATIONS. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <!-- Special access, pouzivatel ho zapne v nastaveniach (ACTION_USAGE_ACCESS_SETTINGS). -->
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+    <!-- Vynimka zo zakazu spustat aktivity z pozadia (GateLauncher, docs/08 A). -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- Zoznam spustitelnych appiek bez QUERY_ALL_PACKAGES (InstalledAppsProvider). -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
+
+    <application
+        android:name="app.mursa.blocker.MursaFullApplication"
+        tools:replace="android:name">
+
+        <service
+            android:name="app.mursa.blocker.BlockerService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="User-enabled app gate: detects when an app the user chose to limit is opened (UsageStatsManager) and shows a short reflection screen before it." />
+        </service>
+
+        <activity
+            android:name="app.mursa.blocker.GateActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:taskAffinity="app.mursa.gate"
+            android:excludeFromRecents="true"
+            android:theme="@style/GateLaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/GateNormalTheme" />
+        </activity>
+
+        <receiver
+            android:name="app.mursa.blocker.BootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

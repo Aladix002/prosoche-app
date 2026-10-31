@@ -1,0 +1,16 @@
+Fonty (U-01). Vsetky SIL OFL 1.1, licencia v OFL.txt v kazdom adresari.
+Stiahnute 2026-10-29 z oficialnych zdrojov, subory nemenene (bez subsetu).
+Ziadny KFGQPC font (docs/09 2.7).
+
+amiri_quran/        AmiriQuran.ttf 1.003
+                    https://github.com/aliftype/amiri/releases/tag/1.003
+noto_naskh_arabic/  NotoNaskhArabic 2.021 (unhinted) Regular, Medium, SemiBold
+                    https://github.com/notofonts/arabic/releases/tag/NotoNaskhArabic-v2.021
+noto_nastaliq_urdu/ NotoNastaliqUrdu 4.000 (unhinted) Regular
+                    https://github.com/notofonts/nastaliq/releases/tag/NotoNastaliqUrdu-v4.000
+noto_sans_bengali/  NotoSansBengali 3.011 (unhinted) Regular, Medium, SemiBold
+                    https://github.com/notofonts/bengali/releases/tag/NotoSansBengali-v3.011
+inter/              Inter 4.1 static (extras/ttf) Regular, Medium, SemiBold
+                    https://github.com/rsms/inter/releases/tag/v4.1 (OFL.txt = LICENSE.txt)
+literata/           Literata 3.103 Regular, Italic, SemiBold
+                    https://github.com/googlefonts/literata/releases/tag/3.103

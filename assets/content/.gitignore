@@ -1,0 +1,4 @@
+# Pribalena content.db.gz (~9,5 MB) a jej manifest sa necommituju.
+# Pripravi ich tool/bundle_content.sh zo sakina-content/dist.
+*
+!.gitignore

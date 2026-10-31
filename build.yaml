@@ -1,0 +1,10 @@
+# Nastavenia generatorov (D-01). drift: bez managerov a overovacieho kodu,
+# aby generovany kod v lib/data/db ostal maly (pokrytie lib/data >= 80 %).
+targets:
+  $default:
+    builders:
+      drift_dev:
+        options:
+          generate_manager: false
+          skip_verification_code: true
+          fatal_warnings: true

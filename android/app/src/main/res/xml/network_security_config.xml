@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Len HTTPS (docs/06 B.5). Android 9+ blokuje cleartext defaultne,
+     minSdk 26 (Android 8) nie, preto explicitne. Bez certificate pinningu
+     (docs/06 B.5: integritu obsahu chrani podpis Ed25519). -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+    <!-- Len debuggable build: pouzivatelske CA pre proxy (mitmproxy). -->
+    <debug-overrides>
+        <trust-anchors>
+            <certificates src="user" />
+        </trust-anchors>
+    </debug-overrides>
+</network-security-config>

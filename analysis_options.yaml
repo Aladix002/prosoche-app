@@ -1,0 +1,24 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.pigeon.dart"
+    - lib/core/l10n/generated/**
+    - test/data/migrations/generated/**
+    - build/**
+    - android/**
+    - ios/**
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+
+linter:
+  rules:
+    # Appka, nie kniznica: dokumentacia verejneho API nie je povinna.
+    public_member_api_docs: false
+    # Nova syntax Dart 3.13 (`const new(...)`). Vypnute, aby generovany kod
+    # a paralelne ulohy pisali klasicke konstruktory jednotne.
+    unnecessary_type_name_in_constructor: false
