@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:prosoche/data/notifications/notification_platform.dart';
 import 'package:prosoche/domain/notifications/notifications.dart';
@@ -15,9 +14,6 @@ final class LocalNotificationsPlatform implements NotificationPlatform {
 
   /// Mala ikona notifikacie (docasne ikona appky, vid handoff P-02).
   static const androidIcon = '@mipmap/ic_launcher';
-
-  /// Kod chyby pluginu pri presnom alarme bez povolenia.
-  static const exactNotPermittedCode = 'exact_alarms_not_permitted';
 
   AndroidFlutterLocalNotificationsPlugin? get _android => _plugin
       .resolvePlatformSpecificImplementation<
@@ -53,47 +49,22 @@ final class LocalNotificationsPlatform implements NotificationPlatform {
       PendingNotification(r.id, r.payload),
   ];
 
+  /// Vzdy nepresne (`inexactAllowWhileIdle`): pripomienky nepotrebuju
+  /// presny cas, appka nema `SCHEDULE_EXACT_ALARM` ani `USE_EXACT_ALARM`.
   @override
-  Future<void> schedule(
-    ScheduledNotification notification, {
-    required bool exact,
-  }) async {
-    try {
-      await _plugin.zonedSchedule(
+  Future<void> schedule(ScheduledNotification notification) =>
+      _plugin.zonedSchedule(
         id: notification.id,
         scheduledDate: notification.at,
         notificationDetails: details(notification),
-        androidScheduleMode: exact
-            ? AndroidScheduleMode.exactAllowWhileIdle
-            : AndroidScheduleMode.inexactAllowWhileIdle,
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
         title: notification.title,
         body: notification.body,
         payload: notification.payload,
       );
-    } on PlatformException catch (e) {
-      if (e.code == exactNotPermittedCode) {
-        throw const ExactAlarmNotPermittedException();
-      }
-      rethrow;
-    }
-  }
 
   @override
   Future<void> cancel(int id) => _plugin.cancel(id: id);
-
-  @override
-  Future<bool> canScheduleExact() async {
-    final android = _android;
-    if (android == null) return true;
-    return await android.canScheduleExactNotifications() ?? false;
-  }
-
-  @override
-  Future<bool> requestExactAlarms() async {
-    final android = _android;
-    if (android == null) return true;
-    return await android.requestExactAlarmsPermission() ?? false;
-  }
 
   @override
   Future<bool> requestPermission() async {

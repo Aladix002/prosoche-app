@@ -63,7 +63,7 @@ void main() {
     expect(await fakes.cards.load(fakeQuoteId(1), lang: 'en'), isNotNull);
     expect(
       await fakes.cards.load(ContentCardId(CardType.practice, 'p'), lang: 'en'),
-      isNull,
+      isA<PracticeContent>(),
     );
     expect(await fakes.cards.load(DoneCardId(thu), lang: 'en'), isNull);
 

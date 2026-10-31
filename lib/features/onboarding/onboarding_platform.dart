@@ -23,22 +23,17 @@ Future<void> openSystemAppSettings() async {
 /// Stav povoleni notifikacii (O4).
 @immutable
 final class NotificationAccess {
-  const NotificationAccess({required this.enabled, required this.exact});
+  const NotificationAccess({required this.enabled});
 
   /// Notifikacie appky su zapnute (Android < 13 vzdy).
   final bool enabled;
 
-  /// Smie planovat presne alarmy (`canScheduleExactAlarms`).
-  final bool exact;
-
   @override
   bool operator ==(Object other) =>
-      other is NotificationAccess &&
-      other.enabled == enabled &&
-      other.exact == exact;
+      other is NotificationAccess && other.enabled == enabled;
 
   @override
-  int get hashCode => Object.hash(enabled, exact);
+  int get hashCode => enabled.hashCode;
 }
 
 /// Povolenia notifikacii pre O4 nad [NotificationPlatform] (P-02).
@@ -47,9 +42,6 @@ abstract interface class OnboardingNotifications {
 
   /// `POST_NOTIFICATIONS` (Android 13+). Vrati, ci su povolene.
   Future<bool> requestPermission();
-
-  /// Otvori `ACTION_REQUEST_SCHEDULE_EXACT_ALARM`.
-  Future<void> requestExactAlarms();
 
   /// Otvori systemove nastavenia appky (zamietnute notifikacie).
   Future<void> openAppSettings();
@@ -70,10 +62,7 @@ final class PlatformOnboardingNotifications implements OnboardingNotifications {
       }
     }
 
-    return NotificationAccess(
-      enabled: await safe(_platform.areEnabled),
-      exact: await safe(_platform.canScheduleExact),
-    );
+    return NotificationAccess(enabled: await safe(_platform.areEnabled));
   }
 
   @override
@@ -82,15 +71,6 @@ final class PlatformOnboardingNotifications implements OnboardingNotifications {
       return await _platform.requestPermission();
     } on Object {
       return false;
-    }
-  }
-
-  @override
-  Future<void> requestExactAlarms() async {
-    try {
-      await _platform.requestExactAlarms();
-    } on Object {
-      // Stav sa znova nacita po navrate do appky.
     }
   }
 

@@ -78,12 +78,27 @@ void main() {
         ),
       );
       expect(find.byKey(const ValueKey('notif:blocked')), findsNothing);
-      expect(find.text('Allowed'), findsOneWidget);
+      // F-01: ziadne presne alarmy, len nepresne pripomienky.
+      expect(find.text('Allowed'), findsNothing);
       await tester.tap(find.byKey(const ValueKey('notif:private')));
       await tester.tap(find.byKey(const ValueKey('notif:morning')));
       await tester.pumpAndSettle();
       expect(await settings.get(SettingsKeys.notifPrivateLockscreen), isFalse);
       expect(await settings.get(SettingsKeys.notifMorningEnabled), isFalse);
+      expect(await settings.get(SettingsKeys.notifEveningEnabled), isFalse);
+      await tester.scrollUntilVisible(
+        find.byKey(const ValueKey('notif:evening')),
+        100,
+      );
+      await tester.tap(find.byKey(const ValueKey('notif:evening')));
+      await tester.pumpAndSettle();
+      expect(await settings.get(SettingsKeys.notifEveningEnabled), isTrue);
+      expect(find.text('9:00 PM'), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('notif:evening_time')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('OK'));
+      await tester.pumpAndSettle();
+      expect(await settings.get(SettingsKeys.notifEveningTime), '21:00');
     });
 
     testWidgets('morning time picker', (tester) async {
@@ -102,8 +117,8 @@ void main() {
       expect(await settings.get(SettingsKeys.notifMorningTime), '07:30');
     });
 
-    testWidgets('blocked notifications and exact alarms', (tester) async {
-      final access = FakeNotificationAccess(enabled: false, exact: false);
+    testWidgets('blocked notifications', (tester) async {
+      final access = FakeNotificationAccess(enabled: false);
       await pumpSettings(
         tester,
         location: SettingsPaths.notifications,
@@ -115,14 +130,9 @@ void main() {
       expect(find.byKey(const ValueKey('notif:blocked')), findsOneWidget);
       await tester.tap(find.text('Open settings'));
       expect(access.settingsOpened, 1);
-      expect(find.text('Not allowed'), findsOneWidget);
-      await tester.tap(find.text('Allow'));
-      expect(access.exactRequests, 1);
 
       // Navrat do appky obnovi stav.
-      access
-        ..enabled = true
-        ..exact = true;
+      access.enabled = true;
       [
         AppLifecycleState.inactive,
         AppLifecycleState.hidden,
@@ -133,7 +143,6 @@ void main() {
       ].forEach(tester.binding.handleAppLifecycleStateChanged);
       await tester.pumpAndSettle();
       expect(find.byKey(const ValueKey('notif:blocked')), findsNothing);
-      expect(find.text('Allowed'), findsOneWidget);
     });
   });
 }

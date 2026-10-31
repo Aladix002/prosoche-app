@@ -10,7 +10,8 @@
 # lite: nesmie mat FOREGROUND_SERVICE_SPECIAL_USE, PACKAGE_USAGE_STATS,
 #       SYSTEM_ALERT_WINDOW (brana je len vo full).
 # vsetky: nesmu mat QUERY_ALL_PACKAGES, REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
-#       USE_EXACT_ALARM, BIND_ACCESSIBILITY_SERVICE (PLAN_VYVOJA 5.5 bod 6).
+#       USE_EXACT_ALARM, SCHEDULE_EXACT_ALARM (F-01: len inexact), polohu,
+#       BIND_ACCESSIBILITY_SERVICE (PLAN_VYVOJA 5.5 bod 6).
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
@@ -72,6 +73,9 @@ forbidden=(
   android.permission.QUERY_ALL_PACKAGES
   android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
   android.permission.USE_EXACT_ALARM
+  android.permission.SCHEDULE_EXACT_ALARM
+  android.permission.ACCESS_FINE_LOCATION
+  android.permission.ACCESS_COARSE_LOCATION
   android.permission.BIND_ACCESSIBILITY_SERVICE
 )
 if [[ "$edition" == lite ]]; then

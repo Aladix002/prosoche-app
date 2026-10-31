@@ -32,7 +32,7 @@ void main() {
     tz: 'Europe/Bratislava',
   );
 
-  test('layout: intro and quotes for 8/12/16', () {
+  test('layout: only quotes in the pool fill every slot with quotes', () {
     for (final n in FeedPrefs.allowedCardsCounts) {
       final set = generator.generate(inputs(cardsCount: n)).set;
       expect(set.n, n);
@@ -42,6 +42,71 @@ void main() {
       expect(set.cards.map((c) => c.cardId).toSet(), hasLength(n));
       expect(FeedGenerator.layouts[n], hasLength(n));
     }
+  });
+
+  FeedPools mixed() => FeedPools({
+    for (final t in CardType.values.where((t) => t.isContent))
+      t: [
+        for (var i = 1; i <= 20; i++)
+          FeedCandidate(
+            id: ContentCardId(t, '${t.wire}.$i'),
+            tags: [if (i == 1) 'morning', if (i == 2) 'evening'],
+            timeOfDay: TimeOfDayFacet.fromTags([
+              if (i == 1) 'morning',
+              if (i == 2) 'evening',
+            ]),
+          ),
+      ],
+  });
+
+  test('layout mixes every content type (12 and 16)', () {
+    for (final n in [12, 16]) {
+      final set = generator.generate(inputs(cardsCount: n, pools: mixed())).set;
+      expect(set.n, n);
+      final types = set.cards.map((c) => c.cardId.type).toSet();
+      expect(types, containsAll(CardType.values.where((t) => t.isContent)));
+      for (final c in set.cards) {
+        expect(c.slot.cardType, c.cardId.type);
+      }
+      expect(
+        set.cards.where((c) => c.slot == Slot.quote).length,
+        greaterThanOrEqualTo(5),
+        reason: 'read quest needs quotes',
+      );
+    }
+    final small = generator.generate(inputs(cardsCount: 8, pools: mixed())).set;
+    expect(small.cards.map((c) => c.slot), FeedGenerator.layouts[8]);
+  });
+
+  test('author slot is fresh-only: exhausted pool falls back to a quote', () {
+    final pools = mixed();
+    final history = FeedHistory(
+      lastShown: {
+        for (final c in pools.of(CardType.author)) c.id: date.addDays(-2),
+      },
+    );
+    final set = generator.generate(inputs(pools: pools, history: history)).set;
+    expect(
+      set.cards.map((c) => c.cardId.type),
+      isNot(contains(CardType.author)),
+    );
+    expect(set.n, 12);
+    // Pojmy nie su fresh-only: najdavnejsie pouzity sa zopakuje.
+    final concepts = FeedHistory(
+      lastShown: {
+        for (final c in pools.of(CardType.concept)) c.id: date.addDays(-2),
+      },
+    );
+    final again = generator
+        .generate(inputs(pools: pools, history: concepts))
+        .set;
+    expect(again.cards.map((c) => c.cardId.type), contains(CardType.concept));
+  });
+
+  test('time of day facet from tags', () {
+    expect(TimeOfDayFacet.fromTags(['morning', 'x']), TimeOfDayFacet.morning);
+    expect(TimeOfDayFacet.fromTags(['evening']), TimeOfDayFacet.evening);
+    expect(TimeOfDayFacet.fromTags(const []), TimeOfDayFacet.any);
   });
 
   test('deterministic for same inputs, differs by seed', () {
@@ -105,6 +170,10 @@ void main() {
       inputs(shorterSet: true, inactiveDays: 9),
     );
     expect(shorter.set.n, FeedGenerator.shorterSetSize);
+    expect(
+      FeedGenerator.shorterLayout,
+      hasLength(FeedGenerator.shorterSetSize),
+    );
     expect(shorter.shorterSetAvailable, isTrue);
     expect(FeedGenerator.shorterLayout.first, Slot.intro);
   });

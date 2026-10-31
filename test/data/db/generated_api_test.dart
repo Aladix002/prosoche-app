@@ -26,9 +26,15 @@ final Map<Type, _FromJson> _fromJson = {
   SavedCardRow: SavedCardRow.fromJson,
   MetaRow: MetaRow.fromJson,
   SourceRow: SourceRow.fromJson,
-  QuoteRow: QuoteRow.fromJson,
-  QuestTemplateRow: QuestTemplateRow.fromJson,
-  QuestTextRow: QuestTextRow.fromJson,
+  AuthorRow: AuthorRow.fromJson,
+  WorkRow: WorkRow.fromJson,
+  BookRow: BookRow.fromJson,
+  SectionRow: SectionRow.fromJson,
+  CardRow: CardRow.fromJson,
+  JournalEntryRow: JournalEntryRow.fromJson,
+  PracticeLogRow: PracticeLogRow.fromJson,
+  ReadingPositionRow: ReadingPositionRow.fromJson,
+  SectionBookmarkRow: SectionBookmarkRow.fromJson,
 };
 
 /// Prejde vsetky tabulky [db]; kazda musi mat aspon jeden riadok.
@@ -126,6 +132,17 @@ void main() {
       ts: t,
     );
     await db.savedCardDao.save(CardId.parse('quote:q_0002'), t);
+    await db.journalDao.add(
+      date: d,
+      kind: JournalKind.evening,
+      body: 'b',
+      now: t,
+      promptId: 'prompt:x',
+      prompt: 'p',
+    );
+    await db.journalDao.markDone(d, JournalKind.morning, t);
+    await db.readingDao.savePosition('w', 'w.1', t, offset: 0.5);
+    await db.readingDao.addBookmark('w.1', 'w', t);
 
     await _exercise(db);
   });

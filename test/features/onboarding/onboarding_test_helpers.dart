@@ -24,38 +24,24 @@ final testNow = DateTime(2026, 10, 29, 9);
 final testToday = LocalDate(2026, 10, 29);
 
 class FakeOnboardingNotifications implements OnboardingNotifications {
-  FakeOnboardingNotifications({
-    this.enabled = false,
-    this.exact = false,
-    this.grant = true,
-    this.grantExact = true,
-  });
+  FakeOnboardingNotifications({this.enabled = false, this.grant = true});
 
   bool enabled;
-  bool exact;
 
   /// Vysledok systemoveho dialogu.
   bool grant;
-  bool grantExact;
   int requests = 0;
-  int exactRequests = 0;
   int settingsOpened = 0;
 
   @override
   Future<NotificationAccess> access() async =>
-      NotificationAccess(enabled: enabled, exact: exact);
+      NotificationAccess(enabled: enabled);
 
   @override
   Future<bool> requestPermission() async {
     requests++;
     enabled = grant;
     return grant;
-  }
-
-  @override
-  Future<void> requestExactAlarms() async {
-    exactRequests++;
-    exact = grantExact;
   }
 
   @override

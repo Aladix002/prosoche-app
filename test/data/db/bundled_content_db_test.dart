@@ -38,10 +38,30 @@ void main() {
       );
       // Dev build obsahuje example kuratovany obsah (meta.dev_content = '1').
       final dev = await dao.metaValue('dev_content') == '1';
+      expect(manifest.devContent, dev);
       expect(
-        await ContentIntegrityChecker(allowDevContent: dev).check(db),
+        await ContentIntegrityChecker(allowDevContent: dev)
+            .check(db, expectedSectionsSha256: manifest.sectionsSha256),
         const Ok<void>(null),
       );
+      // Kontrakt kap. 5: nazov "Project Gutenberg" nikde v obsahu.
+      final hits = await db
+          .customSelect(
+            "SELECT count(*) AS n FROM card WHERE text LIKE '%Gutenberg%' "
+            "OR ref LIKE '%Gutenberg%'",
+          )
+          .getSingle();
+      expect(hits.read<int>('n'), 0);
+      for (final s in await dao.allSources()) {
+        expect(s.attribution, isNot(contains('Gutenberg')), reason: s.id);
+        expect(s.url ?? '', isNot(contains('gutenberg')), reason: s.id);
+      }
+      // FTS5 je dostupne (sqlite3 s FTS5) a karty quote/passage su
+      // podretazcom svojej sekcie (zvyraznenie v citacke).
+      expect(await db.libraryDao.search('"attention"*'), isNotEmpty);
+      final quote = (await db.cardDao.ofType('quote')).first;
+      final section = await db.libraryDao.sectionByKey(quote.sectionKey!);
+      expect(section!.textContent, contains(quote.textContent));
     },
   );
 }

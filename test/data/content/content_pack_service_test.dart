@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 import 'package:prosoche/core/logging/app_logger.dart';
 import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/content/content_documents.dart';
 import 'package:prosoche/data/content/content_pack_service.dart';
 import 'package:prosoche/data/content/content_pack_state.dart';
 import 'package:prosoche/data/content/remote_config_policy.dart';
@@ -16,6 +17,10 @@ import 'package:sqlite3/sqlite3.dart';
 import 'content_test_helpers.dart';
 
 const v1 = 2026010100;
+
+ContentManifest _manifest({required bool dev}) => ContentManifest.parse(
+  manifestBytes(contentVersion: v2, db: [1], gz: [2], devContent: dev),
+).valueOrNull!;
 const v2 = 2026020100;
 
 void main() {
@@ -43,17 +48,15 @@ void main() {
   });
   tearDown(() => tmp.deleteSync(recursive: true));
 
-  ContentPackService service({String appVersion = '0.1.0', DateTime? now}) =>
-      buildService(
-        dir: dir,
-        bundled: bundled,
-        http: http,
-        keys: keys,
-        log: log,
-        appVersion: appVersion,
-        delays: delays,
-        now: now,
-      );
+  ContentPackService service({String appVersion = '0.1.0'}) => buildService(
+    dir: dir,
+    bundled: bundled,
+    http: http,
+    keys: keys,
+    log: log,
+    appVersion: appVersion,
+    delays: delays,
+  );
 
   File active() => File(p.join(dir.path, ContentPackService.dbFileName));
 
@@ -124,7 +127,7 @@ void main() {
       // Zmena textu po instalacii: plna kontrola (17.3) bezi len pri
       // instalacii a po aktualizacii, nie pri kazdom starte.
       sqlite3.open(active().path)
-        ..execute('DELETE FROM quote')
+        ..execute('DELETE FROM card')
         ..close();
       final r = await service().ensureInstalled();
       expect(r.isOk, isTrue);
@@ -531,204 +534,63 @@ void main() {
         await s.checkForUpdate(),
         const Ok(ContentUpdateOutcome.notConfigured),
       );
-      expect(await s.refreshRemoteConfig(), const Ok<Object?>(null));
       expect(http.requests, isEmpty);
     });
   });
 
-  group('revocations', () {
-    Future<void> serveRevocations(List<String> kids, TestKey signer) async {
-      final rev = revocationsBytes(kids);
+  group('dev content and sections (contract v1)', () {
+    test('prod (no dev content) skips a dev manifest', () {
+      final m = _manifest(dev: true);
+      expect(
+        ContentPackService.decide(m, appVersion: SemVer.parse('1.0.0')),
+        ContentUpdateOutcome.devContentRejected,
+      );
+      expect(
+        ContentPackService.decide(
+          m,
+          appVersion: SemVer.parse('1.0.0'),
+          allowDevContent: true,
+        ),
+        isNull,
+      );
+      expect(
+        ContentPackService.decide(
+          _manifest(dev: false),
+          appVersion: SemVer.parse('1.0.0'),
+        ),
+        isNull,
+      );
+    });
+
+    test('manifest sections_sha256 must match the downloaded db', () async {
+      final s = service();
+      await install(s);
+      final db = fixtureDbBytes(tmp, v2);
+      final gz = Uint8List.fromList(gzip.encode(db));
+      final manifest = manifestBytes(
+        contentVersion: v2,
+        db: db,
+        gz: gz,
+        sectionsSha256: 'd' * 64,
+      );
       http
-        ..serve('$cdn/revocations.json', rev)
-        ..serve('$cdn/revocations.json.sig', await signer.sign(rev));
-    }
-
-    test('root-signed revocation blocks the key permanently', () async {
-      final s = service();
-      await install(s);
-      await publish(v2);
-      await serveRevocations(['test-content-a'], keys.root);
+        ..serve('$cdn/manifest.json', manifest)
+        ..serve('$cdn/manifest.json.sig', await keys.contentA.sign(manifest))
+        ..serve('https://cdn.test/db/$v2/content.db.gz', gz);
       expect(
         await s.checkForUpdate(),
-        const Err<ContentUpdateOutcome>(SecurityFailure.revokedKey()),
-      );
-      expect((await s.state()).revokedKids, {'test-content-a'});
-
-      // Revokacia ostane aj ked subor zmizne; nasledovnik funguje.
-      http.routes.remove('$cdn/revocations.json');
-      final s2 = service();
-      expect(
-        await s2.checkForUpdate(),
-        const Err<ContentUpdateOutcome>(SecurityFailure.revokedKey()),
-      );
-      await publish(v2, signer: keys.contentB);
-      expect(await s2.checkForUpdate(), const Ok(ContentUpdateOutcome.updated));
-    });
-
-    test('revocation signed by content key is ignored', () async {
-      final s = service();
-      await install(s);
-      await publish(v2);
-      await serveRevocations(['test-content-b'], keys.contentA);
-      expect(await s.checkForUpdate(), const Ok(ContentUpdateOutcome.updated));
-      expect((await s.state()).revokedKids, isEmpty);
-      expect(failureCodes(log), contains('security.wrong_key_role'));
-    });
-
-    test('revocation of a root key is invalid', () async {
-      final s = service();
-      await install(s);
-      await serveRevocations(['test-root-1'], keys.root);
-      await s.checkForUpdate();
-      expect((await s.state()).revokedKids, isEmpty);
-      expect(failureCodes(log), contains('data.content_integrity.revocations'));
-    });
-
-    test('same revocations twice do not rewrite state', () async {
-      final s = service();
-      await install(s);
-      await serveRevocations(['test-content-b'], keys.root);
-      await s.checkForUpdate();
-      final changes = <ContentPackState>[];
-      s.changes.listen(changes.add);
-      await s.checkForUpdate();
-      expect((await s.state()).revocationsSeq, 1);
-      expect(changes.where((c) => c.revokedKids.isEmpty), isEmpty);
-    });
-  });
-
-  group('remote config', () {
-    Future<void> serveConfig(Uint8List bytes, {TestKey? signer}) async => http
-      ..serve('$cdn/remote_config.json', bytes)
-      ..serve(
-        '$cdn/remote_config.json.sig',
-        await (signer ?? keys.contentA).sign(bytes),
-      );
-
-    test('valid config is stored and drives the policy', () async {
-      final s = service();
-      await serveConfig(
-        remoteConfigBytes(
-          seq: 4,
-          broken: ['0.1.0'],
-          recommended: '0.2.0',
-          extraFeatures: {
-            RemoteFeature.blockerOverlay: {
-              'enabled': false,
-              'max_version': null,
-            },
-          },
+        const Err<ContentUpdateOutcome>(
+          ContentIntegrityFailed('sections_sha256'),
         ),
       );
-      final r = await s.refreshRemoteConfig();
-      expect(r.valueOrNull?.seq, 4);
-      final policy = s.policyOf(await s.state());
-      expect(policy.updateRequired, isTrue);
-      expect(policy.updateRecommended, isTrue);
-      expect(policy.isFeatureEnabled(RemoteFeature.blockerOverlay), isFalse);
-      expect(policy.isFeatureEnabled(RemoteFeature.audioStream), isTrue);
+      expect(await activeVersion(), '$v1');
     });
 
-    test('kill-switch disables content auto update', () async {
+    test('policy is defaults (no remote config in v1)', () async {
       final s = service();
-      await install(s);
-      await publish(v2);
-      await serveConfig(remoteConfigBytes(autoUpdate: false));
-      expect(
-        await s.checkForUpdate(),
-        const Ok(ContentUpdateOutcome.disabledByRemoteConfig),
-      );
-      expect(http.count('$cdn/manifest.json'), 0);
-    });
-
-    test('lower seq is a rollback and keeps the newer config', () async {
-      final s = service();
-      await serveConfig(remoteConfigBytes(seq: 5));
-      await s.refreshRemoteConfig();
-      await serveConfig(remoteConfigBytes(seq: 4, autoUpdate: false));
-      expect(
-        await s.refreshRemoteConfig(force: true),
-        const Err<Object?>(SecurityFailure.rollback()),
-      );
-      expect(s.remoteConfigOf(await s.state())?.seq, 5);
-    });
-
-    test('expired config is ignored and defaults apply', () async {
-      final s = service(now: DateTime.utc(2026, 5));
-      await serveConfig(
-        remoteConfigBytes(
-          expiresAt: '2026-04-01T00:00:00Z',
-          minSupported: '9.0.0',
-        ),
-      );
-      expect(await s.refreshRemoteConfig(), const Ok<Object?>(null));
       final policy = s.policyOf(await s.state());
-      expect(policy.config, isNull);
+      expect(policy.isFeatureEnabled(RemoteFeature.contentAutoUpdate), isTrue);
       expect(policy.updateRequired, isFalse);
-    });
-
-    test('stored config expires later and defaults apply', () async {
-      await serveConfig(
-        remoteConfigBytes(expiresAt: '2026-07-01T00:00:00Z', autoUpdate: false),
-      );
-      await service().refreshRemoteConfig();
-      final later = service(now: DateTime.utc(2026, 8));
-      expect(later.remoteConfigOf(await later.state()), isNull);
-    });
-
-    test('fetched at most once per 12 h unless forced', () async {
-      final s = service();
-      await serveConfig(remoteConfigBytes());
-      await s.refreshRemoteConfig();
-      await s.refreshRemoteConfig();
-      expect(http.count('$cdn/remote_config.json'), 1);
-      await s.refreshRemoteConfig(force: true);
-      expect(http.count('$cdn/remote_config.json'), 2);
-    });
-
-    test('bad signature keeps the last valid config', () async {
-      final s = service();
-      await serveConfig(remoteConfigBytes(seq: 2));
-      await s.refreshRemoteConfig();
-      final next = remoteConfigBytes(seq: 3, autoUpdate: false);
-      http
-        ..serve('$cdn/remote_config.json', next)
-        ..serve(
-          '$cdn/remote_config.json.sig',
-          await keys.contentA.sign(remoteConfigBytes(seq: 2)),
-        );
-      expect(
-        await s.refreshRemoteConfig(force: true),
-        const Err<Object?>(SecurityFailure.badSignature()),
-      );
-      expect(s.remoteConfigOf(await s.state())?.seq, 2);
-    });
-
-    test('config with URL is rejected', () async {
-      final s = service();
-      await serveConfig(
-        remoteConfigBytes(
-          notice: {
-            'id': 'n',
-            'severity': 'info',
-            'text': {'en': 'see https://evil.test'},
-            'show_on_versions': <String>[],
-          },
-        ),
-      );
-      expect(
-        await s.refreshRemoteConfig(),
-        const Err<Object?>(ContentIntegrityFailed('remote_config')),
-      );
-    });
-
-    test('min_supported_version above app requires update', () async {
-      final s = service(appVersion: '1.0.0');
-      await serveConfig(remoteConfigBytes(minSupported: '1.2.0'));
-      await s.refreshRemoteConfig();
-      expect(s.policyOf(await s.state()).updateRequired, isTrue);
-      expect(SemVer.parse('1.0.0+3'), const SemVer(1, 0, 0));
     });
   });
 }

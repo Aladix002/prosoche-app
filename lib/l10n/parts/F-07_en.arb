@@ -143,30 +143,6 @@
   "@setPrivateTextHelp": {
     "description": "Explanation under the private text switch."
   },
-  "setExactAlarms": "Exact reminders",
-  "@setExactAlarms": {
-    "description": "Section header for the Android exact alarm permission."
-  },
-  "setStatusUnknown": "Checking…",
-  "@setStatusUnknown": {
-    "description": "Shown while the permission state is being read."
-  },
-  "setExactOn": "Allowed",
-  "@setExactOn": {
-    "description": "Exact alarms are allowed."
-  },
-  "setExactOff": "Not allowed",
-  "@setExactOff": {
-    "description": "Exact alarms are not allowed."
-  },
-  "setExactHelp": "Without exact reminders, reminders may arrive up to 10 minutes late or more.",
-  "@setExactHelp": {
-    "description": "Explanation of the exact alarm permission."
-  },
-  "setAllow": "Allow",
-  "@setAllow": {
-    "description": "Button that opens the Android screen to allow exact alarms."
-  },
   "setOsDelayNote": "Reminders may be delayed by Android or battery settings.",
   "@setOsDelayNote": {
     "description": "Note at the end of notification settings (docs/11 12.1)."

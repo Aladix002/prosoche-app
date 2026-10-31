@@ -1,8 +1,9 @@
 // Deklaracie tabuliek cita len drift_dev pri generovani, za behu sa
 // nevykonavaju.
 // coverage:ignore-file
-// Drift tabulky user.db, schema v1 (plan 5.2 + docs/02 D1, D7, D8, D12, D13
-// + 07 ADR-06 Z2).
+// Drift tabulky user.db, schema v2 (plan 5.2 + docs/02 D1, D7, D8, D12, D13
+// + 07 ADR-06 Z2). v2 (F-01): dennik, prax dna, pozicia citania a zalozky
+// sekcii v Library.
 //
 // Konvencie:
 //  * datum dna (`date`) = TEXT `YYYY-MM-DD` ([LocalDateConverter]),
@@ -222,4 +223,80 @@ class SavedCards extends Table {
 
   @override
   Set<Column<Object>> get primaryKey => {cardId};
+}
+
+// ------------------------------------------------------------------ F-01
+
+/// Lokalny dennik (ranna priprava, vecerna reflexia, poznamky). Nikdy
+/// neopusti zariadenie: nie je v analytike ani v logoch, je v exporte
+/// a v "Delete all my data".
+@DataClassName('JournalEntryRow')
+@TableIndex(name: 'journal_entry_date', columns: {#date})
+class JournalEntries extends Table {
+  @override
+  String get tableName => 'journal_entry';
+
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get date => text().map(const LocalDateConverter())();
+  TextColumn get kind => text()
+      .check(kind.isIn(JournalKind.values.map((e) => e.wire)))
+      .map(const WireEnumConverter(JournalKind.values))();
+
+  /// `card.id` otazky (prompt), ak zaznam odpoveda na otazku z obsahu.
+  TextColumn get promptId => text().nullable()();
+
+  /// Text otazky v case zapisu (export je citatelny aj bez content.db).
+  TextColumn get prompt => text().nullable()();
+  TextColumn get body => text()();
+  IntColumn get createdAt => integer().map(const UtcMillisConverter())();
+  IntColumn get updatedAt => integer().map(const UtcMillisConverter())();
+}
+
+/// Dokoncena ranna/vecerna prax dna (Practice, F-01).
+@DataClassName('PracticeLogRow')
+class PracticeLogs extends Table {
+  @override
+  String get tableName => 'practice_log';
+
+  TextColumn get date => text().map(const LocalDateConverter())();
+  TextColumn get routine => text()
+      .check(routine.isIn(['morning', 'evening']))
+      .map(const WireEnumConverter(JournalKind.values))();
+  IntColumn get doneAt => integer().map(const UtcMillisConverter())();
+
+  @override
+  Set<Column<Object>> get primaryKey => {date, routine};
+}
+
+/// Pozicia citania v diele (Library). Kluc sekcie je stabilny
+/// `section.key` z content.db (kontrakt kap. 2).
+@DataClassName('ReadingPositionRow')
+class ReadingPositions extends Table {
+  @override
+  String get tableName => 'reading_position';
+
+  TextColumn get workId => text()();
+  TextColumn get sectionKey => text()();
+
+  /// Posun v ramci sekcie 0..1 (volitelne).
+  RealColumn get offset => real().withDefault(const Constant(0))();
+  IntColumn get updatedAt => integer().map(const UtcMillisConverter())();
+
+  @override
+  Set<Column<Object>> get primaryKey => {workId};
+}
+
+/// Zalozka na sekciu (Library).
+@DataClassName('SectionBookmarkRow')
+@TableIndex(name: 'section_bookmark_created', columns: {#createdAt})
+class SectionBookmarks extends Table {
+  @override
+  String get tableName => 'section_bookmark';
+
+  TextColumn get sectionKey => text()();
+  TextColumn get workId => text()();
+  IntColumn get createdAt => integer().map(const UtcMillisConverter())();
+
+  @override
+  Set<Column<Object>> get primaryKey => {sectionKey};
 }

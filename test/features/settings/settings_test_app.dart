@@ -19,25 +19,20 @@ import '../../fakes/fake_repositories.dart';
 
 /// Povolenia notifikacii bez platformy.
 class FakeNotificationAccess implements OnboardingNotifications {
-  FakeNotificationAccess({this.enabled = true, this.exact = true});
+  FakeNotificationAccess({this.enabled = true});
 
   bool enabled;
-  bool exact;
-  int exactRequests = 0;
   int settingsOpened = 0;
 
   @override
   Future<NotificationAccess> access() async =>
-      NotificationAccess(enabled: enabled, exact: exact);
+      NotificationAccess(enabled: enabled);
 
   @override
   Future<void> openAppSettings() async => settingsOpened++;
 
   @override
   Future<bool> requestPermission() async => enabled = true;
-
-  @override
-  Future<void> requestExactAlarms() async => exactRequests++;
 }
 
 /// Zaznamenane otvorenia odkazov.

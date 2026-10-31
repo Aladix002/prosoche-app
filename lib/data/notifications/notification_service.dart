@@ -20,7 +20,6 @@ final class RescheduleResult {
     required this.planned,
     required this.scheduled,
     required this.cancelled,
-    required this.exact,
     required this.deviceZone,
     required this.dropped,
   });
@@ -31,9 +30,6 @@ final class RescheduleResult {
   /// Nove alebo zmenene.
   final int scheduled;
   final int cancelled;
-
-  /// Presne alarmy; false = fallback s oneskorenim 10+ min (docs/08 A).
-  final bool exact;
 
   /// IANA zona zariadenia.
   final String deviceZone;
@@ -85,20 +81,6 @@ final class NotificationService {
   /// Zosuladi naplanovane notifikacie s planom.
   Future<RescheduleResult> reschedule() => _serial(_reschedule);
 
-  /// Presne alarmy povolene. UI pri false ukaze `notifInexactNote`.
-  Future<bool> canScheduleExact() => platform.canScheduleExact();
-
-  /// Otvori systemove nastavenie presnych alarmov. Po navrate (lifecycle
-  /// resumed) treba zavolat [reschedule], plany sa prepisu na presne.
-  Future<bool> requestExactAlarms() async {
-    final granted = await platform.requestExactAlarms();
-    logger?.info(_tag, 'exact alarm request', {
-      'permission': 'exact_alarm',
-      'granted': granted,
-    });
-    return granted;
-  }
-
   /// Runtime povolenie notifikacii (onboarding O4).
   Future<bool> requestPermission() async {
     final granted = await platform.requestPermission();
@@ -131,13 +113,16 @@ final class NotificationService {
         morningTime: TimeOfDayHm.parse(
           await settings.get(SettingsKeys.notifMorningTime),
         ),
+        eveningEnabled: await settings.get(SettingsKeys.notifEveningEnabled),
+        eveningTime: TimeOfDayHm.parse(
+          await settings.get(SettingsKeys.notifEveningTime),
+        ),
       ),
     );
 
     final texts = await NotificationTexts.load(await _locale());
-    var exact = await platform.canScheduleExact();
     String payloadOf(PlannedNotification n) =>
-        encodePayload(n, texts.render(n, private: private), exact: exact);
+        encodePayload(n, texts.render(n, private: private));
 
     final diff = diffNotifications(
       pending: await platform.pending(),
@@ -148,31 +133,18 @@ final class NotificationService {
       await platform.cancel(id);
     }
     for (final n in diff.schedule) {
-      try {
-        await platform.schedule(
-          _build(n, texts, private, payloadOf),
-          exact: exact,
-        );
-      } on ExactAlarmNotPermittedException {
-        // Povolenie zobrali medzi kontrolou a planovanim: fallback.
-        exact = false;
-        await platform.schedule(
-          _build(n, texts, private, payloadOf),
-          exact: false,
-        );
-      }
+      await platform.schedule(_build(n, texts, private, payloadOf));
     }
 
     logger?.info(_tag, 'rescheduled', {
       'op': 'reschedule',
-      'status': exact ? 'exact' : 'inexact',
+      'status': 'inexact',
       'ms': clock.now().difference(started).inMilliseconds,
     });
     return RescheduleResult(
       planned: plan.length,
       scheduled: diff.schedule.length,
       cancelled: diff.cancel.length,
-      exact: exact,
       deviceZone: zoneName,
       dropped: plan.dropped,
     );
@@ -216,19 +188,15 @@ final class NotificationService {
   static Future<Locale> _platformLocale() async =>
       PlatformDispatcher.instance.locale;
 
-  /// Payload: odtlacok planu, hash textu, rezim alarmu a deep link.
-  /// Zmena ktorejkolvek casti = notifikacia sa naplanuje znova.
-  static String encodePayload(
-    PlannedNotification n,
-    (String, String) text, {
-    required bool exact,
-  }) {
+  /// Payload: odtlacok planu, hash textu a deep link. Zmena ktorejkolvek
+  /// casti = notifikacia sa naplanuje znova. `x` je vzdy 0 (inexact).
+  static String encodePayload(PlannedNotification n, (String, String) text) {
     final hash = sha1.convert(utf8.encode('${text.$1}\n${text.$2}'));
     return jsonEncode({
       'v': 1,
       'f': n.fingerprint,
       'h': hash.toString().substring(0, 12),
-      'x': exact ? 1 : 0,
+      'x': 0,
       'link': n.deepLink,
     });
   }

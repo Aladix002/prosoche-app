@@ -1,6 +1,7 @@
-// Testovacie vektory zo prosoche-content/tests/vectors (len testovacie kluce),
-// kopia v test/fixtures/content_vectors. Kazdy pripad musi dat rovnaky
-// vysledok ako pipeline/sign.py (`expect`) a logika appky (`app_expect`).
+// Testovacie vektory z prosoche-content/tests/vectors (kopia
+// v test/fixtures/content_vectors, len verejne kluce). Kazdy pripad musi dat
+// rovnaky vysledok ako pipeline/sign.py (`expect`) a logika appky
+// (`app_expect`).
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -14,6 +15,8 @@ import 'package:prosoche/data/content/db_archive.dart';
 import 'package:prosoche/data/content/sem_ver.dart';
 import 'package:prosoche/data/content/signature_verifier.dart';
 import 'package:prosoche/data/content/trusted_keys.dart';
+import 'package:prosoche/data/db/content_db.dart';
+import 'package:sqlite3/sqlite3.dart';
 
 const _root = 'test/fixtures/content_vectors';
 
@@ -23,13 +26,16 @@ const _vectorName = {
   'security.unknown_alg': 'unknownAlgorithm',
   'security.unknown_key': 'unknownKey',
   'security.wrong_key_role': 'wrongKeyRole',
-  'security.revoked_key': 'revokedKey',
   'security.bad_signature': 'badSignature',
   'data.content_integrity.sha256': 'dbHashMismatch',
   'data.content_integrity.manifest': 'invalidManifest',
 };
 
 Uint8List _read(String rel) => File(p.join(_root, rel)).readAsBytesSync();
+
+Map<String, Object?> get _doc =>
+    jsonDecode(File(p.join(_root, 'cases.json')).readAsStringSync())
+        as Map<String, Object?>;
 
 TrustedKeySet _keys() {
   final doc = jsonDecode(
@@ -45,7 +51,7 @@ TrustedKeySet _keys() {
   ]);
 }
 
-/// Overenie podpisu a (pri manifeste s `gz`) hashov ako `sign.py verify`.
+/// Overenie podpisu a (pri `gz`) hashov ako `sign.py verify`.
 Future<String> _expect(Map<String, Object?> c, Directory tmp) async {
   final payload = _read(c['payload']! as String);
   final verified = await SignatureVerifier(_keys()).verify(
@@ -55,75 +61,58 @@ Future<String> _expect(Map<String, Object?> c, Directory tmp) async {
       for (final r in (c['allowed_roles']! as List).cast<String>())
         KeyRole.fromWire(r)!,
     },
-    revoked: {...(c['revoked']! as List).cast<String>()},
   );
   if (verified case Err(:final failure)) return _vectorName[failure.code]!;
+  final parsed = ContentManifest.parse(payload);
+  if (parsed case Err(:final failure)) return _vectorName[failure.code]!;
+  final manifest = parsed.valueOrNull!;
   final gz = c['gz'] as String?;
-  if (c['kind'] == 'manifest') {
-    final parsed = ContentManifest.parse(payload);
-    if (parsed case Err(:final failure)) return _vectorName[failure.code]!;
-    final manifest = parsed.valueOrNull!;
-    if (gz != null) {
-      final file = File(p.join(_root, gz));
-      final out = File(p.join(tmp.path, '${c['name']}.db'));
-      final r = await checkArchive(
-        file,
-        manifest.db,
-      ).then2((_) => inflateArchive(file, out, manifest.db));
-      if (r case Err(:final failure)) return _vectorName[failure.code]!;
-      expect(out.lengthSync(), manifest.db.size);
-    }
-    final pack = c['pack'] as Map<String, Object?>?;
-    if (pack != null) {
-      // Balik stahuje D-05; tu len rovnake overenie ako pri db.
-      final info = manifest.packs[pack['id']];
-      if (info == null) return 'unknownPack';
-      final file = File(p.join(_root, pack['gz']! as String));
-      final out = File(p.join(tmp.path, '${c['name']}.pack.db'));
-      final r = await checkArchive(
-        file,
-        info.archive,
-      ).then2((_) => inflateArchive(file, out, info.archive));
-      if (r is Err) return 'packHashMismatch';
-      expect(out.lengthSync(), info.archive.size);
-    }
+  if (gz != null) {
+    final file = File(p.join(_root, gz));
+    final out = File(p.join(tmp.path, '${c['name']}.db'));
+    final r = await checkArchive(
+      file,
+      manifest.db,
+    ).then2((_) => inflateArchive(file, out, manifest.db));
+    if (r case Err(:final failure)) return _vectorName[failure.code]!;
+    expect(out.lengthSync(), manifest.db.size);
+    // Rozbalena db je platna content.db v1 a sedi s manifestom.
+    final db = sqlite3.open(out.path, mode: OpenMode.readOnly);
+    addTearDown(db.close);
+    final meta = {
+      for (final r in db.select('SELECT key, value FROM meta'))
+        r['key'] as String: r['value'] as String,
+    };
+    expect(meta['sections_sha256'], manifest.sectionsSha256);
+    expect(meta['dev_content'], manifest.devContent ? '1' : '0');
+    expect(meta['schema_version'], '${ContentDb.contractVersion}');
   }
   return 'ok';
 }
 
-/// Rozhodnutie appky nad overenym dokumentom.
+/// Rozhodnutie appky nad overenym manifestom.
 String _appResult(Map<String, Object?> c, Map<String, Object?> app) {
-  final payload = _read(c['payload']! as String);
-  switch (c['kind']) {
-    case 'manifest':
-      final m = ContentManifest.parse(payload).valueOrNull!;
-      final outcome = ContentPackService.decide(
-        m,
-        appVersion: SemVer.parse(app['app_version'] as String? ?? '1.0.0'),
-        installedVersion: app['installed_content_version'] as int?,
-      );
-      return outcome!.name;
-    case 'remote_config':
-      final rc = RemoteConfig.parse(payload).valueOrNull!;
-      return rc.isExpiredAt(DateTime.parse(app['now']! as String))
-          ? 'expired'
-          : 'ok';
-  }
-  throw StateError('unknown kind ${c['kind']}');
+  final m = ContentManifest.parse(_read(c['payload']! as String)).valueOrNull!;
+  final outcome = ContentPackService.decide(
+    m,
+    appVersion: SemVer.parse(app['app_version'] as String? ?? '1.0.0'),
+    installedVersion: app['installed_content_version'] as int?,
+    allowDevContent: app['allow_dev_content']! as bool,
+  );
+  return outcome?.name ?? 'download';
 }
 
 void main() {
-  final cases =
-      ((jsonDecode(File(p.join(_root, 'cases.json')).readAsStringSync())
-                  as Map<String, Object?>)['cases']!
-              as List)
-          .cast<Map<String, Object?>>();
+  final cases = (_doc['cases']! as List).cast<Map<String, Object?>>();
 
   late Directory tmp;
   setUp(() => tmp = Directory.systemTemp.createTempSync('vectors'));
   tearDown(() => tmp.deleteSync(recursive: true));
 
-  test('vectors are present', () => expect(cases, hasLength(21)));
+  test('vectors are present and manifest only', () {
+    expect(cases, hasLength(19));
+    expect(cases.map((c) => c['kind']).toSet(), {'manifest'});
+  });
 
   for (final c in cases) {
     test('${c['name']}: ${c['expect']}', () async {
@@ -133,23 +122,23 @@ void main() {
     });
   }
 
-  test('verified documents parse', () async {
-    for (final c in cases.where((c) => c['expect'] == 'ok')) {
-      final payload = _read(c['payload']! as String);
-      final parsed = switch (c['kind']) {
-        'manifest' => ContentManifest.parse(payload).isOk,
-        'remote_config' => RemoteConfig.parse(payload).isOk,
-        _ => Revocations.parse(payload, rootKids: ['test-root-1']).isOk,
-      };
-      expect(parsed, isTrue, reason: '${c['name']}');
-    }
-  });
-
-  test('manifest_ok carries disabled_ids', () {
+  test('manifest_ok carries v1 fields', () {
     final m = ContentManifest.parse(_read('cases/manifest_ok/manifest.json'))
         .valueOrNull!;
-    expect(m.disabledIds, hasLength(1));
-    expect(m.contentVersion, 2026010101);
+    expect(m.disabledIds, {'quote:meditations.2.1.a'});
+    expect(m.contentVersion, _doc['content_version']);
+    expect(m.sectionsSha256, _doc['sections_sha256']);
+    expect(m.devContent, isTrue);
     expect(m.minAppVersion, SemVer.parse('1.0.0'));
+  });
+
+  test('dev key in the app matches the vectors (content-dev)', () {
+    final doc = jsonDecode(
+      File(p.join(_root, 'public_keys.json')).readAsStringSync(),
+    ) as Map<String, Object?>;
+    final dev = (doc['keys']! as List).cast<Map<String, Object?>>().firstWhere(
+      (k) => k['kid'] == 'content-dev',
+    );
+    expect(kDevTrustedKeys.single.publicKeyB64, dev['public_key_b64']);
   });
 }

@@ -4,33 +4,26 @@
   "schema_version": 1,
   "min_app_version": "1.0.0",
   "created_at": "2026-01-01T00:00:00Z",
-  "kid": "test-content-a",
+  "kid": "test-root-1",
   "db": {
-    "url": "https://cdn.jsdelivr.net/gh/example/sakina-content@cdn-v2026010101/content.db.gz",
-    "fallback_url": "https://github.com/example/sakina-content/releases/download/content-v2026010101/content.db.gz",
+    "url": "https://cdn.jsdelivr.net/gh/example/prosoche-content@cdn-v2026010101/content.db.gz",
+    "fallback_url": "https://github.com/example/prosoche-content/releases/download/content-v2026010101/content.db.gz",
     "compression": "gzip",
-    "sha256": "c3954c45345fa62e3b18ab1ebd1e252f52b3e5779d50d0e3e55f737071aaf27b",
-    "size": 416,
-    "gz_sha256": "3f6ab27c9684cc8da029a10c93493ceb8503aae27079024b1351764901adfa1b",
-    "gz_size": 439
+    "sha256": "b308acd2a099665cf1bc6ef8ef3284496ef3d117cbad3349803fed0aed7c8a6a",
+    "size": 98304,
+    "gz_sha256": "130200a899d42acdb3919304ad9324c6375eae8eb6a1f0b699ab92e78735f97d",
+    "gz_size": 3102
   },
-  "uthmani_sha256": "399a56761ad852ef1df64a3ba1f93f273f6d7a9bd0ec49c26c738777d89860b2",
+  "sections_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "dev_content": true,
   "disabled_ids": [
-    "hadith:1234"
+    "quote:meditations.2.1.a"
   ],
   "sources": [
     {
-      "id": "tanzil-uthmani",
-      "kind": "quran_text",
-      "lang": "ar",
-      "version": "1.1"
-    },
-    {
-      "id": "quranenc-english_saheeh",
-      "kind": "translation",
-      "lang": "en",
-      "version": "1.1.3",
-      "quranenc_key": "english_saheeh"
+      "id": "prosoche-curated",
+      "kind": "curated",
+      "version": "2026010101"
     }
   ]
 }

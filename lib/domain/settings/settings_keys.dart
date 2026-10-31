@@ -82,10 +82,29 @@ abstract final class SettingsKeys {
     pattern: RegExp(r'^([01]\d|2[0-3]):[0-5]\d$'),
   );
 
+  /// Vecerna pripomienka reflexie (F-01), opt-in.
+  static final SettingKey<bool> notifEveningEnabled = SettingKey.boolean(
+    'notif.evening.enabled',
+    defaultValue: false,
+  );
+  static final SettingKey<String> notifEveningTime = SettingKey.string(
+    'notif.evening.time',
+    defaultValue: '21:00',
+    pattern: RegExp(r'^([01]\d|2[0-3]):[0-5]\d$'),
+  );
+
   /// Notifikacie bez obsahu karty na zamknutej obrazovke.
   static final SettingKey<bool> notifPrivateLockscreen = SettingKey.boolean(
     'notif.private_lockscreen',
     defaultValue: true,
+  );
+
+  // Practice (F-01)
+  /// Rok narodenia pre memento mori (tyzdne zivota). Volitelne, len lokalne,
+  /// nikdy v analytike.
+  static final SettingKey<int?> practiceBirthYear = SettingKey.optionalInt(
+    'practice.birth_year',
+    isValid: (y) => y >= 1900 && y <= 2100,
   );
 
   // Obsah
@@ -136,7 +155,10 @@ abstract final class SettingsKeys {
     simpleMode,
     notifMorningEnabled,
     notifMorningTime,
+    notifEveningEnabled,
+    notifEveningTime,
     notifPrivateLockscreen,
+    practiceBirthYear,
     contentUpdateWifiOnly,
     blockerEnabled,
     analyticsOptIn,

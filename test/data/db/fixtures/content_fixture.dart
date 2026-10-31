@@ -1,11 +1,14 @@
-// Maly content.db pre testy: schema z prechodneho kontraktu
-// `drift_schemas/content/content_schema.sql` + par placeholder citatov
-// a sablon questov. Ziadny skutocny obsah (PLAN_VYVOJA 5.5).
+// Maly content.db v1 pre testy: schema z kontraktu
+// `drift_schemas/content/content_schema.sql` + placeholder autori, diela,
+// sekcie a karty vsetkych typov. Ziadny skutocny text filozofov
+// (PLAN_VYVOJA 5.5): texty su `[PLACEHOLDER ...]`.
 //
 // Ako skript zapise fixture do suboru:
 //   dart run test/data/db/fixtures/content_fixture.dart /tmp/content.db
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:crypto/crypto.dart';
 import 'package:drift/native.dart';
 import 'package:prosoche/data/db/content_db.dart';
 import 'package:sqlite3/sqlite3.dart';
@@ -13,11 +16,44 @@ import 'package:sqlite3/sqlite3.dart';
 /// Cesta ku kopii kontraktu (testy bezia z korena balika).
 const contractPath = 'drift_schemas/content/content_schema.sql';
 
-/// Pocet schvalenych citatov vo fixture (`q_0001` az `q_0020`).
+/// Pocet citatov vo fixture (`quote:q_0001` az `quote:q_0020`).
 const fixtureQuoteCount = 20;
 
-/// ID citatu vo fixture.
+/// Kluc citatu vo fixture (cast za `quote:`).
 String fixtureQuoteId(int n) => 'q_${n.toString().padLeft(4, '0')}';
+
+/// Pocet vsetkych kariet fixture (20 citatov, 4 uryvky, 5 cviceni,
+/// 5 otazok, 3 pojmy, 2 autori).
+const fixtureCardCount = 39;
+
+/// Diela fixture: `work-books` (2 knihy po 3 sekcie), `work-flat`
+/// (4 sekcie bez knih).
+const fixtureWorks = ['work-books', 'work-flat'];
+
+/// Kluce sekcii v poradi `section.id`.
+const fixtureSectionKeys = [
+  'work-books.1.1',
+  'work-books.1.2',
+  'work-books.1.3',
+  'work-books.2.1',
+  'work-books.2.2',
+  'work-books.2.3',
+  'work-flat.1',
+  'work-flat.2',
+  'work-flat.3',
+  'work-flat.4',
+];
+
+/// Text sekcie: dva odstavce, druhy obsahuje citaty, ktore k nej patria.
+String fixtureSectionText(String key) {
+  final i = fixtureSectionKeys.indexOf(key);
+  final quotes = [
+    for (var n = 1; n <= fixtureQuoteCount; n++)
+      if ((n - 1) % fixtureSectionKeys.length == i) '[PLACEHOLDER quote $n]',
+  ];
+  final word = i.isEven ? 'attention' : 'river';
+  return '[PLACEHOLDER section $key] $word.\n\n${quotes.join(' ')}';
+}
 
 /// Vytvori fixture v [path] (`:memory:` = v pamati) a vrati otvorene
 /// spojenie.
@@ -30,6 +66,19 @@ Database buildContentFixture([String path = ':memory:']) {
 /// Fixture ako [ContentDb] v pamati.
 ContentDb openContentFixture() =>
     ContentDb(NativeDatabase.opened(buildContentFixture()));
+
+String _sha(String s) => sha256.convert(utf8.encode(s)).toString();
+
+/// Prepocita `meta.sections_sha256` (po zmene sekcii v teste).
+void refreshSectionsSha(Database db) {
+  final buf = StringBuffer();
+  for (final r in db.select('SELECT key, sha256 FROM section ORDER BY id')) {
+    buf.write('${r['key']}\t${r['sha256']}\n');
+  }
+  db.execute("UPDATE meta SET value = ? WHERE key = 'sections_sha256'", [
+    _sha('$buf'),
+  ]);
+}
 
 void _fill(Database db) {
   void insert(String table, List<Map<String, Object?>> rows) {
@@ -49,131 +98,236 @@ void _fill(Database db) {
     {'key': 'dev_content', 'value': '1'},
     {'key': 'content_version', 'value': 'fixture'},
     {'key': 'langs', 'value': '["en"]'},
+    {'key': 'normalization', 'value': 'ws1'},
+    {'key': 'section_hash_algo', 'value': 'sha256-utf8'},
+    {'key': 'sections_sha256', 'value': ''},
   ]);
   insert('source', [
     {
       'id': 'fx-text',
       'kind': 'text',
-      'lang': 'en',
-      'name': 'Fixture text',
-      'version': '1',
-      'license': 'test-only',
-      'license_text': '[PLACEHOLDER license]',
+      'name': '[PLACEHOLDER edition]',
+      'translator': 'Fixture Translator',
+      'translator_died': 1900,
+      'edition_year': 1880,
+      'version': 'fx1',
+      'license': 'public-domain',
+      'license_note': '[PLACEHOLDER license note]',
       'attribution': '[PLACEHOLDER attribution]',
       'url': 'https://example.invalid/fx-text',
-      'commercial_status': 'allowed',
     },
     {
-      'id': 'fx-curated',
+      'id': 'prosoche-curated',
       'kind': 'curated',
-      'lang': 'en',
-      'name': 'Fixture curated',
+      'name': '[PLACEHOLDER curated]',
       'version': '1',
-      'license': 'test-only',
-      'license_text': '[PLACEHOLDER license]',
-      'attribution': '[PLACEHOLDER curated]',
-      'url': 'https://example.invalid/fx-curated',
-      'commercial_status': 'allowed',
+      'license': 'proprietary-own',
+      'license_note': '[PLACEHOLDER own]',
+      'attribution': '[PLACEHOLDER curated attribution]',
     },
   ]);
-  insert('quote', [
+  insert('author', [
+    {
+      'id': 'author-a',
+      'name': 'Author A',
+      'full_name': 'Author A Full',
+      'lifespan': 'AD 1-2',
+      'ord': 1,
+    },
+    {
+      'id': 'author-b',
+      'name': 'Author B',
+      'full_name': 'Author B Full',
+      'lifespan': 'AD 3-4',
+      'ord': 2,
+    },
+  ]);
+  insert('work', [
+    {
+      'id': 'work-books',
+      'author_id': 'author-a',
+      'source_id': 'fx-text',
+      'title': 'Work With Books',
+      'original_title': 'Opus',
+      'translator': 'Fixture Translator',
+      'short_ref': 'Books',
+      'book_count': 2,
+      'section_count': 6,
+      'ord': 1,
+    },
+    {
+      'id': 'work-flat',
+      'author_id': 'author-b',
+      'source_id': 'fx-text',
+      'title': 'Of Flat Work',
+      'original_title': 'Planum',
+      'translator': 'Fixture Translator',
+      'short_ref': 'Flat',
+      'book_count': 0,
+      'section_count': 4,
+      'ord': 2,
+    },
+  ]);
+  insert('book', [
+    for (final n in [1, 2])
+      {
+        'work_id': 'work-books',
+        'number': n,
+        'title': 'Book $n',
+        'section_count': 3,
+      },
+  ]);
+  for (final (i, key) in fixtureSectionKeys.indexed) {
+    final parts = key.split('.');
+    final text = fixtureSectionText(key);
+    insert('section', [
+      {
+        'id': i + 1,
+        'key': key,
+        'work_id': parts.first,
+        'book': parts.length == 3 ? int.parse(parts[1]) : null,
+        'number': int.parse(parts.last),
+        'ref': parts.skip(1).join('.'),
+        'title': parts.first == 'work-flat' ? 'Chapter ${parts.last}' : null,
+        'text': text,
+        'char_count': text.length,
+        'sha256': _sha(text),
+      },
+    ]);
+  }
+  db.execute("INSERT INTO section_fts(section_fts) VALUES ('rebuild')");
+
+  Map<String, Object?> card(
+    String id,
+    String type,
+    int ord, {
+    String? text,
+    String? sectionKey,
+    String? title,
+    String? subtitle,
+    String? authorId,
+    String tags = '[]',
+  }) {
+    final key = sectionKey;
+    final work = key?.split('.').first;
+    final textual = type == 'quote' || type == 'passage';
+    return {
+      'id': id,
+      'type': type,
+      'author_id':
+          authorId ??
+          (textual ? (work == 'work-books' ? 'author-a' : 'author-b') : null),
+      'work_id': textual ? work : null,
+      'section_key': key,
+      'ref': key == null
+          ? null
+          : '${work == 'work-books' ? 'Books' : 'Flat'} '
+                '${key.split('.').skip(1).join('.')}',
+      'title': title,
+      'subtitle': subtitle,
+      'text': text ?? '[PLACEHOLDER $id]',
+      'tags': tags,
+      'status': 'draft',
+      'source_id': textual ? 'fx-text' : 'prosoche-curated',
+      'ord': ord,
+    };
+  }
+
+  insert('card', [
     for (var n = 1; n <= fixtureQuoteCount; n++)
-      {
-        'id': fixtureQuoteId(n),
-        'status': 'approved',
-        'origin': 'placeholder',
-        'text': '[PLACEHOLDER quote $n]',
-        'author': '[PLACEHOLDER author]',
-        'work': '[PLACEHOLDER work]',
-        'ref': '1.$n',
-        'tags': n.isEven ? '["even"]' : '[]',
-        'time_of_day': n == 1 ? 'morning' : 'any',
-        'weight': 1.0,
-        'source_id': 'fx-text',
-      },
-    // Neschvaleny a vyradeny citat sa do feedu nedostanu.
-    {
-      'id': 'q_draft',
-      'status': 'draft',
-      'origin': 'placeholder',
-      'text': '[PLACEHOLDER draft]',
-      'author': '[PLACEHOLDER author]',
-      'work': '[PLACEHOLDER work]',
-      'ref': null,
-      'tags': 'not json',
-      'source_id': 'fx-text',
-    },
-    {
-      'id': 'q_retired',
-      'status': 'retired',
-      'origin': 'placeholder',
-      'text': '[PLACEHOLDER retired]',
-      'author': '[PLACEHOLDER author]',
-      'work': '[PLACEHOLDER work]',
-      'ref': null,
-      'tags': '[]',
-      'source_id': 'fx-text',
-    },
+      card(
+        'quote:${fixtureQuoteId(n)}',
+        'quote',
+        n,
+        text: '[PLACEHOLDER quote $n]',
+        sectionKey: fixtureSectionKeys[(n - 1) % fixtureSectionKeys.length],
+        tags: n.isEven ? '["time"]' : '[]',
+      ),
+    for (var n = 1; n <= 4; n++)
+      card(
+        'passage:p$n',
+        'passage',
+        n,
+        text: fixtureSectionText(fixtureSectionKeys[n]),
+        sectionKey: fixtureSectionKeys[n],
+      ),
+    card(
+      'practice:morning-preparation',
+      'practice',
+      1,
+      title: 'Morning preparation',
+      subtitle: '[PLACEHOLDER subtitle]',
+      text: '[PLACEHOLDER morning step one]\n\n[PLACEHOLDER morning step two]',
+      sectionKey: 'work-books.1.1',
+      tags: '["morning"]',
+    ),
+    card(
+      'practice:evening-review',
+      'practice',
+      2,
+      title: 'Evening review',
+      subtitle: '[PLACEHOLDER subtitle]',
+      text:
+          '[PLACEHOLDER evening intro] Question one? Question two?\n\n'
+          '[PLACEHOLDER evening outro]',
+      sectionKey: 'work-flat.3',
+      tags: '["evening"]',
+    ),
+    for (var n = 3; n <= 5; n++)
+      card(
+        'practice:x$n',
+        'practice',
+        n,
+        title: 'Practice $n',
+        subtitle: '[PLACEHOLDER subtitle $n]',
+      ),
+    for (final (i, t) in [
+      'morning',
+      'morning',
+      'evening',
+      'evening',
+      '-',
+    ].indexed)
+      card(
+        'prompt:${t == '-' ? 'free' : t}-${i + 1}',
+        'prompt',
+        i + 1,
+        text: '[PLACEHOLDER question ${i + 1}]?',
+        tags: t == '-' ? '[]' : '["$t"]',
+      ),
+    for (var n = 1; n <= 3; n++)
+      card(
+        'concept:c$n',
+        'concept',
+        n,
+        title: 'Concept $n',
+        subtitle: 'term$n - gloss $n',
+        sectionKey: n == 1 ? 'work-flat.1' : null,
+      ),
+    card(
+      'author:author-a',
+      'author',
+      1,
+      title: 'Author A',
+      authorId: 'author-a',
+    ),
+    card(
+      'author:author-b',
+      'author',
+      2,
+      title: 'Author B',
+      authorId: 'author-b',
+    ),
   ]);
-  insert('quest_template', [
-    {
-      'id': 'read.quotes_n',
-      'status': 'approved',
-      'origin': 'placeholder',
-      'slot': 'read',
-      'rule_json':
-          '{"count": {"type": ["quote", "passage"], "min": {"param": "n"}},'
-          ' "params": {"n": [3, 4]}}',
-      'tags': '[]',
-      'cooldown_days': 7,
-    },
-    {
-      'id': 'learn.idea',
-      'status': 'approved',
-      'origin': 'placeholder',
-      'slot': 'learn',
-      'rule_json':
-          '{"completion": {"mode": "auto", "metric": "idea_learned",'
-          ' "target": 1}}',
-      'tags': '[]',
-      'facets_json': '{"excused_ok": true}',
-    },
-    {
-      'id': 'act.placeholder',
-      'status': 'approved',
-      'origin': 'placeholder',
-      'slot': 'act',
-      'rule_json': '{}',
-      'tags': '[]',
-    },
-    {
-      'id': 'act.draft',
-      'status': 'draft',
-      'origin': 'placeholder',
-      'slot': 'act',
-      'rule_json': '{}',
-      'tags': '[]',
-    },
-    {
-      'id': 'read.broken',
-      'status': 'approved',
-      'origin': 'placeholder',
-      'slot': 'read',
-      'rule_json': '{"count": {"type": "unknown_type", "min": 1}}',
-      'tags': '[]',
-    },
+  final cards = db.select('SELECT count(*) AS n FROM card').single['n'];
+  insert('meta', [
+    {'key': 'section_count', 'value': '${fixtureSectionKeys.length}'},
+    {'key': 'card_count', 'value': '$cards'},
   ]);
-  insert('quest_text', [
-    for (final id in ['read.quotes_n', 'learn.idea', 'act.placeholder'])
-      {
-        'quest_id': id,
-        'lang': 'en',
-        'title': '[PLACEHOLDER quest $id]',
-        'body': null,
-        'source_id': 'fx-curated',
-      },
-  ]);
-  db.execute('COMMIT');
+  refreshSectionsSha(db);
+  db
+    ..execute('COMMIT')
+    ..execute('PRAGMA user_version = ${ContentDb.contractVersion}');
 }
 
 void main(List<String> args) {

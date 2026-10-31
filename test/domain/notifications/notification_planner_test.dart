@@ -11,11 +11,13 @@ NotificationPlanInput _input(
   tz.Location? deviceZone,
   bool morning = true,
   TimeOfDayHm morningTime = TimeOfDayHm.morningDefault,
+  bool evening = false,
 }) => NotificationPlanInput(
   now: now,
   deviceZone: deviceZone ?? _ba,
   morningEnabled: morning,
   morningTime: morningTime,
+  eveningEnabled: evening,
 );
 
 void main() {
@@ -28,6 +30,33 @@ void main() {
 
   Iterable<PlannedNotification> mornings(NotificationPlan p) =>
       p.items.where((n) => n.kind == NotificationKind.morning);
+
+  group('evening reflection (F-01)', () {
+    test('off by default, opt-in adds 10 evenings at 21:00', () {
+      expect(
+        NotificationPlanInput(now: now, deviceZone: _ba).eveningEnabled,
+        isFalse,
+      );
+      final plan = planner.plan(_input(now, evening: true));
+      final evenings = plan.items
+          .where((n) => n.kind == NotificationKind.evening)
+          .toList();
+      expect(evenings, hasLength(10));
+      expect(evenings.first.at.hour, 21);
+      expect(evenings.first.deepLink, 'prosoche://practice');
+      expect(evenings.first.channel, NotificationChannel.daily);
+      expect(plan.items.map((n) => n.id).toSet(), hasLength(plan.length));
+    });
+
+    test('evening only (morning off) still plans reflections', () {
+      final plan = planner.plan(_input(now, morning: false, evening: true));
+      expect(mornings(plan), isEmpty);
+      expect(
+        plan.items.where((n) => n.kind == NotificationKind.evening),
+        isNotEmpty,
+      );
+    });
+  });
 
   group('window and open-app reminder', () {
     test('10 days: 9 mornings + open-app on the last day', () {

@@ -36,7 +36,6 @@ Future<String> _run() async {
   );
   final result = await service.reschedule();
 
-  final exact = await platform.canScheduleExact();
   final now = tz.TZDateTime.now(tz.getLocation(zone));
   for (final (id, minutes) in [(2000000101, 1), (2000000104, 4)]) {
     await platform.schedule(
@@ -51,11 +50,10 @@ Future<String> _run() async {
         payload: '',
         private: false,
       ),
-      exact: exact,
     );
   }
   final pending = await platform.pending();
-  return 'zone=$zone permission=$permission exact=$exact\n'
+  return 'zone=$zone permission=$permission inexact\n'
       'planned=${result.planned} scheduled=${result.scheduled} '
       'pending=${pending.length}';
 }

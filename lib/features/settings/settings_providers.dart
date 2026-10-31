@@ -173,14 +173,14 @@ final FutureProvider<SourcesInfo> sourcesInfoProvider =
             ContentSource(
               id: r.id,
               kind: r.kind,
-              lang: r.lang,
               name: r.name,
               version: r.version,
               license: r.license,
-              licenseUrl: r.licenseUrl,
-              licenseText: r.licenseText,
+              // content.db v1: odovodnenie licencie (kontrakt kap. 5).
+              licenseText: r.licenseNote,
               attribution: r.attribution,
-              url: r.url,
+              // Pri zdrojoch z Project Gutenberg je url NULL (kap. 5).
+              url: r.url ?? '',
             ),
         ],
       );

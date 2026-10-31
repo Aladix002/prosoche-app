@@ -9,7 +9,7 @@ import 'package:prosoche/data/content/trusted_keys.dart';
 ///
 /// Poradie kontrol je zavazne a zhodne so `prosoche-content/pipeline/sign.py`
 /// `verify_envelope` (testovacie vektory `test/fixtures/content_vectors`):
-/// obalka nie je JSON objekt -> `alg` -> `kid` -> rola -> revokacia ->
+/// obalka nie je JSON objekt -> `alg` -> `kid` -> rola ->
 /// `sig` nie je base64 s 64 B -> podpis.
 class SignatureVerifier {
   SignatureVerifier(this._keys, {Ed25519? algorithm})
@@ -25,7 +25,6 @@ class SignatureVerifier {
     Uint8List payload,
     Uint8List envelope, {
     Set<KeyRole> allowed = kContentRoles,
-    Set<String> revoked = const {},
   }) async {
     final Object? env;
     try {
@@ -44,9 +43,6 @@ class SignatureVerifier {
     if (key == null) return const Err(SecurityFailure.unknownKey());
     if (!allowed.contains(key.role)) {
       return const Err(SecurityFailure.wrongKeyRole());
-    }
-    if (revoked.contains(key.kid)) {
-      return const Err(SecurityFailure.revokedKey());
     }
     final sigB64 = env['sig'];
     final Uint8List sig;

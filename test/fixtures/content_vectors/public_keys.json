@@ -5,19 +5,19 @@
       "kid": "test-root-1",
       "alg": "Ed25519",
       "role": "root",
-      "public_key_b64": "D58KEBfag1qPOZvB2Wa4szTWc38dPqGtkhuerWn4H5g="
+      "public_key_b64": "sAlS5MKm+XWYddinV+BySk4QHuYGMUCBaEMTC/AJRos="
     },
     {
-      "kid": "test-content-a",
+      "kid": "content-dev",
       "alg": "Ed25519",
       "role": "content",
-      "public_key_b64": "whDA2dMAPlTvCu2JPxeI5eU73cx+HdFaHyC1vuX70Uw="
+      "public_key_b64": "oeoVvFn/reb+GWwlp8vYYxrdzNfDxbcq9Nz6hMbCme4="
     },
     {
       "kid": "test-content-b",
       "alg": "Ed25519",
       "role": "content",
-      "public_key_b64": "8QTD82I4/ZpK2H/pzA3pjLQyNFlIWFSJnnNoZh9o38M="
+      "public_key_b64": "IqkPAN3zqEjfS0RTYnn71HbCxzKNEdaAVO1JkjRCIwU="
     }
   ]
 }

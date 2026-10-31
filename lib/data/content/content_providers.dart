@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:prosoche/core/clock/clock_provider.dart';
 import 'package:prosoche/core/flavor/flavor.dart';
 import 'package:prosoche/core/logging/logger_provider.dart';
 import 'package:prosoche/core/result.dart';
@@ -73,7 +72,6 @@ ContentPackService contentPackService(Ref ref) {
     logger: ref.watch(appLoggerProvider),
     endpoints: ref.watch(contentEndpointsProvider),
     integrity: ref.watch(contentIntegrityCheckerProvider),
-    clock: ref.watch(appClockProvider),
   );
   ref.onDispose(service.dispose);
   return service;
@@ -99,16 +97,11 @@ Stream<ContentPackState> contentPackState(Ref ref) {
 Set<String> disabledContentIds(Ref ref) =>
     ref.watch(contentPackStateProvider).value?.disabledIds ?? const {};
 
-/// Kill-switch (docs/06 A.7): funkcie, `updateRequired`, oznam. Bez
-/// platneho configu defaulty z kodu (vsetko zapnute).
+/// Kill-switch (docs/06 A.7): funkcie, `updateRequired`, oznam. Obsah v1
+/// nepublikuje `remote_config.json`: defaulty z kodu (vsetko zapnute).
 @Riverpod(keepAlive: true)
-RemoteConfigPolicy remoteConfigPolicy(Ref ref) {
-  final state = ref.watch(contentPackStateProvider).value;
-  final service = ref.watch(contentPackServiceProvider);
-  return state == null
-      ? RemoteConfigPolicy(null, ref.watch(appVersionProvider))
-      : service.policyOf(state);
-}
+RemoteConfigPolicy remoteConfigPolicy(Ref ref) =>
+    RemoteConfigPolicy(null, ref.watch(appVersionProvider));
 
 /// Pribalena db sa opakovanim neopravi; chyba ide hned do UI.
 Duration? _noRetry(int retryCount, Object error) => null;

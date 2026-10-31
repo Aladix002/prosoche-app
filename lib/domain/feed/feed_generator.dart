@@ -21,9 +21,12 @@ final class FeedResult {
 /// Rovnake [FeedInputs] daju vzdy rovnaku sadu. Nahodnost ide len cez
 /// `Random(mixSeed(seed, salt))`.
 ///
-/// S-01: skladba je uvodna karta a citaty. F-01 doplni dalsie typy do
-/// [layouts]; slot bez kandidata sa naplni citatom ([fallbackSlot]) a ak
-/// nie je ani citat, karta sa vynecha (sada je kratsia).
+/// Skladba [layouts] miesa typy kariet z content.db v1 (citat, uryvok,
+/// pojem, cvicenie, otazka, autor). Slot bez kandidata sa naplni citatom
+/// ([fallbackSlot]); ak nie je ani citat, karta sa vynecha (sada je kratsia).
+/// Sloty z [freshOnly] (uvod k autorovi) sa pri vycerpanom poole (vsetko
+/// v cooldowne) tiez nahradia citatom, aby sa ta ista karta neopakovala
+/// kazdy den.
 final class FeedGenerator {
   const FeedGenerator();
 
@@ -39,16 +42,63 @@ final class FeedGenerator {
   /// Slot, ktorym sa nahradi slot bez kandidata.
   static const Slot fallbackSlot = Slot.quote;
 
-  /// Skladba podla `feed.cards_count`.
+  /// Sloty, ktore sa po vycerpani poolu nahradia [fallbackSlot].
+  static const Set<Slot> freshOnly = {Slot.author};
+
+  /// Skladba podla `feed.cards_count` (pozicia 1 je vzdy uvod).
   static final Map<int, List<Slot>> layouts = {
-    for (final n in FeedPrefs.allowedCardsCounts) n: _quotes(n),
+    8: _layout(const [
+      Slot.quote,
+      Slot.passage,
+      Slot.quote,
+      Slot.practice,
+      Slot.quote,
+      Slot.concept,
+      Slot.prompt,
+    ]),
+    12: _layout(const [
+      Slot.quote,
+      Slot.passage,
+      Slot.quote,
+      Slot.concept,
+      Slot.quote,
+      Slot.practice,
+      Slot.quote,
+      Slot.passage,
+      Slot.author,
+      Slot.quote,
+      Slot.prompt,
+    ]),
+    16: _layout(const [
+      Slot.quote,
+      Slot.passage,
+      Slot.quote,
+      Slot.concept,
+      Slot.quote,
+      Slot.practice,
+      Slot.quote,
+      Slot.passage,
+      Slot.author,
+      Slot.quote,
+      Slot.concept,
+      Slot.quote,
+      Slot.passage,
+      Slot.practice,
+      Slot.prompt,
+    ]),
   };
 
   /// Kratsia sada (docs/01 D6).
-  static final List<Slot> shorterLayout = _quotes(shorterSetSize);
+  static final List<Slot> shorterLayout = _layout(const [
+    Slot.quote,
+    Slot.passage,
+    Slot.quote,
+    Slot.practice,
+    Slot.prompt,
+  ]);
 
-  static List<Slot> _quotes(int n) =>
-      List.unmodifiable([Slot.intro, for (var i = 1; i < n; i++) Slot.quote]);
+  static List<Slot> _layout(List<Slot> rest) =>
+      List.unmodifiable([Slot.intro, ...rest]);
 
   FeedResult generate(FeedInputs inputs) => _Run(inputs).build();
 }
@@ -99,20 +149,23 @@ final class _Run {
 
   void _fill(Slot slot, {required int salt}) {
     if (slot == Slot.intro) return _add(IntroCardId(inputs.date), slot);
+    final fresh = FeedGenerator.freshOnly.contains(slot);
     final picked =
-        _pick(slot, salt) ??
+        _pick(slot, salt, freshOnly: fresh) ??
         (slot == FeedGenerator.fallbackSlot
             ? null
             : _pick(FeedGenerator.fallbackSlot, salt));
     if (picked != null) _add(picked.id, Slot.fromWire(picked.type.wire)!);
   }
 
-  FeedCandidate? _pick(Slot slot, int salt) => selector.pick(
-    inputs.pools.of(slot.cardType),
-    salt: salt,
-    exclude: _used,
-    timeOfDay: TimeOfDayFacet.fromPhase(phase),
-  );
+  FeedCandidate? _pick(Slot slot, int salt, {bool freshOnly = false}) =>
+      selector.pick(
+        inputs.pools.of(slot.cardType),
+        salt: salt,
+        exclude: _used,
+        timeOfDay: TimeOfDayFacet.fromPhase(phase),
+        freshOnly: freshOnly,
+      );
 
   void _add(CardId id, Slot slot) {
     _used.add(id);

@@ -11,6 +11,9 @@ enum NotificationKind {
   /// `notif_morning`.
   morning(NotificationChannel.daily, 5),
 
+  /// `notif_evening`: vecerna reflexia (F-01), otvori Practice.
+  evening(NotificationChannel.daily, 4),
+
   /// `notif_open_app_ios`: posledna notifikacia okna vyzve na otvorenie.
   openApp(NotificationChannel.system, 6);
 
@@ -22,9 +25,9 @@ enum NotificationKind {
 
 /// Deterministicke ID planovanych notifikacii.
 ///
-/// `den * 10 + slot`, kde den je pocet dni od 2020-01-01 a slot je 5 ranna
-/// a 6 vyzva na otvorenie (0-4 su volne pre dalsie pripomienky, napr.
-/// vecerna reflexia z F-01). Rovnaky den
+/// `den * 10 + slot`, kde den je pocet dni od 2020-01-01 a slot je 4
+/// vecerna reflexia, 5 ranna a 6 vyzva na otvorenie (0-3 su volne).
+/// Rovnaky den
 /// a druh ma vzdy rovnake ID, takze preplanovanie je idempotentne. ID mimo
 /// [isPlanned] (okamzite notifikacie, brana) planner nikdy nezrusi.
 abstract final class NotificationIds {
@@ -68,6 +71,7 @@ final class PlannedNotification {
   /// Ciel po kliknuti (docs/01 4.3, schema `prosoche`).
   String get deepLink => switch (kind) {
     NotificationKind.morning || NotificationKind.openApp => 'prosoche://today',
+    NotificationKind.evening => 'prosoche://practice',
   };
 
   /// Odtlacok obsahu. Zmena casu alebo parametrov = ina notifikacia.

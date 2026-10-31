@@ -14,6 +14,8 @@ import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/core/router/routes.dart';
 import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/features/feed/feed_routes.dart';
+import 'package:prosoche/features/library/library_routes.dart';
+import 'package:prosoche/features/practice/practice_routes.dart';
 import 'package:prosoche/features/today/today_routes.dart';
 import 'package:prosoche/ui/foundation/sk_ui_strings.dart';
 import 'package:prosoche/ui/theme/prosoche_theme.dart';
@@ -87,6 +89,8 @@ Future<GoRouter> pumpF02(
           builder: (context, state) => Scaffold(body: SafeArea(child: host)),
         ),
       _stub('/library'),
+      ...readerRoutes(),
+      ...practiceRoutes(),
       _stub('/settings'),
     ],
   );

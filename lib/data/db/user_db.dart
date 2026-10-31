@@ -6,7 +6,9 @@ import 'package:prosoche/data/db/converters.dart';
 import 'package:prosoche/data/db/daos/blocker_dao.dart';
 import 'package:prosoche/data/db/daos/card_event_dao.dart';
 import 'package:prosoche/data/db/daos/daily_set_dao.dart';
+import 'package:prosoche/data/db/daos/journal_dao.dart';
 import 'package:prosoche/data/db/daos/quest_log_dao.dart';
+import 'package:prosoche/data/db/daos/reading_dao.dart';
 import 'package:prosoche/data/db/daos/saved_card_dao.dart';
 import 'package:prosoche/data/db/daos/settings_dao.dart';
 import 'package:prosoche/data/db/daos/streak_dao.dart';
@@ -47,6 +49,10 @@ void configureUserDbConnection(Database db) {
     GateSessions,
     UnlockEvents,
     SavedCards,
+    JournalEntries,
+    PracticeLogs,
+    ReadingPositions,
+    SectionBookmarks,
   ],
   daos: [
     SettingsDao,
@@ -56,6 +62,8 @@ void configureUserDbConnection(Database db) {
     StreakDao,
     BlockerDao,
     SavedCardDao,
+    JournalDao,
+    ReadingDao,
   ],
 )
 class UserDb extends _$UserDb {
@@ -72,7 +80,7 @@ class UserDb extends _$UserDb {
 
   /// Aktualna verzia schemy. Zvysenie = novy krok v `user_migrations.dart`
   /// + `drift_dev schema dump` (plan 17.4).
-  static const currentSchemaVersion = 1;
+  static const currentSchemaVersion = 2;
 
   @override
   int get schemaVersion => currentSchemaVersion;

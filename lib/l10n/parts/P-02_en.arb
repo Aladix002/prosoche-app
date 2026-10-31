@@ -49,9 +49,5 @@
   "notifOpenAppPrivateBody": "Open the app to keep reminders on",
   "@notifOpenAppPrivateBody": {
     "description": "Neutral body of the last planned notification in private mode. Title is the app name."
-  },
-  "notifInexactNote": "Reminders may arrive up to 10 minutes late or more. Allow \"Alarms & reminders\" for exact times.",
-  "@notifInexactNote": {
-    "description": "Info line in Settings when exact alarms are not allowed (not a notification)."
   }
 }

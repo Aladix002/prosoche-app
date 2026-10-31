@@ -30,14 +30,6 @@ final class ScheduledNotification {
   final bool private;
 }
 
-/// Presny alarm nie je povoleny (Android 12+ bez `SCHEDULE_EXACT_ALARM`).
-final class ExactAlarmNotPermittedException implements Exception {
-  const ExactAlarmNotPermittedException();
-
-  @override
-  String toString() => 'ExactAlarmNotPermittedException';
-}
-
 /// Tenka vrstva nad systemovymi notifikaciami (flutter_local_notifications).
 ///
 /// Oddelena kvoli testom: `NotificationService` testuje logiku nad
@@ -49,20 +41,10 @@ abstract interface class NotificationPlatform {
   /// Cakajuce naplanovane notifikacie.
   Future<List<PendingNotification>> pending();
 
-  /// Naplanuje [notification]. Pri [exact] bez povolenia hodi
-  /// [ExactAlarmNotPermittedException].
-  Future<void> schedule(
-    ScheduledNotification notification, {
-    required bool exact,
-  });
+  /// Naplanuje [notification] ako nepresnu pripomienku (inexact).
+  Future<void> schedule(ScheduledNotification notification);
 
   Future<void> cancel(int id);
-
-  /// Smie appka planovat presne alarmy (iOS vzdy true).
-  Future<bool> canScheduleExact();
-
-  /// Otvori systemovu obrazovku `ACTION_REQUEST_SCHEDULE_EXACT_ALARM`.
-  Future<bool> requestExactAlarms();
 
   /// Runtime povolenie notifikacii (Android 13+ `POST_NOTIFICATIONS`, iOS).
   Future<bool> requestPermission();

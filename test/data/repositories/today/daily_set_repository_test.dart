@@ -25,9 +25,10 @@ void main() {
     final b = await h.dailySets.ensure(thu);
     expect(a.set, b.set);
     expect(a.n, 12, reason: 'feed.cards_count default 12');
+    // Mix typov kariet z content.db v1 (F-01).
     expect(
-      a.set.cards.skip(1).every((c) => c.cardId.type == CardType.quote),
-      isTrue,
+      a.set.cards.skip(1).map((c) => c.cardId.type).toSet(),
+      containsAll([CardType.quote, CardType.passage, CardType.practice]),
     );
     expect(a.cursor, 0);
     expect(a.isStarted, isFalse);
@@ -90,9 +91,11 @@ void main() {
       },
     );
     final set = (await repo.ensure(fri)).set;
-    expect(set.n, 6, reason: 'len 5 povolenych citatov + intro');
+    expect(set.n, 8);
     expect(
-      set.cards.skip(1).map((c) => c.cardId.key),
+      set.cards
+          .where((c) => c.cardId.type == CardType.quote)
+          .map((c) => c.cardId.key),
       everyElement(isIn(['q_0016', 'q_0017', 'q_0018', 'q_0019', 'q_0020'])),
     );
   });

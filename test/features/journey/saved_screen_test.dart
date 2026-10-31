@@ -84,7 +84,7 @@ void main() {
         .map((t) => (t.title! as Text).data)
         .toList();
     expect(titles.first, '[PLACEHOLDER work] 1.1');
-    expect(titles.last, 'Idea');
+    expect(titles.last, '[PLACEHOLDER concept logos]');
     expect(titles, hasLength(3));
     expect(find.text('[PLACEHOLDER quote q_0001]'), findsOneWidget);
     expect(find.text('[PLACEHOLDER quote q_0002]'), findsOneWidget);
@@ -107,7 +107,7 @@ void main() {
       saved: [idea, first],
     );
     expect(find.byType(ListTile), findsOneWidget);
-    expect(find.text('Idea'), findsWidgets);
+    expect(find.text('[PLACEHOLDER concept logos]'), findsWidgets);
     final chip = tester.widget<ChoiceChip>(
       find.byKey(const ValueKey('saved-filter:concept')),
     );

@@ -25,21 +25,24 @@ void main() {
           ts: DateTime.utc(2026, 10, 29, 8, minute),
         );
 
-    test('assigns quests once from templates with texts', () async {
-      final quests = await h.quests.ensure(thu);
-      expect(quests.map((q) => q.slot), QuestSlot.values);
-      final read = quests[0];
-      expect(read.quest.questId, 'read.quotes_n');
-      expect(read.title, '[PLACEHOLDER quest read.quotes_n]');
-      expect(read.progress!.target, isIn([3, 4]));
-      final learn = quests[1];
-      expect(learn.quest.questId, 'learn.idea');
-      expect(learn.quest.rule!.types, {CardType.concept, CardType.author});
-      expect(quests[2].quest.questId, 'act.placeholder');
-      expect(quests[2].progress, isNull);
-      expect(await h.user.questLogDao.forDate(thu), hasLength(3));
-      expect(await h.quests.ensure(thu), hasLength(3));
-    });
+    test(
+      'assigns generic quests once (content.db v1 has no templates)',
+      () async {
+        final quests = await h.quests.ensure(thu);
+        expect(quests.map((q) => q.slot), QuestSlot.values);
+        final read = quests[0];
+        expect(read.quest.questId, GenericQuest.readCards.id);
+        expect(read.title, isNull);
+        expect(read.quest.rule!.types, {CardType.quote, CardType.passage});
+        final learn = quests[1];
+        expect(learn.quest.questId, GenericQuest.learnIdea.id);
+        expect(learn.quest.rule!.types, {CardType.concept, CardType.author});
+        expect(quests[2].quest.questId, GenericQuest.actPractice.id);
+        expect(quests[2].progress, isNull);
+        expect(await h.user.questLogDao.forDate(thu), hasLength(3));
+        expect(await h.quests.ensure(thu), hasLength(3));
+      },
+    );
 
     test('language without texts gets generic quests in every slot', () async {
       h.lang = 'de';
@@ -71,7 +74,8 @@ void main() {
       h.lang = 'de';
       await h.settings.set(SettingsKeys.feedCardsCount, 8);
       await h.content.customStatement(
-        "DELETE FROM quote WHERE id NOT IN ('q_0001', 'q_0002', 'q_0003')",
+        'DELETE FROM card WHERE id NOT IN '
+        "('quote:q_0001', 'quote:q_0002', 'quote:q_0003')",
       );
       final set = await h.dailySets.ensure(thu);
       expect(set.n, 4);

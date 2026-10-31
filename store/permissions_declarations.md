@@ -3,7 +3,8 @@
 > S-01: obsah po Murse odstraneny, kostra ostava. Vyplnit pre Prosoche pred
 > prvym releasom (texty len z `lib/l10n/app_en.arb` a manifestov).
 
-Nikdy nepouzivat: `USE_EXACT_ALARM`, `QUERY_ALL_PACKAGES`,
+Nikdy nepouzivat: `USE_EXACT_ALARM`, `SCHEDULE_EXACT_ALARM` (F-01: ranna
+a vecerna pripomienka su nepresne, `inexactAllowWhileIdle`), `QUERY_ALL_PACKAGES`,
 `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`, `AccessibilityService`, polohu.
 `tool/check_manifest.sh` blokuje povolenia brany v `lite`.
 
@@ -13,15 +14,15 @@ TODO
 
 ### POST_NOTIFICATIONS (runtime, Android 13+)
 
-TODO
-
-### SCHEDULE_EXACT_ALARM (special access, not granted by default on Android 14+)
-
-TODO
+Opt-in reminders: an optional morning reminder (daily set) and an optional
+evening reminder (evening reflection). Both are inexact; the app does not
+request exact alarms. Asked in onboarding after an explanation, can be turned
+off in Settings > Notifications.
 
 ### RECEIVE_BOOT_COMPLETED (normal)
 
-TODO
+Restores the scheduled (inexact) reminders after a device restart
+(`ScheduledNotificationBootReceiver` of flutter_local_notifications).
 
 ## v1.1 (`prodFull`, app gate) - prepare now, submit with B-03
 

@@ -132,7 +132,7 @@ void main() {
       await tester.tap(find.byKey(const ValueKey('source:fx-text')));
       await tester.pumpAndSettle();
       expect(find.byType(SkSheet), findsOneWidget);
-      expect(find.text('[PLACEHOLDER license]'), findsOneWidget);
+      expect(find.text('[PLACEHOLDER license note]'), findsOneWidget);
     });
 
     testWidgets('loading state', (tester) async {

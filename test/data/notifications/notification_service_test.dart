@@ -56,12 +56,10 @@ void main() {
       expect(r.planned, 10);
       expect(r.scheduled, r.planned);
       expect(r.cancelled, 0);
-      expect(r.exact, isTrue);
       expect(r.dropped, 0);
       expect(r.deviceZone, 'Europe/Bratislava');
       expect(daily(), hasLength(9));
-      expect(platform.exactById.values.every((e) => e), isTrue);
-      expect(log.entries.last.kv['status'], 'exact');
+      expect(log.entries.last.kv['status'], 'inexact');
     });
 
     test('second run is a no-op (idempotent)', () async {
@@ -124,40 +122,33 @@ void main() {
     });
   });
 
-  group('exact alarms', () {
-    test('inexact fallback when not allowed, exact after grant', () async {
-      platform.exactAllowed = false;
-      final inexact = await service.reschedule();
-      expect(inexact.exact, isFalse);
-      expect(platform.exactById.values.every((e) => !e), isTrue);
-      expect(log.entries.last.kv['status'], 'inexact');
-
-      platform.exactAllowed = true;
-      final exact = await service.reschedule();
-      expect(exact.exact, isTrue);
-      expect(exact.scheduled, exact.planned);
-      expect(platform.exactById.values.every((e) => e), isTrue);
-    });
-
-    test('permission revoked mid-run falls back to inexact', () async {
-      platform.throwOnExact = true;
+  group('evening reflection and permissions (F-01)', () {
+    test('evening reminder is opt-in and opens Practice', () async {
+      await service.reschedule();
+      expect(
+        platform.scheduled.values.where((n) => n.payload.contains('practice')),
+        isEmpty,
+      );
+      await settings.set(SettingsKeys.notifEveningEnabled, true);
+      await settings.set(SettingsKeys.notifEveningTime, '20:30');
       final r = await service.reschedule();
-      expect(r.exact, isFalse);
-      expect(platform.scheduled, isNotEmpty);
-      expect(platform.exactById.values.every((e) => !e), isTrue);
+      expect(r.planned, greaterThan(10));
+      final evening = platform.scheduled.values
+          .where((n) => n.payload.contains('practice'))
+          .toList();
+      expect(evening, isNotEmpty);
+      expect((evening.first.at.hour, evening.first.at.minute), (20, 30));
+      expect(
+        NotificationService.deepLinkOf(evening.first.payload),
+        'prosoche://practice',
+      );
     });
 
     test('permission requests are logged without data', () async {
-      expect(await service.requestExactAlarms(), isTrue);
       platform.grant = false;
       expect(await service.requestPermission(), isFalse);
-      expect(await service.canScheduleExact(), isTrue);
       expect(await service.areEnabled(), isTrue);
       final kv = log.entries.map((e) => e.kv).toList();
-      expect(
-        kv,
-        contains(equals({'permission': 'exact_alarm', 'granted': true})),
-      );
       expect(
         kv,
         contains(equals({'permission': 'notifications', 'granted': false})),

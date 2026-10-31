@@ -17,6 +17,12 @@ enum TimeOfDayFacet {
   static TimeOfDayFacet fromWire(String? wire) =>
       values.firstWhere((t) => t.wire == wire, orElse: () => any);
 
+  /// Z tagov karty content.db v1 (`morning`, `evening`); inak [any].
+  static TimeOfDayFacet fromTags(Iterable<String> tags) =>
+      tags.contains('morning')
+      ? morning
+      : (tags.contains('evening') ? evening : any);
+
   static TimeOfDayFacet fromPhase(DayPhase phase) => switch (phase) {
     DayPhase.morning => morning,
     DayPhase.day => day,
@@ -104,7 +110,7 @@ final class FeedPools {
     }
   }
 
-  /// Len citaty (S-01).
+  /// Len citaty (testy, minimalny obsah).
   factory FeedPools.quotes(List<FeedCandidate> quotes) =>
       FeedPools({CardType.quote: quotes});
 

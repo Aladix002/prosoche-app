@@ -5,15 +5,16 @@ import 'package:meta/meta.dart';
 import 'package:prosoche/core/result.dart';
 import 'package:prosoche/data/content/sem_ver.dart';
 
-/// Strukturalne kontroly zrkadlia `prosoche-content/pipeline/manifest.py`
-/// (`validate_manifest`, `validate_remote_config`, `validate_revocations`).
-/// Parsuju sa az bajty s overenym podpisom.
+/// Strukturalne kontroly zrkadlia `prosoche-content/pipeline/sign.py`
+/// (`validate_manifest`, kontrakt content.db v1 kap. 8). Parsuju sa az bajty
+/// s overenym podpisom. Manifest v1 nema `packs`; `remote_config.json`
+/// a `revocations.json` prosoche-content v1 nepublikuje ([RemoteConfig]
+/// ostava ako tvar pre buduci kill-switch).
 
 final _sha256Re = RegExp(r'^[0-9a-f]{64}$');
 final _tsRe = RegExp(r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$');
 final _cardIdRe = RegExp(r'^[a-z][a-z_]*:[A-Za-z0-9_.:-]+$');
 final _kidRe = RegExp(r'^[a-z0-9][a-z0-9-]{1,63}$');
-final _packIdRe = RegExp(r'^[a-z][a-z0-9_]{0,63}$');
 
 /// Chyba tvaru dokumentu, mapuje sa na [ContentIntegrityFailed].
 class _Invalid implements Exception {
@@ -60,7 +61,7 @@ Uri _https(Object? v) {
   return uri;
 }
 
-/// `db` alebo balik z `packs` v manifeste.
+/// `db` v manifeste.
 @immutable
 class DbArchiveInfo {
   const DbArchiveInfo({
@@ -72,8 +73,8 @@ class DbArchiveInfo {
     required this.gzSize,
   });
 
-  /// Spolocne kontroly pre `db` a kazdy balik (prosoche-content
-  /// `_artifact_errors`): gzip, https URL, sha256, kladne velkosti.
+  /// Kontroly `db` (prosoche-content `validate_manifest`): gzip, https URL,
+  /// sha256, kladne velkosti.
   factory DbArchiveInfo._fromJson(Object? v) {
     if (v is! Map<String, Object?>) throw const _Invalid();
     if (v['compression'] != 'gzip') throw const _Invalid();
@@ -99,26 +100,8 @@ class DbArchiveInfo {
   final int gzSize;
 }
 
-/// Volitelny obsahovy balik z `packs` v manifeste (C-06). `ContentPackService`
-/// ho ignoruje; stahovanie balikov zatial nie je (F-01 rozhodne o pouziti).
-@immutable
-class ContentPackInfo {
-  const ContentPackInfo({
-    required this.id,
-    required this.archive,
-    required this.schemaVersion,
-    required this.optional,
-  });
-
-  final String id;
-  final DbArchiveInfo archive;
-
-  /// `PRAGMA user_version` balika.
-  final int schemaVersion;
-  final bool optional;
-}
-
-/// `manifest.json` (docs/06 B.2, prosoche-content `build_manifest`).
+/// `manifest.json` (kontrakt content.db v1 kap. 8, prosoche-content
+/// `build_manifest`).
 @immutable
 class ContentManifest {
   const ContentManifest({
@@ -128,7 +111,8 @@ class ContentManifest {
     required this.createdAt,
     required this.db,
     required this.disabledIds,
-    this.packs = const {},
+    required this.sectionsSha256,
+    required this.devContent,
   });
 
   static const schema = 1;
@@ -146,6 +130,8 @@ class ContentManifest {
         }
         final schemaVersion = m['schema_version'];
         if (schemaVersion is! int) throw const _Invalid();
+        final dev = m['dev_content'];
+        if (dev is! bool) throw const _Invalid();
         return ContentManifest(
           contentVersion: _posInt(m['content_version']),
           schemaVersion: schemaVersion,
@@ -153,30 +139,10 @@ class ContentManifest {
           createdAt: _ts(m['created_at']),
           db: DbArchiveInfo._fromJson(m['db']),
           disabledIds: {for (final id in ids) _match(id, _cardIdRe)},
-          // Chybajuce pole = ziadne baliky (format C-05).
-          packs: m.containsKey('packs') ? _packs(m['packs']) : const {},
+          sectionsSha256: _match(m['sections_sha256'], _sha256Re),
+          devContent: dev,
         );
       });
-
-  /// `packs` podla prosoche-content `_packs_errors`.
-  static Map<String, ContentPackInfo> _packs(Object? v) {
-    if (v is! List<Object?>) throw const _Invalid();
-    final out = <String, ContentPackInfo>{};
-    for (final p in v) {
-      if (p is! Map<String, Object?>) throw const _Invalid();
-      final id = _match(p['id'], _packIdRe);
-      if (out.containsKey(id)) throw const _Invalid();
-      final optional = p['optional'];
-      if (optional is! bool) throw const _Invalid();
-      out[id] = ContentPackInfo(
-        id: id,
-        archive: DbArchiveInfo._fromJson(p),
-        schemaVersion: _posInt(p['schema_version']),
-        optional: optional,
-      );
-    }
-    return out;
-  }
 
   final int contentVersion;
   final int schemaVersion;
@@ -185,8 +151,11 @@ class ContentManifest {
   final DbArchiveInfo db;
   final Set<String> disabledIds;
 
-  /// Volitelne baliky podla `id` (prazdne, ak manifest `packs` nema).
-  final Map<String, ContentPackInfo> packs;
+  /// `meta.sections_sha256` db z manifestu (kontrola po rozbaleni).
+  final String sectionsSha256;
+
+  /// Db obsahuje karty `status = draft`; prod flavor taky obsah neprijme.
+  final bool devContent;
 }
 
 /// Prepinac funkcie v remote configu.
@@ -318,29 +287,4 @@ class RemoteConfig {
       }
     }
   }
-}
-
-/// `revocations.json` (docs/06 B.2), podpisany len root klucom.
-@immutable
-class Revocations {
-  const Revocations({required this.seq, required this.revoked});
-
-  static const schema = 1;
-
-  /// [rootKids]: root kluc sa suborom nerevokuje (len novou binarkou).
-  static Result<Revocations> parse(
-    Uint8List bytes, {
-    Iterable<String> rootKids = const [],
-  }) => _parse(bytes, 'revocations', (m) {
-    if (m['schema'] != schema) throw const _Invalid();
-    _ts(m['issued_at']);
-    final rev = m['revoked'];
-    if (rev is! List<Object?>) throw const _Invalid();
-    final kids = {for (final k in rev) _match(k, _kidRe)};
-    if (kids.any(rootKids.contains)) throw const _Invalid();
-    return Revocations(seq: _nonNegInt(m['seq']), revoked: kids);
-  });
-
-  final int seq;
-  final Set<String> revoked;
 }

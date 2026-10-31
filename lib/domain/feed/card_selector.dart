@@ -13,7 +13,8 @@ abstract final class FeedCooldowns {
 /// 1. Tvrde filtre: `disabled_ids` a uz pouzite karty.
 /// 2. Vazeny nahodny vyber cez `Random(seed + salt)` z poloziek po cooldowne.
 ///    Vaha = `weight` x 3 (tema dna) x 2 (`time_of_day`) x LRU.
-/// 3. Ked je vsetko v cooldowne, vyberie sa najdavnejsie pouzita polozka.
+/// 3. Ked je vsetko v cooldowne, vyberie sa najdavnejsie pouzita polozka
+///    (pri `freshOnly` nic).
 final class CardSelector {
   CardSelector({
     required this.date,
@@ -44,11 +45,12 @@ final class CardSelector {
     Set<CardId> exclude = const {},
     String? themeTag,
     TimeOfDayFacet? timeOfDay,
+    bool freshOnly = false,
   }) {
     final all = eligible(pool, exclude: exclude);
     if (all.isEmpty) return null;
     final fresh = all.where(_cooledDown).toList();
-    if (fresh.isEmpty) return _leastRecent(all);
+    if (fresh.isEmpty) return freshOnly ? null : _leastRecent(all);
     final rng = Random(mixSeed(seed, salt));
     return _weighted(fresh, rng, themeTag, timeOfDay);
   }
