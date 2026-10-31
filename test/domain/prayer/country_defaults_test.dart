@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/prayer/calc_settings.dart';
-import 'package:sakina/domain/prayer/country_defaults.dart';
+import 'package:prosoche/domain/prayer/calc_settings.dart';
+import 'package:prosoche/domain/prayer/country_defaults.dart';
 
 void main() {
   test('DoD presets (PLAN_VYVOJA P-01)', () {

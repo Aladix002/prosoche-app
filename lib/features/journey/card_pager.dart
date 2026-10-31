@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/features/cards/cards.dart' show CardSurface, CardView;
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/features/cards/cards.dart' show CardSurface, CardView;
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Otvori karty na celu obrazovku nad shellom (A8.2 "View cards", A8.3).
 Future<void> openJourneyCards(
@@ -61,7 +61,7 @@ class _JourneyCardPagerState extends State<JourneyCardPager> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final formats = SakinaFormats(Localizations.localeOf(context));
+    final formats = ProsocheFormats(Localizations.localeOf(context));
     final total = widget.cards.length;
     return Scaffold(
       appBar: AppBar(

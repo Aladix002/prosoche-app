@@ -1,8 +1,8 @@
 import 'package:go_router/go_router.dart';
-import 'package:sakina/features/calendar/calendar_screen.dart';
-import 'package:sakina/features/calendar/hijri_offset.dart';
+import 'package:prosoche/features/calendar/calendar_screen.dart';
+import 'package:prosoche/features/calendar/hijri_offset.dart';
 
-export 'package:sakina/features/calendar/hijri_offset.dart'
+export 'package:prosoche/features/calendar/hijri_offset.dart'
     show HijriOffsetScreen;
 
 /// Hijri kalendar `/calendar?month=YYYY-MM` alebo `?hm=1448-05`

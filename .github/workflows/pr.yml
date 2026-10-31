@@ -78,7 +78,7 @@ jobs:
       - name: Build release APK prodLite (debug-signed, R8 + obfuscate)
         # Flavor (env x edition) sa cita z appFlavor, preto staci lib/main.dart.
         env:
-          SAKINA_CI_UNSIGNED: 'true'
+          PROSOCHE_CI_UNSIGNED: 'true'
         run: |
           flutter build apk --release --flavor prodLite \
             --obfuscate --split-debug-info=build/symbols

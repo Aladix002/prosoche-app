@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/db/hadith_extra_db.dart';
+import 'package:prosoche/data/db/hadith_extra_db.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 import 'fixtures/hadith_extra_fixture.dart';
@@ -58,10 +58,10 @@ void main() {
     );
   });
 
-  test('local contract copy equals sakina-content (when available)', () {
+  test('local contract copy equals prosoche-content (when available)', () {
     final upstream = findUpstreamContract('hadith_extra_schema.sql');
     if (upstream == null) {
-      markTestSkipped('sakina-content not found next to sakina-app');
+      markTestSkipped('prosoche-content not found next to prosoche-app');
       return;
     }
     expect(

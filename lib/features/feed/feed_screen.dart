@@ -6,20 +6,20 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/core/logging/logger_provider.dart';
-import 'package:sakina/core/router/routes.dart';
-import 'package:sakina/data/observability/observability_providers.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/feed/feed.dart';
-import 'package:sakina/domain/quests/quests.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/cards/cards.dart';
-import 'package:sakina/features/feed/feed_rules.dart';
-import 'package:sakina/features/quran/quran_routes.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/core/logging/logger_provider.dart';
+import 'package:prosoche/core/router/routes.dart';
+import 'package:prosoche/data/observability/observability_providers.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/feed/feed.dart';
+import 'package:prosoche/domain/quests/quests.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/cards/cards.dart';
+import 'package:prosoche/features/feed/feed_rules.dart';
+import 'package:prosoche/features/quran/quran_routes.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Fullscreen denna sada (docs/02 A3): vertikalny `PageView`, karta je
 /// `seen` po dwell (0.4), dalej sa da az po precitani, sada konci kartou

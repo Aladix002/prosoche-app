@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show appBuildNumber;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/core/logging/logger_provider.dart';
-import 'package:sakina/data/blocker/blocker_gateway_provider.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/onboarding/onboarding_guard.dart';
-import 'package:sakina/features/quran/quran_providers.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/core/logging/logger_provider.dart';
+import 'package:prosoche/data/blocker/blocker_gateway_provider.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/onboarding/onboarding_guard.dart';
+import 'package:prosoche/features/quran/quran_providers.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // Providery obrazoviek nastaveni (docs/02 A10, A11). Vlastnik: F-07.

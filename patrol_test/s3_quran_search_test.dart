@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patrol/patrol.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/features/quran/widgets/ayah_tile.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/features/quran/widgets/ayah_tile.dart';
 
 import 'support/app_harness.dart';
 import 'support/flows.dart';

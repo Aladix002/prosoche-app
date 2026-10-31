@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/db/user_db.dart' as db;
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/quests.dart';
-import 'package:sakina/domain/streak/streak.dart';
+import 'package:prosoche/data/db/user_db.dart' as db;
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/quests.dart';
+import 'package:prosoche/domain/streak/streak.dart';
 
 import '../harness.dart';
 

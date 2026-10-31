@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/prayer/country_defaults.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/prayer/prayer_providers.dart';
-import 'package:sakina/features/prayer/prayer_texts.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/prayer/country_defaults.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/prayer/prayer_providers.dart';
+import 'package:prosoche/features/prayer/prayer_texts.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Vyber mesta (docs/02 A7.3): "Use my location" a offline vyhladavanie
 /// v tabulke `city`. Routy `/settings/prayer/location` a

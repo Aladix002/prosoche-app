@@ -6,16 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/app.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/blocker/blocker_gateway_provider.dart';
-import 'package:sakina/data/blocker/fake_blocker_gateway.dart';
-import 'package:sakina/data/blocker/gate_repository.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/features/gate/gate_screen.dart';
-import 'package:sakina/ui/foundation/sk_ui_strings.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
+import 'package:prosoche/app.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/blocker/blocker_gateway_provider.dart';
+import 'package:prosoche/data/blocker/fake_blocker_gateway.dart';
+import 'package:prosoche/data/blocker/gate_repository.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/features/gate/gate_screen.dart';
+import 'package:prosoche/ui/foundation/sk_ui_strings.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
 
 import '../../fakes/fake_repositories.dart';
 
@@ -159,14 +159,14 @@ class GateTest {
             child ??
             MaterialApp(
               locale: locale,
-              theme: SakinaTheme.light(),
+              theme: ProsocheTheme.light(),
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
               builder: (context, child) => MediaQuery(
                 data: MediaQuery.of(context)
                     .copyWith(accessibleNavigation: accessibleNavigation),
                 child: Theme(
-                  data: sakinaAppTheme(
+                  data: prosocheAppTheme(
                     brightness: Brightness.light,
                     locale: Localizations.localeOf(context),
                   ),

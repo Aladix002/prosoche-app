@@ -1,12 +1,13 @@
 import 'package:flutter/widgets.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
 
 /// Formaty pre obrazovky Koranu v jazyku UI (cislice, bidi izolacia).
 extension QuranFormatX on BuildContext {
-  SakinaFormats get quranFormats => SakinaFormats(Localizations.localeOf(this));
+  ProsocheFormats get quranFormats =>
+      ProsocheFormats(Localizations.localeOf(this));
 
   /// Cislo v cisliciach UI.
   String quranNumber(int n) => quranFormats.number(n);
@@ -30,7 +31,7 @@ extension QuranFormatX on BuildContext {
 /// samostatny segment; text versa ostava bajtovo `ayah.text_uthmani`.
 /// Vykresluje sa len ako segment `SkArabicText.quran`.
 String verseEndMarker(int number) =>
-    // sakina-lint: ignore sakina_arabic_text_outside_sk_arabic_text
+    // prosoche-lint: ignore prosoche_arabic_text_outside_sk_arabic_text
     '\u00A0\u06DD${localizeDigits('$number', DigitStyle.arabicIndic)}';
 
 /// Atribucia prekladu zo zdroja (docs/09 2.2: vydavatel, QuranEnc.com,

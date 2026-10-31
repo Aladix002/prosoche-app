@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/blocker/blocked_apps_repository.dart';
-import 'package:sakina/features/onboarding/onboarding_controller.dart';
-import 'package:sakina/features/onboarding/onboarding_screen.dart';
-import 'package:sakina/features/settings/blocking/blocking_providers.dart';
-import 'package:sakina/features/settings/blocking/blocking_widgets.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/blocker/blocked_apps_repository.dart';
+import 'package:prosoche/features/onboarding/onboarding_controller.dart';
+import 'package:prosoche/features/onboarding/onboarding_screen.dart';
+import 'package:prosoche/features/settings/blocking/blocking_providers.dart';
+import 'package:prosoche/features/settings/blocking/blocking_widgets.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// O5 Brana - vyber appiek (docs/02 A1 O5), len pri `FEATURE_GATE`.
 ///

@@ -3,16 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/content/content_providers.dart';
-import 'package:sakina/data/content/sem_ver.dart';
-import 'package:sakina/data/db/content_db.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/features/onboarding/onboarding_platform.dart';
-import 'package:sakina/features/settings/settings_providers.dart';
-import 'package:sakina/features/settings/settings_routes.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/content/content_providers.dart';
+import 'package:prosoche/data/content/sem_ver.dart';
+import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/features/onboarding/onboarding_platform.dart';
+import 'package:prosoche/features/settings/settings_providers.dart';
+import 'package:prosoche/features/settings/settings_routes.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
 
 import '../../data/db/fixtures/content_fixture.dart';
 import '../../fakes/fake_repositories.dart';
@@ -118,7 +118,7 @@ Future<GoRouter> pumpSettings(
       overrides: overrides,
       retry: (_, _) => null,
       child: MaterialApp.router(
-        theme: SakinaTheme.light(),
+        theme: ProsocheTheme.light(),
         locale: locale,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,

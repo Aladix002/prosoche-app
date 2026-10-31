@@ -4,13 +4,13 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart' show Size;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/streak/streak.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/streak/streak.dart';
 
 import '../../fakes/fake_repositories.dart';
 
-/// Dnes v testoch (stvrtok 29. 10. 2026, 9:00, ako `pumpSakina`).
+/// Dnes v testoch (stvrtok 29. 10. 2026, 9:00, ako `pumpProsoche`).
 final journeyToday = LocalDate(2026, 10, 29);
 final journeyNow = DateTime(2026, 10, 29, 9);
 

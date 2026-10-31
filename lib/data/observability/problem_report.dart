@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:clock/clock.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
-import 'package:sakina/core/logging/app_logger.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
 import 'package:share_plus/share_plus.dart';
 
 /// Hlavicka reportu: len technicke udaje (docs/06 C.9) - verzia appky,
@@ -57,7 +57,7 @@ class ProblemReport {
   /// [includeLog] = checkbox "Prilozit technicky log" (default zapnuty).
   String preview({String? description, bool includeLog = true}) {
     final b = StringBuffer()
-      ..writeln('Sakina problem report')
+      ..writeln('Prosoche problem report')
       ..writeln('created: ${_clock.now().toUtc().toIso8601String()}')
       ..writeln(_header().toText());
     final text = description?.trim() ?? '';
@@ -78,12 +78,12 @@ class ProblemReport {
     return b.toString();
   }
 
-  /// Nazov suboru, napr. `sakina-report-20261029-1803.txt`.
+  /// Nazov suboru, napr. `prosoche-report-20261029-1803.txt`.
   @visibleForTesting
   String fileName() {
     final t = _clock.now().toUtc();
     String two(int v) => v.toString().padLeft(2, '0');
-    return 'sakina-report-${t.year}${two(t.month)}${two(t.day)}'
+    return 'prosoche-report-${t.year}${two(t.month)}${two(t.day)}'
         '-${two(t.hour)}${two(t.minute)}.txt';
   }
 

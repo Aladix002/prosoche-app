@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/placeholder_screen.dart';
+import 'package:prosoche/core/placeholder_screen.dart';
 
 /// Routa so zastupnou obrazovkou, kym featura nedoda skutocne UI.
 ///

@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/router/routes.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/features/journey/journey_day_screen.dart';
-import 'package:sakina/features/journey/journey_screen.dart';
-import 'package:sakina/features/journey/saved_screen.dart';
+import 'package:prosoche/core/router/routes.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/features/journey/journey_day_screen.dart';
+import 'package:prosoche/features/journey/journey_screen.dart';
+import 'package:prosoche/features/journey/saved_screen.dart';
 
 /// Tab Journey (docs/02 C1). Vlastnik: F-06.
 abstract final class JourneyRoutes {

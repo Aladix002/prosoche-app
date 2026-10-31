@@ -1,8 +1,8 @@
 import 'package:adhan_dart/adhan_dart.dart' as adhan;
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/prayer/country_defaults.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/domain/prayer/country_defaults.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
 /// Metoda vypoctu. [key] je hodnota `prayer.method` = nazov
 /// `CalculationMethod` v adhan_dart (napr. `muslimWorldLeague`), okrem

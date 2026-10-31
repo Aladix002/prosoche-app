@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/common/event_effect.dart';
+import 'package:prosoche/domain/common/event_effect.dart';
 
 /// Islamsky event aktivny v dany den (vystup EventResolver, E-01).
 ///

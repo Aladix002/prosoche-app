@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:meta/meta.dart';
-import 'package:sakina/data/db/content_db.dart';
-import 'package:sakina/data/db/hadith_extra_db.dart';
+import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/db/hadith_extra_db.dart';
 
 /// Vysvetlivka a poznamky HadeethEnc k jednemu hadisu (C-06). Texty su
 /// bajtovo zo zdroja, appka ich nemeni.

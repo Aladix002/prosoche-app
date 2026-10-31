@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/ui/components/sk_states.dart';
-import 'package:sakina/ui/foundation/sk_ui_strings.dart';
-import 'package:sakina/ui/i18n/sakina_locales.dart';
-import 'package:sakina/ui/motif/sk_motif.dart';
-import 'package:sakina/ui/theme/sk_context.dart';
-import 'package:sakina/ui/tokens/sk_space.dart';
+import 'package:prosoche/ui/components/sk_states.dart';
+import 'package:prosoche/ui/foundation/sk_ui_strings.dart';
+import 'package:prosoche/ui/i18n/prosoche_locales.dart';
+import 'package:prosoche/ui/motif/sk_motif.dart';
+import 'package:prosoche/ui/theme/sk_context.dart';
+import 'package:prosoche/ui/tokens/sk_space.dart';
 
 /// Varianta karty (docs/01 3.2 `SkCardSurface`).
 enum SkCardVariant {
@@ -90,7 +90,7 @@ class SkCardSurface extends StatelessWidget {
     final padding = _compact ? SkSpace.space16 : SkSpace.space24;
     // Rozostup pismen len mimo RTL jazykov (arabske pismo by sa rozpadlo).
     final locale = Localizations.maybeLocaleOf(context);
-    final ltr = locale == null || !SakinaLocales.isRtl(locale);
+    final ltr = locale == null || !ProsocheLocales.isRtl(locale);
 
     Widget body;
     if (loading) {

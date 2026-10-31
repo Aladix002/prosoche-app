@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/router/scaffold_with_nav_bar.dart';
+import 'package:prosoche/core/router/scaffold_with_nav_bar.dart';
 
 /// Shell so 4 tabmi (docs/01 D1) a back spravanim podla docs/02 C5:
 /// back na koreni tabu okrem Today prepne na Today, na Today zavrie appku

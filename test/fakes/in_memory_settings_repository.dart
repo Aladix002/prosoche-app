@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
 /// [SettingsRepository] v pamati pre testy. Uklada zakodovany text ako DB,
 /// takze testy prechadzaju aj cez kodovanie klucov.

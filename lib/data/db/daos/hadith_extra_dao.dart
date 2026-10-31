@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:sakina/data/db/hadith_extra_db.dart';
+import 'package:prosoche/data/db/hadith_extra_db.dart';
 
 part 'hadith_extra_dao.g.dart';
 

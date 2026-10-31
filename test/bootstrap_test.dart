@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/bootstrap.dart';
-import 'package:sakina/core/logging/app_logger.dart';
+import 'package:prosoche/bootstrap.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
 
 void main() {
   late RingBufferLog ring;

@@ -2,13 +2,13 @@ import 'package:drift/drift.dart';
 import 'package:flutter/foundation.dart' show mapEquals;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meta/meta.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/data/blocker/blocker_gateway.dart';
-import 'package:sakina/data/blocker/blocker_gateway_provider.dart';
-import 'package:sakina/data/db/user_db.dart';
-import 'package:sakina/data/repositories/infra/databases.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/data/blocker/blocker_gateway.dart';
+import 'package:prosoche/data/blocker/blocker_gateway_provider.dart';
+import 'package:prosoche/data/db/user_db.dart';
+import 'package:prosoche/data/repositories/infra/databases.dart';
 
-export 'package:sakina/data/db/user_enums.dart' show UnlockSource;
+export 'package:prosoche/data/db/user_enums.dart' show UnlockSource;
 
 /// Rozsahy nastaveni appky (docs/02 O5, A10.2).
 abstract final class BlockedAppLimits {

@@ -3,16 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/content/content_providers.dart';
-import 'package:sakina/data/content/hadith_extra_pack_providers.dart';
-import 'package:sakina/features/settings/problem_report_sheet.dart';
-import 'package:sakina/features/settings/settings_paths.dart';
-import 'package:sakina/features/settings/settings_providers.dart';
-import 'package:sakina/features/settings/settings_widgets.dart';
-import 'package:sakina/features/settings/sources_screen.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/content/content_providers.dart';
+import 'package:prosoche/data/content/hadith_extra_pack_providers.dart';
+import 'package:prosoche/features/settings/problem_report_sheet.dart';
+import 'package:prosoche/features/settings/settings_paths.dart';
+import 'package:prosoche/features/settings/settings_providers.dart';
+import 'package:prosoche/features/settings/settings_widgets.dart';
+import 'package:prosoche/features/settings/sources_screen.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// `X.Y.Z+BUILD` (docs/02 A10.10); bez cisla buildu len `X.Y.Z`.
 String appVersionLabel(String version, String? build) =>

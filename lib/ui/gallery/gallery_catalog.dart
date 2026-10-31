@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
-import 'package:sakina/ui/components/sk_arabic_text.dart';
-import 'package:sakina/ui/components/sk_banners.dart';
-import 'package:sakina/ui/components/sk_button.dart';
-import 'package:sakina/ui/components/sk_card_surface.dart';
-import 'package:sakina/ui/components/sk_chips.dart';
-import 'package:sakina/ui/components/sk_daily_progress.dart';
-import 'package:sakina/ui/components/sk_dialogs.dart';
-import 'package:sakina/ui/components/sk_nav_bar.dart';
-import 'package:sakina/ui/components/sk_prayer_row.dart';
-import 'package:sakina/ui/components/sk_quest_item.dart';
-import 'package:sakina/ui/components/sk_states.dart';
-import 'package:sakina/ui/gallery/gallery_samples.dart';
-import 'package:sakina/ui/theme/sakina_typography.dart';
-import 'package:sakina/ui/theme/sk_context.dart';
-import 'package:sakina/ui/tokens/sk_space.dart';
+import 'package:prosoche/ui/components/sk_arabic_text.dart';
+import 'package:prosoche/ui/components/sk_banners.dart';
+import 'package:prosoche/ui/components/sk_button.dart';
+import 'package:prosoche/ui/components/sk_card_surface.dart';
+import 'package:prosoche/ui/components/sk_chips.dart';
+import 'package:prosoche/ui/components/sk_daily_progress.dart';
+import 'package:prosoche/ui/components/sk_dialogs.dart';
+import 'package:prosoche/ui/components/sk_nav_bar.dart';
+import 'package:prosoche/ui/components/sk_prayer_row.dart';
+import 'package:prosoche/ui/components/sk_quest_item.dart';
+import 'package:prosoche/ui/components/sk_states.dart';
+import 'package:prosoche/ui/gallery/gallery_samples.dart';
+import 'package:prosoche/ui/theme/prosoche_typography.dart';
+import 'package:prosoche/ui/theme/sk_context.dart';
+import 'package:prosoche/ui/tokens/sk_space.dart';
 
 /// Jeden stav komponentu v galerii a goldenoch.
 @immutable

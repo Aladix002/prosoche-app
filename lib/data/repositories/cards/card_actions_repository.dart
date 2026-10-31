@@ -1,9 +1,9 @@
 import 'package:clock/clock.dart';
 import 'package:meta/meta.dart';
-import 'package:sakina/data/db/user_db.dart' as db;
-import 'package:sakina/data/repositories/infra/card_events.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/quests.dart';
+import 'package:prosoche/data/db/user_db.dart' as db;
+import 'package:prosoche/data/repositories/infra/card_events.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/quests.dart';
 
 /// Ulozena karta (A8.3).
 @immutable

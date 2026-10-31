@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/feed/day_phase.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/feed/day_phase.dart';
 
 /// Jedna polozka `cards_json.cards` (docs/02 0.3).
 @immutable

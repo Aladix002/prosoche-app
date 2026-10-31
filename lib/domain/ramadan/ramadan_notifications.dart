@@ -1,6 +1,6 @@
-import 'package:sakina/domain/calendar/islamic_calendar.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/ramadan/ramadan_season.dart';
+import 'package:prosoche/domain/calendar/islamic_calendar.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/ramadan/ramadan_season.dart';
 
 /// Dni postu v okne [from] .. [from] + [days] (vstup
 /// `NotificationPlanInput.fastingDays`, docs/04 1.10).

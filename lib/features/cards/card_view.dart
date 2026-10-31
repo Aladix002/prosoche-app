@@ -5,22 +5,22 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/quests.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/cards/card_parts.dart';
-import 'package:sakina/features/cards/card_providers.dart';
-import 'package:sakina/features/cards/card_share.dart';
-import 'package:sakina/features/cards/hadith_explanations_pack.dart';
-import 'package:sakina/features/cards/types/ayah_card.dart';
-import 'package:sakina/features/cards/types/day_cards.dart';
-import 'package:sakina/features/cards/types/text_cards.dart';
-import 'package:sakina/features/quran/quran_routes.dart';
-import 'package:sakina/features/settings/problem_report_sheet.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/quests.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/cards/card_parts.dart';
+import 'package:prosoche/features/cards/card_providers.dart';
+import 'package:prosoche/features/cards/card_share.dart';
+import 'package:prosoche/features/cards/hadith_explanations_pack.dart';
+import 'package:prosoche/features/cards/types/ayah_card.dart';
+import 'package:prosoche/features/cards/types/day_cards.dart';
+import 'package:prosoche/features/cards/types/text_cards.dart';
+import 'package:prosoche/features/quran/quran_routes.dart';
+import 'package:prosoche/features/settings/problem_report_sheet.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Karta podla `card_id` (docs/02 B): nacita obsah, vyberie typ karty,
 /// prida akcie (ulozit, zdielat, moznosti) a gesta (double tap, long

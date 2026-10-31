@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/notifications/notifications.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/notifications/notifications.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
 import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -74,7 +74,7 @@ void main() {
       expect(morning(d).hashCode, morning(d).hashCode);
       expect(morning(d) == morning(d, hour: 8), isFalse);
       expect(morning(d).toString(), contains('morning'));
-      expect(morning(d).deepLink, 'mursa://today');
+      expect(morning(d).deepLink, 'prosoche://today');
     });
   });
 

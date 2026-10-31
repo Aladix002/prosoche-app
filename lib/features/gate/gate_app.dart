@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/app.dart' show sakinaAppTheme, skUiStringsOf;
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/blocker/blocker_gateway_provider.dart';
-import 'package:sakina/features/gate/gate_screen.dart';
-import 'package:sakina/features/settings/settings_providers.dart';
-import 'package:sakina/features/shell/app_locale.dart';
-import 'package:sakina/ui/foundation/sk_text_scaling.dart';
-import 'package:sakina/ui/foundation/sk_ui_strings.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
+import 'package:prosoche/app.dart' show prosocheAppTheme, skUiStringsOf;
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/blocker/blocker_gateway_provider.dart';
+import 'package:prosoche/features/gate/gate_screen.dart';
+import 'package:prosoche/features/settings/settings_providers.dart';
+import 'package:prosoche/features/shell/app_locale.dart';
+import 'package:prosoche/ui/foundation/sk_text_scaling.dart';
+import 'package:prosoche/ui/foundation/sk_ui_strings.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
 
 /// Koren enginu brany (`gateMain`, ADR-16). Engine bezi predhriaty v
 /// `FlutterEngineCache` uz pred otvorenim blokovanej appky; GateActivity
@@ -64,11 +64,11 @@ class _GateAppState extends ConsumerState<GateApp> {
     final themeMode = ref.watch(appThemeModeProvider);
     return MaterialApp(
       onGenerateTitle: (context) => context.l10n.appTitle,
-      theme: SakinaTheme.light(),
-      darkTheme: SakinaTheme.dark(),
+      theme: ProsocheTheme.light(),
+      darkTheme: ProsocheTheme.dark(),
       themeMode: themeMode,
-      highContrastTheme: SakinaTheme.light(highContrast: true),
-      highContrastDarkTheme: SakinaTheme.dark(highContrast: true),
+      highContrastTheme: ProsocheTheme.light(highContrast: true),
+      highContrastDarkTheme: ProsocheTheme.dark(highContrast: true),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: ref.watch(appLocaleProvider),
@@ -83,7 +83,7 @@ class _GateAppState extends ConsumerState<GateApp> {
         return AnnotatedRegion<SystemUiOverlayStyle>(
           value: gateSystemUiStyle(brightness),
           child: Theme(
-            data: sakinaAppTheme(
+            data: prosocheAppTheme(
               brightness: brightness,
               highContrast: MediaQuery.highContrastOf(context),
               locale: Localizations.localeOf(context),

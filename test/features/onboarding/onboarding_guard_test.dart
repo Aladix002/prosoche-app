@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/onboarding/onboarding_guard.dart';
-import 'package:sakina/features/onboarding/onboarding_steps.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/onboarding/onboarding_guard.dart';
+import 'package:prosoche/features/onboarding/onboarding_steps.dart';
 
 import '../../fakes/in_memory_settings_repository.dart';
 
@@ -61,7 +61,7 @@ void main() {
         expect(await first, '/onboarding/notifications');
         // Upstream (deep link) sa prepise guardom.
         expect(
-          guard.redirect(Uri.parse('mursa://prayer'), '/prayer'),
+          guard.redirect(Uri.parse('prosoche://prayer'), '/prayer'),
           '/onboarding/notifications',
         );
 

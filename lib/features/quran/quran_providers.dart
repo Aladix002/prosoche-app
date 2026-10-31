@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/ui/theme/sakina_typography.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/ui/theme/prosoche_typography.dart';
 
 // Providery obrazoviek Koranu (A5). Data idu len cez D-02 repozitare.
 

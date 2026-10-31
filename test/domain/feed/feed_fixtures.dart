@@ -1,5 +1,5 @@
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/feed/feed.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/feed/feed.dart';
 
 /// Testovacie fixtures FeedGeneratora. Ziadny obsah, len ID a metadata
 /// (PLAN_VYVOJA 5.5): tagy, jazyky a eventy su vymyslene placeholdery.

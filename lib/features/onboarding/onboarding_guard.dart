@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/core/logging/logger_provider.dart';
-import 'package:sakina/core/router/routes.dart';
-import 'package:sakina/data/repositories/settings/settings_providers.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/onboarding/onboarding_routes.dart';
-import 'package:sakina/features/onboarding/onboarding_steps.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/core/logging/logger_provider.dart';
+import 'package:prosoche/core/router/routes.dart';
+import 'package:prosoche/data/repositories/settings/settings_providers.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/onboarding/onboarding_routes.dart';
+import 'package:prosoche/features/onboarding/onboarding_steps.dart';
 
 /// Stav onboardingu pre router (`onboarding.completed`, `onboarding.step`).
 @immutable

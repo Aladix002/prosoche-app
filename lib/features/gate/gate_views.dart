@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Texty brany s nazvom appky alebo bez neho (appka bez `label`).
 extension GateTexts on AppLocalizations {

@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/features/feed/feed_screen.dart';
-import 'package:sakina/features/gate/gate_screen.dart';
-import 'package:sakina/features/journey/journey_screen.dart';
-import 'package:sakina/features/prayer/prayer_screen.dart';
-import 'package:sakina/features/quran/quran_screen.dart';
-import 'package:sakina/features/today/today_screen.dart';
-import 'package:sakina/ui/gallery/sk_gallery_screen.dart';
+import 'package:prosoche/features/feed/feed_screen.dart';
+import 'package:prosoche/features/gate/gate_screen.dart';
+import 'package:prosoche/features/journey/journey_screen.dart';
+import 'package:prosoche/features/prayer/prayer_screen.dart';
+import 'package:prosoche/features/quran/quran_screen.dart';
+import 'package:prosoche/features/today/today_screen.dart';
+import 'package:prosoche/ui/gallery/sk_gallery_screen.dart';
 
 import '../../helpers/pump_app.dart';
 
 void main() {
   testWidgets('starts on Today with 4 tab bottom navigation', (tester) async {
-    await tester.pumpSakina();
+    await tester.pumpProsoche();
     expect(find.byType(TodayScreen), findsOneWidget);
     expect(navBar, findsOneWidget);
     expect(find.byType(NavigationDestination), findsNWidgets(4));
   });
 
   testWidgets('switches tabs', (tester) async {
-    await tester.pumpSakina();
+    await tester.pumpProsoche();
     for (final (label, screen) in [
       ('Quran', QuranScreen),
       ('Prayer', PrayerScreen),
@@ -33,7 +33,7 @@ void main() {
   });
 
   testWidgets('feed is fullscreen and back returns to Today', (tester) async {
-    await tester.pumpSakina();
+    await tester.pumpProsoche();
     // D-05: vyssia hlavicka Dnes, CTA moze byt v testovacom okne pod nav.
     await tester.ensureVisible(find.text("Begin today's cards"));
     await tester.pumpAndSettle();
@@ -48,7 +48,7 @@ void main() {
   });
 
   testWidgets('feed opened by deep link goes to Today on back', (tester) async {
-    await tester.pumpSakina(location: 'mursa://feed');
+    await tester.pumpProsoche(location: 'prosoche://feed');
     expect(find.byType(FeedScreen), findsOneWidget);
 
     await tester.binding.handlePopRoute();
@@ -59,8 +59,8 @@ void main() {
   testWidgets('gate deep link opens fullscreen gate with app param', (
     tester,
   ) async {
-    final router = await tester.pumpSakina(
-      location: 'mursa://gate?app=com.instagram.android',
+    final router = await tester.pumpProsoche(
+      location: 'prosoche://gate?app=com.instagram.android',
     );
     final gate = tester.widget<GateScreen>(find.byType(GateScreen));
     expect(gate.app, 'com.instagram.android');
@@ -77,26 +77,29 @@ void main() {
   });
 
   testWidgets('gate without valid app redirects to Today', (tester) async {
-    await tester.pumpSakina(location: '/gate?app=../x');
+    await tester.pumpProsoche(location: '/gate?app=../x');
     expect(find.byType(TodayScreen), findsOneWidget);
   });
 
   testWidgets('root path redirects to Today', (tester) async {
-    await tester.pumpSakina(location: '/');
+    await tester.pumpProsoche(location: '/');
     expect(find.byType(TodayScreen), findsOneWidget);
   });
 
   testWidgets('dev gallery is available only with devTools', (tester) async {
-    await tester.pumpSakina(location: '/dev/gallery', devTools: true);
+    await tester.pumpProsoche(location: '/dev/gallery', devTools: true);
     expect(find.byType(SkGalleryScreen), findsOneWidget);
     expect(navBar, findsNothing);
 
-    await tester.pumpSakina(location: 'mursa://dev/gallery', devTools: true);
+    await tester.pumpProsoche(
+      location: 'prosoche://dev/gallery',
+      devTools: true,
+    );
     expect(find.byType(SkGalleryScreen), findsOneWidget);
   });
 
   testWidgets('dev gallery redirects to Today in prod', (tester) async {
-    await tester.pumpSakina(location: '/dev/gallery');
+    await tester.pumpProsoche(location: '/dev/gallery');
     expect(find.byType(SkGalleryScreen), findsNothing);
     expect(find.byType(TodayScreen), findsOneWidget);
   });

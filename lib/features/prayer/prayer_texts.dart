@@ -1,14 +1,14 @@
 import 'package:flutter/widgets.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/domain/calendar/calendar.dart';
-import 'package:sakina/domain/prayer/calc_settings.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/domain/calendar/calendar.dart';
+import 'package:prosoche/domain/prayer/calc_settings.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
 
 /// UI texty modlitieb a hijri datumu (len UI copy z ARB, ziadny
-/// nabozensky obsah). Cislice podla jazyka UI ([SakinaFormats]).
+/// nabozensky obsah). Cislice podla jazyka UI ([ProsocheFormats]).
 extension PrayerTextsX on BuildContext {
-  SakinaFormats get formats => SakinaFormats(Localizations.localeOf(this));
+  ProsocheFormats get formats => ProsocheFormats(Localizations.localeOf(this));
 
   String prayerName(Prayer p) => l10n.prayerTimeName(p.name);
 

@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:sakina/data/db/content_db.dart';
+import 'package:prosoche/data/db/content_db.dart';
 
 part 'words_dao.g.dart';
 

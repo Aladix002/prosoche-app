@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/calendar/calendar.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/calendar/calendar_routes.dart';
-import 'package:sakina/features/calendar/calendar_screen.dart';
-import 'package:sakina/features/prayer/prayer_paths.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/calendar/calendar.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/calendar/calendar_routes.dart';
+import 'package:prosoche/features/calendar/calendar_screen.dart';
+import 'package:prosoche/features/prayer/prayer_paths.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../fakes/in_memory_settings_repository.dart';
@@ -45,7 +45,7 @@ class _SettingsCalendar extends FakeCalendarRepository {
 
 void main() {
   final now = bratislava(2026, 10, 29, 9, 0);
-  final en = SakinaFormats(const Locale('en'));
+  final en = ProsocheFormats(const Locale('en'));
   late FakeRepositories fakes;
 
   FakeRepositories withCalendar(

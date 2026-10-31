@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/ui/components/sk_states.dart';
-import 'package:sakina/ui/foundation/sk_ui_strings.dart';
+import 'package:prosoche/ui/components/sk_states.dart';
+import 'package:prosoche/ui/foundation/sk_ui_strings.dart';
 
 /// E-CONTENT-1: text Koranu sa nezobrazi, radsej chybovy stav
 /// (docs/01 1.3 bod 10, docs/01 6 "Quran - zoznam sur/citatel").

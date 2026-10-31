@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/feed/feed.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/feed/feed.dart';
 
 void main() {
   final date = LocalDate(2026, 10, 29);

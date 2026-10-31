@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/ui/gallery/gallery_catalog.dart';
-import 'package:sakina/ui/gallery/gallery_samples.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/ui/gallery/gallery_catalog.dart';
+import 'package:prosoche/ui/gallery/gallery_samples.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import '../helpers/pump_sk.dart';
 
@@ -40,7 +40,7 @@ void main() {
     expect(style.fontWeight, FontWeight.w400);
     expect(style.letterSpacing, 0);
     expect(style.wordSpacing, 0);
-    expect(style.color, SakinaColors.light.arabic);
+    expect(style.color, ProsocheColors.light.arabic);
     expect(
       tester
           .widget<Directionality>(
@@ -142,11 +142,11 @@ void main() {
     final spans = _segments(_richText(tester));
     expect(
       spans.first.style!.backgroundColor,
-      SakinaColors.light.primaryContainer,
+      ProsocheColors.light.primaryContainer,
     );
     expect(spans.elementAt(1).style!.color, TajwidColors.light.ghunna);
     expect(spans.elementAt(3).style!.color, TajwidColors.light.qalqala);
-    expect(spans.first.style!.color, SakinaColors.light.arabic);
+    expect(spans.first.style!.color, ProsocheColors.light.arabic);
   });
 
   testWidgets('tajwid off ignores rules', (tester) async {
@@ -158,7 +158,7 @@ void main() {
     );
     final spans = _segments(_richText(tester));
     expect(
-      spans.every((s) => s.style!.color == SakinaColors.light.arabic),
+      spans.every((s) => s.style!.color == ProsocheColors.light.arabic),
       isTrue,
     );
   });
@@ -196,7 +196,7 @@ void main() {
         expect(deco.color, isNull);
         expect(deco.border, isA<BorderDirectional>());
       } else {
-        expect(deco.color, SakinaColors.light.primaryContainer);
+        expect(deco.color, ProsocheColors.light.primaryContainer);
       }
     }
   });
@@ -271,7 +271,10 @@ void main() {
   });
 
   testWidgets('dark theme uses dark arabic color', (tester) async {
-    await tester.pumpSk(_quran, theme: SakinaTheme.dark());
-    expect(_firstSpanStyle(_richText(tester)).color, SakinaColors.dark.arabic);
+    await tester.pumpSk(_quran, theme: ProsocheTheme.dark());
+    expect(
+      _firstSpanStyle(_richText(tester)).color,
+      ProsocheColors.dark.arabic,
+    );
   });
 }

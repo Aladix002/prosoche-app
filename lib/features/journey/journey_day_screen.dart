@@ -2,18 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/domain/streak/streak.dart';
-import 'package:sakina/features/journey/card_pager.dart';
-import 'package:sakina/features/journey/journey_calendar.dart';
-import 'package:sakina/features/journey/journey_providers.dart';
-import 'package:sakina/features/prayer/prayer_texts.dart';
-import 'package:sakina/features/prayer/prayer_view.dart' show skStatus;
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/domain/streak/streak.dart';
+import 'package:prosoche/features/journey/card_pager.dart';
+import 'package:prosoche/features/journey/journey_calendar.dart';
+import 'package:prosoche/features/journey/journey_providers.dart';
+import 'package:prosoche/features/prayer/prayer_texts.dart';
+import 'package:prosoche/features/prayer/prayer_view.dart' show skStatus;
+import 'package:prosoche/ui/ui.dart';
 
 /// Detail dna (docs/02 A8.2): datum a hijri, stav dna, denna sada (x/N,
 /// cas dokoncenia, prehlad kariet bez zapisu `seen`) a modlitby dna. Len

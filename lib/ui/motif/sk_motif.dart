@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:sakina/ui/theme/sk_context.dart';
+import 'package:prosoche/ui/theme/sk_context.dart';
 
 /// Vizualny motiv znacky (D-05): jemny islamsky geometricky vzor kresleny
 /// v kode. Osemcipa hviezda (dva prekryte stvorce) v osemuholniku na

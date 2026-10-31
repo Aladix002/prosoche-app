@@ -4,11 +4,11 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/features/quran/reader/quran_reader_screen.dart';
-import 'package:sakina/features/quran/widgets/ayah_tile.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/features/quran/reader/quran_reader_screen.dart';
+import 'package:prosoche/features/quran/widgets/ayah_tile.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
 
 import '../../../fakes/fake_repositories.dart';
 import '../../../helpers/golden/golden.dart';
@@ -20,7 +20,7 @@ import '../quran_test_helpers.dart';
 /// fallbackom, kym pipeline nema BN preklad) a widget test, ze zobrazeny
 /// text je bajtovo `ayah.text_uthmani`. Text ide len z db, ziadny literal.
 ///
-///   SAKINA_CONTENT_DB=../sakina-content/dist/content.db flutter test --update-goldens \
+///   PROSOCHE_CONTENT_DB=../prosoche-content/dist/content.db flutter test --update-goldens \
 ///     test/features/quran/full_db
 void main() {
   final path = fullContentDbPath();
@@ -35,7 +35,7 @@ void main() {
 
   setUpAll(() async {
     final q = openFullQuran(path);
-    for (final locale in SakinaLocales.all) {
+    for (final locale in ProsocheLocales.all) {
       final lang = locale.languageCode;
       data[lang] = await _Preloaded.load(q.repo, lang, surahs);
     }
@@ -49,7 +49,7 @@ void main() {
   });
 
   ThemeData theme(Brightness b) =>
-      b == Brightness.dark ? SakinaTheme.dark() : SakinaTheme.light();
+      b == Brightness.dark ? ProsocheTheme.dark() : ProsocheTheme.light();
 
   Widget scope(BuildContext context, Widget child) => ProviderScope(
     overrides:

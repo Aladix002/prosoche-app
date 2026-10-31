@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/core/router/routes.dart';
-import 'package:sakina/features/onboarding/onboarding_controller.dart';
-import 'package:sakina/features/onboarding/onboarding_screen.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/core/router/routes.dart';
+import 'package:prosoche/features/onboarding/onboarding_controller.dart';
+import 'package:prosoche/features/onboarding/onboarding_screen.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// O7 Sukromie a analytika (docs/02 A1, docs/01 7.2). Dve samostatne
 /// volby (anonymne pouzivanie, hlasenie chyb) s rovnocennymi tlacidlami,

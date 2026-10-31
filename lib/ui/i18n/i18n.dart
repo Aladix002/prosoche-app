@@ -6,4 +6,4 @@ export 'bidi.dart';
 export 'directional.dart';
 export 'locale_fonts.dart';
 export 'localized_formats.dart';
-export 'sakina_locales.dart';
+export 'prosoche_locales.dart';

@@ -3,17 +3,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/prayer/calc_settings.dart';
-import 'package:sakina/domain/prayer/country_defaults.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/prayer/prayer_paths.dart';
-import 'package:sakina/features/prayer/prayer_texts.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/prayer/calc_settings.dart';
+import 'package:prosoche/domain/prayer/country_defaults.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/prayer/prayer_paths.dart';
+import 'package:prosoche/features/prayer/prayer_texts.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Nastavenia modlitieb (docs/02 A10.3). Route `/settings/prayer`.
 ///
@@ -320,7 +320,7 @@ class _AdjustStepper extends StatelessWidget {
                 child: Text(
                   l10n.prayerAdjustMinutes(value),
                   textAlign: TextAlign.center,
-                  style: SakinaTypography.tabular(sk.text.bodyLarge!),
+                  style: ProsocheTypography.tabular(sk.text.bodyLarge!),
                 ),
               ),
             ),
@@ -370,7 +370,7 @@ class _Preview extends ConsumerWidget {
                   ),
                   Text(
                     context.formats.time(day[p]),
-                    style: SakinaTypography.tabular(sk.text.bodyLarge!),
+                    style: ProsocheTypography.tabular(sk.text.bodyLarge!),
                   ),
                 ],
               ),

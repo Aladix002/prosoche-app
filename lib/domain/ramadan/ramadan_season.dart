@@ -1,8 +1,8 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/calendar/hijri_date.dart';
-import 'package:sakina/domain/calendar/islamic_calendar.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/settings/setting_key.dart';
+import 'package:prosoche/domain/calendar/hijri_date.dart';
+import 'package:prosoche/domain/calendar/islamic_calendar.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/settings/setting_key.dart';
 
 /// Odkial je zaciatok sezony (docs/04 1.2).
 enum SeasonSource {

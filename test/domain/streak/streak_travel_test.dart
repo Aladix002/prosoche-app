@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/streak/streak.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/streak/streak.dart';
 
 // D-02: kalendarny den preskoceny letom na vychod (rozhodnutie Wave 1).
 void main() {

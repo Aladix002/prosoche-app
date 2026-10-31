@@ -1,10 +1,10 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/prayer/calc_settings.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/prayer/prayer_schedule.dart';
-import 'package:sakina/ui/components/sk_prayer_row.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/prayer/calc_settings.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/prayer/prayer_schedule.dart';
+import 'package:prosoche/ui/components/sk_prayer_row.dart';
 
 /// Jeden riadok obrazovky casov (A7.1) - ciste data bez Fluttera.
 @immutable

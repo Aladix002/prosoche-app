@@ -1,6 +1,6 @@
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/core/logging/app_logger.dart';
 
 part 'logger_provider.g.dart';
 

@@ -1,6 +1,6 @@
-import 'package:sakina/data/notifications/notification_platform.dart';
-import 'package:sakina/data/notifications/notification_service.dart';
-import 'package:sakina/domain/notifications/notifications.dart';
+import 'package:prosoche/data/notifications/notification_platform.dart';
+import 'package:prosoche/data/notifications/notification_service.dart';
+import 'package:prosoche/domain/notifications/notifications.dart';
 
 /// [NotificationPlatform] v pamati: drzi naplanovane notifikacie ako system.
 class FakeNotificationPlatform implements NotificationPlatform {

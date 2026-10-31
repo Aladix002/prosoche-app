@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/ui/gallery/gallery_catalog.dart';
-import 'package:sakina/ui/gallery/sk_gallery_screen.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/ui/gallery/gallery_catalog.dart';
+import 'package:prosoche/ui/gallery/sk_gallery_screen.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import '../helpers/pump_sk.dart';
 
@@ -13,7 +13,7 @@ void main() {
     for (final component in GalleryCatalog.components) {
       for (final entry in component.entries) {
         testWidgets('${component.name} / ${entry.name}', (tester) async {
-          for (final theme in [SakinaTheme.light(), SakinaTheme.dark()]) {
+          for (final theme in [ProsocheTheme.light(), ProsocheTheme.dark()]) {
             for (final scale in [1.0, 2.0]) {
               await tester.pumpSk(
                 Builder(builder: entry.builder),
@@ -324,7 +324,7 @@ void main() {
       final style = tester
           .widget<Text>(find.text('14 Jumada al-Ula 1448'))
           .style!;
-      expect(style.color, SakinaColors.light.accentText);
+      expect(style.color, ProsocheColors.light.accentText);
     });
   });
 
@@ -333,7 +333,7 @@ void main() {
       int? selected;
       await tester.pumpWidget(
         MaterialApp(
-          theme: SakinaTheme.light(),
+          theme: ProsocheTheme.light(),
           home: Scaffold(
             bottomNavigationBar: SkNavBar(
               selectedIndex: 0,
@@ -613,7 +613,7 @@ void main() {
   group('gallery', () {
     testWidgets('renders and toggles settings', (tester) async {
       await tester.pumpWidget(const MaterialApp(home: SkGalleryScreen()));
-      expect(find.text('Sakina UI gallery'), findsOneWidget);
+      expect(find.text('Prosoche UI gallery'), findsOneWidget);
       await tester.tap(find.byTooltip('Settings'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Dark theme'));
@@ -621,9 +621,12 @@ void main() {
       await tester.tap(find.text('2.0'));
       await tester.tap(find.text('XL'));
       await tester.pumpAndSettle();
-      final theme = Theme.of(tester.element(find.text('Sakina UI gallery')));
+      final theme = Theme.of(tester.element(find.text('Prosoche UI gallery')));
       expect(theme.brightness, Brightness.dark);
-      expect(theme.extension<SakinaColors>(), SakinaColors.darkHighContrast);
+      expect(
+        theme.extension<ProsocheColors>(),
+        ProsocheColors.darkHighContrast,
+      );
       expect(tester.takeException(), isNull);
     });
 

@@ -4,8 +4,8 @@ import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
-import 'package:sakina/data/observability/allowlist_analytics.dart';
-import 'package:sakina/data/observability/analytics.dart';
+import 'package:prosoche/data/observability/allowlist_analytics.dart';
+import 'package:prosoche/data/observability/analytics.dart';
 
 /// PostHog EU cloud (TECHNICKY_PLAN 13, docs/07 ADR-11).
 const posthogEuHost = 'https://eu.i.posthog.com';

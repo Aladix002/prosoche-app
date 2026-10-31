@@ -1,62 +1,65 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/router/deep_link.dart';
+import 'package:prosoche/core/router/deep_link.dart';
 
 void main() {
   String? map(String s) => mapDeepLink(Uri.parse(s));
 
-  test('ignores non-mursa URIs', () {
+  test('ignores non-prosoche URIs', () {
     expect(map('/today'), isNull);
     expect(map('https://example.com/gate'), isNull);
   });
 
   test('maps tabs and feed', () {
-    expect(map('mursa://today'), '/today');
-    expect(map('mursa://feed'), '/feed');
-    expect(map('mursa://prayer?p=asr'), '/prayer');
-    expect(map('mursa://quran'), '/quran');
-    expect(map('mursa://journey'), '/journey');
-    expect(map('mursa://unknown'), '/today');
-    expect(map('mursa:'), '/today');
+    expect(map('prosoche://today'), '/today');
+    expect(map('prosoche://feed'), '/feed');
+    expect(map('prosoche://prayer?p=asr'), '/prayer');
+    expect(map('prosoche://quran'), '/quran');
+    expect(map('prosoche://journey'), '/journey');
+    expect(map('prosoche://unknown'), '/today');
+    expect(map('prosoche:'), '/today');
   });
 
   test('maps nested targets from docs/02 C4', () {
-    expect(map('mursa://quran/2/255'), '/quran/read/2?ayah=2255&mode=browse');
-    expect(map('mursa://quran/18'), '/quran/read/18?mode=browse');
-    expect(map('mursa://quran/115/1'), '/quran');
-    expect(map('mursa://quran/x'), '/quran');
-    expect(map('mursa://prayer/qibla'), '/prayer/qibla');
-    expect(map('mursa://words'), '/words');
-    expect(map('mursa://words/quiz'), '/words/quiz');
-    expect(map('mursa://calendar'), '/calendar');
-    expect(map('mursa://settings/blocking'), '/settings/blocking');
-    expect(map('mursa://settings/notifications'), '/settings/notifications');
-    expect(map('mursa://settings/evil'), '/settings');
+    expect(
+      map('prosoche://quran/2/255'),
+      '/quran/read/2?ayah=2255&mode=browse',
+    );
+    expect(map('prosoche://quran/18'), '/quran/read/18?mode=browse');
+    expect(map('prosoche://quran/115/1'), '/quran');
+    expect(map('prosoche://quran/x'), '/quran');
+    expect(map('prosoche://prayer/qibla'), '/prayer/qibla');
+    expect(map('prosoche://words'), '/words');
+    expect(map('prosoche://words/quiz'), '/words/quiz');
+    expect(map('prosoche://calendar'), '/calendar');
+    expect(map('prosoche://settings/blocking'), '/settings/blocking');
+    expect(map('prosoche://settings/notifications'), '/settings/notifications');
+    expect(map('prosoche://settings/evil'), '/settings');
   });
 
   test('maps gate with validated app and default src', () {
     expect(
-      map('mursa://gate?app=com.instagram.android'),
+      map('prosoche://gate?app=com.instagram.android'),
       '/gate?app=com.instagram.android&src=monitor',
     );
     expect(
-      map('mursa://gate?app=com.example.app&src=notif'),
+      map('prosoche://gate?app=com.example.app&src=notif'),
       '/gate?app=com.example.app&src=notif',
     );
     expect(
-      map('mursa://gate?app=com.example.app&src=evil'),
+      map('prosoche://gate?app=com.example.app&src=evil'),
       '/gate?app=com.example.app&src=monitor',
     );
   });
 
   test('gate with invalid app falls back to today', () {
-    expect(map('mursa://gate'), '/today');
-    expect(map('mursa://gate?app=not-a-package'), '/today');
-    expect(map('mursa://gate?app=..%2F..'), '/today');
+    expect(map('prosoche://gate'), '/today');
+    expect(map('prosoche://gate?app=not-a-package'), '/today');
+    expect(map('prosoche://gate?app=..%2F..'), '/today');
   });
 
   test('maps dev gallery, unknown dev targets fall back to today', () {
-    expect(map('mursa://dev/gallery'), '/dev/gallery');
-    expect(map('mursa://dev'), '/today');
-    expect(map('mursa://dev/evil'), '/today');
+    expect(map('prosoche://dev/gallery'), '/dev/gallery');
+    expect(map('prosoche://dev'), '/today');
+    expect(map('prosoche://dev/evil'), '/today');
   });
 }

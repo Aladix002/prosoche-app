@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/features/onboarding/onboarding_controller.dart';
-import 'package:sakina/features/onboarding/onboarding_routes.dart';
-import 'package:sakina/features/onboarding/onboarding_steps.dart';
-import 'package:sakina/features/onboarding/steps/gate_steps.dart';
-import 'package:sakina/features/onboarding/steps/language_step.dart';
-import 'package:sakina/features/onboarding/steps/location_step.dart';
-import 'package:sakina/features/onboarding/steps/niyyah_step.dart';
-import 'package:sakina/features/onboarding/steps/notifications_step.dart';
-import 'package:sakina/features/onboarding/steps/privacy_step.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/features/onboarding/onboarding_controller.dart';
+import 'package:prosoche/features/onboarding/onboarding_routes.dart';
+import 'package:prosoche/features/onboarding/onboarding_steps.dart';
+import 'package:prosoche/features/onboarding/steps/gate_steps.dart';
+import 'package:prosoche/features/onboarding/steps/language_step.dart';
+import 'package:prosoche/features/onboarding/steps/location_step.dart';
+import 'package:prosoche/features/onboarding/steps/niyyah_step.dart';
+import 'package:prosoche/features/onboarding/steps/notifications_step.dart';
+import 'package:prosoche/features/onboarding/steps/privacy_step.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Pokracovanie po kroku: [skipped] = "Skip" alebo prazdny vyber.
 typedef OnboardingNext = Future<void> Function({bool skipped});
@@ -115,7 +115,7 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final formats = SakinaFormats(Localizations.localeOf(context));
+    final formats = ProsocheFormats(Localizations.localeOf(context));
     final progress = l10n.onbStepProgress(
       formats.number(current),
       formats.number(total),

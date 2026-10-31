@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// A11Y-1: titulok AppBar sa pri velkom pisme zalomi, neoreze.
 void main() {
@@ -17,7 +17,7 @@ void main() {
     late AppBar bar;
     await tester.pumpWidget(
       MaterialApp(
-        theme: SakinaTheme.light(),
+        theme: ProsocheTheme.light(),
         builder: (context, app) => MediaQuery(
           data: MediaQuery.of(context)
               .copyWith(textScaler: TextScaler.linear(textScale)),

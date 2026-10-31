@@ -1,5 +1,5 @@
-import 'package:sakina/data/db/user_db.dart';
-import 'package:sakina/domain/common/common.dart';
+import 'package:prosoche/data/db/user_db.dart';
+import 'package:prosoche/domain/common/common.dart';
 
 /// Vysledok posunu `reading_position` (docs/02 B2, A5.2, D7).
 typedef ReadingAdvance = ({bool moved, int? khatmCompleted});

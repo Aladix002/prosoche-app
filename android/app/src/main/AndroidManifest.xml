@@ -37,12 +37,12 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <!-- Deep linky mursa://today, mursa://feed, mursa://gate?app=... (docs/01 kap. 4.3). -->
+            <!-- Deep linky prosoche://today, prosoche://feed, prosoche://gate?app=... (docs/01 kap. 4.3). -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="mursa"/>
+                <data android:scheme="prosoche"/>
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

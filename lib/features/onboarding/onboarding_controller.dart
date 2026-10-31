@@ -1,14 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meta/meta.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/core/logging/logger_provider.dart';
-import 'package:sakina/data/repositories/providers.dart';
-import 'package:sakina/data/repositories/settings/settings_providers.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/onboarding/onboarding_guard.dart';
-import 'package:sakina/features/onboarding/onboarding_platform.dart';
-import 'package:sakina/features/onboarding/onboarding_steps.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/core/logging/logger_provider.dart';
+import 'package:prosoche/data/repositories/providers.dart';
+import 'package:prosoche/data/repositories/settings/settings_providers.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/onboarding/onboarding_guard.dart';
+import 'package:prosoche/features/onboarding/onboarding_platform.dart';
+import 'package:prosoche/features/onboarding/onboarding_steps.dart';
 
 /// Anonymny event onboardingu (bez obsahu, polohy a mesta).
 @immutable

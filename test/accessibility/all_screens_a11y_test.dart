@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/settings/settings_keys.dart';
+import 'package:prosoche/domain/settings/settings_keys.dart';
 
 import '../fakes/fake_repositories.dart';
 import '../fakes/in_memory_settings_repository.dart';
@@ -103,7 +103,7 @@ Future<void> _pump(
   }
   final settings = InMemorySettingsRepository();
   await settings.set(SettingsKeys.uiLocale, locale);
-  final router = await tester.pumpSakina(
+  final router = await tester.pumpProsoche(
     location: location,
     fakes: FakeRepositories(settings: settings),
   );

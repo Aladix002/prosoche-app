@@ -21,6 +21,6 @@
 # Pigeon: generovane triedy sa volaju bez reflexie, netreba keep.
 # Ak by nativny kod brany (src/full) pouzival reflexiu, pridat konkretne
 # keep pravidla, napr.:
-# -keep class app.mursa.blocker.model.** { *; }
+# -keep class app.prosoche.blocker.model.** { *; }
 
 # WorkManager / Room maju consumer rules v AAR. Nic navyse.

@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/calendar/calendar.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/prayer/calc_settings.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/prayer/prayer_schedule.dart';
-import 'package:sakina/domain/ramadan/ramadan.dart';
+import 'package:prosoche/domain/calendar/calendar.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/prayer/calc_settings.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/prayer/prayer_schedule.dart';
+import 'package:prosoche/domain/ramadan/ramadan.dart';
 import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 

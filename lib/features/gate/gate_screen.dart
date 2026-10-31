@@ -3,22 +3,22 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/core/logging/logger_provider.dart';
-import 'package:sakina/data/blocker/blocker_gateway.dart';
-import 'package:sakina/data/blocker/blocker_gateway_provider.dart';
-import 'package:sakina/data/blocker/gate_repository.dart';
-import 'package:sakina/data/content/content_providers.dart';
-import 'package:sakina/data/content/remote_config_policy.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/cards/cards.dart';
-import 'package:sakina/features/gate/gate_controller.dart';
-import 'package:sakina/features/gate/gate_deck.dart';
-import 'package:sakina/features/gate/gate_views.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/core/logging/logger_provider.dart';
+import 'package:prosoche/data/blocker/blocker_gateway.dart';
+import 'package:prosoche/data/blocker/blocker_gateway_provider.dart';
+import 'package:prosoche/data/blocker/gate_repository.dart';
+import 'package:prosoche/data/content/content_providers.dart';
+import 'package:prosoche/data/content/remote_config_policy.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/cards/cards.dart';
+import 'package:prosoche/features/gate/gate_controller.dart';
+import 'package:prosoche/features/gate/gate_deck.dart';
+import 'package:prosoche/features/gate/gate_views.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Remote kill-switch `blocker_overlay` (docs/06 A.7). Chyba configu =
 /// zapnute (defaulty z kodu).

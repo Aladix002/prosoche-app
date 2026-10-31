@@ -239,7 +239,7 @@
                       ".isIn(",
                       {
                         "lexeme": "DayPhase",
-                        "import_uri": "package:sakina/data/db/user_enums.dart"
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
                       },
                       ".values.map((e) => e.wire))"
                     ]
@@ -357,7 +357,7 @@
                       ".isIn(",
                       {
                         "lexeme": "CardContext",
-                        "import_uri": "package:sakina/data/db/user_enums.dart"
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
                       },
                       ".values.map((e) => e.wire))"
                     ]
@@ -390,7 +390,7 @@
                       ".isIn(",
                       {
                         "lexeme": "CardAction",
-                        "import_uri": "package:sakina/data/db/user_enums.dart"
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
                       },
                       ".values.map((e) => e.wire))"
                     ]
@@ -605,7 +605,7 @@
                       ".isIn(",
                       {
                         "lexeme": "QuestSlotKind",
-                        "import_uri": "package:sakina/data/db/user_enums.dart"
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
                       },
                       ".values.map((e) => e.wire))"
                     ]
@@ -648,7 +648,7 @@
                       ".isIn(",
                       {
                         "lexeme": "QuestStatus",
-                        "import_uri": "package:sakina/data/db/user_enums.dart"
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
                       },
                       ".values.map((e) => e.wire))"
                     ]
@@ -723,7 +723,7 @@
                       ".isIn(",
                       {
                         "lexeme": "SrsState",
-                        "import_uri": "package:sakina/data/db/user_enums.dart"
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
                       },
                       ".values.map((e) => e.wire))"
                     ]
@@ -838,7 +838,7 @@
                       ".isIn(",
                       {
                         "lexeme": "SrsSource",
-                        "import_uri": "package:sakina/data/db/user_enums.dart"
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
                       },
                       ".values.map((e) => e.wire))"
                     ]
@@ -978,7 +978,7 @@
                       ".isIn(",
                       {
                         "lexeme": "SrsState",
-                        "import_uri": "package:sakina/data/db/user_enums.dart"
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
                       },
                       ".values.map((e) => e.wire))"
                     ]
@@ -1039,7 +1039,7 @@
                       ".isIn(",
                       {
                         "lexeme": "PrayerKind",
-                        "import_uri": "package:sakina/data/db/user_enums.dart"
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
                       },
                       ".values.map((e) => e.wire))"
                     ]
@@ -1072,7 +1072,7 @@
                       ".isIn(",
                       {
                         "lexeme": "PrayerStatus",
-                        "import_uri": "package:sakina/data/db/user_enums.dart"
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
                       },
                       ".values.map((e) => e.wire))"
                     ]
@@ -1151,7 +1151,7 @@
                       ".isIn(",
                       {
                         "lexeme": "FastType",
-                        "import_uri": "package:sakina/data/db/user_enums.dart"
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
                       },
                       ".values.map((e) => e.wire))"
                     ]
@@ -1225,7 +1225,7 @@
                       ".isIn(",
                       {
                         "lexeme": "DayStatus",
-                        "import_uri": "package:sakina/data/db/user_enums.dart"
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
                       },
                       ".values.map((e) => e.wire))"
                     ]
@@ -1584,7 +1584,7 @@
                       ".isIn(",
                       {
                         "lexeme": "GateResult",
-                        "import_uri": "package:sakina/data/db/user_enums.dart"
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
                       },
                       ".values.map((e) => e.wire))"
                     ]
@@ -1689,7 +1689,7 @@
                       ".isIn(",
                       {
                         "lexeme": "UnlockSource",
-                        "import_uri": "package:sakina/data/db/user_enums.dart"
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
                       },
                       ".values.map((e) => e.wire))"
                     ]

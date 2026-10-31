@@ -245,7 +245,7 @@
   "@blkAppsTitle": {
     "description": "O5 title: choose apps for the gate."
   },
-  "blkAppsBody": "When you open an app you choose, Mursa shows you a few cards first. After that, the app opens for a while. There's always an emergency way through, and you can turn it off anytime.",
+  "blkAppsBody": "When you open an app you choose, Prosoche shows you a few cards first. After that, the app opens for a while. There's always an emergency way through, and you can turn it off anytime.",
   "@blkAppsBody": {
     "description": "O5 body: explains the gate before choosing apps."
   },
@@ -326,7 +326,7 @@
   "@blkPermTitle": {
     "description": "O6 title and title of the permissions screen in settings."
   },
-  "blkPermIntro": "Mursa checks which app is open, only to show the gate. This never leaves your phone.",
+  "blkPermIntro": "Prosoche checks which app is open, only to show the gate. This never leaves your phone.",
   "@blkPermIntro": {
     "description": "O6 intro, part of the prominent disclosure."
   },
@@ -334,19 +334,19 @@
   "@permUsageTitle": {
     "description": "Name of the Android usage access permission."
   },
-  "permUsageBody": "Mursa uses Usage Access to notice when you open one of the apps you chose for the gate, so it can show your cards first.",
+  "permUsageBody": "Prosoche uses Usage Access to notice when you open one of the apps you chose for the gate, so it can show your cards first.",
   "@permUsageBody": {
     "description": "Prominent disclosure for usage access (Google Play)."
   },
-  "permUsageDoes": "What Mursa does: checks which app is on screen, only while your screen is on.",
+  "permUsageDoes": "What Prosoche does: checks which app is on screen, only while your screen is on.",
   "@permUsageDoes": {
     "description": "Prominent disclosure: what is done with usage access."
   },
-  "permUsageNever": "What Mursa never does: it doesn't store or send your app history, time spent, or anything you do inside other apps.",
+  "permUsageNever": "What Prosoche never does: it doesn't store or send your app history, time spent, or anything you do inside other apps.",
   "@permUsageNever": {
     "description": "Prominent disclosure: what is never done."
   },
-  "permUsageSteps": "On the next screen, find Mursa and turn on \"Permit usage access\". Then come back.",
+  "permUsageSteps": "On the next screen, find Prosoche and turn on \"Permit usage access\". Then come back.",
   "@permUsageSteps": {
     "description": "Steps in system settings for usage access."
   },
@@ -354,11 +354,11 @@
   "@permOverlayTitle": {
     "description": "Name of the Android overlay permission."
   },
-  "permOverlayBody": "This lets Mursa open its gate screen on top of the app you just opened.",
+  "permOverlayBody": "This lets Prosoche open its gate screen on top of the app you just opened.",
   "@permOverlayBody": {
     "description": "Prominent disclosure for the overlay permission."
   },
-  "permOverlayNever": "What Mursa never does: read, record or change what's on your screen.",
+  "permOverlayNever": "What Prosoche never does: read, record or change what's on your screen.",
   "@permOverlayNever": {
     "description": "Prominent disclosure: what is never done with overlay."
   },
@@ -366,7 +366,7 @@
   "@permNotifTitle": {
     "description": "Name of the notification permission."
   },
-  "permNotifBody": "While the gate is on, Android shows a small, silent notification. It means Mursa is ready to pause the apps you chose.",
+  "permNotifBody": "While the gate is on, Android shows a small, silent notification. It means Prosoche is ready to pause the apps you chose.",
   "@permNotifBody": {
     "description": "Why notifications matter for the gate (foreground service)."
   },
@@ -423,7 +423,7 @@
   "@batteryGuide": {
     "description": "Button that opens the battery guide."
   },
-  "batteryBodyGeneric": "Some phones stop apps running in the background to save battery. If the gate stops appearing, allow Mursa to run in the background.",
+  "batteryBodyGeneric": "Some phones stop apps running in the background to save battery. If the gate stops appearing, allow Prosoche to run in the background.",
   "@batteryBodyGeneric": {
     "description": "Generic battery guide."
   },
@@ -436,19 +436,19 @@
       }
     }
   },
-  "batteryStepsSamsung": "1. Open battery settings below.\n2. Find Mursa and choose \"Unrestricted\".\n3. In Settings > Battery > Background usage limits, make sure Mursa is not in \"Sleeping apps\".",
+  "batteryStepsSamsung": "1. Open battery settings below.\n2. Find Prosoche and choose \"Unrestricted\".\n3. In Settings > Battery > Background usage limits, make sure Prosoche is not in \"Sleeping apps\".",
   "@batteryStepsSamsung": {
     "description": "Battery guide steps for Samsung (One UI). Check the paths on current devices."
   },
-  "batteryStepsXiaomi": "1. Open battery settings below.\n2. Find Mursa and choose \"No restrictions\".\n3. In the app info of Mursa, turn on \"Autostart\".",
+  "batteryStepsXiaomi": "1. Open battery settings below.\n2. Find Prosoche and choose \"No restrictions\".\n3. In the app info of Prosoche, turn on \"Autostart\".",
   "@batteryStepsXiaomi": {
     "description": "Battery guide steps for Xiaomi, Redmi, POCO (HyperOS/MIUI). Check the paths on current devices."
   },
-  "batteryStepsHuawei": "1. Open battery settings below.\n2. Find Mursa in App launch and turn off \"Manage automatically\".\n3. Allow auto-launch and running in background.",
+  "batteryStepsHuawei": "1. Open battery settings below.\n2. Find Prosoche in App launch and turn off \"Manage automatically\".\n3. Allow auto-launch and running in background.",
   "@batteryStepsHuawei": {
     "description": "Battery guide steps for Huawei and Honor. Check the paths on current devices."
   },
-  "batteryStepsOppo": "1. Open battery settings below.\n2. Find Mursa and allow background activity.\n3. In the app info of Mursa, turn on \"Allow auto launch\".",
+  "batteryStepsOppo": "1. Open battery settings below.\n2. Find Prosoche and allow background activity.\n3. In the app info of Prosoche, turn on \"Allow auto launch\".",
   "@batteryStepsOppo": {
     "description": "Battery guide steps for Oppo, Realme, OnePlus (ColorOS). Check the paths on current devices."
   },
@@ -460,7 +460,7 @@
   "@batteryDone": {
     "description": "Checkbox: user confirms the battery steps (can't be verified)."
   },
-  "batteryNote": "Mursa uses very little battery.",
+  "batteryNote": "Prosoche uses very little battery.",
   "@batteryNote": {
     "description": "Short reassurance under the battery guide."
   },
@@ -1420,7 +1420,7 @@
   "@cardOpen": {
     "description": "Opens the referenced verse."
   },
-  "cardReflectionAttribution": "Mursa reflection · reviewed",
+  "cardReflectionAttribution": "Prosoche reflection · reviewed",
   "@cardReflectionAttribution": {
     "description": "Attribution of a reflection card (reviewed by a content reviewer)."
   },
@@ -3142,7 +3142,7 @@
   "@setDeleteConfirm": {
     "description": "Confirm button of the delete dialog."
   },
-  "setSourcesIntro": "Mursa shows these texts without any changes, as published by their sources.",
+  "setSourcesIntro": "Prosoche shows these texts without any changes, as published by their sources.",
   "@setSourcesIntro": {
     "description": "Intro of the sources and licenses screen (docs/09 4)."
   },
@@ -3150,7 +3150,7 @@
   "@setSourcesEmpty": {
     "description": "Empty state when content has no source records."
   },
-  "setSourceKind": "{kind, select, quran_text{Quran text} quran_text_search{Quran text for search} quran_metadata{Quran metadata} translation{Translations of the meanings} word{Word by word} hadith{Hadith} dua{Dua} name{Names of Allah} reflection{Reflections} curated{Mursa content} audio{Recitations} city{Places} font{Fonts} other{Other}}",
+  "setSourceKind": "{kind, select, quran_text{Quran text} quran_text_search{Quran text for search} quran_metadata{Quran metadata} translation{Translations of the meanings} word{Word by word} hadith{Hadith} dua{Dua} name{Names of Allah} reflection{Reflections} curated{Prosoche content} audio{Recitations} city{Places} font{Fonts} other{Other}}",
   "@setSourceKind": {
     "description": "Group header on the sources screen by type of content.",
     "placeholders": {
@@ -3213,7 +3213,7 @@
   "@setDisclaimerQuran": {
     "description": "Quran text and translation disclaimer (docs/11 12.2). Legal text, translate faithfully."
   },
-  "setDisclaimerRulings": "Mursa is a reminder and habit tool. It does not issue religious rulings (fatwas). For questions of religious practice, please consult a qualified scholar.",
+  "setDisclaimerRulings": "Prosoche is a reminder and habit tool. It does not issue religious rulings (fatwas). For questions of religious practice, please consult a qualified scholar.",
   "@setDisclaimerRulings": {
     "description": "Religious content disclaimer (docs/11 12.3). Legal text, translate faithfully."
   },
@@ -3539,7 +3539,7 @@
   },
   "notifPrivateTitle": "{appName} · {time}",
   "@notifPrivateTitle": {
-    "description": "Neutral title of a prayer notification in private mode (lock screen), e.g. 'Mursa · 15:12'.",
+    "description": "Neutral title of a prayer notification in private mode (lock screen), e.g. 'Prosoche · 15:12'.",
     "placeholders": {
       "appName": {
         "type": "String"
@@ -3600,7 +3600,7 @@
   "@notifInexactNote": {
     "description": "Info line in Settings and Prayer screen when exact alarms are not allowed (not a notification)."
   },
-  "appTitle": "Mursa",
+  "appTitle": "Prosoche",
   "@appTitle": {
     "description": "Application name."
   },
@@ -3704,7 +3704,7 @@
   "@skContentUnavailableTitle": {
     "description": "Title shown when content failed its integrity check."
   },
-  "skContentUnavailableBody": "Mursa couldn’t verify this content. Please try again later.",
+  "skContentUnavailableBody": "Prosoche couldn’t verify this content. Please try again later.",
   "@skContentUnavailableBody": {
     "description": "Body shown when content failed its integrity check."
   },

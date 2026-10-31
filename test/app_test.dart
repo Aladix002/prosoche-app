@@ -4,35 +4,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/app.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/core/router/app_router.dart';
-import 'package:sakina/domain/settings/settings_keys.dart';
-import 'package:sakina/features/settings/language_settings_screen.dart';
-import 'package:sakina/ui/foundation/sk_text_scaling.dart';
-import 'package:sakina/ui/foundation/sk_ui_strings.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/theme/sakina_colors.dart';
-import 'package:sakina/ui/tokens/sk_fonts.dart';
+import 'package:prosoche/app.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/core/router/app_router.dart';
+import 'package:prosoche/domain/settings/settings_keys.dart';
+import 'package:prosoche/features/settings/language_settings_screen.dart';
+import 'package:prosoche/ui/foundation/sk_text_scaling.dart';
+import 'package:prosoche/ui/foundation/sk_ui_strings.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/theme/prosoche_colors.dart';
+import 'package:prosoche/ui/tokens/sk_fonts.dart';
 
 import 'fakes/fake_repositories.dart';
 import 'helpers/pump_app.dart';
 
 void main() {
-  group('sakinaAppTheme', () {
-    test('uses Sakina colors and high contrast variants', () {
-      SakinaColors colors(ThemeData t) => t.extension<SakinaColors>()!;
+  group('prosocheAppTheme', () {
+    test('uses Prosoche colors and high contrast variants', () {
+      ProsocheColors colors(ThemeData t) => t.extension<ProsocheColors>()!;
       for (final (b, hc, expected) in [
-        (Brightness.light, false, SakinaColors.light),
-        (Brightness.dark, false, SakinaColors.dark),
-        (Brightness.light, true, SakinaColors.lightHighContrast),
-        (Brightness.dark, true, SakinaColors.darkHighContrast),
+        (Brightness.light, false, ProsocheColors.light),
+        (Brightness.dark, false, ProsocheColors.dark),
+        (Brightness.light, true, ProsocheColors.lightHighContrast),
+        (Brightness.dark, true, ProsocheColors.darkHighContrast),
       ]) {
-        final theme = sakinaAppTheme(
+        final theme = prosocheAppTheme(
           brightness: b,
           highContrast: hc,
-          locale: SakinaLocales.en,
+          locale: ProsocheLocales.en,
         );
         expect(theme.brightness, b);
         expect(colors(theme), expected);
@@ -40,8 +40,8 @@ void main() {
     });
 
     test('text theme follows the font of the language', () {
-      for (final locale in SakinaLocales.all) {
-        final theme = sakinaAppTheme(
+      for (final locale in ProsocheLocales.all) {
+        final theme = prosocheAppTheme(
           brightness: Brightness.light,
           locale: locale,
         );
@@ -55,13 +55,13 @@ void main() {
     });
 
     test('Nastaliq line height is not scaled twice', () {
-      final en = sakinaAppTheme(
+      final en = prosocheAppTheme(
         brightness: Brightness.light,
-        locale: SakinaLocales.en,
+        locale: ProsocheLocales.en,
       ).textTheme.bodyLarge!;
-      final ur = sakinaAppTheme(
+      final ur = prosocheAppTheme(
         brightness: Brightness.light,
-        locale: SakinaLocales.ur,
+        locale: ProsocheLocales.ur,
       ).textTheme.bodyLarge!;
       expect(en.fontFamily, SkFonts.inter);
       expect(ur.height, LocaleFonts.urdu.scaleHeight(en.height));
@@ -101,14 +101,14 @@ void main() {
     expect(all(s), all(f));
   });
 
-  testWidgets('app wraps routes in Sakina theme, scaling and UI strings', (
+  testWidgets('app wraps routes in Prosoche theme, scaling and UI strings', (
     tester,
   ) async {
     tester.platformDispatcher.textScaleFactorTestValue = 3;
     addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
-    await tester.pumpSakina();
+    await tester.pumpProsoche();
     final context = tester.element(navBar);
-    expect(Theme.of(context).extension<SakinaColors>(), SakinaColors.light);
+    expect(Theme.of(context).extension<ProsocheColors>(), ProsocheColors.light);
     expect(Theme.of(context).textTheme.bodyLarge!.fontFamily, SkFonts.inter);
     expect(SkUiStrings.of(context).tryAgain, 'Try again');
     // SkTextScaling: UI clamp na 2.0, Koran dostane neclampnuty scaler.
@@ -116,14 +116,14 @@ void main() {
     expect(SkTextScaling.unclampedOf(context).scale(10), 30);
   });
 
-  testWidgets('dark platform brightness selects the dark Sakina theme', (
+  testWidgets('dark platform brightness selects the dark Prosoche theme', (
     tester,
   ) async {
     tester.platformDispatcher.platformBrightnessTestValue = Brightness.dark;
     addTearDown(tester.platformDispatcher.clearPlatformBrightnessTestValue);
-    await tester.pumpSakina();
+    await tester.pumpProsoche();
     final context = tester.element(navBar);
-    expect(Theme.of(context).extension<SakinaColors>(), SakinaColors.dark);
+    expect(Theme.of(context).extension<ProsocheColors>(), ProsocheColors.dark);
   });
 
   group('system back after a language change (I-03)', () {
@@ -169,7 +169,7 @@ void main() {
       final calls = recordHandlesBack(tester);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
       final fakes = FakeRepositories();
-      final router = await tester.pumpSakina(fakes: fakes);
+      final router = await tester.pumpProsoche(fakes: fakes);
       unawaited(router.push('/settings'));
       await tester.pumpAndSettle();
       unawaited(router.push('/settings/language'));
@@ -197,7 +197,7 @@ void main() {
     testWidgets('on the root tab back is left to the system', (tester) async {
       final calls = recordHandlesBack(tester);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
-      await tester.pumpSakina();
+      await tester.pumpProsoche();
       const NavigationNotification(canHandlePop: false)
           .dispatch(tester.element(find.byType(SkTextScaling)));
       expect(calls.last, isFalse);
@@ -208,7 +208,7 @@ void main() {
       final calls = recordHandlesBack(tester);
       tester.binding.resetInternalState();
       expect(tester.binding.lifecycleState, isNull);
-      final router = await tester.pumpSakina();
+      final router = await tester.pumpProsoche();
       unawaited(router.push('/settings'));
       await tester.pumpAndSettle();
       expect(tester.binding.lifecycleState, isNull);

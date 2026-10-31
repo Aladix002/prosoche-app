@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/prayer/qibla.dart';
+import 'package:prosoche/domain/prayer/qibla.dart';
 
 /// Referencne azimuty: AlAdhan Qibla API
 /// (`https://api.aladhan.com/v1/qibla/{lat}/{lng}`), stiahnute 2026-10-29.

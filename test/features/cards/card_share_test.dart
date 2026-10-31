@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/features/cards/cards.dart';
-import 'package:sakina/features/feed/feed_rules.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/features/cards/cards.dart';
+import 'package:prosoche/features/feed/feed_rules.dart';
 
 void main() {
   group('buildShareText (docs/02 B0.7)', () {
@@ -15,9 +15,9 @@ void main() {
             reference: 'Ref 1:1',
             attribution: 'Translation: X',
           ),
-          via: 'via Mursa',
+          via: 'via Prosoche',
         ),
-        'AR\n\nTR\n\n- Ref 1:1 (Translation: X)\nvia Mursa',
+        'AR\n\nTR\n\n- Ref 1:1 (Translation: X)\nvia Prosoche',
       );
     });
 
@@ -25,9 +25,9 @@ void main() {
       expect(
         buildShareText(
           const CardShareData(translation: 'TR', reference: 'Ref'),
-          via: 'via Mursa',
+          via: 'via Prosoche',
         ),
-        'TR\n\n- Ref\nvia Mursa',
+        'TR\n\n- Ref\nvia Prosoche',
       );
     });
   });

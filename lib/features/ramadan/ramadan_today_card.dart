@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/ramadan/ramadan.dart';
-import 'package:sakina/features/ramadan/ramadan_providers.dart';
-import 'package:sakina/features/settings/settings_routes.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/ramadan/ramadan.dart';
+import 'package:prosoche/features/ramadan/ramadan_providers.dart';
+import 'package:prosoche/features/settings/settings_routes.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Karta Ramadanu na obrazovke Dnes (F-08, docs/04 1.3, 1.13 bod 1).
 ///
@@ -130,8 +130,8 @@ class _FastLog extends ConsumerWidget {
   }
 }
 
-SakinaFormats _formats(BuildContext context) =>
-    SakinaFormats(Localizations.localeOf(context));
+ProsocheFormats _formats(BuildContext context) =>
+    ProsocheFormats(Localizations.localeOf(context));
 
 /// "in 2 h 14 min" / "in 12 min" (cislice podla jazyka UI).
 String ramadanDurationLabel(BuildContext context, Duration d) {

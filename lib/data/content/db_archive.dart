@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:crypto/crypto.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/content/content_documents.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/content/content_documents.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 /// Kontrola a rozbalenie stiahnuteho `content.db.gz` (docs/06 B.2).

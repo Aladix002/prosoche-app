@@ -6,7 +6,7 @@
 //
 // Vystupy (commitnute, needitovat rucne):
 // - lib/data/blocker/blocker_api.pigeon.dart
-// - android/app/src/full/kotlin/app/mursa/blocker/BlockerApi.g.kt
+// - android/app/src/full/kotlin/app/prosoche/blocker/BlockerApi.g.kt
 //
 // Kontrakt chybovych kodov (`FlutterError.code` -> `PlatformException.code`,
 // docs/06 C.5): `permission_missing`, `service_not_running`,
@@ -24,9 +24,9 @@ import 'package:pigeon/pigeon.dart';
 @ConfigurePigeon(
   PigeonOptions(
     dartOut: 'lib/data/blocker/blocker_api.pigeon.dart',
-    dartPackageName: 'sakina',
-    kotlinOut: 'android/app/src/full/kotlin/app/mursa/blocker/BlockerApi.g.kt',
-    kotlinOptions: KotlinOptions(package: 'app.mursa.blocker'),
+    dartPackageName: 'prosoche',
+    kotlinOut: 'android/app/src/full/kotlin/app/prosoche/blocker/BlockerApi.g.kt',
+    kotlinOptions: KotlinOptions(package: 'app.prosoche.blocker'),
   ),
 )
 /// Stav povolenia na sledovanie appiek v popredi (Android: usage access).

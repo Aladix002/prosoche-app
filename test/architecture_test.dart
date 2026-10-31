@@ -9,7 +9,7 @@ final _forbidden = <RegExp, String>{
       'flutter pluginy',
   RegExp(r'''^\s*(import|export)\s+['"]package:drift'''): 'drift',
   RegExp(r'''^\s*(import|export)\s+['"]dart:ui['"]'''): 'dart:ui',
-  RegExp(r'''^\s*(import|export)\s+['"]package:sakina/(data|features)/'''):
+  RegExp(r'''^\s*(import|export)\s+['"]package:prosoche/(data|features)/'''):
       'data/features vrstva',
   RegExp(r'DateTime\.now\(\)'): 'DateTime.now() (pouzi Clock)',
 };
@@ -28,7 +28,7 @@ void main() {
 import 'package:flutter/material.dart';
 import "package:drift/drift.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/data/db/user_db.dart';
+import 'package:prosoche/data/db/user_db.dart';
 export 'dart:ui';
 final t = DateTime.now();
 ''';
@@ -40,8 +40,8 @@ final t = DateTime.now();
 import 'dart:math';
 import 'package:clock/clock.dart';
 import 'package:meta/meta.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/domain/feed/card.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/domain/feed/card.dart';
 ''';
       expect(domainViolations('x.dart', src), isEmpty);
     });

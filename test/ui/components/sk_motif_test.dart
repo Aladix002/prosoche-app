@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/features/shell/day_phase.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/features/shell/day_phase.dart';
+import 'package:prosoche/ui/ui.dart';
 
 Widget _app(Widget child, {bool reduce = false}) => MaterialApp(
-  theme: SakinaTheme.light(),
+  theme: ProsocheTheme.light(),
   home: MediaQuery(
     data: MediaQueryData(disableAnimations: reduce),
     child: Scaffold(body: Center(child: child)),

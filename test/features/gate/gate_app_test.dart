@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/blocker/gate_repository.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/gate/gate_app.dart';
-import 'package:sakina/features/gate/gate_screen.dart';
+import 'package:prosoche/data/blocker/gate_repository.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/gate/gate_app.dart';
+import 'package:prosoche/features/gate/gate_screen.dart';
 
 import 'gate_harness.dart';
 

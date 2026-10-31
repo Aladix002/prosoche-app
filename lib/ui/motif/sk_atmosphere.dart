@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/ui/motif/sk_motif.dart';
-import 'package:sakina/ui/theme/sakina_colors.dart';
-import 'package:sakina/ui/theme/sk_context.dart';
-import 'package:sakina/ui/tokens/sk_space.dart';
+import 'package:prosoche/ui/motif/sk_motif.dart';
+import 'package:prosoche/ui/theme/prosoche_colors.dart';
+import 'package:prosoche/ui/theme/sk_context.dart';
+import 'package:prosoche/ui/tokens/sk_space.dart';
 
 /// Cast dna pre atmosferu hlavicky (D-05). Urci ju volajuci podla
 /// najblizsej modlitby, bez polohy podla hodiny ([SkDayPhase.fromHour]).
@@ -44,7 +44,7 @@ class SkAtmosphereColors {
   const SkAtmosphereColors({required this.top, required this.bottom});
 
   /// Odtien podla casti dna a temy.
-  factory SkAtmosphereColors.of(SkDayPhase phase, SakinaColors c) {
+  factory SkAtmosphereColors.of(SkDayPhase phase, ProsocheColors c) {
     final dark = c.bg.computeLuminance() < 0.2;
     final tint = dark ? _darkTints[phase]! : _lightTints[phase]!;
     return SkAtmosphereColors(top: tint, bottom: c.surface);

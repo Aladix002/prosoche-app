@@ -9,7 +9,7 @@ import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:drift/native.dart';
-import 'package:sakina/data/db/content_db.dart';
+import 'package:prosoche/data/db/content_db.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 /// Cesta ku kopii kontraktu (testy bezia z korena balika).

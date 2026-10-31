@@ -4,14 +4,14 @@ import 'dart:io';
 import 'package:flutter/services.dart' show appBuildName;
 import 'package:flutter_riverpod/misc.dart';
 import 'package:path/path.dart' as p;
-import 'package:sakina/data/content/content_providers.dart';
-import 'package:sakina/data/content/hadith_extra_pack_providers.dart';
-import 'package:sakina/data/content/sem_ver.dart';
-import 'package:sakina/data/db/hadith_extra_repository.dart' as db;
-import 'package:sakina/data/repositories/cards/hadith_extra_repository.dart';
-import 'package:sakina/data/repositories/infra/databases.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/features/cards/hadith_explanations_pack.dart';
+import 'package:prosoche/data/content/content_providers.dart';
+import 'package:prosoche/data/content/hadith_extra_pack_providers.dart';
+import 'package:prosoche/data/content/sem_ver.dart';
+import 'package:prosoche/data/db/hadith_extra_repository.dart' as db;
+import 'package:prosoche/data/repositories/cards/hadith_extra_repository.dart';
+import 'package:prosoche/data/repositories/infra/databases.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/features/cards/hadith_explanations_pack.dart';
 
 /// Prepojenie obsahu (I-01): D-02 repozitare citaju content.db z D-03
 /// [contentDatabaseProvider] (instalacia pribalenej db, integrita,

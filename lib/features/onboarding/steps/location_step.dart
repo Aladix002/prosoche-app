@@ -2,19 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/infra/time_providers.dart';
-import 'package:sakina/data/repositories/prayer/city_repository.dart';
-import 'package:sakina/data/repositories/prayer/prayer_repository.dart';
-import 'package:sakina/data/repositories/providers.dart';
-import 'package:sakina/domain/prayer/calc_settings.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/onboarding/onboarding_controller.dart';
-import 'package:sakina/features/onboarding/onboarding_platform.dart';
-import 'package:sakina/features/onboarding/onboarding_screen.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/infra/time_providers.dart';
+import 'package:prosoche/data/repositories/prayer/city_repository.dart';
+import 'package:prosoche/data/repositories/prayer/prayer_repository.dart';
+import 'package:prosoche/data/repositories/providers.dart';
+import 'package:prosoche/domain/prayer/calc_settings.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/onboarding/onboarding_controller.dart';
+import 'package:prosoche/features/onboarding/onboarding_platform.dart';
+import 'package:prosoche/features/onboarding/onboarding_screen.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Nad touto sirkou sa zobrazi info o pravidle vysokych sirok (docs/02 O3).
 const highLatitudeThreshold = 48.0;
@@ -175,7 +175,7 @@ class _MethodSection extends ConsumerWidget {
     final text = context.sk.text;
     final location = config.location;
     final prayer = ref.read(prayerRepositoryProvider);
-    final formats = SakinaFormats(Localizations.localeOf(context));
+    final formats = ProsocheFormats(Localizations.localeOf(context));
     final day = config.schedule.day(ref.watch(localDateProvider));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

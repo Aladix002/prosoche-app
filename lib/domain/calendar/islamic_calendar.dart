@@ -1,7 +1,7 @@
 import 'package:hijri/hijri_array.dart' show ummAlquraDateArray;
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/calendar/hijri_date.dart';
-import 'package:sakina/domain/common/local_date.dart';
+import 'package:prosoche/domain/calendar/hijri_date.dart';
+import 'package:prosoche/domain/common/local_date.dart';
 
 /// Hijri kalendar Umm al-Qura s pouzivatelskym posunom (plan 7.5).
 ///

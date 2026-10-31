@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/app.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/core/router/navigator_keys.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/features/quran/quran_routes.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/app.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/core/router/navigator_keys.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/features/quran/quran_routes.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import '../../fakes/fake_repositories.dart';
 
@@ -184,7 +184,7 @@ extension PumpQuran on WidgetTester {
             data: MediaQuery.of(context)
                 .copyWith(textScaler: TextScaler.linear(textScale)),
             child: Theme(
-              data: sakinaAppTheme(
+              data: prosocheAppTheme(
                 brightness: brightness,
                 locale: Localizations.localeOf(context),
               ),

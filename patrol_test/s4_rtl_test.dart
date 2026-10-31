@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patrol/patrol.dart';
-import 'package:sakina/features/today/today_screen.dart';
+import 'package:prosoche/features/today/today_screen.dart';
 
 import 'support/app_harness.dart';
 import 'support/flows.dart';

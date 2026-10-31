@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/features/cards/translator_notes.dart';
-import 'package:sakina/features/quran/quran_format.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/features/cards/translator_notes.dart';
+import 'package:prosoche/features/quran/quran_format.dart';
 
 import '../../../helpers/golden/golden.dart';
 import '../quran_test_helpers.dart';
@@ -26,7 +26,7 @@ const _quranEnc = TranslationSource(
 );
 
 void main() {
-  setUpAll(loadSakinaFonts);
+  setUpAll(loadProsocheFonts);
 
   Finder tileOf(AyahId id) => find.byKey(ValueKey(id.value));
 

@@ -1,6 +1,6 @@
 /// TESTOVACIE FIXTURES, nie produkcne eventy.
 ///
-/// Produkcne pravidla a ich texty pisu ludia v `sakina-content` (K-06).
+/// Produkcne pravidla a ich texty pisu ludia v `prosoche-content` (K-06).
 /// Tu su len struktury podla tabulky docs/03 5.1 (id, `when`, faza,
 /// kategoria, priorita), aby sa dali otestovat kolizie z docs/03 5.2.
 /// Id introv, questov a notifikacii su placeholdery `*.fixture.*`.

@@ -1,14 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
 import 'package:meta/meta.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/prayer/qibla.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/prayer/location/city_ranking.dart';
-import 'package:sakina/features/prayer/prayer_view.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/prayer/qibla.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/prayer/location/city_ranking.dart';
+import 'package:prosoche/features/prayer/prayer_view.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 /// Stav pripomienok modlitieb pre banery na A7.1 (docs/01 6 Prayer).

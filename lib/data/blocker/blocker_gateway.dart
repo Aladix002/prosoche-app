@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:meta/meta.dart';
-import 'package:sakina/core/result.dart';
+import 'package:prosoche/core/result.dart';
 
 /// Verzia Pigeon API, ktoru ocakava Dart (ADR-10). Musi sediet s Kotlin
 /// `BLOCKER_API_VERSION`, inak [BlockerState.apiCompatible] je false.

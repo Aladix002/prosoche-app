@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/data/content/content_documents.dart';
-import 'package:sakina/data/content/sem_ver.dart';
+import 'package:prosoche/data/content/content_documents.dart';
+import 'package:prosoche/data/content/sem_ver.dart';
 
 /// Nazvy funkcii v `remote_config.json` `features` (docs/06 A.7).
 abstract final class RemoteFeature {

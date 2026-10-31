@@ -6,19 +6,19 @@ import 'dart:typed_data';
 import 'package:clock/clock.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/content/bundled_content.dart';
-import 'package:sakina/data/content/content_documents.dart';
-import 'package:sakina/data/content/content_http_client.dart';
-import 'package:sakina/data/content/content_pack_state.dart';
-import 'package:sakina/data/content/db_archive.dart';
-import 'package:sakina/data/content/remote_config_policy.dart';
-import 'package:sakina/data/content/sem_ver.dart';
-import 'package:sakina/data/content/signature_verifier.dart';
-import 'package:sakina/data/content/trusted_keys.dart';
-import 'package:sakina/data/db/content_db.dart';
-import 'package:sakina/data/db/content_integrity.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/content/bundled_content.dart';
+import 'package:prosoche/data/content/content_documents.dart';
+import 'package:prosoche/data/content/content_http_client.dart';
+import 'package:prosoche/data/content/content_pack_state.dart';
+import 'package:prosoche/data/content/db_archive.dart';
+import 'package:prosoche/data/content/remote_config_policy.dart';
+import 'package:prosoche/data/content/sem_ver.dart';
+import 'package:prosoche/data/content/signature_verifier.dart';
+import 'package:prosoche/data/content/trusted_keys.dart';
+import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/db/content_integrity.dart';
 
 /// Vysledok [ContentPackService.checkForUpdate], ktory nie je chyba.
 enum ContentUpdateOutcome {
@@ -46,19 +46,19 @@ enum ContentUpdateOutcome {
 }
 
 /// Odkial sa stahuju `manifest.json`, `remote_config.json`,
-/// `revocations.json` a ich `.sig` (sakina-content
+/// `revocations.json` a ich `.sig` (prosoche-content
 /// `config/release.yaml` `latest_urls`). `{file}` = nazov suboru.
 @immutable
 class ContentEndpoints {
   const ContentEndpoints(this.templates);
 
-  /// Zrkadla pre repo `org/sakina-content`, v poradi skusania.
+  /// Zrkadla pre repo `org/prosoche-content`, v poradi skusania.
   factory ContentEndpoints.forRepo(String repo) => ContentEndpoints([
     'https://cdn.jsdelivr.net/gh/$repo@cdn/{file}',
     'https://raw.githubusercontent.com/$repo/cdn/{file}',
   ]);
 
-  /// Repo z `--dart-define=CONTENT_REPO=org/sakina-content`; bez neho
+  /// Repo z `--dart-define=CONTENT_REPO=org/prosoche-content`; bez neho
   /// [none].
   factory ContentEndpoints.fromEnvironment() {
     const repo = String.fromEnvironment('CONTENT_REPO');

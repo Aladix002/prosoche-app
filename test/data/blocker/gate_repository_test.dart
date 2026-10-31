@@ -1,12 +1,12 @@
 import 'package:drift/drift.dart' show driftRuntimeOptions;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/data/blocker/gate_repository.dart';
-import 'package:sakina/data/db/user_db.dart';
-import 'package:sakina/data/db/user_enums.dart' as db;
-import 'package:sakina/data/repositories/infra/databases.dart';
-import 'package:sakina/domain/common/common.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/data/blocker/gate_repository.dart';
+import 'package:prosoche/data/db/user_db.dart';
+import 'package:prosoche/data/db/user_enums.dart' as db;
+import 'package:prosoche/data/repositories/infra/databases.dart';
+import 'package:prosoche/domain/common/common.dart';
 
 void main() {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;

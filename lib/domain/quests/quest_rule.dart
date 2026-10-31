@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/card_activity.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/card_activity.dart';
 
 /// Podmienka auto-splnenia questu z `quest_template.rule_json`
 /// (plan 7.2, docs/02 D3).

@@ -5,9 +5,9 @@ import 'package:drift/drift.dart' show driftRuntimeOptions;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:sakina/data/db/content_db.dart';
-import 'package:sakina/data/db/hadith_extra_db.dart';
-import 'package:sakina/data/db/hadith_extra_repository.dart';
+import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/db/hadith_extra_db.dart';
+import 'package:prosoche/data/db/hadith_extra_repository.dart';
 
 import 'fixtures/hadith_extra_fixture.dart';
 import 'fixtures/hadith_extra_fixture.dart' as fixture show main;
@@ -154,31 +154,34 @@ void main() {
     expect(FileHadithExtraRepository.parseHints('not json'), isEmpty);
   });
 
-  test('real hadith_extra.db from sakina-content/dist (when built)', () async {
-    final pack = findSakinaContentFile(['dist', 'hadith_extra.db']);
-    final base = findSakinaContentFile(['dist', 'content.db']);
-    if (pack == null || base == null) {
-      markTestSkipped('sakina-content/dist not built');
-      return;
-    }
-    final content = ContentDb.openReadOnly(base);
-    addTearDown(content.close);
-    final meta = await content.contentMetaDao.allMeta();
-    expect(meta['hadith_extra_schema_version'], '1');
-    expect(meta['hadith_extra_size'], '${pack.lengthSync()}');
-    expect(
-      meta['hadith_extra_sha256'],
-      (await sha256.bind(pack.openRead()).first).toString(),
-    );
+  test(
+    'real hadith_extra.db from prosoche-content/dist (when built)',
+    () async {
+      final pack = findProsocheContentFile(['dist', 'hadith_extra.db']);
+      final base = findProsocheContentFile(['dist', 'content.db']);
+      if (pack == null || base == null) {
+        markTestSkipped('prosoche-content/dist not built');
+        return;
+      }
+      final content = ContentDb.openReadOnly(base);
+      addTearDown(content.close);
+      final meta = await content.contentMetaDao.allMeta();
+      expect(meta['hadith_extra_schema_version'], '1');
+      expect(meta['hadith_extra_size'], '${pack.lengthSync()}');
+      expect(
+        meta['hadith_extra_sha256'],
+        (await sha256.bind(pack.openRead()).first).toString(),
+      );
 
-    final extra = HadithExtraDb.openReadOnly(pack);
-    addTearDown(extra.close);
-    expect(
-      await isCompatibleHadithExtra(
-        extra,
-        contentVersion: int.parse(meta['content_version']!),
-      ),
-      isTrue,
-    );
-  });
+      final extra = HadithExtraDb.openReadOnly(pack);
+      addTearDown(extra.close);
+      expect(
+        await isCompatibleHadithExtra(
+          extra,
+          contentVersion: int.parse(meta['content_version']!),
+        ),
+        isTrue,
+      );
+    },
+  );
 }

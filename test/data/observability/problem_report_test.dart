@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/data/observability/problem_report.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/data/observability/problem_report.dart';
 
 void main() {
   late Directory tmp;
@@ -42,7 +42,7 @@ void main() {
     final text = report().preview(description: '  Feed is empty  ');
     expect(
       text,
-      'Sakina problem report\n'
+      'Prosoche problem report\n'
       'created: 2026-10-29T18:03:00.000Z\n'
       'app_version: 1.0.0\n'
       'content_version: 7\n'
@@ -68,9 +68,9 @@ void main() {
 
   test('share writes a text file and opens the share sheet', () async {
     logger.info('content', 'ok');
-    final path = await report().share(subject: 'Sakina problem');
-    expect(path, endsWith('sakina-report-20261029-1803.txt'));
+    final path = await report().share(subject: 'Prosoche problem');
+    expect(path, endsWith('prosoche-report-20261029-1803.txt'));
     expect(File(path).readAsStringSync(), contains('"msg":"ok"'));
-    expect(shared.single, (path, 'Sakina problem'));
+    expect(shared.single, (path, 'Prosoche problem'));
   });
 }

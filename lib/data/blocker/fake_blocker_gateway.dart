@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:clock/clock.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/blocker/blocker_gateway.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/blocker/blocker_gateway.dart';
 
 /// Pamatovy [BlockerGateway] pre testy, galeriu a widget testy brany.
 ///

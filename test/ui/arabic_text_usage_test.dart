@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/ui/gallery/sk_gallery_screen.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/ui/gallery/sk_gallery_screen.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import 'helpers/arabic_text_guard.dart';
 import 'helpers/pump_sk.dart';
@@ -16,7 +16,7 @@ import 'helpers/pump_sk.dart';
 /// 2. Runtime: helper [bareArabicTexts] najde arabsky `RichText` mimo
 ///    `SkArabicText` (pouzitelny aj vo feature testoch).
 ///
-/// Custom lint `packages/sakina_lints` (U-02) to doplni v analyzeri.
+/// Custom lint `packages/prosoche_lints` (U-02) to doplni v analyzeri.
 
 /// Cesty v `lib/`, kde su arabske literaly povolene.
 const _allowed = [

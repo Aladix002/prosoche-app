@@ -3,8 +3,8 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart' hide Timeout;
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/content/content_http_client.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/content/content_http_client.dart';
 
 void main() {
   late HttpServer server;

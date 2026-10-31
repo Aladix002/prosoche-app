@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/repositories.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 import '../full_db.dart';

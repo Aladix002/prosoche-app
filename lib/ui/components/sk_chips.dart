@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/ui/theme/sk_context.dart';
-import 'package:sakina/ui/tokens/sk_space.dart';
+import 'package:prosoche/ui/theme/sk_context.dart';
+import 'package:prosoche/ui/tokens/sk_space.dart';
 
 /// Stav chipu dalsej modlitby (docs/01 3.2 `SkNextPrayerChip`).
 enum SkNextPrayerState { normal, now, unavailable }

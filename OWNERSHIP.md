@@ -13,7 +13,7 @@ Kto smie menit co pocas paralelnej prace. Prefix = buduca uloha.
 | `pigeons/` | AND- | definicie Pigeon |
 | `android/app/src/main/kotlin/**/blocker`, `**/boot` | AND- | nativny blocker |
 | `lib/ui/` (tokeny, temy, komponenty `Sk*`, galeria) | U-01 | design system |
-| `lib/ui/i18n/`, `packages/sakina_lints/`, `test/helpers/golden/` | U-02 | RTL, fonty jazykov, golden harness |
+| `lib/ui/i18n/`, `packages/prosoche_lints/`, `test/helpers/golden/` | U-02 | RTL, fonty jazykov, golden harness |
 | `lib/features/*/widgets/` | UI- | komponenty obrazoviek |
 | `lib/features/<feature>/` (okrem `widgets/`) | feature uloha | obrazovky, notifiery |
 | `test/<cesta>` | rovnaka uloha ako `lib/<cesta>` | test zrkadli lib |

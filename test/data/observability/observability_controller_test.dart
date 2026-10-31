@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/data/observability/allowlist_analytics.dart';
-import 'package:sakina/data/observability/crash_reporter.dart';
-import 'package:sakina/data/observability/observability_config.dart';
-import 'package:sakina/data/observability/observability_controller.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/data/observability/allowlist_analytics.dart';
+import 'package:prosoche/data/observability/crash_reporter.dart';
+import 'package:prosoche/data/observability/observability_config.dart';
+import 'package:prosoche/data/observability/observability_controller.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
 import '../../fakes/in_memory_settings_repository.dart';
 import 'fakes.dart';

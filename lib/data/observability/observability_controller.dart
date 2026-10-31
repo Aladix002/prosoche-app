@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:meta/meta.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/data/observability/allowlist_analytics.dart';
-import 'package:sakina/data/observability/crash_reporter.dart';
-import 'package:sakina/data/observability/observability_config.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/data/observability/allowlist_analytics.dart';
+import 'package:prosoche/data/observability/crash_reporter.dart';
+import 'package:prosoche/data/observability/observability_config.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
 /// Nazvy funkcii pre kill-switch v `remote_config.json` (docs/06 A.7).
 /// `posthog` je v D-03 `RemoteFeature.posthog`; `sentry` je navrh D-04.

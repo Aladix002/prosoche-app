@@ -2,25 +2,25 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:sakina/data/db/converters.dart';
-import 'package:sakina/data/db/daos/blocker_dao.dart';
-import 'package:sakina/data/db/daos/card_event_dao.dart';
-import 'package:sakina/data/db/daos/daily_set_dao.dart';
-import 'package:sakina/data/db/daos/prayer_log_dao.dart';
-import 'package:sakina/data/db/daos/quest_log_dao.dart';
-import 'package:sakina/data/db/daos/reading_dao.dart';
-import 'package:sakina/data/db/daos/saved_card_dao.dart';
-import 'package:sakina/data/db/daos/settings_dao.dart';
-import 'package:sakina/data/db/daos/srs_dao.dart';
-import 'package:sakina/data/db/daos/streak_dao.dart';
-import 'package:sakina/data/db/migrations/user_migrations.dart';
-import 'package:sakina/data/db/user_enums.dart';
-import 'package:sakina/data/db/user_tables.dart';
-import 'package:sakina/domain/common/common.dart';
+import 'package:prosoche/data/db/converters.dart';
+import 'package:prosoche/data/db/daos/blocker_dao.dart';
+import 'package:prosoche/data/db/daos/card_event_dao.dart';
+import 'package:prosoche/data/db/daos/daily_set_dao.dart';
+import 'package:prosoche/data/db/daos/prayer_log_dao.dart';
+import 'package:prosoche/data/db/daos/quest_log_dao.dart';
+import 'package:prosoche/data/db/daos/reading_dao.dart';
+import 'package:prosoche/data/db/daos/saved_card_dao.dart';
+import 'package:prosoche/data/db/daos/settings_dao.dart';
+import 'package:prosoche/data/db/daos/srs_dao.dart';
+import 'package:prosoche/data/db/daos/streak_dao.dart';
+import 'package:prosoche/data/db/migrations/user_migrations.dart';
+import 'package:prosoche/data/db/user_enums.dart';
+import 'package:prosoche/data/db/user_tables.dart';
+import 'package:prosoche/domain/common/common.dart';
 import 'package:sqlite3/sqlite3.dart';
 
-export 'package:sakina/data/db/user_enums.dart';
-export 'package:sakina/data/db/user_tables.dart';
+export 'package:prosoche/data/db/user_enums.dart';
+export 'package:prosoche/data/db/user_tables.dart';
 
 part 'user_db.g.dart';
 

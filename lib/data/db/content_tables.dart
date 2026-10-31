@@ -2,7 +2,7 @@
 // nevykonavaju.
 // coverage:ignore-file
 // Drift tabulky content.db. Zrkadlo kontraktu
-// `sakina-content/schema/content_schema.sql` (kopia v
+// `prosoche-content/schema/content_schema.sql` (kopia v
 // `drift_schemas/content/content_schema.sql`); zhodu strazi
 // `test/data/db/content_schema_test.dart`. content.db je iba na citanie,
 // appka ju nikdy nevytvara ani nemigruje (07 ADR-04).

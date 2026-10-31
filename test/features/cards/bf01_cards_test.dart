@@ -6,12 +6,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/calendar/calendar.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/features/cards/cards.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/calendar/calendar.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/features/cards/cards.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import '../../helpers/golden/golden.dart';
 import '../today/f02_harness.dart';
@@ -34,7 +34,7 @@ Future<void> _pumpCard(
   await tester.pumpWidget(
     LocalizedTestApp(
       locale: locale,
-      theme: (b) => SakinaTheme.light(),
+      theme: (b) => ProsocheTheme.light(),
       // Navigator pre sheet s poznamkou.
       child: Navigator(
         key: UniqueKey(),
@@ -130,7 +130,7 @@ class _AfterDownload implements HadithExtraRepository {
 }
 
 void main() {
-  setUpAll(loadSakinaFonts);
+  setUpAll(loadProsocheFonts);
 
   group('translator notes (QuranEnc)', () {
     test('parses "[n]- text", "[n] text" and continuation lines', () {
@@ -403,7 +403,7 @@ void main() {
         expect(label, endsWith(Bidi.pdi));
         final day = localizeDigits(
           '${hijri.day}',
-          SakinaFormats(locale).digits,
+          ProsocheFormats(locale).digits,
         );
         final paragraph = tester.renderObject<RenderParagraph>(
           find.text(label),

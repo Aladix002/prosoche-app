@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:sakina/data/db/daos/settings_dao.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/data/db/daos/settings_dao.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
 /// [SettingsRepository] nad tabulkou `settings` v user.db (docs/02 0.7).
 ///

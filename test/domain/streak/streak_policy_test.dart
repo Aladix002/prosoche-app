@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/streak/streak.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/streak/streak.dart';
 
 const _policy = StreakPolicy();
 final _d0 = LocalDate(2026, 11, 2); // pondelok

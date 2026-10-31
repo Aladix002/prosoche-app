@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 /// Kanal notifikacie (docs/01 7.5). `gate_service` patri B-01.
@@ -98,15 +98,15 @@ final class PlannedNotification {
 
   NotificationChannel get channel => kind.channel;
 
-  /// Ciel po kliknuti (docs/01 4.3, schema `mursa`).
+  /// Ciel po kliknuti (docs/01 4.3, schema `prosoche`).
   String get deepLink => switch (kind) {
     NotificationKind.prayer ||
     NotificationKind.jumuah ||
-    NotificationKind.iftar => 'mursa://prayer?p=${prayer!.name}',
+    NotificationKind.iftar => 'prosoche://prayer?p=${prayer!.name}',
     NotificationKind.morning ||
     NotificationKind.morningEvent ||
     NotificationKind.openApp ||
-    NotificationKind.suhur => 'mursa://today',
+    NotificationKind.suhur => 'prosoche://today',
   };
 
   /// Odtlacok obsahu. Zmena casu alebo parametrov = ina notifikacia.

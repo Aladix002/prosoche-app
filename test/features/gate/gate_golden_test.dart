@@ -3,7 +3,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/features/gate/gate_views.dart';
+import 'package:prosoche/features/gate/gate_views.dart';
 
 import '../../helpers/golden/golden.dart';
 

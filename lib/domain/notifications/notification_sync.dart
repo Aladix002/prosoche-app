@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/notifications/planned_notification.dart';
+import 'package:prosoche/domain/notifications/planned_notification.dart';
 
 /// Cakajuca notifikacia v systeme (ID a ulozeny payload).
 @immutable

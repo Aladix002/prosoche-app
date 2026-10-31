@@ -14,8 +14,8 @@
 // ignore_for_file: recursive_getters
 
 import 'package:drift/drift.dart';
-import 'package:sakina/data/db/converters.dart';
-import 'package:sakina/data/db/user_enums.dart';
+import 'package:prosoche/data/db/converters.dart';
+import 'package:prosoche/data/db/user_enums.dart';
 
 /// Nazov jedineho partial unique indexu pre `seen` (docs/02 D1, 0.4).
 const cardEventSeenIndex = 'card_event_seen_unique';

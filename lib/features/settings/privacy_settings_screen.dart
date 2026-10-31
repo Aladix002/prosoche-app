@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/settings/settings_providers.dart';
-import 'package:sakina/features/settings/settings_widgets.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/settings/settings_providers.dart';
+import 'package:prosoche/features/settings/settings_widgets.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Slovo, ktore treba napisat pri mazani dat (docs/02 A10.9).
 const deleteConfirmWord = 'DELETE';

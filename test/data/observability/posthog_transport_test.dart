@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:posthog_flutter/posthog_flutter.dart';
-import 'package:sakina/data/observability/posthog_transport.dart';
+import 'package:prosoche/data/observability/posthog_transport.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

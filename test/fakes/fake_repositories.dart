@@ -10,16 +10,16 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/misc.dart' show Override;
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/calendar/calendar.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/feed/feed.dart';
-import 'package:sakina/domain/prayer/calc_settings.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/quests/quests.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/domain/streak/streak.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/calendar/calendar.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/feed/feed.dart';
+import 'package:prosoche/domain/prayer/calc_settings.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/quests/quests.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/domain/streak/streak.dart';
 
 import 'in_memory_settings_repository.dart';
 

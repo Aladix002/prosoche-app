@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/core/router/app_router.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/features/calendar/hijri_offset.dart';
-import 'package:sakina/features/gate/gate_screen.dart';
-import 'package:sakina/features/journey/journey_day_screen.dart';
-import 'package:sakina/features/journey/journey_routes.dart';
-import 'package:sakina/features/journey/journey_screen.dart';
-import 'package:sakina/features/journey/saved_screen.dart';
-import 'package:sakina/features/onboarding/onboarding_routes.dart';
-import 'package:sakina/features/onboarding/onboarding_screen.dart';
-import 'package:sakina/features/prayer/prayer_routes.dart';
-import 'package:sakina/features/quran/quran_routes.dart';
-import 'package:sakina/features/quran/quran_screen.dart';
-import 'package:sakina/features/quran/reader/quran_reader_screen.dart';
-import 'package:sakina/features/quran/search/quran_search_screen.dart';
-import 'package:sakina/features/settings/about_screen.dart';
-import 'package:sakina/features/settings/blocking/blocking_screen.dart';
-import 'package:sakina/features/settings/blocking/blocking_subscreens.dart'
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/core/router/app_router.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/features/calendar/hijri_offset.dart';
+import 'package:prosoche/features/gate/gate_screen.dart';
+import 'package:prosoche/features/journey/journey_day_screen.dart';
+import 'package:prosoche/features/journey/journey_routes.dart';
+import 'package:prosoche/features/journey/journey_screen.dart';
+import 'package:prosoche/features/journey/saved_screen.dart';
+import 'package:prosoche/features/onboarding/onboarding_routes.dart';
+import 'package:prosoche/features/onboarding/onboarding_screen.dart';
+import 'package:prosoche/features/prayer/prayer_routes.dart';
+import 'package:prosoche/features/quran/quran_routes.dart';
+import 'package:prosoche/features/quran/quran_screen.dart';
+import 'package:prosoche/features/quran/reader/quran_reader_screen.dart';
+import 'package:prosoche/features/quran/search/quran_search_screen.dart';
+import 'package:prosoche/features/settings/about_screen.dart';
+import 'package:prosoche/features/settings/blocking/blocking_screen.dart';
+import 'package:prosoche/features/settings/blocking/blocking_subscreens.dart'
     show BlockingPermissionsScreen;
-import 'package:sakina/features/settings/display_settings_screen.dart';
-import 'package:sakina/features/settings/language_settings_screen.dart';
-import 'package:sakina/features/settings/notification_settings_screen.dart';
-import 'package:sakina/features/settings/privacy_settings_screen.dart';
-import 'package:sakina/features/settings/settings_screen.dart';
-import 'package:sakina/features/settings/sources_screen.dart';
-import 'package:sakina/features/today/today_screen.dart';
-import 'package:sakina/features/words/words_routes.dart';
+import 'package:prosoche/features/settings/display_settings_screen.dart';
+import 'package:prosoche/features/settings/language_settings_screen.dart';
+import 'package:prosoche/features/settings/notification_settings_screen.dart';
+import 'package:prosoche/features/settings/privacy_settings_screen.dart';
+import 'package:prosoche/features/settings/settings_screen.dart';
+import 'package:prosoche/features/settings/sources_screen.dart';
+import 'package:prosoche/features/today/today_screen.dart';
+import 'package:prosoche/features/words/words_routes.dart';
 
 import '../../helpers/pump_app.dart';
 
@@ -46,7 +46,7 @@ void main() {
 
   for (final MapEntry(key: location, value: screen) in stubs.entries) {
     testWidgets('$location shows $screen stub', (tester) async {
-      await tester.pumpSakina(location: location);
+      await tester.pumpProsoche(location: location);
       expect(placeholder(screen), findsOneWidget);
     });
   }
@@ -57,7 +57,7 @@ void main() {
     ('/settings/blocking/permissions', BlockingPermissionsScreen),
   ]) {
     testWidgets('$location shows $screen', (tester) async {
-      await tester.pumpSakina(location: location);
+      await tester.pumpProsoche(location: location);
       expect(find.byType(screen), findsOneWidget);
     });
   }
@@ -68,7 +68,7 @@ void main() {
     ('/journey/saved?type=ayah', SavedCardsScreen),
   ]) {
     testWidgets('$location shows $screen', (tester) async {
-      await tester.pumpSakina(location: location);
+      await tester.pumpProsoche(location: location);
       expect(find.byType(screen), findsOneWidget);
     });
   }
@@ -89,7 +89,7 @@ void main() {
     ('/settings/about', AboutScreen),
   ]) {
     testWidgets('$location shows $screen', (tester) async {
-      await tester.pumpSakina(location: location);
+      await tester.pumpProsoche(location: location);
       expect(find.byType(screen), findsOneWidget);
     });
   }
@@ -97,11 +97,11 @@ void main() {
   testWidgets('quran reader is fullscreen, search keeps the nav bar', (
     tester,
   ) async {
-    await tester.pumpSakina(location: QuranRoutes.read(18, ayahId: 18001));
+    await tester.pumpProsoche(location: QuranRoutes.read(18, ayahId: 18001));
     expect(find.byType(QuranReaderScreen), findsOneWidget);
     expect(navBar, findsNothing);
 
-    await tester.pumpSakina(location: QuranRoutes.searchFor('mercy'));
+    await tester.pumpProsoche(location: QuranRoutes.searchFor('mercy'));
     expect(find.byType(QuranSearchScreen), findsOneWidget);
     expect(navBar, findsOneWidget);
   });
@@ -114,20 +114,20 @@ void main() {
       ('/journey/day/2026-10-30', JourneyScreen),
     ]) {
       testWidgets(location, (tester) async {
-        await tester.pumpSakina(location: location);
+        await tester.pumpProsoche(location: location);
         expect(find.byType(screen), findsOneWidget);
       });
     }
 
     testWidgets('lemma id', (tester) async {
-      await tester.pumpSakina(location: '/words/lemma/abc');
+      await tester.pumpProsoche(location: '/words/lemma/abc');
       expect(placeholder('words'), findsOneWidget);
     });
 
     testWidgets('onboarding step', (tester) async {
-      final router = await tester.pumpSakina(location: '/onboarding/evil');
+      final router = await tester.pumpProsoche(location: '/onboarding/evil');
       expect(router.state.uri.path, OnboardingRoutes.step('language'));
-      await tester.pumpSakina(location: OnboardingRoutes.root);
+      await tester.pumpProsoche(location: OnboardingRoutes.root);
       expect(find.byType(OnboardingScreen), findsOneWidget);
     });
   });
@@ -136,8 +136,8 @@ void main() {
     const lite = FeatureFlags.none;
 
     testWidgets('gate redirects to Today', (tester) async {
-      await tester.pumpSakina(
-        location: 'mursa://gate?app=com.instagram.android',
+      await tester.pumpProsoche(
+        location: 'prosoche://gate?app=com.instagram.android',
         flags: lite,
       );
       expect(find.byType(GateScreen), findsNothing);
@@ -145,17 +145,17 @@ void main() {
     });
 
     testWidgets('blocking settings redirect to Today', (tester) async {
-      await tester.pumpSakina(location: '/settings/blocking', flags: lite);
+      await tester.pumpProsoche(location: '/settings/blocking', flags: lite);
       expect(find.byType(TodayScreen), findsOneWidget);
     });
 
     testWidgets('words redirect to Journey', (tester) async {
-      await tester.pumpSakina(location: WordsRoutes.quiz, flags: lite);
+      await tester.pumpProsoche(location: WordsRoutes.quiz, flags: lite);
       expect(find.byType(JourneyScreen), findsOneWidget);
     });
 
     testWidgets('other settings stay available', (tester) async {
-      await tester.pumpSakina(location: '/settings/about', flags: lite);
+      await tester.pumpProsoche(location: '/settings/about', flags: lite);
       expect(find.byType(AboutScreen), findsOneWidget);
     });
   });

@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/notifications/local_notifications_platform.dart';
-import 'package:sakina/data/notifications/notification_platform.dart';
-import 'package:sakina/data/notifications/notification_service.dart';
-import 'package:sakina/domain/notifications/notifications.dart';
+import 'package:prosoche/data/notifications/local_notifications_platform.dart';
+import 'package:prosoche/data/notifications/notification_platform.dart';
+import 'package:prosoche/data/notifications/notification_service.dart';
+import 'package:prosoche/domain/notifications/notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 const _channel = MethodChannel('dexterous.com/flutter/local_notifications');
@@ -27,7 +27,7 @@ void main() {
     channelName: 'Prayer times',
     channelDescription: 'desc',
     at: tz.TZDateTime(ba, 2030, 1, 1, 12),
-    title: 'Mursa · 12:00',
+    title: 'Prosoche · 12:00',
     body: 'Reminder',
     payload: '{"v":1}',
     private: private,
@@ -102,7 +102,7 @@ void main() {
       final specifics = args['platformSpecifics']! as Map;
       expect(specifics['scheduleMode'], 'exactAllowWhileIdle');
       expect(specifics['channelId'], 'prayer');
-      expect(args['title'], 'Mursa · 12:00');
+      expect(args['title'], 'Prosoche · 12:00');
       expect(args['payload'], '{"v":1}');
     });
 

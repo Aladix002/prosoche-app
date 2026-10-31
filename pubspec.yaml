@@ -1,5 +1,5 @@
-name: sakina
-description: "Sakina - denna islamska rutina a brana pred rusivymi appkami."
+name: prosoche
+description: "Prosoche - denna islamska rutina a brana pred rusivymi appkami."
 publish_to: 'none'
 
 version: 0.9.0+2
@@ -11,7 +11,7 @@ environment:
 
 # U-02: RTL lint ako balik v pub workspace (jeden pubspec.lock).
 workspace:
-  - packages/sakina_lints
+  - packages/prosoche_lints
 
 dependencies:
   adhan_dart: ^2.0.1
@@ -58,9 +58,9 @@ dev_dependencies:
   mocktail: ^1.0.5
   patrol: ^4.10.0
   pigeon: ^29.0.12
+  prosoche_lints:
+    path: packages/prosoche_lints
   riverpod_generator: ^4.0.9
-  sakina_lints:
-    path: packages/sakina_lints
   very_good_analysis: ^11.0.0
 
 flutter:

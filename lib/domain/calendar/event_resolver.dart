@@ -1,14 +1,14 @@
 import 'dart:math' as math;
 
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/calendar/event_rule.dart';
-import 'package:sakina/domain/calendar/event_rule_parser.dart';
-import 'package:sakina/domain/calendar/hijri_date.dart';
-import 'package:sakina/domain/calendar/islamic_calendar.dart';
-import 'package:sakina/domain/common/active_event.dart';
-import 'package:sakina/domain/common/event_effect.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/common/slot.dart';
+import 'package:prosoche/domain/calendar/event_rule.dart';
+import 'package:prosoche/domain/calendar/event_rule_parser.dart';
+import 'package:prosoche/domain/calendar/hijri_date.dart';
+import 'package:prosoche/domain/calendar/islamic_calendar.dart';
+import 'package:prosoche/domain/common/active_event.dart';
+import 'package:prosoche/domain/common/event_effect.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/common/slot.dart';
 
 /// Stav pouzivatela potrebny pre atomy `pref`, `user_flag`, `quest_progress`.
 @immutable

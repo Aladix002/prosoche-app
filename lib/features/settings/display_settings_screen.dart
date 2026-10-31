@@ -2,15 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/quran/quran_providers.dart';
-import 'package:sakina/features/settings/settings_providers.dart';
-import 'package:sakina/features/settings/settings_widgets.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/quran/quran_providers.dart';
+import 'package:prosoche/features/settings/settings_providers.dart';
+import 'package:prosoche/features/settings/settings_widgets.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Prvy vers (1:1) ako nahlad velkosti arabciny; text z content.db.
 final FutureProvider<AyahView?> arabicPreviewProvider =
@@ -140,7 +140,7 @@ class _ArabicPreview extends ConsumerWidget {
                   data: theme.copyWith(
                     extensions: [
                       ...theme.extensions.values.where(
-                        (e) => e is! SakinaTypography,
+                        (e) => e is! ProsocheTypography,
                       ),
                       typography,
                     ],

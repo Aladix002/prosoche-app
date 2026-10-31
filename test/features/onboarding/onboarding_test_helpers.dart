@@ -3,20 +3,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/app.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/core/router/app_router.dart';
-import 'package:sakina/data/blocker/blocked_apps_repository.dart';
-import 'package:sakina/data/blocker/blocker_gateway_provider.dart';
-import 'package:sakina/data/blocker/fake_blocked_apps_repository.dart';
-import 'package:sakina/data/blocker/fake_blocker_gateway.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/onboarding/onboarding_controller.dart';
-import 'package:sakina/features/onboarding/onboarding_guard.dart';
-import 'package:sakina/features/onboarding/onboarding_platform.dart';
-import 'package:sakina/features/onboarding/onboarding_screen.dart';
-import 'package:sakina/features/onboarding/onboarding_steps.dart';
+import 'package:prosoche/app.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/core/router/app_router.dart';
+import 'package:prosoche/data/blocker/blocked_apps_repository.dart';
+import 'package:prosoche/data/blocker/blocker_gateway_provider.dart';
+import 'package:prosoche/data/blocker/fake_blocked_apps_repository.dart';
+import 'package:prosoche/data/blocker/fake_blocker_gateway.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/onboarding/onboarding_controller.dart';
+import 'package:prosoche/features/onboarding/onboarding_guard.dart';
+import 'package:prosoche/features/onboarding/onboarding_platform.dart';
+import 'package:prosoche/features/onboarding/onboarding_screen.dart';
+import 'package:prosoche/features/onboarding/onboarding_steps.dart';
 
 import '../../fakes/fake_repositories.dart';
 
@@ -144,7 +144,7 @@ class OnboardingHarness {
           }),
         ],
         retry: (_, _) => null,
-        child: const SakinaApp(),
+        child: const ProsocheApp(),
       ),
     );
     await tester.pumpAndSettle();

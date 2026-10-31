@@ -1,20 +1,20 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/router/placeholder_route.dart';
-import 'package:sakina/features/calendar/calendar_routes.dart';
-import 'package:sakina/features/prayer/prayer_routes.dart';
-import 'package:sakina/features/settings/about_screen.dart';
-import 'package:sakina/features/settings/blocking/blocking_screen.dart';
-import 'package:sakina/features/settings/blocking/blocking_subscreens.dart';
-import 'package:sakina/features/settings/display_settings_screen.dart';
-import 'package:sakina/features/settings/language_settings_screen.dart';
-import 'package:sakina/features/settings/notification_settings_screen.dart';
-import 'package:sakina/features/settings/privacy_settings_screen.dart';
-import 'package:sakina/features/settings/settings_paths.dart';
-import 'package:sakina/features/settings/settings_screen.dart';
-import 'package:sakina/features/settings/sources_screen.dart';
+import 'package:prosoche/core/router/placeholder_route.dart';
+import 'package:prosoche/features/calendar/calendar_routes.dart';
+import 'package:prosoche/features/prayer/prayer_routes.dart';
+import 'package:prosoche/features/settings/about_screen.dart';
+import 'package:prosoche/features/settings/blocking/blocking_screen.dart';
+import 'package:prosoche/features/settings/blocking/blocking_subscreens.dart';
+import 'package:prosoche/features/settings/display_settings_screen.dart';
+import 'package:prosoche/features/settings/language_settings_screen.dart';
+import 'package:prosoche/features/settings/notification_settings_screen.dart';
+import 'package:prosoche/features/settings/privacy_settings_screen.dart';
+import 'package:prosoche/features/settings/settings_paths.dart';
+import 'package:prosoche/features/settings/settings_screen.dart';
+import 'package:prosoche/features/settings/sources_screen.dart';
 
-export 'package:sakina/features/settings/settings_paths.dart';
+export 'package:prosoche/features/settings/settings_paths.dart';
 
 /// Nastavenia ako push route nad shellom (docs/02 C1, docs/01 D1).
 /// Vlastnik: F-07.

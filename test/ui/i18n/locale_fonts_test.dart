@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
 
 void main() {
   test('font family per language', () {
     expect(
       {
-        for (final l in SakinaLocales.all)
+        for (final l in ProsocheLocales.all)
           l.languageCode: LocaleFonts.forLocale(l).family,
       },
       {
@@ -24,11 +24,11 @@ void main() {
 
   test('Nastaliq gets the tallest line height', () {
     double h(Locale l) => LocaleFonts.forLocale(l).scaleHeight(1.5)!;
-    expect(h(SakinaLocales.en), 1.5);
-    expect(h(SakinaLocales.ur), greaterThan(h(SakinaLocales.ar)));
-    expect(h(SakinaLocales.ur), greaterThan(h(SakinaLocales.bn)));
-    expect(h(SakinaLocales.ur), greaterThanOrEqualTo(2.2));
-    expect(h(SakinaLocales.bn), greaterThan(h(SakinaLocales.en)));
+    expect(h(ProsocheLocales.en), 1.5);
+    expect(h(ProsocheLocales.ur), greaterThan(h(ProsocheLocales.ar)));
+    expect(h(ProsocheLocales.ur), greaterThan(h(ProsocheLocales.bn)));
+    expect(h(ProsocheLocales.ur), greaterThanOrEqualTo(2.2));
+    expect(h(ProsocheLocales.bn), greaterThan(h(ProsocheLocales.en)));
   });
 
   test('scaleHeight respects minimum and null height', () {
@@ -39,7 +39,7 @@ void main() {
   });
 
   test('every spec has a fallback with Latin coverage or Arabic', () {
-    for (final l in SakinaLocales.all) {
+    for (final l in ProsocheLocales.all) {
       final spec = LocaleFonts.forLocale(l);
       expect(spec.fallback, isNotEmpty);
       expect(spec.fallback, isNot(contains(spec.family)));
@@ -48,8 +48,8 @@ void main() {
 
   test('applyLocaleFont sets family, fallback and even leading', () {
     const base = TextStyle(fontSize: 16, height: 1.5, fontFamily: 'X');
-    final ur = applyLocaleFont(base, SakinaLocales.ur);
-    expect(ur.fontFamily, SakinaFontFamilies.notoNastaliqUrdu);
+    final ur = applyLocaleFont(base, ProsocheLocales.ur);
+    expect(ur.fontFamily, ProsocheFontFamilies.notoNastaliqUrdu);
     expect(ur.fontFamilyFallback, LocaleFonts.urdu.fallback);
     expect(ur.height, 2.25);
     expect(ur.fontSize, 16);
@@ -58,7 +58,7 @@ void main() {
 
   test('applyLocaleFontToTextTheme maps every style', () {
     final theme = ThemeData(brightness: Brightness.light).textTheme;
-    final bn = applyLocaleFontToTextTheme(theme, SakinaLocales.bn);
+    final bn = applyLocaleFontToTextTheme(theme, ProsocheLocales.bn);
     final styles = [
       bn.displayLarge,
       bn.displayMedium,
@@ -77,11 +77,11 @@ void main() {
       bn.labelSmall,
     ];
     for (final s in styles) {
-      expect(s!.fontFamily, SakinaFontFamilies.notoSansBengali);
+      expect(s!.fontFamily, ProsocheFontFamilies.notoSansBengali);
     }
     final empty = applyLocaleFontToTextTheme(
       const TextTheme(),
-      SakinaLocales.bn,
+      ProsocheLocales.bn,
     );
     expect(empty.bodyLarge, isNull);
   });
@@ -103,7 +103,7 @@ void main() {
         LocaleFonts.urdu,
         LocaleFonts.bengali,
       ]) ...[spec.family, ...spec.fallback],
-      SakinaFontFamilies.literata,
+      ProsocheFontFamilies.literata,
     };
     expect(declared, containsAll(used));
   });

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # E2E testy (Patrol, patrol_test/) na pripojenom zariadeni alebo emulatore.
 #
-#   tool/e2e.sh [-c cesta k sakina-content] [dalsie argumenty pre patrol test]
+#   tool/e2e.sh [-c cesta k prosoche-content] [dalsie argumenty pre patrol test]
 #   tool/e2e.sh -t patrol_test/s3_quran_search_test.dart
 #
 # Pribali realnu content.db (tool/bundle_content.sh), postavi devLite
@@ -19,7 +19,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-content="${SAKINA_CONTENT_DIR:-../sakina-content}"
+content="${PROSOCHE_CONTENT_DIR:-../prosoche-content}"
 if [[ "${1:-}" == "-c" ]]; then
   content="$2"
   shift 2
@@ -40,6 +40,6 @@ trap 'rm -f patrol_test/test_bundle.dart' EXIT
 
 patrol test \
   --flavor devLite \
-  --package-name app.mursa.dev \
-  --app-name "Mursa Dev" \
+  --package-name app.prosoche.dev \
+  --app-name "Prosoche Dev" \
   "$@"

@@ -1,19 +1,19 @@
-// Plna content.db z pipeline `sakina-content` pre testy F-04, ktore
+// Plna content.db z pipeline `prosoche-content` pre testy F-04, ktore
 // potrebuju skutocny text (bajtova zhoda, vykon vyhladavania, goldeny).
 // Subor sa necommituje; testy sa bez neho preskocia.
 //
-//   SAKINA_CONTENT_DB=../sakina-content/dist/content.db flutter test \
+//   PROSOCHE_CONTENT_DB=../prosoche-content/dist/content.db flutter test \
 //     test/features/quran/full_db
 //
-// Default: ../sakina-content/dist/content.db vedla repa.
+// Default: ../prosoche-content/dist/content.db vedla repa.
 import 'dart:io';
 
 import 'package:clock/clock.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:sakina/data/db/content_db.dart';
-import 'package:sakina/data/db/user_db.dart';
-import 'package:sakina/data/repositories/repositories.dart';
+import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/db/user_db.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 import '../../fakes/in_memory_settings_repository.dart';
@@ -21,8 +21,8 @@ import '../../fakes/in_memory_settings_repository.dart';
 /// Cesta k plnej content.db alebo null (testy sa preskocia).
 String? fullContentDbPath() {
   final candidates = [
-    Platform.environment['SAKINA_CONTENT_DB'],
-    '../sakina-content/dist/content.db',
+    Platform.environment['PROSOCHE_CONTENT_DB'],
+    '../prosoche-content/dist/content.db',
   ];
   for (final c in candidates) {
     if (c != null && c.isNotEmpty && File(c).existsSync()) return c;
@@ -32,7 +32,7 @@ String? fullContentDbPath() {
 
 /// Dovod preskocenia pre `skip:`.
 String? get fullDbSkip => fullContentDbPath() == null
-    ? 'Plna content.db nie je dostupna (SAKINA_CONTENT_DB)'
+    ? 'Plna content.db nie je dostupna (PROSOCHE_CONTENT_DB)'
     : null;
 
 /// [ContentDb] nad plnou db iba na citanie. Verzia schemy sa berie zo

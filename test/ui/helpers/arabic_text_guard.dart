@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/ui/components/sk_arabic_text.dart';
+import 'package:prosoche/ui/components/sk_arabic_text.dart';
 
 /// Arabske pismo (arabic, supplement, extended-A, presentation forms).
 /// `ﷺ` (U+FDFA) je povoleny v UI copy (docs/01 1.3) a nepocita sa.

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/app/gate_wiring.dart';
-import 'package:sakina/core/failures.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/data/blocker/blocked_apps_repository.dart';
-import 'package:sakina/data/blocker/blocker_gateway.dart';
-import 'package:sakina/data/blocker/blocker_gateway_provider.dart';
-import 'package:sakina/data/blocker/fake_blocked_apps_repository.dart';
-import 'package:sakina/data/blocker/fake_blocker_gateway.dart';
-import 'package:sakina/domain/settings/settings_keys.dart';
-import 'package:sakina/features/settings/blocking/blocking_providers.dart';
+import 'package:prosoche/app/gate_wiring.dart';
+import 'package:prosoche/core/failures.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/data/blocker/blocked_apps_repository.dart';
+import 'package:prosoche/data/blocker/blocker_gateway.dart';
+import 'package:prosoche/data/blocker/blocker_gateway_provider.dart';
+import 'package:prosoche/data/blocker/fake_blocked_apps_repository.dart';
+import 'package:prosoche/data/blocker/fake_blocker_gateway.dart';
+import 'package:prosoche/domain/settings/settings_keys.dart';
+import 'package:prosoche/features/settings/blocking/blocking_providers.dart';
 
 import '../fakes/fake_repositories.dart';
 import '../helpers/pump_app.dart';
@@ -108,7 +108,7 @@ void main() {
       gateway
         ..enabled = true
         ..permissionsState = _noPermissions;
-      await tester.pumpSakina(
+      await tester.pumpProsoche(
         location: location,
         fakes: fakes,
         overrides: [
@@ -141,7 +141,7 @@ void main() {
     testWidgets('no banner when permissions are fine', (tester) async {
       await fakes.settings.set(SettingsKeys.blockerEnabled, true);
       gateway.enabled = true;
-      await tester.pumpSakina(
+      await tester.pumpProsoche(
         fakes: fakes,
         overrides: [blockerGatewayProvider.overrideWithValue(gateway)],
       );

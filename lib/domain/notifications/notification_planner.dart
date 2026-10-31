@@ -1,8 +1,8 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/notifications/planned_notification.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/prayer/prayer_schedule.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/notifications/planned_notification.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/prayer/prayer_schedule.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 /// Cas dna `HH:mm` (kluc `notif.morning.time`, docs/02 0.7).

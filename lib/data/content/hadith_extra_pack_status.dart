@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/core/result.dart';
+import 'package:prosoche/core/result.dart';
 
 /// Stav balika `hadith_extra.db` (D-05) pre UI: karta hadisu
 /// ("Download explanations") a nastavenia.

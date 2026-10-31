@@ -212,7 +212,7 @@
   },
   "cardOpen": "Open",
   "@cardOpen": {"description": "Opens the referenced verse."},
-  "cardReflectionAttribution": "Mursa reflection · reviewed",
+  "cardReflectionAttribution": "Prosoche reflection · reviewed",
   "@cardReflectionAttribution": {"description": "Attribution of a reflection card (reviewed by a content reviewer)."},
   "cardEventSurah": "{surah} · {count, plural, one{1 verse} other{{count} verses}}",
   "@cardEventSurah": {

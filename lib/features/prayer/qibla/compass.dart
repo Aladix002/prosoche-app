@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meta/meta.dart';
-import 'package:sakina/features/prayer/qibla/compass_math.dart';
+import 'package:prosoche/features/prayer/qibla/compass_math.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 /// Jedno meranie kompasu.

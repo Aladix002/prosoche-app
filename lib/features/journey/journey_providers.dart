@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
 
 /// Ulozene karty, najnovsie prve; [CardType] null = vsetky (A8.3).
 final StreamProviderFamily<List<SavedCard>, CardType?> savedCardsProvider =

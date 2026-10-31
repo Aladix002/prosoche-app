@@ -3,16 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/calendar/calendar.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/prayer/calc_settings.dart';
-import 'package:sakina/domain/prayer/prayer_schedule.dart';
-import 'package:sakina/features/calendar/calendar_routes.dart';
-import 'package:sakina/features/prayer/prayer_paths.dart';
-import 'package:sakina/features/prayer/prayer_routes.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/calendar/calendar.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/prayer/calc_settings.dart';
+import 'package:prosoche/domain/prayer/prayer_schedule.dart';
+import 'package:prosoche/features/calendar/calendar_routes.dart';
+import 'package:prosoche/features/prayer/prayer_paths.dart';
+import 'package:prosoche/features/prayer/prayer_routes.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 import '../../fakes/fake_repositories.dart';
@@ -155,7 +155,7 @@ Future<GoRouter> pumpF05(
       ],
       retry: (_, _) => null,
       child: MaterialApp.router(
-        theme: SakinaTheme.light(),
+        theme: ProsocheTheme.light(),
         locale: locale,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
@@ -184,7 +184,7 @@ Future<void> pumpF05Widget(
       ],
       retry: (_, _) => null,
       child: MaterialApp(
-        theme: SakinaTheme.light(),
+        theme: ProsocheTheme.light(),
         locale: locale,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,

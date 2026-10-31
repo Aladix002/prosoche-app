@@ -1,4 +1,4 @@
--- hadith_extra.db - KONTRAKT medzi pipeline sakina-content a appkou (volitelny obsahovy balik, C-06/D-05).
+-- hadith_extra.db - KONTRAKT medzi pipeline prosoche-content a appkou (volitelny obsahovy balik, C-06/D-05).
 -- schema_version: 1
 --
 -- Zmeny:

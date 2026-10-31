@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/prayer/calc_settings.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/features/prayer/location/city_search_screen.dart';
-import 'package:sakina/features/prayer/prayer_paths.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/prayer/calc_settings.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/features/prayer/location/city_search_screen.dart';
+import 'package:prosoche/features/prayer/prayer_paths.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
 
 import '../../fakes/fake_repositories.dart';
 import 'f05_test_app.dart';
@@ -39,7 +39,7 @@ void main() {
     expect(find.text('Muslim World League'), findsOneWidget);
     expect(find.textContaining('Fajr 18°, Isha 17°'), findsOneWidget);
     final fajr = (await currentConfig(fakes)).schedule.day(today)[Prayer.fajr];
-    expect(find.text(SakinaFormatsTest.hm(fajr)), findsOneWidget);
+    expect(find.text(ProsocheFormatsTest.hm(fajr)), findsOneWidget);
   });
 
   testWidgets('changing the method recalculates and reschedules', (
@@ -92,7 +92,7 @@ void main() {
     expect(after.difference(before), const Duration(minutes: 2));
     expect(fakes.prayer.changes, 2);
     expect(find.text('+2 min'), findsOneWidget);
-    expect(find.text(SakinaFormatsTest.hm(after)), findsOneWidget);
+    expect(find.text(ProsocheFormatsTest.hm(after)), findsOneWidget);
   });
 
   testWidgets('adjust stepper stops at +30', (tester) async {
@@ -130,6 +130,6 @@ void main() {
 }
 
 /// Cas modlitby tak, ako ho ukaze EN UI.
-abstract final class SakinaFormatsTest {
-  static String hm(DateTime t) => SakinaFormats(const Locale('en')).time(t);
+abstract final class ProsocheFormatsTest {
+  static String hm(DateTime t) => ProsocheFormats(const Locale('en')).time(t);
 }

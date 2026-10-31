@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/ui/theme/sakina_colors.dart';
-import 'package:sakina/ui/theme/sakina_motion.dart';
-import 'package:sakina/ui/theme/sakina_spacing.dart';
-import 'package:sakina/ui/theme/sakina_typography.dart';
-import 'package:sakina/ui/theme/tajwid_colors.dart';
+import 'package:prosoche/ui/theme/prosoche_colors.dart';
+import 'package:prosoche/ui/theme/prosoche_motion.dart';
+import 'package:prosoche/ui/theme/prosoche_spacing.dart';
+import 'package:prosoche/ui/theme/prosoche_typography.dart';
+import 'package:prosoche/ui/theme/tajwid_colors.dart';
 
 /// Pristup k tokenom: `context.sk.colors`, `.tajwid`, `.type`, `.space`,
 /// `.motion` (docs/01 3.1).
@@ -11,7 +11,7 @@ extension SkContextX on BuildContext {
   SkTokens get sk => SkTokens._(this);
 }
 
-/// Pohlad na ThemeExtensions Sakina. Ak tema extension nema (napr. test
+/// Pohlad na ThemeExtensions Prosoche. Ak tema extension nema (napr. test
 /// s holou `ThemeData`), vrati svetle/standardne hodnoty.
 @immutable
 class SkTokens {
@@ -23,27 +23,28 @@ class SkTokens {
 
   bool get _isDark => _theme.brightness == Brightness.dark;
 
-  SakinaColors get colors =>
-      _theme.extension<SakinaColors>() ??
-      (_isDark ? SakinaColors.dark : SakinaColors.light);
+  ProsocheColors get colors =>
+      _theme.extension<ProsocheColors>() ??
+      (_isDark ? ProsocheColors.dark : ProsocheColors.light);
 
   TajwidColors get tajwid =>
       _theme.extension<TajwidColors>() ??
       (_isDark ? TajwidColors.dark : TajwidColors.light);
 
-  SakinaTypography get type =>
-      _theme.extension<SakinaTypography>() ??
-      SakinaTypography.forColor(colors.textPrimary);
+  ProsocheTypography get type =>
+      _theme.extension<ProsocheTypography>() ??
+      ProsocheTypography.forColor(colors.textPrimary);
 
-  SakinaSpacing get space =>
-      _theme.extension<SakinaSpacing>() ?? const SakinaSpacing();
+  ProsocheSpacing get space =>
+      _theme.extension<ProsocheSpacing>() ?? const ProsocheSpacing();
 
   /// Motion tokeny uz prepocitane podla systemoveho reduce motion
   /// (`MediaQuery.disableAnimationsOf`) aj in-app prepinaca (tema).
-  SakinaMotion get motion {
-    final fromTheme = _theme.extension<SakinaMotion>() ?? SakinaMotion.standard;
+  ProsocheMotion get motion {
+    final fromTheme =
+        _theme.extension<ProsocheMotion>() ?? ProsocheMotion.standard;
     final system = MediaQuery.maybeDisableAnimationsOf(_context) ?? false;
-    return system ? SakinaMotion.reducedMotion : fromTheme;
+    return system ? ProsocheMotion.reducedMotion : fromTheme;
   }
 
   /// Velky text: riadky s textom sa prepinaju na stlpec (docs/01 8.3).

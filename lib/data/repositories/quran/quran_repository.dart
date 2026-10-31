@@ -1,16 +1,16 @@
 import 'package:clock/clock.dart';
 import 'package:meta/meta.dart';
-import 'package:sakina/data/db/content_db.dart';
-import 'package:sakina/data/db/daos/quran_dao.dart';
-import 'package:sakina/data/db/user_db.dart' hide CardAction, CardContext;
-import 'package:sakina/data/repositories/infra/card_events.dart';
-import 'package:sakina/data/repositories/infra/curated_id.dart';
-import 'package:sakina/data/repositories/infra/reading_progress.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/quests.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/db/daos/quran_dao.dart';
+import 'package:prosoche/data/db/user_db.dart' hide CardAction, CardContext;
+import 'package:prosoche/data/repositories/infra/card_events.dart';
+import 'package:prosoche/data/repositories/infra/curated_id.dart';
+import 'package:prosoche/data/repositories/infra/reading_progress.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/quests.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
-export 'package:sakina/data/db/daos/quran_dao.dart' show JuzStart, SearchHit;
+export 'package:prosoche/data/db/daos/quran_dao.dart' show JuzStart, SearchHit;
 
 /// Sura v zozname (A5.1).
 @immutable

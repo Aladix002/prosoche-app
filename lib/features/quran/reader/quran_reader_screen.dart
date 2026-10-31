@@ -5,19 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/quests.dart' show CardContext;
-import 'package:sakina/features/quran/quran_format.dart';
-import 'package:sakina/features/quran/quran_providers.dart';
-import 'package:sakina/features/quran/quran_routes.dart';
-import 'package:sakina/features/quran/reader/read_tracker.dart';
-import 'package:sakina/features/quran/widgets/ayah_tile.dart';
-import 'package:sakina/features/quran/widgets/quran_states.dart';
-import 'package:sakina/features/quran/widgets/reader_sheets.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/quests.dart' show CardContext;
+import 'package:prosoche/features/quran/quran_format.dart';
+import 'package:prosoche/features/quran/quran_providers.dart';
+import 'package:prosoche/features/quran/quran_routes.dart';
+import 'package:prosoche/features/quran/reader/read_tracker.dart';
+import 'package:prosoche/features/quran/widgets/ayah_tile.dart';
+import 'package:prosoche/features/quran/widgets/quran_states.dart';
+import 'package:prosoche/features/quran/widgets/reader_sheets.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Citatel sury (docs/02 A5.2): suvisly text s prekladom, bismillah,
 /// cislo versa, pozicia citania (khatm) a posledny otvoreny vers (browse).
@@ -288,7 +288,7 @@ class _QuranReaderScreenState extends ConsumerState<QuranReaderScreen> {
     return Theme(
       data: theme.copyWith(
         extensions: [
-          ...theme.extensions.values.where((e) => e is! SakinaTypography),
+          ...theme.extensions.values.where((e) => e is! ProsocheTypography),
           typography,
         ],
       ),

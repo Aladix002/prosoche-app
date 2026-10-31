@@ -1,7 +1,7 @@
-import 'package:sakina/domain/common/ayah_id.dart';
-import 'package:sakina/domain/ramadan/ramadan_season.dart';
-import 'package:sakina/domain/settings/prayer_location.dart';
-import 'package:sakina/domain/settings/setting_key.dart';
+import 'package:prosoche/domain/common/ayah_id.dart';
+import 'package:prosoche/domain/ramadan/ramadan_season.dart';
+import 'package:prosoche/domain/settings/prayer_location.dart';
+import 'package:prosoche/domain/settings/setting_key.dart';
 
 /// Vsetky kluce tabulky `settings` (docs/02 0.7).
 ///

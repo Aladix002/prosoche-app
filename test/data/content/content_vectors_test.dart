@@ -1,4 +1,4 @@
-// Testovacie vektory zo sakina-content/tests/vectors (len testovacie kluce),
+// Testovacie vektory zo prosoche-content/tests/vectors (len testovacie kluce),
 // kopia v test/fixtures/content_vectors. Kazdy pripad musi dat rovnaky
 // vysledok ako pipeline/sign.py (`expect`) a logika appky (`app_expect`).
 import 'dart:convert';
@@ -7,13 +7,13 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/content/content_documents.dart';
-import 'package:sakina/data/content/content_pack_service.dart';
-import 'package:sakina/data/content/db_archive.dart';
-import 'package:sakina/data/content/sem_ver.dart';
-import 'package:sakina/data/content/signature_verifier.dart';
-import 'package:sakina/data/content/trusted_keys.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/content/content_documents.dart';
+import 'package:prosoche/data/content/content_pack_service.dart';
+import 'package:prosoche/data/content/db_archive.dart';
+import 'package:prosoche/data/content/sem_ver.dart';
+import 'package:prosoche/data/content/signature_verifier.dart';
+import 'package:prosoche/data/content/trusted_keys.dart';
 
 const _root = 'test/fixtures/content_vectors';
 

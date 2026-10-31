@@ -1,4 +1,4 @@
-import 'package:sakina/domain/common/local_date.dart';
+import 'package:prosoche/domain/common/local_date.dart';
 
 /// Jednoduchy zaznam postu v Ramadane (F-08, docs/04 1.4 bez dovodov).
 ///

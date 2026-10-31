@@ -1,6 +1,6 @@
-import 'package:sakina/data/db/user_db.dart' as db;
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/quests.dart';
+import 'package:prosoche/data/db/user_db.dart' as db;
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/quests.dart';
 
 /// Domenove enumy `card_event` (E-03) -> enumy stlpcov user.db (D-01).
 /// Nazvy hodnot su zhodne, `wire` tiez.

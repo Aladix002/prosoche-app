@@ -2,16 +2,16 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:sakina/data/db/daos/hadith_extra_dao.dart';
-import 'package:sakina/data/db/hadith_extra_tables.dart';
+import 'package:prosoche/data/db/daos/hadith_extra_dao.dart';
+import 'package:prosoche/data/db/hadith_extra_tables.dart';
 import 'package:sqlite3/sqlite3.dart';
 
-export 'package:sakina/data/db/hadith_extra_tables.dart';
+export 'package:prosoche/data/db/hadith_extra_tables.dart';
 
 part 'hadith_extra_db.g.dart';
 
 /// hadith_extra.db: volitelny balik vysvetliviek HadeethEnc (C-06), iba na
-/// citanie. Subor vytvara pipeline `sakina-content`, stahuje ho D-05.
+/// citanie. Subor vytvara pipeline `prosoche-content`, stahuje ho D-05.
 /// Verzia schemy = `PRAGMA user_version` kontraktu.
 @DriftDatabase(tables: hadithExtraTables, daos: [HadithExtraDao])
 class HadithExtraDb extends _$HadithExtraDb {

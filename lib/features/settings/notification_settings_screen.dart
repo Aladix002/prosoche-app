@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/onboarding/onboarding_platform.dart';
-import 'package:sakina/features/prayer/prayer_texts.dart';
-import 'package:sakina/features/settings/settings_widgets.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/onboarding/onboarding_platform.dart';
+import 'package:prosoche/features/prayer/prayer_texts.dart';
+import 'package:prosoche/features/settings/settings_widgets.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Stav systemoveho povolenia notifikacii a presnych alarmov. Obnovi sa
 /// pri navrate do appky (napr. zo systemovych nastaveni).

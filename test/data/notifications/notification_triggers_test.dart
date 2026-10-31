@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/data/notifications/notification_background.dart';
-import 'package:sakina/data/notifications/notification_service.dart';
-import 'package:sakina/data/notifications/notification_triggers.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/data/notifications/notification_background.dart';
+import 'package:prosoche/data/notifications/notification_service.dart';
+import 'package:prosoche/data/notifications/notification_triggers.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:workmanager/workmanager.dart';
 
 import '../../fakes/in_memory_settings_repository.dart';

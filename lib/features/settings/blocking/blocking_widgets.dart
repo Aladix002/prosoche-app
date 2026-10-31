@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/blocker/blocked_apps_repository.dart';
-import 'package:sakina/data/blocker/blocker_gateway.dart';
-import 'package:sakina/data/blocker/blocker_gateway_provider.dart';
-import 'package:sakina/features/settings/blocking/blocking_providers.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/blocker/blocked_apps_repository.dart';
+import 'package:prosoche/data/blocker/blocker_gateway.dart';
+import 'package:prosoche/data/blocker/blocker_gateway_provider.dart';
+import 'package:prosoche/features/settings/blocking/blocking_providers.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Ikona appky z nativu (PNG), kym sa nacitava alebo chyba: genericka.
 class GateAppIcon extends ConsumerWidget {
@@ -111,8 +111,10 @@ class CountStepper extends StatelessWidget {
 }
 
 /// Minuty v jazyku UI ("10 min").
-String formatMinutes(BuildContext context, int minutes) => context.l10n
-    .blkMinutes(SakinaFormats(Localizations.localeOf(context)).number(minutes));
+String formatMinutes(BuildContext context, int minutes) =>
+    context.l10n.blkMinutes(
+      ProsocheFormats(Localizations.localeOf(context)).number(minutes),
+    );
 
 /// Zoznam appiek na vyber (O5 a "Add apps"): navrchu caste socialne siete,
 /// potom abecedne, lokalne vyhladavanie podla nazvu. [excluded] (uz
@@ -423,7 +425,7 @@ class _PermissionRow extends StatelessWidget {
     final l10n = context.l10n;
     final sk = context.sk;
     final ok = granted ?? false;
-    final formats = SakinaFormats(Localizations.localeOf(context));
+    final formats = ProsocheFormats(Localizations.localeOf(context));
     return Padding(
       padding: const EdgeInsetsDirectional.only(bottom: SkSpace.space16),
       child: Column(
@@ -501,7 +503,8 @@ class _BatteryRow extends ConsumerWidget {
           Row(
             children: [
               Text(
-                '${SakinaFormats(Localizations.localeOf(context)).number(4)}  ',
+                '${ProsocheFormats(Localizations.localeOf(context)).number(4)}'
+                '  ',
                 style: sk.text.titleMedium,
               ),
               Expanded(
@@ -634,7 +637,8 @@ class BlockedAppTile extends StatelessWidget {
     final l10n = context.l10n;
     final summary = l10n.blkAppSummary(
       app.cardsRequired,
-      SakinaFormats(Localizations.localeOf(context)).number(app.unlockMinutes),
+      ProsocheFormats(Localizations.localeOf(context))
+          .number(app.unlockMinutes),
       app.prayerLock.toString(),
     );
     final n = unlocks;
@@ -653,4 +657,4 @@ class BlockedAppTile extends StatelessWidget {
 
 /// Cislo v jazyku UI (arabske/bengalske cislice).
 String formatCount(BuildContext context, int value) =>
-    SakinaFormats(Localizations.localeOf(context)).number(value);
+    ProsocheFormats(Localizations.localeOf(context)).number(value);

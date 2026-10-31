@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/prayer/prayer_providers.dart';
-import 'package:sakina/features/prayer/prayer_screen.dart';
-import 'package:sakina/features/prayer/settings/prayer_settings_screen.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/prayer/prayer_providers.dart';
+import 'package:prosoche/features/prayer/prayer_screen.dart';
+import 'package:prosoche/features/prayer/settings/prayer_settings_screen.dart';
+import 'package:prosoche/ui/ui.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 import '../../fakes/fake_repositories.dart';

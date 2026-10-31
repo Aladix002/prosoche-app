@@ -4,8 +4,8 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 import 'package:share_plus/share_plus.dart';
 
 /// Co sa zdiela z karty (docs/02 B0.7): plny arabsky text, preklad,
@@ -42,7 +42,7 @@ final class CardShareData {
 }
 
 /// "Share as text" (docs/02 B0.7):
-/// `{arabsky}\n\n{preklad}\n\n- {referencia} ({atribucia})\n{zdroj}\nvia Mursa`.
+/// `{arabsky}\n\n{preklad}\n\n- {referencia} ({atribucia})\n{zdroj}\nvia Prosoche`.
 String buildShareText(CardShareData data, {required String via}) {
   final ref = data.attribution == null
       ? '- ${data.reference}'
@@ -75,7 +75,11 @@ class SharePlusCardSharer implements CardSharer {
         ShareParams(
           text: text,
           files: [
-            XFile.fromData(png, mimeType: 'image/png', name: 'mursa_card.png'),
+            XFile.fromData(
+              png,
+              mimeType: 'image/png',
+              name: 'prosoche_card.png',
+            ),
           ],
         ),
       );

@@ -3,8 +3,8 @@ import 'dart:ui' show PlatformDispatcher;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/domain/common/common.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/domain/common/common.dart';
 import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 

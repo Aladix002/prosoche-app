@@ -3,7 +3,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Kompas qibly (docs/01 3.2 `SkQiblaDial`). Ruzica sa otaca podla
 /// [heading]; ciara a znacka Kaaby ukazuju [bearing]. Bez senzora

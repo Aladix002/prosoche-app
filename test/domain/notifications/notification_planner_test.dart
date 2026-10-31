@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/notifications/notifications.dart';
-import 'package:sakina/domain/prayer/calc_settings.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/prayer/prayer_schedule.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/notifications/notifications.dart';
+import 'package:prosoche/domain/prayer/calc_settings.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/prayer/prayer_schedule.dart';
 import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -328,7 +328,7 @@ void main() {
         ),
         isEmpty,
       );
-      expect(open.deepLink, 'mursa://today');
+      expect(open.deepLink, 'prosoche://today');
     });
 
     test('event day uses the event morning variant', () {
@@ -362,7 +362,7 @@ void main() {
     test('prayer deep link points to the prayer', () {
       final plan = planner.plan(_input(now));
       final asr = plan.items.firstWhere((n) => n.prayer == Prayer.asr);
-      expect(asr.deepLink, 'mursa://prayer?p=asr');
+      expect(asr.deepLink, 'prosoche://prayer?p=asr');
       expect(asr.channel, NotificationChannel.prayer);
     });
   });

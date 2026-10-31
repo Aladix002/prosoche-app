@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/core/router/routes.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/features/prayer/prayer_routes.dart';
-import 'package:sakina/features/shell/app_shell.dart';
-import 'package:sakina/ui/components/sk_nav_bar.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/core/router/routes.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/features/prayer/prayer_routes.dart';
+import 'package:prosoche/features/shell/app_shell.dart';
+import 'package:prosoche/ui/components/sk_nav_bar.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
 
 import '../../fakes/fake_repositories.dart';
 import 'f05_test_app.dart';
@@ -65,7 +65,7 @@ Future<void> _pump(WidgetTester tester, GoRouter router) async {
       ),
       retry: (_, _) => null,
       child: MaterialApp.router(
-        theme: SakinaTheme.light(),
+        theme: ProsocheTheme.light(),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         routerConfig: router,

@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/core/logging/logger_provider.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/features/settings/blocking/blocking_providers.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/core/logging/logger_provider.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/features/settings/blocking/blocking_providers.dart';
 
 /// Brana (B-02) bezi v druhom engine s vlastnym spojenim na user.db, takze
 /// drift streamy hlavnej appky jej zapisy (`seen` v dennej sade, questy,

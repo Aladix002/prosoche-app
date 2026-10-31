@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/features/cards/card_parts.dart';
-import 'package:sakina/features/cards/translator_notes.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/features/cards/card_parts.dart';
+import 'package:prosoche/features/cards/translator_notes.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// B2 vers (a B11 volne citanie): Uthmani text, referencia, preklad
 /// vyznamu so zdrojom; znacky `[n]` poznamok prekladatela su tapnutelne.

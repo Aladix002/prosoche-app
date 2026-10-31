@@ -3,20 +3,20 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/core/flavor/flavor.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/core/logging/logger_provider.dart';
-import 'package:sakina/data/content/content_providers.dart';
-import 'package:sakina/data/observability/allowlist_analytics.dart';
-import 'package:sakina/data/observability/analytics.dart';
-import 'package:sakina/data/observability/crash_reporter.dart';
-import 'package:sakina/data/observability/observability_config.dart';
-import 'package:sakina/data/observability/observability_controller.dart';
-import 'package:sakina/data/observability/posthog_transport.dart';
-import 'package:sakina/data/observability/problem_report.dart';
-import 'package:sakina/data/observability/sentry_crash_reporter.dart';
-import 'package:sakina/data/repositories/settings/settings_providers.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/core/flavor/flavor.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/core/logging/logger_provider.dart';
+import 'package:prosoche/data/content/content_providers.dart';
+import 'package:prosoche/data/observability/allowlist_analytics.dart';
+import 'package:prosoche/data/observability/analytics.dart';
+import 'package:prosoche/data/observability/crash_reporter.dart';
+import 'package:prosoche/data/observability/observability_config.dart';
+import 'package:prosoche/data/observability/observability_controller.dart';
+import 'package:prosoche/data/observability/posthog_transport.dart';
+import 'package:prosoche/data/observability/problem_report.dart';
+import 'package:prosoche/data/observability/sentry_crash_reporter.dart';
+import 'package:prosoche/data/repositories/settings/settings_providers.dart';
 
 /// Kluce z `--dart-define`. V testoch `overrideWithValue`.
 final Provider<ObservabilityConfig> observabilityConfigProvider =

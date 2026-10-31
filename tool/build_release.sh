@@ -5,7 +5,7 @@
 #
 # Postavi AAB (s --apk aj APK) s R8 a obfuskaciou Dartu, symboly da do
 # build/symbols, skontroluje manifest (tool/check_manifest.sh) a vypise
-# velkost a podpis. Podpis: android/key.properties alebo SAKINA_UPLOAD_* env
+# velkost a podpis. Podpis: android/key.properties alebo PROSOCHE_UPLOAD_* env
 # (pozri android/app/build.gradle.kts); bez nich debug kluc s warningom,
 # taky AAB sa do Google Play neda nahrat.
 set -euo pipefail
@@ -31,8 +31,8 @@ variant="${flavor}Release"
 kebab="$(sed -E 's/([A-Z])/-\L\1/g' <<<"$flavor")"
 lower="$(tr '[:upper:]' '[:lower:]' <<<"$flavor")"
 
-if [[ ! -f android/key.properties && -z "${SAKINA_UPLOAD_STORE_FILE:-}" ]]; then
-  echo "WARNING: chyba android/key.properties aj SAKINA_UPLOAD_* env," \
+if [[ ! -f android/key.properties && -z "${PROSOCHE_UPLOAD_STORE_FILE:-}" ]]; then
+  echo "WARNING: chyba android/key.properties aj PROSOCHE_UPLOAD_* env," \
     "release sa podpise DEBUG klucom (len lokalne testovanie)." >&2
 fi
 

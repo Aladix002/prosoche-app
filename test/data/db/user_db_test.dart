@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:drift/drift.dart' hide isNotNull, isNull;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:sakina/data/db/converters.dart';
-import 'package:sakina/data/db/user_db.dart';
-import 'package:sakina/domain/common/common.dart';
+import 'package:prosoche/data/db/converters.dart';
+import 'package:prosoche/data/db/user_db.dart';
+import 'package:prosoche/domain/common/common.dart';
 import 'package:sqlite3/sqlite3.dart' show SqliteException;
 
 final _t0 = DateTime.utc(2026, 10, 29, 8);

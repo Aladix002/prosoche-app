@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/features/quran/reader/read_tracker.dart';
+import 'package:prosoche/features/quran/reader/read_tracker.dart';
 
 /// Dwell logika citatela (docs/02 A5.2): 2,5 s, len v popredi, raz.
 /// `testWidgets` kvoli falosnym casovacom (`tester.pump`).

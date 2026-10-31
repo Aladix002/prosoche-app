@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
 /// Text eventu v jazyku obsahu; kalendar smie fallback na `en` (A9,
 /// docs/03 7.3). Null = text chyba aj v `en` (event sa nezobrazi).

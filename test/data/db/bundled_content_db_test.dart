@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/content/bundled_content.dart';
-import 'package:sakina/data/content/content_documents.dart';
-import 'package:sakina/data/content/db_archive.dart';
-import 'package:sakina/data/db/content_db.dart';
-import 'package:sakina/data/db/content_integrity.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/content/bundled_content.dart';
+import 'package:prosoche/data/content/content_documents.dart';
+import 'package:prosoche/data/content/db_archive.dart';
+import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/db/content_integrity.dart';
 
 /// Realna content.db.gz z `tool/bundle_content.sh` (gitignored, v CI nie je)
 /// sedi s pribalenym manifestom a po rozbaleni prejde kontrolou integrity

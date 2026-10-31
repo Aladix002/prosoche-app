@@ -10,7 +10,7 @@ on every permission step. No credentials needed.
 
 If Play asks for notes anyway (e.g. after a rejection), paste:
 
-> Mursa has no account or login. On first start a short setup asks for language, an
+> Prosoche has no account or login. On first start a short setup asks for language, an
 > optional intention, location for prayer times (you can tap "Choose a city instead" and
 > type e.g. "London"), notifications (optional) and privacy choices (analytics and crash
 > reports are off by default). After "Finish" you land on Today. "Begin today's cards"
@@ -24,8 +24,8 @@ service declaration and, if Play asks, to App access:
 
 > The app gate is optional and off by default. To test it: Settings (gear on Today) >
 > The gate > choose an app such as YouTube > allow Usage Access and "Display over other
-> apps" when Mursa explains why (each opens Android settings; enable Mursa and come back).
-> A silent notification "App gate is on" appears. Open the chosen app: Mursa shows a few
+> apps" when Prosoche explains why (each opens Android settings; enable Prosoche and come back).
+> A silent notification "App gate is on" appears. Open the chosen app: Prosoche shows a few
 > cards first, then the app opens. "Emergency" opens the app at once after a short
 > countdown. Turn it off in Settings > The gate. Video: [MAJITEL: URL].
 

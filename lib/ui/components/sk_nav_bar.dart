@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/ui/theme/sk_context.dart';
+import 'package:prosoche/ui/theme/sk_context.dart';
 
 /// Destinacia spodnej navigacie.
 @immutable
@@ -36,7 +36,7 @@ class SkNavBar extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onSelected;
 
-  /// Vsetky Sakina taby (docs/01 4.1) maju 4 destinacie.
+  /// Vsetky Prosoche taby (docs/01 4.1) maju 4 destinacie.
   static const List<(IconData, IconData)> tabIcons = [
     (Icons.wb_twilight_outlined, Icons.wb_twilight),
     (Icons.menu_book_outlined, Icons.menu_book),

@@ -25,11 +25,11 @@
     </queries>
 
     <application
-        android:name="app.mursa.blocker.MursaFullApplication"
+        android:name="app.prosoche.blocker.ProsocheFullApplication"
         tools:replace="android:name">
 
         <service
-            android:name="app.mursa.blocker.BlockerService"
+            android:name="app.prosoche.blocker.BlockerService"
             android:exported="false"
             android:foregroundServiceType="specialUse">
             <property
@@ -38,10 +38,10 @@
         </service>
 
         <activity
-            android:name="app.mursa.blocker.GateActivity"
+            android:name="app.prosoche.blocker.GateActivity"
             android:exported="false"
             android:launchMode="singleTask"
-            android:taskAffinity="app.mursa.gate"
+            android:taskAffinity="app.prosoche.gate"
             android:excludeFromRecents="true"
             android:theme="@style/GateLaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -53,7 +53,7 @@
         </activity>
 
         <receiver
-            android:name="app.mursa.blocker.BootReceiver"
+            android:name="app.prosoche.blocker.BootReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

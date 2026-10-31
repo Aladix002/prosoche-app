@@ -1,9 +1,9 @@
-import 'package:sakina/core/router/routes.dart';
+import 'package:prosoche/core/router/routes.dart';
 
 /// Schema deep linkov (Android intent filter, iOS URL scheme).
-const deepLinkScheme = 'mursa';
+const deepLinkScheme = 'prosoche';
 
-/// Prevedie `mursa://<host>/<path>?<query>` na go_router cestu
+/// Prevedie `prosoche://<host>/<path>?<query>` na go_router cestu
 /// (docs/01 kap. 4.3). Vrati null, ak [uri] nie je deep link appky.
 ///
 /// Mapovanie podla docs/02 C4. Nezname ciele vedu na `/today`. Deep link
@@ -31,7 +31,7 @@ String? mapDeepLink(Uri uri) {
     case 'feed':
       return AppRoutes.feed;
     case 'quran':
-      // mursa://quran/2/255 -> /quran/read/2?ayah=2255&mode=browse
+      // prosoche://quran/2/255 -> /quran/read/2?ayah=2255&mode=browse
       final surah = segments.length > 1 ? int.tryParse(segments[1]) : null;
       if (surah == null || surah < 1 || surah > 114) return AppRoutes.quran;
       final ayah = segments.length > 2 ? int.tryParse(segments[2]) : null;

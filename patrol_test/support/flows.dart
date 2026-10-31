@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patrol/patrol.dart';
-import 'package:sakina/features/cards/card_view.dart';
-import 'package:sakina/features/cards/types/day_cards.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/features/cards/card_view.dart';
+import 'package:prosoche/features/cards/types/day_cards.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Kroky cez UI spolocne pre scenare. Texty su EN (`lib/l10n/app_en.arb`),
 /// kluce z obrazoviek (`ValueKey('language:en')` a pod.).

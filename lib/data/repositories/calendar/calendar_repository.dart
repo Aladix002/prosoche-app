@@ -1,8 +1,8 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/data/repositories/catalog/content_catalog.dart';
-import 'package:sakina/domain/calendar/calendar.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/data/repositories/catalog/content_catalog.dart';
+import 'package:prosoche/domain/calendar/calendar.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
 /// Text eventu (`islamic_event_text`, docs/02 D2).
 @immutable

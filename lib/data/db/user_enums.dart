@@ -1,6 +1,6 @@
 // Hodnoty ENUM stlpcov user.db (plan 5.2, docs/02 D1, D8, D10, D12).
 // `wire` je text v DB; nazov v Darte je lowerCamelCase.
-import 'package:sakina/data/db/converters.dart';
+import 'package:prosoche/data/db/converters.dart';
 
 /// `card_event.context` (docs/02 D1).
 enum CardContext implements WireEnum {

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Pribali content.db do assetov (D-03, Q-03). Subory su gitignored.
 #
-#   tool/bundle_content.sh [cesta k sakina-content]
+#   tool/bundle_content.sh [cesta k prosoche-content]
 #
-# Default: $SAKINA_CONTENT_DIR, inak ../sakina-content vedla repa.
+# Default: $PROSOCHE_CONTENT_DIR, inak ../prosoche-content vedla repa.
 # Skopiruje dist/content.db.gz a dist/manifest.json do assets/content/
 # a overi gz_sha256/gz_size podla manifestu. Db sa pribaluje komprimovana
 # (~9,5 MB namiesto ~32 MB), appka ju rozbali pri prvom starte a overi
@@ -12,14 +12,14 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-src="${1:-${SAKINA_CONTENT_DIR:-../sakina-content}}"
+src="${1:-${PROSOCHE_CONTENT_DIR:-../prosoche-content}}"
 dist="$src/dist"
 out="assets/content"
 
 fail() { printf 'FAIL: %s\n' "$*" >&2; exit 1; }
 
 for f in content.db.gz manifest.json; do
-  [[ -f "$dist/$f" ]] || fail "chyba $dist/$f (spusti make all v sakina-content)"
+  [[ -f "$dist/$f" ]] || fail "chyba $dist/$f (spusti make all v prosoche-content)"
 done
 
 # Hodnota z bloku "db" v manifeste.

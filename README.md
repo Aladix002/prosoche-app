@@ -1,7 +1,7 @@
-# sakina-app
+# prosoche-app
 
-Flutter appka Mursa (pracovny nazov, Android, iOS). Interny kodovy nazov ostava
-`sakina` (Dart package, triedy `Sakina*`, repozitare).
+Flutter appka Prosoche (pracovny nazov, Android, iOS). Interny kodovy nazov ostava
+`prosoche` (Dart package, triedy `Prosoche*`, repozitare).
 Plan: `../TECHNICKY_PLAN.md`, rozhodnutia: `../docs/`.
 
 ## Poziadavky
@@ -23,10 +23,10 @@ Dve dimenzie: `env` (dev, prod) x `edition` (lite, full).
 
 | Flavor | applicationId | Nazov | Brana |
 |---|---|---|---|
-| devLite | app.mursa.dev | Mursa Dev | nie |
-| devFull | app.mursa.dev | Mursa Dev | ano (`android/app/src/full/`) |
-| prodLite | app.mursa | Mursa | nie |
-| prodFull | app.mursa | Mursa | ano |
+| devLite | app.prosoche.dev | Prosoche Dev | nie |
+| devFull | app.prosoche.dev | Prosoche Dev | ano (`android/app/src/full/`) |
+| prodLite | app.prosoche | Prosoche | nie |
+| prodFull | app.prosoche | Prosoche | ano |
 
 `lite` je produkcia B bez FGS, usage access a overlay povoleni.
 Entrypoint je jeden (`lib/main.dart`), flavor sa cita z `--flavor` (`appFlavor`).
@@ -71,7 +71,7 @@ tool/e2e.sh                                 # vsetky scenare (~10 min)
 tool/e2e.sh -t patrol_test/s3_quran_search_test.dart
 ```
 
-Skript pribali obsah (`tool/bundle_content.sh`, `-c <sakina-content>`), appku
+Skript pribali obsah (`tool/bundle_content.sh`, `-c <prosoche-content>`), appku
 pred behom odinstaluje a kazdy test spusti v novom procese (Android Test
 Orchestrator). Cas je fixny (11. 11. 2026 09:00, `support/app_harness.dart`),
 `--dart-define=E2E_REAL_TIME=true` = realny cas. `s6a` a `s6b` (restart
@@ -89,6 +89,6 @@ dalsie jazyky (`<ID>_ar.arb` -> `app_ar.arb`). `app_*.arb` sa needituju rucne.
 `lib/data` (DB, siet, nativ), `lib/features` (obrazovky, routy v `<f>_routes.dart`).
 Kto co meni: `../PLAN_VYVOJA.md` kap. 2.
 
-Deep linky (docs/02 C4): `mursa://today`, `mursa://feed`, `mursa://quran/2/255`,
-`mursa://prayer/qibla`, `mursa://calendar`, `mursa://settings/notifications`,
-`mursa://gate?app=<package>` (len pri `FEATURE_GATE`).
+Deep linky (docs/02 C4): `prosoche://today`, `prosoche://feed`, `prosoche://quran/2/255`,
+`prosoche://prayer/qibla`, `prosoche://calendar`, `prosoche://settings/notifications`,
+`prosoche://gate?app=<package>` (len pri `FEATURE_GATE`).

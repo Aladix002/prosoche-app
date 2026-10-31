@@ -4,13 +4,13 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/quran/quran_screen.dart';
-import 'package:sakina/features/quran/reader/quran_reader_screen.dart';
-import 'package:sakina/features/quran/search/quran_search_screen.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/quran/quran_screen.dart';
+import 'package:prosoche/features/quran/reader/quran_reader_screen.dart';
+import 'package:prosoche/features/quran/search/quran_search_screen.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
 
 import '../../../fakes/fake_repositories.dart';
 import '../../../helpers/golden/golden.dart';
@@ -24,7 +24,7 @@ import '../quran_test_helpers.dart';
 ///   flutter test --update-goldens test/features/quran/goldens
 void main() {
   ThemeData theme(Brightness b) =>
-      b == Brightness.dark ? SakinaTheme.dark() : SakinaTheme.light();
+      b == Brightness.dark ? ProsocheTheme.dark() : ProsocheTheme.light();
 
   const screen = BoxConstraints.tightFor(width: 360, height: 640);
 

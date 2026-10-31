@@ -1,5 +1,5 @@
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/data/notifications/notification_service.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/data/notifications/notification_service.dart';
 import 'package:workmanager/workmanager.dart';
 
 /// Periodicke preplanovanie cez workmanager (TECHNICKY_PLAN 8.2).
@@ -27,7 +27,7 @@ import 'package:workmanager/workmanager.dart';
 /// ```
 abstract final class NotificationBackground {
   /// Unikatny nazov periodickej prace.
-  static const uniqueName = 'app.mursa.notifications.reschedule';
+  static const uniqueName = 'app.prosoche.notifications.reschedule';
 
   /// Nazov ulohy, ktory dostane dispatcher.
   static const taskName = 'notificationsReschedule';

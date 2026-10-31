@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/calendar/calendar.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/ramadan/ramadan.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/ramadan/drift_fast_log_repository.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/calendar/calendar.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/ramadan/ramadan.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/ramadan/drift_fast_log_repository.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 /// Zaznamy postu. V testoch prepisat fake implementaciou.

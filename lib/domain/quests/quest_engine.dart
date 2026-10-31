@@ -1,8 +1,8 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/card_activity.dart';
-import 'package:sakina/domain/quests/daily_quest.dart';
-import 'package:sakina/domain/quests/quest_template.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/card_activity.dart';
+import 'package:prosoche/domain/quests/daily_quest.dart';
+import 'package:prosoche/domain/quests/quest_template.dart';
 
 /// Vstup vyberu questov na jeden den.
 @immutable

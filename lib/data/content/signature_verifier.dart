@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:cryptography/cryptography.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/content/trusted_keys.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/content/trusted_keys.dart';
 
 /// Overenie obalky `*.sig` (docs/06 B.2) nad surovymi bajtmi suboru.
 ///
-/// Poradie kontrol je zavazne a zhodne so `sakina-content/pipeline/sign.py`
+/// Poradie kontrol je zavazne a zhodne so `prosoche-content/pipeline/sign.py`
 /// `verify_envelope` (testovacie vektory `test/fixtures/content_vectors`):
 /// obalka nie je JSON objekt -> `alg` -> `kid` -> rola -> revokacia ->
 /// `sig` nie je base64 s 64 B -> podpis.

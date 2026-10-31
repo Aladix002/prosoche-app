@@ -2,8 +2,8 @@
 // v gallery_catalog.dart ich vykresluju cez SkArabicText, overuje
 // test/ui/arabic_text_usage_test.dart). Literaly tu nie su vo vnutri
 // konstruktora SkArabicText, preto file-level vynimka D13 lintu.
-// sakina-lint: ignore-file sakina_arabic_text_outside_sk_arabic_text
-import 'package:sakina/ui/components/sk_arabic_text.dart';
+// prosoche-lint: ignore-file prosoche_arabic_text_outside_sk_arabic_text
+import 'package:prosoche/ui/components/sk_arabic_text.dart';
 
 /// Neutralny arabsky ukazkovy text pre galeriu a goldeny. Ziadny
 /// nabozensky obsah (PLAN 5.5 bod 1): bezne slova ("pekna kniha",

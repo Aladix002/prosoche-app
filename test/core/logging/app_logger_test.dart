@@ -1,7 +1,7 @@
 import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/failures.dart';
-import 'package:sakina/core/logging/app_logger.dart';
+import 'package:prosoche/core/failures.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
 
 void main() {
   final fixed = Clock.fixed(DateTime.utc(2027, 1, 20, 18, 3, 11));

@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
+import 'package:prosoche/core/flavor/flavor.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:sakina/core/flavor/flavor.dart';
 
 part 'feature_flags.g.dart';
 

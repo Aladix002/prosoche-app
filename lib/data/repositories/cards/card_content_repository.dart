@@ -1,9 +1,9 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/data/repositories/calendar/calendar_repository.dart';
-import 'package:sakina/data/repositories/catalog/content_catalog.dart';
-import 'package:sakina/data/repositories/quran/quran_repository.dart';
-import 'package:sakina/domain/calendar/calendar.dart';
-import 'package:sakina/domain/common/common.dart';
+import 'package:prosoche/data/repositories/calendar/calendar_repository.dart';
+import 'package:prosoche/data/repositories/catalog/content_catalog.dart';
+import 'package:prosoche/data/repositories/quran/quran_repository.dart';
+import 'package:prosoche/domain/calendar/calendar.dart';
+import 'package:prosoche/domain/common/common.dart';
 
 /// Obsah karty na vykreslenie (docs/02 B1-B12). Texty su doslovne z
 /// content.db. Nabozensky text (hadis, dua, meno, zamyslenie) sa na `en`

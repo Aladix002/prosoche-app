@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/db/user_db.dart' as db;
-import 'package:sakina/data/repositories/today/daily_set_repository.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/feed/feed.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/data/db/user_db.dart' as db;
+import 'package:prosoche/data/repositories/today/daily_set_repository.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/feed/feed.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
 import '../harness.dart';
 

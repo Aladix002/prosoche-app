@@ -6,14 +6,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:path_provider/path_provider.dart';
-import 'package:sakina/app/content_wiring.dart';
-import 'package:sakina/bootstrap.dart' show installGlobalErrorHandlers;
-import 'package:sakina/core/flavor/flavor.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/core/logging/logger_provider.dart';
-import 'package:sakina/data/content/content_providers.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/features/gate/gate_app.dart';
+import 'package:prosoche/app/content_wiring.dart';
+import 'package:prosoche/bootstrap.dart' show installGlobalErrorHandlers;
+import 'package:prosoche/core/flavor/flavor.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/core/logging/logger_provider.dart';
+import 'package:prosoche/data/content/content_providers.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/features/gate/gate_app.dart';
 
 /// Entrypoint predhriateho enginu brany (ADR-16, TECHNICKY_PLAN 9.1).
 ///

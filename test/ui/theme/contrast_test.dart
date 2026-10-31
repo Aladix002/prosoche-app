@@ -1,17 +1,17 @@
 import 'dart:ui';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/ui/motif/sk_atmosphere.dart';
-import 'package:sakina/ui/theme/contrast.dart';
-import 'package:sakina/ui/theme/sakina_colors.dart';
-import 'package:sakina/ui/theme/tajwid_colors.dart';
+import 'package:prosoche/ui/motif/sk_atmosphere.dart';
+import 'package:prosoche/ui/theme/contrast.dart';
+import 'package:prosoche/ui/theme/prosoche_colors.dart';
+import 'package:prosoche/ui/theme/tajwid_colors.dart';
 
 /// Kontrastny test z tokenov (docs/01 2.1.3, D10). Kazda nova kombinacia
 /// farieb v komponentoch sa prida sem.
 void main() {
   test('formula matches values computed in docs/01 2.1.3', () {
-    const l = SakinaColors.light;
-    const d = SakinaColors.dark;
+    const l = ProsocheColors.light;
+    const d = ProsocheColors.dark;
     expect(SkContrast.ratio(l.textPrimary, l.bg), closeTo(13.37, 0.01));
     expect(SkContrast.ratio(l.outlineStrong, l.bg), closeTo(3.48, 0.01));
     expect(SkContrast.ratio(l.onPrimary, l.primary), closeTo(7.53, 0.01));
@@ -24,11 +24,14 @@ void main() {
     );
   });
 
-  final themes = <String, (SakinaColors, TajwidColors)>{
-    'light': (SakinaColors.light, TajwidColors.light),
-    'dark': (SakinaColors.dark, TajwidColors.dark),
-    'light high contrast': (SakinaColors.lightHighContrast, TajwidColors.light),
-    'dark high contrast': (SakinaColors.darkHighContrast, TajwidColors.dark),
+  final themes = <String, (ProsocheColors, TajwidColors)>{
+    'light': (ProsocheColors.light, TajwidColors.light),
+    'dark': (ProsocheColors.dark, TajwidColors.dark),
+    'light high contrast': (
+      ProsocheColors.lightHighContrast,
+      TajwidColors.light,
+    ),
+    'dark high contrast': (ProsocheColors.darkHighContrast, TajwidColors.dark),
   };
 
   for (final MapEntry(key: name, value: (c, tajwid)) in themes.entries) {
@@ -149,7 +152,7 @@ void main() {
         final missing = c.asMap().keys.toSet()
           ..removeAll(checked)
           ..removeAll(exempt)
-          ..removeAll(SakinaColors.decorativeOnly);
+          ..removeAll(ProsocheColors.decorativeOnly);
         expect(missing, isEmpty);
       });
     });
@@ -193,8 +196,8 @@ void main() {
 
   test('high contrast variants follow docs/01 8.5', () {
     for (final (base, hc) in [
-      (SakinaColors.light, SakinaColors.lightHighContrast),
-      (SakinaColors.dark, SakinaColors.darkHighContrast),
+      (ProsocheColors.light, ProsocheColors.lightHighContrast),
+      (ProsocheColors.dark, ProsocheColors.darkHighContrast),
     ]) {
       expect(hc.textSecondary, base.textPrimary);
       expect(

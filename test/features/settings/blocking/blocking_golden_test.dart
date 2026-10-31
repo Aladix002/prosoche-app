@@ -4,11 +4,11 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/blocker/blocked_apps_repository.dart';
-import 'package:sakina/data/blocker/fake_blocker_gateway.dart';
-import 'package:sakina/features/settings/blocking/blocking_screen.dart';
-import 'package:sakina/features/settings/blocking/blocking_subscreens.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
+import 'package:prosoche/data/blocker/blocked_apps_repository.dart';
+import 'package:prosoche/data/blocker/fake_blocker_gateway.dart';
+import 'package:prosoche/features/settings/blocking/blocking_screen.dart';
+import 'package:prosoche/features/settings/blocking/blocking_subscreens.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
 
 import '../../../helpers/golden/golden.dart';
 import 'blocking_test_app.dart';
@@ -18,7 +18,7 @@ import 'blocking_test_app.dart';
 ///   flutter test --update-goldens test/features/settings/blocking/blocking_golden_test.dart
 void main() {
   ThemeData theme(Brightness b) =>
-      b == Brightness.dark ? SakinaTheme.dark() : SakinaTheme.light();
+      b == Brightness.dark ? ProsocheTheme.dark() : ProsocheTheme.light();
   const screen = BoxConstraints.tightFor(width: 360, height: 760);
 
   Widget scoped(BlockingHarness h, Widget child) => ProviderScope(

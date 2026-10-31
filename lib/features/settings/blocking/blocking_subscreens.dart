@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/blocker/blocked_apps_repository.dart';
-import 'package:sakina/data/blocker/blocker_gateway.dart';
-import 'package:sakina/features/settings/blocking/blocking_providers.dart';
-import 'package:sakina/features/settings/blocking/blocking_widgets.dart';
-import 'package:sakina/features/settings/settings_widgets.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/blocker/blocked_apps_repository.dart';
+import 'package:prosoche/data/blocker/blocker_gateway.dart';
+import 'package:prosoche/features/settings/blocking/blocking_providers.dart';
+import 'package:prosoche/features/settings/blocking/blocking_widgets.dart';
+import 'package:prosoche/features/settings/settings_widgets.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// `/settings/blocking/permissions`: rovnaky obsah ako O6. Ked su
 /// povolenia hotove a brana este nebezi, ponukne "Turn on the gate".

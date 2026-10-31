@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/app.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/core/router/app_router.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/journey/journey_screen.dart';
-import 'package:sakina/features/quran/quran_screen.dart';
-import 'package:sakina/features/shell/app_locale.dart';
-import 'package:sakina/features/shell/app_shell.dart';
-import 'package:sakina/features/shell/settings_button.dart';
-import 'package:sakina/features/today/today_screen.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
+import 'package:prosoche/app.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/core/router/app_router.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/journey/journey_screen.dart';
+import 'package:prosoche/features/quran/quran_screen.dart';
+import 'package:prosoche/features/shell/app_locale.dart';
+import 'package:prosoche/features/shell/app_shell.dart';
+import 'package:prosoche/features/shell/settings_button.dart';
+import 'package:prosoche/features/today/today_screen.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../fakes/in_memory_settings_repository.dart';
@@ -21,7 +21,7 @@ import '../../helpers/pump_app.dart';
 void main() {
   group('back (docs/02 C5)', () {
     testWidgets('tab root other than Today switches to Today', (tester) async {
-      await tester.pumpSakina();
+      await tester.pumpProsoche();
       for (final (label, screen) in [
         ('Quran', QuranScreen),
         ('Journey', JourneyScreen),
@@ -38,7 +38,7 @@ void main() {
     });
 
     testWidgets('Today lets the system close the app', (tester) async {
-      await tester.pumpSakina();
+      await tester.pumpProsoche();
       final scope = tester.widget<PopScope<Object?>>(
         find
             .descendant(
@@ -80,16 +80,16 @@ void main() {
     test('resolves stored and device languages', () {
       expect(
         resolveAppLocales([const Locale('de')], const []),
-        SakinaLocales.en,
+        ProsocheLocales.en,
       );
       expect(
         resolveAppLocales([
           const Locale('de'),
           const Locale('ur', 'PK'),
         ], const []),
-        SakinaLocales.ur,
+        ProsocheLocales.ur,
       );
-      expect(resolveAppLocales(null, const []), SakinaLocales.en);
+      expect(resolveAppLocales(null, const []), ProsocheLocales.en);
     });
 
     Future<void> pumpWith(WidgetTester tester, String? stored) async {
@@ -106,7 +106,7 @@ void main() {
                 .overrides(now: DateTime(2026, 10, 29, 9)),
             appRouterProvider.overrideWithValue(router),
           ],
-          child: const SakinaApp(),
+          child: const ProsocheApp(),
         ),
       );
       await tester.pumpAndSettle();
@@ -115,7 +115,7 @@ void main() {
     testWidgets('stored Arabic makes the app RTL', (tester) async {
       await pumpWith(tester, 'ar');
       final context = tester.element(find.byType(TodayScreen));
-      expect(Localizations.localeOf(context), SakinaLocales.ar);
+      expect(Localizations.localeOf(context), ProsocheLocales.ar);
       expect(Directionality.of(context), TextDirection.rtl);
     });
 
@@ -126,7 +126,7 @@ void main() {
       addTearDown(tester.platformDispatcher.clearLocalesTestValue);
       await pumpWith(tester, null);
       final context = tester.element(find.byType(TodayScreen));
-      expect(Localizations.localeOf(context), SakinaLocales.en);
+      expect(Localizations.localeOf(context), ProsocheLocales.en);
     });
   });
 }

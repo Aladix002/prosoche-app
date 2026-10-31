@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:meta/meta.dart';
-import 'package:sakina/data/db/content_db.dart';
+import 'package:prosoche/data/db/content_db.dart';
 
 part 'quran_dao.g.dart';
 

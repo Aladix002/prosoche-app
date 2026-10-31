@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/features/prayer/prayer_texts.dart';
-import 'package:sakina/features/prayer/prayer_view.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/features/prayer/prayer_texts.dart';
+import 'package:prosoche/features/prayer/prayer_view.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Volba v sheete trackera; [status] null = "Clear".
 @immutable

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
 import 'in_memory_settings_repository.dart';
 

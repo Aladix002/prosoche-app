@@ -3,14 +3,14 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/ui/components/sk_arabic_text.dart';
-import 'package:sakina/ui/components/sk_button.dart';
-import 'package:sakina/ui/components/sk_card_surface.dart';
-import 'package:sakina/ui/components/sk_nav_bar.dart';
-import 'package:sakina/ui/components/sk_prayer_row.dart';
-import 'package:sakina/ui/gallery/gallery_samples.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
+import 'package:prosoche/ui/components/sk_arabic_text.dart';
+import 'package:prosoche/ui/components/sk_button.dart';
+import 'package:prosoche/ui/components/sk_card_surface.dart';
+import 'package:prosoche/ui/components/sk_nav_bar.dart';
+import 'package:prosoche/ui/components/sk_prayer_row.dart';
+import 'package:prosoche/ui/gallery/gallery_samples.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
 
 import '../../helpers/golden/golden.dart';
 
@@ -22,13 +22,13 @@ import '../../helpers/golden/golden.dart';
 ///   flutter test --update-goldens test/ui/goldens/components_locales_golden_test.dart
 void main() {
   ThemeData theme(Brightness b) =>
-      b == Brightness.dark ? SakinaTheme.dark() : SakinaTheme.light();
+      b == Brightness.dark ? ProsocheTheme.dark() : ProsocheTheme.light();
 
   String pseudo(BuildContext context, String en) =>
       PseudoLocale.localize(en, Localizations.localeOf(context));
 
   String time(BuildContext context, int h, int m) =>
-      SakinaFormats(Localizations.localeOf(context))
+      ProsocheFormats(Localizations.localeOf(context))
           .time(DateTime(2026, 3, 7, h, m));
 
   goldenAllLocales(

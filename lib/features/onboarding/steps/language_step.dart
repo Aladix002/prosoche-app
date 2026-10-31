@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/infra/time_providers.dart';
-import 'package:sakina/data/repositories/providers.dart';
-import 'package:sakina/data/repositories/quran/quran_repository.dart';
-import 'package:sakina/data/repositories/settings/settings_providers.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/onboarding/onboarding_screen.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/infra/time_providers.dart';
+import 'package:prosoche/data/repositories/providers.dart';
+import 'package:prosoche/data/repositories/quran/quran_repository.dart';
+import 'package:prosoche/data/repositories/settings/settings_providers.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/onboarding/onboarding_screen.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Jazyky skryte vo vybere, kym nie su aktivne v obsahu (BN do potvrdenia
 /// `bengali_zakaria`, docs/02 O1, docs/10 cut list 2).
 const onboardingHiddenLanguages = {'bn'};
 
-/// Jazyky na vyber v O1 (poradie [SakinaLocales.all]).
+/// Jazyky na vyber v O1 (poradie [ProsocheLocales.all]).
 List<String> get onboardingLanguages => [
-  for (final l in SakinaLocales.all)
+  for (final l in ProsocheLocales.all)
     if (!onboardingHiddenLanguages.contains(l.languageCode)) l.languageCode,
 ];
 

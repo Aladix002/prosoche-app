@@ -2,16 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/onboarding/steps/niyyah_step.dart'
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/onboarding/steps/niyyah_step.dart'
     show
         encodeNiyyahPresets,
         niyyahMaxLength,
         niyyahPresets,
         parseNiyyahPresets;
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Text umyslu na Moja cesta: vlastny text, inak zvolene predvolby, inak
 /// null (A8.1). Len z nastaveni, nic nove.

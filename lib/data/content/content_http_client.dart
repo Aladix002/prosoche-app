@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io' as io;
 
 import 'package:meta/meta.dart';
-import 'package:sakina/core/result.dart';
+import 'package:prosoche/core/result.dart';
 
 /// Odpoved na GET. [body] moze pocas citania zlyhat
 /// [ContentHttpException] (preruseny download).
@@ -39,7 +39,7 @@ class IoContentHttpClient implements ContentHttpClient {
     io.HttpClient? client,
     this.connectTimeout = const Duration(seconds: 20),
     this.idleTimeout = const Duration(seconds: 30),
-    this.userAgent = 'mursa-app',
+    this.userAgent = 'prosoche-app',
   }) : _client = client ?? io.HttpClient() {
     _client
       ..connectionTimeout = connectTimeout

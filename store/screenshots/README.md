@@ -9,7 +9,7 @@
 - No DEBUG banner, no fake reviews, no "best"/"#1", no religious quotes in captions.
   Quran text may appear inside the app screen, never cropped (docs/01 1.3).
 
-## Existing screenshots in `/home/aladix/sakina/screenshots/rc0` - not usable as is
+## Existing screenshots in `/home/aladix/prosoche/screenshots/rc0` - not usable as is
 
 All 47 files are 1080 x 2400 (ratio 2.22 > 2, Play rejects), RGBA PNG (alpha), and
 show the red **DEBUG** banner. In AR/UR shots the UI is still English (`app_ar.arb` etc. are
@@ -54,7 +54,7 @@ Languages:
 - **BN**: only after Bengali is enabled in the app.
 - Light theme for all 8; optionally replace #7 with a dark-theme shot.
 
-Feature graphic (1024 x 500): app name "Mursa" and the short tagline on the brand color
+Feature graphic (1024 x 500): app name "Prosoche" and the short tagline on the brand color
 (`lib/ui` tokens), no Arabic calligraphy of the name of Allah (docs/01 1.3), no phone mockup
 with readable verse cut off. Owner/designer makes it.
 
@@ -70,7 +70,7 @@ flutter build apk --release --flavor devLite
 adb install -r build/app/outputs/flutter-apk/app-devlite-release.apk
 ```
 
-(Release signing falls back to debug keys locally unless `SAKINA_REQUIRE_RELEASE_SIGNING=true`.
+(Release signing falls back to debug keys locally unless `PROSOCHE_REQUIRE_RELEASE_SIGNING=true`.
 Verify the APK name in `build/app/outputs/flutter-apk/`.)
 
 Device setup for 9:16 and a clean status bar:

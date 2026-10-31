@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:sakina/data/db/user_db.dart';
+import 'package:prosoche/data/db/user_db.dart';
 
 part 'reading_dao.g.dart';
 

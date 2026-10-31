@@ -1,8 +1,8 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/calendar/islamic_calendar.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/ramadan/ramadan_day_times.dart';
-import 'package:sakina/domain/ramadan/ramadan_season.dart';
+import 'package:prosoche/domain/calendar/islamic_calendar.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/ramadan/ramadan_day_times.dart';
+import 'package:prosoche/domain/ramadan/ramadan_season.dart';
 
 /// Faza sezony (zjednoduseny `RamadanSeasonState`, docs/04 1.2).
 ///

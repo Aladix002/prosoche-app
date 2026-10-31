@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/app/notification_wiring.dart';
-import 'package:sakina/core/logging/logger_provider.dart';
-import 'package:sakina/data/notifications/notifications.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/app/notification_wiring.dart';
+import 'package:prosoche/core/logging/logger_provider.dart';
+import 'package:prosoche/data/notifications/notifications.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:workmanager/workmanager.dart';
 
 /// Jediny workmanager callback dispatcher appky (bezi v background

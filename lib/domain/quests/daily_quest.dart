@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/card_activity.dart';
-import 'package:sakina/domain/quests/quest_rule.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/card_activity.dart';
+import 'package:prosoche/domain/quests/quest_rule.dart';
 
 /// Stav riadku `quest_log`.
 enum QuestStatus {

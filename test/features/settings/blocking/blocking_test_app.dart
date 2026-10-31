@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/misc.dart' show Override;
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/data/blocker/blocked_apps_repository.dart';
-import 'package:sakina/data/blocker/blocker_gateway.dart';
-import 'package:sakina/data/blocker/blocker_gateway_provider.dart';
-import 'package:sakina/data/blocker/fake_blocked_apps_repository.dart';
-import 'package:sakina/data/blocker/fake_blocker_gateway.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/data/blocker/blocked_apps_repository.dart';
+import 'package:prosoche/data/blocker/blocker_gateway.dart';
+import 'package:prosoche/data/blocker/blocker_gateway_provider.dart';
+import 'package:prosoche/data/blocker/fake_blocked_apps_repository.dart';
+import 'package:prosoche/data/blocker/fake_blocker_gateway.dart';
 
 import '../../../fakes/fake_repositories.dart';
 import '../settings_test_app.dart';

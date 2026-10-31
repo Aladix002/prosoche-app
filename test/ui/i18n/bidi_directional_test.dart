@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
 
 void main() {
   group('Bidi', () {
     test('isolates and strips', () {
       expect(Bidi.isolate('2:255'), '\u20682:255\u2069');
-      expect(Bidi.isolateLtr('Sakina'), '\u2066Sakina\u2069');
+      expect(Bidi.isolateLtr('Prosoche'), '\u2066Prosoche\u2069');
       expect(Bidi.isolateRtl('x'), '\u2067x\u2069');
       expect(
         Bidi.strip(

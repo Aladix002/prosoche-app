@@ -3,12 +3,12 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/calendar/calendar.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/features/cards/cards.dart';
-import 'package:sakina/ui/gallery/gallery_samples.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/calendar/calendar.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/features/cards/cards.dart';
+import 'package:prosoche/ui/gallery/gallery_samples.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
 
 import '../../helpers/golden/golden.dart';
 
@@ -19,7 +19,7 @@ import '../../helpers/golden/golden.dart';
 ///   flutter test --update-goldens test/features/cards/cards_golden_test.dart
 void main() {
   ThemeData theme(Brightness b) =>
-      b == Brightness.dark ? SakinaTheme.dark() : SakinaTheme.light();
+      b == Brightness.dark ? ProsocheTheme.dark() : ProsocheTheme.light();
 
   final date = LocalDate(2026, 10, 30);
   void noop() {}

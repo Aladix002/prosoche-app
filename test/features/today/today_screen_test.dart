@@ -2,15 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/quests.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/domain/streak/streak.dart';
-import 'package:sakina/features/feed/feed_screen.dart';
-import 'package:sakina/features/today/today_screen.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/quests.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/domain/streak/streak.dart';
+import 'package:prosoche/features/feed/feed_screen.dart';
+import 'package:prosoche/features/today/today_screen.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../fakes/in_memory_settings_repository.dart';
@@ -39,7 +39,7 @@ DailySetState _state({int cursor = 0, bool completed = false}) => DailySetState(
 );
 
 void main() {
-  setUpAll(loadSakinaFonts);
+  setUpAll(loadProsocheFonts);
 
   testWidgets('data: dates, quests, begin CTA, streak and prayer chip', (
     tester,

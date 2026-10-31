@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:alchemist/alchemist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/ui/foundation/sk_text_scaling.dart';
-import 'package:sakina/ui/gallery/gallery_catalog.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
+import 'package:prosoche/ui/foundation/sk_text_scaling.dart';
+import 'package:prosoche/ui/gallery/gallery_catalog.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
 
 /// Jednoduchy golden harness U-01 (alchemist). Harness pre 6 jazykov
 /// (`test/helpers/golden/`, U-02) ho po merge nahradi alebo obali.
@@ -38,8 +38,8 @@ void skComponentGoldens(GalleryComponent component, {String? fileName}) {
           .replaceAll(RegExp('[^a-z0-9]+'), '_')
           .replaceAll(RegExp(r'^_|_$'), '');
   for (final (themeName, theme) in [
-    ('light', SakinaTheme.light()),
-    ('dark', SakinaTheme.dark()),
+    ('light', ProsocheTheme.light()),
+    ('dark', ProsocheTheme.dark()),
   ]) {
     // goldenTest len registruje test (ako testWidgets).
     unawaited(
@@ -76,7 +76,7 @@ Future<void> _pumpFrames(WidgetTester tester) async {
   }
 }
 
-/// Tema + textScale + Sakina scaling okolo jedneho stavu.
+/// Tema + textScale + Prosoche scaling okolo jedneho stavu.
 class SkGoldenFrame extends StatelessWidget {
   const SkGoldenFrame({
     required this.theme,

@@ -4,14 +4,14 @@ import 'dart:io';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/data/observability/crash_reporter.dart';
-import 'package:sakina/data/observability/observability_config.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/data/observability/crash_reporter.dart';
+import 'package:prosoche/data/observability/observability_config.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 /// Typ breadcrumbov z [CrashLogSink]. Ine breadcrumbs (auto z SDK)
 /// sa zahodia, lebo mozu niest texty tlacidiel, URL alebo route parametre.
-const sakinaBreadcrumbType = 'sakina';
+const prosocheBreadcrumbType = 'prosoche';
 
 /// Sentry konfiguracia (docs/06 C.8): bez PII, screenshotov, view
 /// hierarchy, session replay a tracingu; release health zapnute.
@@ -46,7 +46,7 @@ void configureSentry(SentryFlutterOptions o, ObservabilityConfig config) {
 /// Necha len breadcrumbs z loggera (uz po allowliste klucov).
 @visibleForTesting
 Breadcrumb? filterBreadcrumb(Breadcrumb? crumb, Hint hint) =>
-    crumb?.type == sakinaBreadcrumbType ? crumb : null;
+    crumb?.type == prosocheBreadcrumbType ? crumb : null;
 
 /// `beforeSend`: odstrani pouzivatela, server, request, nazov zariadenia,
 /// casove pasmo a extra; spravy a hodnoty vynimiek prejdu [scrubText].
@@ -60,7 +60,7 @@ SentryEvent? scrubEvent(SentryEvent event, Hint hint) {
     // ignore: deprecated_member_use
     ..extra = null
     ..breadcrumbs = event.breadcrumbs
-        ?.where((b) => b.type == sakinaBreadcrumbType)
+        ?.where((b) => b.type == prosocheBreadcrumbType)
         .toList();
   final message = event.message;
   if (message != null) {
@@ -156,7 +156,7 @@ class SentryCrashReporter implements CrashReporter {
         message: entry.msg,
         data: entry.kv.isEmpty ? null : Map.of(entry.kv),
         level: _levelOf(entry.level),
-        type: sakinaBreadcrumbType,
+        type: prosocheBreadcrumbType,
       ),
     ),
   );

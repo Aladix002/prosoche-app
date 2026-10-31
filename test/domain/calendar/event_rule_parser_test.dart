@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/calendar/event_rule.dart';
-import 'package:sakina/domain/calendar/event_rule_parser.dart';
-import 'package:sakina/domain/common/common.dart';
+import 'package:prosoche/domain/calendar/event_rule.dart';
+import 'package:prosoche/domain/calendar/event_rule_parser.dart';
+import 'package:prosoche/domain/common/common.dart';
 
 import 'fixtures/event_rules_fixture.dart';
 

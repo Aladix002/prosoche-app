@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart'
     show ProviderListenableSelect;
+import 'package:prosoche/core/logging/logger_provider.dart';
+import 'package:prosoche/data/content/content_providers.dart';
+import 'package:prosoche/data/content/hadith_extra_pack_service.dart';
+import 'package:prosoche/data/db/hadith_extra_repository.dart' as db;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:sakina/core/logging/logger_provider.dart';
-import 'package:sakina/data/content/content_providers.dart';
-import 'package:sakina/data/content/hadith_extra_pack_service.dart';
-import 'package:sakina/data/db/hadith_extra_repository.dart' as db;
 
-export 'package:sakina/data/content/hadith_extra_pack_service.dart';
+export 'package:prosoche/data/content/hadith_extra_pack_service.dart';
 
 part 'hadith_extra_pack_providers.g.dart';
 

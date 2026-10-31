@@ -1,9 +1,9 @@
 import 'package:adhan_dart/adhan_dart.dart' as adhan;
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/prayer/calc_settings.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/settings/prayer_location.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/prayer/calc_settings.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/settings/prayer_location.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 /// Casy modlitieb jedneho dna v case polohy.

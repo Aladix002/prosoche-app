@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/quran/quran_screen.dart';
-import 'package:sakina/features/quran/reader/quran_reader_screen.dart';
-import 'package:sakina/features/quran/search/quran_search_screen.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/quran/quran_screen.dart';
+import 'package:prosoche/features/quran/reader/quran_reader_screen.dart';
+import 'package:prosoche/features/quran/search/quran_search_screen.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../helpers/golden/golden.dart';
@@ -17,7 +17,7 @@ import 'quran_test_helpers.dart';
 /// A5.1 zoznam sur: stavy loading, data, error (empty nenastava), Continue,
 /// progres, Juz, navigacia, semantics a text scale 2.0.
 void main() {
-  setUpAll(loadSakinaFonts);
+  setUpAll(loadProsocheFonts);
 
   QuranReaderScreen reader(WidgetTester tester) =>
       tester.widget<QuranReaderScreen>(find.byType(QuranReaderScreen));

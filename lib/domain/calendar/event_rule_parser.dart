@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:sakina/domain/calendar/event_rule.dart';
-import 'package:sakina/domain/common/event_effect.dart';
+import 'package:prosoche/domain/calendar/event_rule.dart';
+import 'package:prosoche/domain/common/event_effect.dart';
 
 /// Chyba v `rule_json`. [message] obsahuje id pravidla a cestu ku klucu,
 /// napr. `rule 'jumuah': when.all[1]: unknown key 'hijri_mnth' (allowed: ...)`.

@@ -3,11 +3,11 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/data/blocker/blocker_gateway.dart';
-import 'package:sakina/data/blocker/fake_blocker_gateway.dart';
-import 'package:sakina/features/onboarding/onboarding_steps.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/data/blocker/blocker_gateway.dart';
+import 'package:prosoche/data/blocker/fake_blocker_gateway.dart';
+import 'package:prosoche/features/onboarding/onboarding_steps.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../helpers/golden/golden.dart';
@@ -19,7 +19,7 @@ import 'onboarding_test_helpers.dart';
 ///   flutter test --update-goldens test/features/onboarding/onboarding_golden_test.dart
 void main() {
   ThemeData theme(Brightness b) =>
-      b == Brightness.dark ? SakinaTheme.dark() : SakinaTheme.light();
+      b == Brightness.dark ? ProsocheTheme.dark() : ProsocheTheme.light();
 
   for (final step in const OnboardingFlow(gate: false).steps) {
     goldenAllLocales(

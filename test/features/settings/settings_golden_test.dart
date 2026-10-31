@@ -4,18 +4,18 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/features/settings/privacy_settings_screen.dart';
-import 'package:sakina/features/settings/settings_providers.dart';
-import 'package:sakina/features/settings/settings_screen.dart';
-import 'package:sakina/features/settings/sources_screen.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
+import 'package:prosoche/features/settings/privacy_settings_screen.dart';
+import 'package:prosoche/features/settings/settings_providers.dart';
+import 'package:prosoche/features/settings/settings_screen.dart';
+import 'package:prosoche/features/settings/sources_screen.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../helpers/golden/golden.dart';
 import 'settings_test_app.dart';
 
 ThemeData _theme(Brightness b) =>
-    b == Brightness.dark ? SakinaTheme.dark() : SakinaTheme.light();
+    b == Brightness.dark ? ProsocheTheme.dark() : ProsocheTheme.light();
 
 const _screen = BoxConstraints.tightFor(width: 360, height: 760);
 

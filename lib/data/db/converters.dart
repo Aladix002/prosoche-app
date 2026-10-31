@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:sakina/domain/common/common.dart';
+import 'package:prosoche/domain/common/common.dart';
 
 /// Enum s textovou hodnotou v DB (`wire`), napr. `on_time`.
 abstract interface class WireEnum {

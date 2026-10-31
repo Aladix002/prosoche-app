@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/data/repositories/cards/card_content_repository.dart';
-import 'package:sakina/data/repositories/cards/hadith_extra_repository.dart';
-import 'package:sakina/data/repositories/catalog/content_catalog.dart';
-import 'package:sakina/data/repositories/catalog/content_rules.dart';
-import 'package:sakina/data/repositories/infra/curated_id.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/data/repositories/cards/card_content_repository.dart';
+import 'package:prosoche/data/repositories/cards/hadith_extra_repository.dart';
+import 'package:prosoche/data/repositories/catalog/content_catalog.dart';
+import 'package:prosoche/data/repositories/catalog/content_rules.dart';
+import 'package:prosoche/data/repositories/infra/curated_id.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
 import '../../db/fixtures/content_fixture.dart';
 import '../harness.dart';

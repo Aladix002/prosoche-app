@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/ui/foundation/sk_ui_strings.dart';
-import 'package:sakina/ui/theme/sk_context.dart';
-import 'package:sakina/ui/tokens/sk_space.dart';
+import 'package:prosoche/ui/foundation/sk_ui_strings.dart';
+import 'package:prosoche/ui/theme/sk_context.dart';
+import 'package:prosoche/ui/tokens/sk_space.dart';
 
 /// Varianta inline banneru (docs/01 3.2 Banery a feedback).
 enum SkBannerVariant { info, warning, error }

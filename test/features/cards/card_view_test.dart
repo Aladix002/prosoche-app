@@ -5,17 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/misc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/data/observability/observability_providers.dart';
-import 'package:sakina/data/observability/problem_report.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/feed/feed.dart';
-import 'package:sakina/domain/quests/quests.dart';
-import 'package:sakina/features/cards/cards.dart';
-import 'package:sakina/features/settings/problem_report_sheet.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/data/observability/observability_providers.dart';
+import 'package:prosoche/data/observability/problem_report.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/feed/feed.dart';
+import 'package:prosoche/domain/quests/quests.dart';
+import 'package:prosoche/features/cards/cards.dart';
+import 'package:prosoche/features/settings/problem_report_sheet.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../helpers/golden/golden.dart';
@@ -103,7 +103,7 @@ List<CardAction> _actions(FakeRepositories repos) => [
 ];
 
 void main() {
-  setUpAll(loadSakinaFonts);
+  setUpAll(loadProsocheFonts);
 
   testWidgets('loading skeleton, then the verse with attribution', (
     tester,
@@ -177,7 +177,7 @@ void main() {
 [PLACEHOLDER translation 2:2]
 
 - \u2068Placeholder 2\u2069 \u20682:2\u2069 (Translation: [PLACEHOLDER attribution])
-via Mursa''');
+via Prosoche''');
     expect(_actions(repos), [CardAction.shared]);
   });
 
@@ -357,7 +357,7 @@ via Mursa''');
     final png = await tester.runAsync(
       () => renderWidgetToPng(
         context,
-        const CardShareImage(data: data, appName: 'Mursa'),
+        const CardShareImage(data: data, appName: 'Prosoche'),
       ),
     );
     expect(png!.sublist(0, 4), [0x89, 0x50, 0x4E, 0x47]);
@@ -372,7 +372,7 @@ via Mursa''');
             reference: 'x',
             translation: List.filled(400, '[PLACEHOLDER]').join(' '),
           ),
-          appName: 'Mursa',
+          appName: 'Prosoche',
         ),
       ),
     );

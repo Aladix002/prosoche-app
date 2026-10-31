@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/data/observability/observability_config.dart';
-import 'package:sakina/data/observability/sentry_crash_reporter.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/data/observability/observability_config.dart';
+import 'package:prosoche/data/observability/sentry_crash_reporter.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 void main() {
@@ -14,13 +14,13 @@ void main() {
       const ObservabilityConfig(
         sentryDsn: 'https://key@o1.ingest.de.sentry.io/1',
         sentryEnvironment: 'prod',
-        sentryRelease: 'sakina@1.0.0+10',
+        sentryRelease: 'prosoche@1.0.0+10',
         sentryDist: '10',
       ),
     );
     expect(o.dsn, 'https://key@o1.ingest.de.sentry.io/1');
     expect(o.environment, 'prod');
-    expect(o.release, 'sakina@1.0.0+10');
+    expect(o.release, 'prosoche@1.0.0+10');
     expect(o.dist, '10');
     expect(o.sendDefaultPii, isFalse);
     expect(o.attachScreenshot, isFalse);
@@ -70,7 +70,7 @@ void main() {
         SentryException(type: 'X', value: null),
       ],
       breadcrumbs: [
-        Breadcrumb(message: 'ok', type: sakinaBreadcrumbType),
+        Breadcrumb(message: 'ok', type: prosocheBreadcrumbType),
         Breadcrumb(message: 'tap "Fajr done"', category: 'ui.click'),
       ],
       tags: {'locale_city': 'Bratislava', 'flavor': 'prod'},
@@ -101,7 +101,7 @@ void main() {
 
   test('beforeBreadcrumb keeps only logger breadcrumbs', () {
     expect(
-      filterBreadcrumb(Breadcrumb(type: sakinaBreadcrumbType), Hint()),
+      filterBreadcrumb(Breadcrumb(type: prosocheBreadcrumbType), Hint()),
       isNotNull,
     );
     expect(

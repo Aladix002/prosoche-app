@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/features/cards/card_parts.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/features/cards/card_parts.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Odhad dlzky sady: N x 30 s (docs/02 B1), zaokruhlene nahor na minuty.
 int estimatedMinutes(int cards) => (cards * 30 / 60).ceil();

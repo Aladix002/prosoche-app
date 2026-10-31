@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/router/routes.dart';
-import 'package:sakina/features/today/today_screen.dart';
+import 'package:prosoche/core/router/routes.dart';
+import 'package:prosoche/features/today/today_screen.dart';
 
 /// Tab Today (docs/02 C1). Vlastnik: F-02.
 List<RouteBase> todayRoutes() => [

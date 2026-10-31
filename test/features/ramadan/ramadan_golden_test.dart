@@ -3,19 +3,19 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/ramadan/ramadan.dart';
-import 'package:sakina/features/ramadan/ramadan_today_card.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
-import 'package:sakina/ui/tokens/sk_space.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/ramadan/ramadan.dart';
+import 'package:prosoche/features/ramadan/ramadan_today_card.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
+import 'package:prosoche/ui/tokens/sk_space.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 import '../../helpers/golden/golden.dart';
 import '../prayer/f05_test_app.dart';
 
 ThemeData _theme(Brightness b) =>
-    b == Brightness.dark ? SakinaTheme.dark() : SakinaTheme.light();
+    b == Brightness.dark ? ProsocheTheme.dark() : ProsocheTheme.light();
 
 /// Goldeny karty suhur/iftar a zaznamu postu (EN, AR, UR, BN; smoke ID
 /// a TR; svetla/tmava; textScale 1.0 a 2.0).

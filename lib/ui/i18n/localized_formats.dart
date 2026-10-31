@@ -80,8 +80,8 @@ String localizeDigits(String text, DigitStyle style) => text.replaceAllMapped(
 /// (`GlobalMaterialLocalizations.delegate` to robi v appke,
 /// v cistych testoch `initializeDateFormatting()`).
 @immutable
-final class SakinaFormats {
-  SakinaFormats(this.locale, {DigitStyle? digits})
+final class ProsocheFormats {
+  ProsocheFormats(this.locale, {DigitStyle? digits})
     : digits = digits ?? DigitStyle.systemDefault(locale),
       _tag = _intlLocale(locale);
 

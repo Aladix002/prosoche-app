@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:meta/meta.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/content/sem_ver.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/content/sem_ver.dart';
 
-/// Strukturalne kontroly zrkadlia `sakina-content/pipeline/manifest.py`
+/// Strukturalne kontroly zrkadlia `prosoche-content/pipeline/manifest.py`
 /// (`validate_manifest`, `validate_remote_config`, `validate_revocations`).
 /// Parsuju sa az bajty s overenym podpisom.
 
@@ -72,7 +72,7 @@ class DbArchiveInfo {
     required this.gzSize,
   });
 
-  /// Spolocne kontroly pre `db` a kazdy balik (sakina-content
+  /// Spolocne kontroly pre `db` a kazdy balik (prosoche-content
   /// `_artifact_errors`): gzip, https URL, sha256, kladne velkosti.
   factory DbArchiveInfo._fromJson(Object? v) {
     if (v is! Map<String, Object?>) throw const _Invalid();
@@ -118,7 +118,7 @@ class ContentPackInfo {
   final bool optional;
 }
 
-/// `manifest.json` (docs/06 B.2, sakina-content `build_manifest`).
+/// `manifest.json` (docs/06 B.2, prosoche-content `build_manifest`).
 @immutable
 class ContentManifest {
   const ContentManifest({
@@ -161,7 +161,7 @@ class ContentManifest {
         );
       });
 
-  /// `packs` podla sakina-content `_packs_errors`.
+  /// `packs` podla prosoche-content `_packs_errors`.
   static Map<String, ContentPackInfo> _packs(Object? v) {
     if (v is! List<Object?>) throw const _Invalid();
     final out = <String, ContentPackInfo>{};

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patrol/patrol.dart';
-import 'package:sakina/data/observability/observability_providers.dart';
+import 'package:prosoche/data/observability/observability_providers.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'support/app_harness.dart';

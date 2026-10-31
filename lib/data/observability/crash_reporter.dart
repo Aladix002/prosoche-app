@@ -1,4 +1,4 @@
-import 'package:sakina/core/logging/app_logger.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
 
 /// Hlasenie chyb (Sentry, v testoch fake). Bezi len po suhlase
 /// `crash_reports` (TECHNICKY_PLAN 13).

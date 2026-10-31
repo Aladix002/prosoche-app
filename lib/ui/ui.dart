@@ -1,4 +1,4 @@
-/// Design system Sakina (U-01): tokeny, temy, komponenty `Sk*`.
+/// Design system Prosoche (U-01): tokeny, temy, komponenty `Sk*`.
 ///
 /// `lib/ui/i18n/` (smer textu, cislice, fonty podla jazyka) je U-02.
 library;
@@ -21,11 +21,11 @@ export 'foundation/sk_ui_strings.dart';
 export 'motif/sk_atmosphere.dart';
 export 'motif/sk_motif.dart';
 export 'theme/contrast.dart';
-export 'theme/sakina_colors.dart';
-export 'theme/sakina_motion.dart';
-export 'theme/sakina_spacing.dart';
-export 'theme/sakina_theme.dart';
-export 'theme/sakina_typography.dart';
+export 'theme/prosoche_colors.dart';
+export 'theme/prosoche_motion.dart';
+export 'theme/prosoche_spacing.dart';
+export 'theme/prosoche_theme.dart';
+export 'theme/prosoche_typography.dart';
 export 'theme/sk_context.dart';
 export 'theme/tajwid_colors.dart';
 export 'tokens/sk_fonts.dart';

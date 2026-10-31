@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
-import 'package:sakina/data/db/user_db.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/ramadan/fast_log.dart';
+import 'package:prosoche/data/db/user_db.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/ramadan/fast_log.dart';
 
 /// [FastLogRepository] nad tabulkou `fast_log` (D-01), `type = ramadan`.
 ///

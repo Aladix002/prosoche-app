@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/quests.dart' show CardAction, CardContext;
-import 'package:sakina/features/cards/cards.dart' show CardView;
-import 'package:sakina/features/cards/translator_notes.dart';
-import 'package:sakina/features/journey/card_pager.dart';
-import 'package:sakina/features/journey/saved_screen.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/quests.dart'
+    show CardAction, CardContext;
+import 'package:prosoche/features/cards/cards.dart' show CardView;
+import 'package:prosoche/features/cards/translator_notes.dart';
+import 'package:prosoche/features/journey/card_pager.dart';
+import 'package:prosoche/features/journey/saved_screen.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../helpers/pump_app.dart';
@@ -32,7 +33,7 @@ void main() {
     for (final id in saved) {
       await r.actions.save(journeyToday, id, context: CardContext.feed);
     }
-    await tester.pumpSakina(
+    await tester.pumpProsoche(
       location: location,
       flags: FeatureFlags.none,
       fakes: r,
@@ -58,7 +59,7 @@ void main() {
 
   testWidgets('loading shows a skeleton', (tester) async {
     phoneView(tester);
-    await tester.pumpSakina(
+    await tester.pumpProsoche(
       location: '/journey/saved',
       flags: FeatureFlags.none,
       fakes: FakeRepositories(actions: StuckActionsRepository()),
@@ -69,7 +70,7 @@ void main() {
 
   testWidgets('error shows E-DB-1', (tester) async {
     phoneView(tester);
-    await tester.pumpSakina(
+    await tester.pumpProsoche(
       location: '/journey/saved',
       flags: FeatureFlags.none,
       fakes: FakeRepositories(actions: StuckActionsRepository(error: 'db')),

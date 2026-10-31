@@ -7,6 +7,6 @@ result into the empty files in this folder. Keep the meaning, add no claims.
 - Publish now: yes (SA, AE, Gulf, EG).
 - Limits: title 30, short description 80, full description 4000, release notes 500 characters.
 - Keep source names (Tanzil, QuranEnc.com, HadeethEnc.com, GeoNames) as written in `en-US`;
-  keep "Mursa" untranslated.
+  keep "Prosoche" untranslated.
 - No religious quotes, no emoji, no exclamation marks.
 - Sign-off before upload (M-14). Translator: ____  Reviewed by: ____  Date: ____

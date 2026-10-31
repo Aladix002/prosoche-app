@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Percento precitanych versov [read] z [total], zaokruhlene nadol; aspon
 /// 1, ked je precitany aspon 1 vers (0 % by zakrylo zaciatok).
@@ -77,7 +77,7 @@ class _SurahTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final c = context.sk.colors;
-    final formats = SakinaFormats(Localizations.localeOf(context));
+    final formats = ProsocheFormats(Localizations.localeOf(context));
     final label = l10n.journeySurahProgress(
       name ?? l10n.journeySurahFallback(formats.number(surah)),
       formats.number(percent),

@@ -29,7 +29,7 @@
   },
   "notifPrivateTitle": "{appName} · {time}",
   "@notifPrivateTitle": {
-    "description": "Neutral title of a prayer notification in private mode (lock screen), e.g. 'Mursa · 15:12'.",
+    "description": "Neutral title of a prayer notification in private mode (lock screen), e.g. 'Prosoche · 15:12'.",
     "placeholders": {"appName": {"type": "String"}, "time": {"type": "String"}}
   },
   "notifPrivateBody": "Reminder",

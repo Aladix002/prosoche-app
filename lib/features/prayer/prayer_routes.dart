@@ -1,13 +1,13 @@
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/router/routes.dart';
-import 'package:sakina/features/prayer/location/city_search_screen.dart';
-import 'package:sakina/features/prayer/prayer_screen.dart';
-import 'package:sakina/features/prayer/qibla/qibla_screen.dart';
-import 'package:sakina/features/prayer/settings/prayer_settings_screen.dart';
+import 'package:prosoche/core/router/routes.dart';
+import 'package:prosoche/features/prayer/location/city_search_screen.dart';
+import 'package:prosoche/features/prayer/prayer_screen.dart';
+import 'package:prosoche/features/prayer/qibla/qibla_screen.dart';
+import 'package:prosoche/features/prayer/settings/prayer_settings_screen.dart';
 
-export 'package:sakina/features/prayer/location/city_search_screen.dart'
+export 'package:prosoche/features/prayer/location/city_search_screen.dart'
     show CitySearchScreen;
-export 'package:sakina/features/prayer/settings/prayer_settings_screen.dart'
+export 'package:prosoche/features/prayer/settings/prayer_settings_screen.dart'
     show PrayerSettingsScreen;
 
 /// Tab Prayer (docs/02 C1). Vlastnik: F-05.

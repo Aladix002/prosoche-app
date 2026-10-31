@@ -35,7 +35,7 @@ class TrustedKey {
   final KeyRole role;
 }
 
-/// Produkcne kluce (= `sakina-content/config/public_keys.json`).
+/// Produkcne kluce (= `prosoche-content/config/public_keys.json`).
 ///
 /// Prazdne `publicKeyB64` znamena, ze majitel kluc este nevygeneroval
 /// (PLAN_VYVOJA 6). Pred prvym releasom obsahu ich treba doplnit.
@@ -45,7 +45,7 @@ const kTrustedKeys = <TrustedKey>[
   TrustedKey('content-2027a', '', KeyRole.content),
 ];
 
-/// Lokalny vyvojovy kluc `sakina-content` (`keys/content-dev.pem`,
+/// Lokalny vyvojovy kluc `prosoche-content` (`keys/content-dev.pem`,
 /// `dist/public_keys.json`). Doveruje mu len flavor `dev`.
 const kDevTrustedKeys = <TrustedKey>[
   TrustedKey(

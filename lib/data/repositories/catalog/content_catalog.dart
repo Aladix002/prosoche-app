@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/data/db/content_db.dart';
-import 'package:sakina/data/repositories/catalog/content_rules.dart';
-import 'package:sakina/data/repositories/infra/curated_id.dart';
-import 'package:sakina/domain/calendar/calendar.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/feed/feed.dart';
-import 'package:sakina/domain/quests/quests.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/repositories/catalog/content_rules.dart';
+import 'package:prosoche/data/repositories/infra/curated_id.dart';
+import 'package:prosoche/domain/calendar/calendar.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/feed/feed.dart';
+import 'package:prosoche/domain/quests/quests.dart';
 
 /// Stav kuratovaneho obsahu, ktory appka pouziva (draft a in_review nie).
 const approvedStatus = 'approved';

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/misc.dart';
-import 'package:sakina/features/onboarding/onboarding_platform.dart';
-import 'package:sakina/features/prayer/prayer_providers.dart';
+import 'package:prosoche/features/onboarding/onboarding_platform.dart';
+import 'package:prosoche/features/prayer/prayer_providers.dart';
 
 /// F-05 "Use my location" pouziva tu istu geolocator implementaciu ako
 /// onboarding O3 (F-01).

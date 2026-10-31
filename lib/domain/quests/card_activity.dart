@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/common/common.dart';
+import 'package:prosoche/domain/common/common.dart';
 
 /// Hodnota `card_event.action` (docs/02 0.5, D1).
 enum CardAction {

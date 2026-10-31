@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
 /// Kedy sa preplanuje v popredi (TECHNICKY_PLAN 8.2): pri starte, pri
 /// navrate do appky (lifecycle resumed, aj po navrate z nastaveni presnych

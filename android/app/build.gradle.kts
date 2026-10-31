@@ -9,11 +9,11 @@ plugins {
 // Release podpis (docs/06 B.3, D.3). Zdroj v poradi:
 //  1. android/key.properties (storeFile, storePassword, keyAlias, keyPassword),
 //     CI ho vytvori zo secrets a po builde zmaze,
-//  2. env SAKINA_UPLOAD_STORE_FILE, SAKINA_UPLOAD_STORE_PASSWORD,
-//     SAKINA_UPLOAD_KEY_ALIAS, SAKINA_UPLOAD_KEY_PASSWORD.
-// Ak nic z toho nie je: SAKINA_REQUIRE_RELEASE_SIGNING=true -> build zlyha
+//  2. env PROSOCHE_UPLOAD_STORE_FILE, PROSOCHE_UPLOAD_STORE_PASSWORD,
+//     PROSOCHE_UPLOAD_KEY_ALIAS, PROSOCHE_UPLOAD_KEY_PASSWORD.
+// Ak nic z toho nie je: PROSOCHE_REQUIRE_RELEASE_SIGNING=true -> build zlyha
 // (release workflow), inak release sa podpise debug klucom s warningom
-// (lokalny build, PR build so SAKINA_CI_UNSIGNED=true). Taky AAB Play odmietne.
+// (lokalny build, PR build so PROSOCHE_CI_UNSIGNED=true). Taky AAB Play odmietne.
 // Kluce ani key.properties sa nikdy necommituju (.gitignore).
 val uploadSigning: Map<String, String>? = run {
     val keyPropsFile = rootProject.file("key.properties")
@@ -28,10 +28,10 @@ val uploadSigning: Map<String, String>? = run {
         )
     } else {
         mapOf(
-            "storeFile" to System.getenv("SAKINA_UPLOAD_STORE_FILE"),
-            "storePassword" to System.getenv("SAKINA_UPLOAD_STORE_PASSWORD"),
-            "keyAlias" to System.getenv("SAKINA_UPLOAD_KEY_ALIAS"),
-            "keyPassword" to System.getenv("SAKINA_UPLOAD_KEY_PASSWORD"),
+            "storeFile" to System.getenv("PROSOCHE_UPLOAD_STORE_FILE"),
+            "storePassword" to System.getenv("PROSOCHE_UPLOAD_STORE_PASSWORD"),
+            "keyAlias" to System.getenv("PROSOCHE_UPLOAD_KEY_ALIAS"),
+            "keyPassword" to System.getenv("PROSOCHE_UPLOAD_KEY_PASSWORD"),
         )
     }
     val missing = values.filterValues { it.isNullOrBlank() }.keys
@@ -51,16 +51,16 @@ if (uploadSigning == null) {
                 (it.name.startsWith("assemble") || it.name.startsWith("bundle"))
         }
         if (!buildsRelease) return@whenReady
-        if (System.getenv("SAKINA_REQUIRE_RELEASE_SIGNING") == "true") {
+        if (System.getenv("PROSOCHE_REQUIRE_RELEASE_SIGNING") == "true") {
             throw GradleException(
-                "SAKINA_REQUIRE_RELEASE_SIGNING=true, ale chyba android/key.properties " +
-                    "aj SAKINA_UPLOAD_* env (docs/06 B.3).",
+                "PROSOCHE_REQUIRE_RELEASE_SIGNING=true, ale chyba android/key.properties " +
+                    "aj PROSOCHE_UPLOAD_* env (docs/06 B.3).",
             )
         }
         val msg = "Release build je podpisany DEBUG klucom (chyba android/key.properties " +
-            "aj SAKINA_UPLOAD_* env). Len na lokalne testovanie, Google Play ho odmietne."
-        if (System.getenv("SAKINA_CI_UNSIGNED") == "true") {
-            logger.lifecycle("SAKINA_CI_UNSIGNED=true: $msg")
+            "aj PROSOCHE_UPLOAD_* env). Len na lokalne testovanie, Google Play ho odmietne."
+        if (System.getenv("PROSOCHE_CI_UNSIGNED") == "true") {
+            logger.lifecycle("PROSOCHE_CI_UNSIGNED=true: $msg")
         } else {
             logger.warn("\nWARNING: $msg\n")
         }
@@ -68,7 +68,7 @@ if (uploadSigning == null) {
 }
 
 android {
-    namespace = "app.mursa"
+    namespace = "app.prosoche"
     // Google Play od 31. 8. 2026 vyzaduje targetSdk 36 (docs/08 cast A).
     compileSdk = 36
     ndkVersion = flutter.ndkVersion
@@ -85,7 +85,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "app.mursa"
+        applicationId = "app.prosoche"
         minSdk = 26
         targetSdk = 36
         versionCode = flutter.versionCode
@@ -117,11 +117,11 @@ android {
             dimension = "env"
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev"
-            resValue("string", "app_name", "Mursa Dev")
+            resValue("string", "app_name", "Prosoche Dev")
         }
         create("prod") {
             dimension = "env"
-            resValue("string", "app_name", "Mursa")
+            resValue("string", "app_name", "Prosoche")
         }
     }
 

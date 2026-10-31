@@ -1,5 +1,5 @@
-import 'package:sakina/core/router/routes.dart';
-import 'package:sakina/features/settings/settings_routes.dart';
+import 'package:prosoche/core/router/routes.dart';
+import 'package:prosoche/features/settings/settings_routes.dart';
 
 /// Cesty, na ktore F-05 naviguje (docs/02 C1). Nastavenia su routy F-07
 /// (`settings_routes.dart`); obrazovky im dodava F-05

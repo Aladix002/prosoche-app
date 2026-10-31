@@ -3,13 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/quests.dart' show CardAction, CardContext;
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/quran/quran_format.dart';
-import 'package:sakina/features/quran/widgets/ayah_tile.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/quests.dart'
+    show CardAction, CardContext;
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/quran/quran_format.dart';
+import 'package:prosoche/features/quran/widgets/ayah_tile.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import '../../../fakes/fake_repositories.dart';
 import '../../../helpers/golden/golden.dart';
@@ -18,7 +19,7 @@ import '../quran_test_helpers.dart';
 /// A5.2 citatel: stavy, bajtovy text, bismillah, lenivy zoznam, dwell,
 /// khatm/browse, preklad a fallback, akcie, a11y, text scale 2.0.
 void main() {
-  setUpAll(loadSakinaFonts);
+  setUpAll(loadProsocheFonts);
 
   Finder tileOf(AyahId id) => find.byKey(ValueKey(id.value));
 
@@ -311,7 +312,7 @@ void main() {
       expect(
         copied,
         '[PLACEHOLDER uthmani 1:2]\n\n[PLACEHOLDER translation 1:2]\n\n'
-        '- Placeholder 1 1:2 (Fake translation)\nvia Mursa',
+        '- Placeholder 1 1:2 (Fake translation)\nvia Prosoche',
       );
       // Potvrdenie je banner nad zoznamom, nie snackbar nad textom.
       expect(find.text('Verse copied'), findsOneWidget);

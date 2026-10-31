@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/prayer/city_repository.dart';
-import 'package:sakina/data/repositories/quran/quran_repository.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/onboarding/onboarding_platform.dart';
-import 'package:sakina/features/onboarding/onboarding_steps.dart';
-import 'package:sakina/features/onboarding/steps/niyyah_step.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/prayer/city_repository.dart';
+import 'package:prosoche/data/repositories/quran/quran_repository.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/onboarding/onboarding_platform.dart';
+import 'package:prosoche/features/onboarding/onboarding_steps.dart';
+import 'package:prosoche/features/onboarding/steps/niyyah_step.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../fakes/in_memory_settings_repository.dart';
@@ -32,16 +32,16 @@ class _BrokenCities extends FakeCityRepository {
       Future.error(StateError('content.db'));
 }
 
-/// Krok onboardingu bez routera vo svetlej teme Sakina.
+/// Krok onboardingu bez routera vo svetlej teme Prosoche.
 Future<void> pumpStep(
   WidgetTester tester,
   OnboardingHarness h,
   OnboardingStep step, {
-  Locale locale = SakinaLocales.en,
+  Locale locale = ProsocheLocales.en,
 }) async {
   await tester.pumpWidget(
     MaterialApp(
-      theme: SakinaTheme.light(),
+      theme: ProsocheTheme.light(),
       locale: locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,

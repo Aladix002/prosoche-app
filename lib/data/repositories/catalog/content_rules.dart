@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:sakina/domain/calendar/calendar.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/quests.dart';
+import 'package:prosoche/domain/calendar/calendar.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/quests.dart';
 
-/// Prevod riadkov `content.db` (tvar z pipeline `sakina-content`) na vstupy
+/// Prevod riadkov `content.db` (tvar z pipeline `prosoche-content`) na vstupy
 /// domenovych enginov. Pipeline uklada `islamic_event.rule_json` ako
 /// `{"when", "phase", "merge", "effects"}` a `quest_template.rule_json` ako
 /// `{"when", "completion", "params"}`; domena (E-01, E-03) cita plochy tvar

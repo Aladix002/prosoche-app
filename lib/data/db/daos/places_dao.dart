@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:drift/drift.dart';
-import 'package:sakina/data/db/content_db.dart';
+import 'package:prosoche/data/db/content_db.dart';
 
 part 'places_dao.g.dart';
 

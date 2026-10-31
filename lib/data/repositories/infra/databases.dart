@@ -5,9 +5,9 @@ import 'package:drift/native.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:sakina/data/db/content_db.dart';
-import 'package:sakina/data/db/user_db.dart';
-import 'package:sakina/domain/common/common.dart';
+import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/db/user_db.dart';
+import 'package:prosoche/domain/common/common.dart';
 
 /// Odkial sa berie otvorena content.db (dohoda D-02 / D-03).
 ///

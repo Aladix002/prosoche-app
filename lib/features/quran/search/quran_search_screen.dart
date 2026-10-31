@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/features/quran/quran_format.dart';
-import 'package:sakina/features/quran/quran_providers.dart';
-import 'package:sakina/features/quran/quran_routes.dart';
-import 'package:sakina/features/quran/widgets/ayah_tile.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/features/quran/quran_format.dart';
+import 'package:prosoche/features/quran/quran_providers.dart';
+import 'package:prosoche/features/quran/quran_routes.dart';
+import 'package:prosoche/features/quran/widgets/ayah_tile.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Vyhladavanie v Korane (docs/02 A5.4): referencia `2:255`, nazov sury,
 /// fulltext v preklade alebo v arabcine. Nic sa neuklada (sukromie).
@@ -149,7 +149,7 @@ class _QuranSearchScreenState extends ConsumerState<QuranSearchScreen> {
 /// Rovnaka detekcia ako `DriftQuranRepository.search` (arabsky FTS).
 /// Regex (nie zobrazovany text), preto ignore.
 bool hasArabic(String s) =>
-    // sakina-lint: ignore sakina_arabic_text_outside_sk_arabic_text
+    // prosoche-lint: ignore prosoche_arabic_text_outside_sk_arabic_text
     RegExp('[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]').hasMatch(s);
 
 class _ResultList extends ConsumerWidget {

@@ -2,15 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/providers.dart';
-import 'package:sakina/data/repositories/settings/settings_providers.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/onboarding/onboarding_controller.dart';
-import 'package:sakina/features/onboarding/onboarding_platform.dart';
-import 'package:sakina/features/onboarding/onboarding_screen.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/providers.dart';
+import 'package:prosoche/data/repositories/settings/settings_providers.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/onboarding/onboarding_controller.dart';
+import 'package:prosoche/features/onboarding/onboarding_platform.dart';
+import 'package:prosoche/features/onboarding/onboarding_screen.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// O4 Notifikacie a presne alarmy (docs/02 A1, docs/01 5.1). Systemovy
 /// dialog sa ukaze az po tapnuti na "Allow notifications" (vysvetlenie je
@@ -128,7 +128,7 @@ class _NotificationsStepState extends ConsumerState<NotificationsStep> {
 
   String _formatMorning(BuildContext context) {
     final [h, m] = _morningTime.split(':').map(int.parse).toList();
-    return SakinaFormats(Localizations.localeOf(context))
+    return ProsocheFormats(Localizations.localeOf(context))
         .time(DateTime(2000, 1, 1, h, m));
   }
 

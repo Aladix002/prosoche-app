@@ -2,16 +2,16 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/blocker/blocker_gateway.dart';
-import 'package:sakina/data/blocker/gate_repository.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/quests/quests.dart';
-import 'package:sakina/features/gate/gate_deck.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/blocker/blocker_gateway.dart';
+import 'package:prosoche/data/blocker/gate_repository.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/quests/quests.dart';
+import 'package:prosoche/features/gate/gate_deck.dart';
 
 /// Pravidla brany (docs/02 A4, docs/01 5.3, TECHNICKY_PLAN 9.2).
 abstract final class GateRules {

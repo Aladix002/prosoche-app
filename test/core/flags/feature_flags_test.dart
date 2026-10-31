@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/core/flavor/flavor.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/core/flavor/flavor.dart';
 
 void main() {
   test('all flags are off without --dart-define', () {

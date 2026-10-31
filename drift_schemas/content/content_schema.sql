@@ -1,4 +1,4 @@
--- content.db - KONTRAKT medzi pipeline sakina-content a appkou (drift).
+-- content.db - KONTRAKT medzi pipeline prosoche-content a appkou (drift).
 -- schema_version: 3
 --
 -- Zmeny:

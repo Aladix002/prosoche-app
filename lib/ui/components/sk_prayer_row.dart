@@ -2,10 +2,10 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
-import 'package:sakina/ui/foundation/sk_ui_strings.dart';
-import 'package:sakina/ui/theme/sakina_typography.dart';
-import 'package:sakina/ui/theme/sk_context.dart';
-import 'package:sakina/ui/tokens/sk_space.dart';
+import 'package:prosoche/ui/foundation/sk_ui_strings.dart';
+import 'package:prosoche/ui/theme/prosoche_typography.dart';
+import 'package:prosoche/ui/theme/sk_context.dart';
+import 'package:prosoche/ui/tokens/sk_space.dart';
 
 /// Stav riadku modlitby (docs/01 3.2 `SkPrayerRow`).
 enum SkPrayerRowState { upcoming, next, current, passed }
@@ -71,7 +71,7 @@ class SkPrayerRow extends StatelessWidget {
     );
     final timeText = Text(
       estimated ? '$time *' : time,
-      style: SakinaTypography.tabular(
+      style: ProsocheTypography.tabular(
         sk.text.bodyLarge!.copyWith(color: passed ? c.textSecondary : fg),
       ),
     );

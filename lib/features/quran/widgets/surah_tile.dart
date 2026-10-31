@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/features/quran/quran_format.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/features/quran/quran_format.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Riadok sury v zozname (docs/02 A5.1): cislo, nazov, preklad nazvu,
 /// miesto zjavenia, pocet versov, arabsky nazov a progres (len ak > 0).

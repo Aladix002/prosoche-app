@@ -1,25 +1,25 @@
 import 'package:go_router/go_router.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/core/flavor/flavor.dart';
+import 'package:prosoche/core/router/deep_link.dart';
+import 'package:prosoche/core/router/dev_routes.dart';
+import 'package:prosoche/core/router/navigator_keys.dart';
+import 'package:prosoche/core/router/routes.dart';
+import 'package:prosoche/features/calendar/calendar_routes.dart';
+import 'package:prosoche/features/feed/feed_routes.dart';
+import 'package:prosoche/features/gate/gate_routes.dart';
+import 'package:prosoche/features/journey/journey_routes.dart';
+import 'package:prosoche/features/onboarding/onboarding_guard.dart';
+import 'package:prosoche/features/onboarding/onboarding_routes.dart';
+import 'package:prosoche/features/prayer/prayer_routes.dart';
+import 'package:prosoche/features/quran/quran_routes.dart';
+import 'package:prosoche/features/settings/settings_routes.dart';
+import 'package:prosoche/features/shell/app_shell.dart';
+import 'package:prosoche/features/today/today_routes.dart';
+import 'package:prosoche/features/words/words_routes.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/core/flavor/flavor.dart';
-import 'package:sakina/core/router/deep_link.dart';
-import 'package:sakina/core/router/dev_routes.dart';
-import 'package:sakina/core/router/navigator_keys.dart';
-import 'package:sakina/core/router/routes.dart';
-import 'package:sakina/features/calendar/calendar_routes.dart';
-import 'package:sakina/features/feed/feed_routes.dart';
-import 'package:sakina/features/gate/gate_routes.dart';
-import 'package:sakina/features/journey/journey_routes.dart';
-import 'package:sakina/features/onboarding/onboarding_guard.dart';
-import 'package:sakina/features/onboarding/onboarding_routes.dart';
-import 'package:sakina/features/prayer/prayer_routes.dart';
-import 'package:sakina/features/quran/quran_routes.dart';
-import 'package:sakina/features/settings/settings_routes.dart';
-import 'package:sakina/features/shell/app_shell.dart';
-import 'package:sakina/features/today/today_routes.dart';
-import 'package:sakina/features/words/words_routes.dart';
 
-export 'package:sakina/core/router/navigator_keys.dart';
+export 'package:prosoche/core/router/navigator_keys.dart';
 
 part 'app_router.g.dart';
 

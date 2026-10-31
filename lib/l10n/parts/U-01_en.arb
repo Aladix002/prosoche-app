@@ -34,7 +34,7 @@
   "@skHoldToConfirm": {"description": "Hint of a press-and-hold confirmation button."},
   "skContentUnavailableTitle": "This text can’t be shown",
   "@skContentUnavailableTitle": {"description": "Title shown when content failed its integrity check."},
-  "skContentUnavailableBody": "Mursa couldn’t verify this content. Please try again later.",
+  "skContentUnavailableBody": "Prosoche couldn’t verify this content. Please try again later.",
   "@skContentUnavailableBody": {"description": "Body shown when content failed its integrity check."},
   "skProgressOf": "{n} of {total}",
   "@skProgressOf": {

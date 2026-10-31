@@ -2,19 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/core/router/routes.dart';
-import 'package:sakina/data/observability/analytics.dart';
-import 'package:sakina/data/observability/observability_providers.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/feed/feed.dart';
-import 'package:sakina/domain/quests/quests.dart';
-import 'package:sakina/features/cards/cards.dart';
-import 'package:sakina/features/feed/feed_screen.dart';
-import 'package:sakina/features/today/today_screen.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/core/router/routes.dart';
+import 'package:prosoche/data/observability/analytics.dart';
+import 'package:prosoche/data/observability/observability_providers.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/feed/feed.dart';
+import 'package:prosoche/domain/quests/quests.dart';
+import 'package:prosoche/features/cards/cards.dart';
+import 'package:prosoche/features/feed/feed_screen.dart';
+import 'package:prosoche/features/today/today_screen.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../helpers/golden/golden.dart';
@@ -177,7 +177,7 @@ Future<void> _openFeed(
 }
 
 void main() {
-  setUpAll(loadSakinaFonts);
+  setUpAll(loadProsocheFonts);
 
   testWidgets('loading: skeleton and close button', (tester) async {
     await _openFeed(

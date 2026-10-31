@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:sakina/data/repositories/repositories.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
 
 /// Kolko kandidatov sa nacita z content.db pred zoradenim (prefixova
 /// zhoda, najvacsie mesta prve).

@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/core/logging/logger_provider.dart';
-import 'package:sakina/data/observability/observability_providers.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/core/logging/logger_provider.dart';
+import 'package:prosoche/data/observability/observability_providers.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// "Report a problem" (docs/06 C.9, D-04 `ProblemReport`): pouzivatel
 /// vidi presny text reportu a posle ho sam ako `.txt` cez systemovy share

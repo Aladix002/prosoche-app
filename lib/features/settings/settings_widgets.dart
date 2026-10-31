@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Kostra podobrazovky nastaveni: AppBar a zoznam s max. sirkou obsahu.
 class SettingsScaffold extends StatelessWidget {

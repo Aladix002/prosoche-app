@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/prayer/calc_settings.dart';
+import 'package:prosoche/domain/prayer/calc_settings.dart';
 
 /// Predvolba metody a asr podla krajiny (TECHNICKY_PLAN 8.1, docs/01 5.6).
 ///

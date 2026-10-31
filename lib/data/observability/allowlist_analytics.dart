@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/data/observability/analytics.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/data/observability/analytics.dart';
 
 /// Odosielanie uz prefiltrovanych eventov (PostHog, v testoch fake).
 abstract interface class AnalyticsTransport {

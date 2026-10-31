@@ -3,16 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/quests.dart' show CardContext;
-import 'package:sakina/features/cards/translator_notes.dart'
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/quests.dart' show CardContext;
+import 'package:prosoche/features/cards/translator_notes.dart'
     show translationWithNotes;
-import 'package:sakina/features/journey/card_pager.dart';
-import 'package:sakina/features/journey/journey_providers.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/features/journey/card_pager.dart';
+import 'package:prosoche/features/journey/journey_providers.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Filtre ulozenych kariet (A8.3); null = All.
 const List<CardType?> savedFilters = [
@@ -159,7 +159,7 @@ IconData savedTypeIcon(CardType type) => switch (type) {
 /// arabcina sa nepouziva.
 (String, String?) savedPreview(BuildContext context, CardContent? content) {
   final l10n = context.l10n;
-  final formats = SakinaFormats(Localizations.localeOf(context));
+  final formats = ProsocheFormats(Localizations.localeOf(context));
   String type(CardType t) => l10n.journeyCardType(t.wire);
   return switch (content) {
     AyahContent(:final ayah, :final surah) => (

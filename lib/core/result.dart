@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/core/failures.dart';
+import 'package:prosoche/core/failures.dart';
 
-export 'package:sakina/core/failures.dart';
+export 'package:prosoche/core/failures.dart';
 
 /// Vysledok operacie, ktora moze ocakavane zlyhat (docs/06 C.1).
 ///

@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/prayer/prayer_texts.dart';
-import 'package:sakina/features/settings/blocking/blocking_providers.dart';
-import 'package:sakina/features/settings/settings_paths.dart';
-import 'package:sakina/features/settings/settings_widgets.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/prayer/prayer_texts.dart';
+import 'package:prosoche/features/settings/blocking/blocking_providers.dart';
+import 'package:prosoche/features/settings/settings_paths.dart';
+import 'package:prosoche/features/settings/settings_widgets.dart';
 
 /// Koren nastaveni (docs/02 A10.0). Route `/settings`.
 ///

@@ -55,7 +55,7 @@ class SkUiStrings {
     holdToConfirm: 'Press and hold to confirm',
     contentUnavailableTitle: 'This text can’t be shown',
     contentUnavailableBody:
-        'Mursa couldn’t verify this content. Please try again later.',
+        'Prosoche couldn’t verify this content. Please try again later.',
     progressOf: _of,
     prayerStatusUnlogged: 'Not logged',
     prayerStatusOnTime: 'On time',

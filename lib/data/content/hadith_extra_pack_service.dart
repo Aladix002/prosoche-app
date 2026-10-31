@@ -5,22 +5,22 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/content/bundled_content.dart';
-import 'package:sakina/data/content/content_documents.dart';
-import 'package:sakina/data/content/content_http_client.dart';
-import 'package:sakina/data/content/content_pack_service.dart';
-import 'package:sakina/data/content/db_archive.dart';
-import 'package:sakina/data/content/hadith_extra_pack_status.dart';
-import 'package:sakina/data/content/signature_verifier.dart';
-import 'package:sakina/data/content/trusted_keys.dart';
-import 'package:sakina/data/db/content_db.dart';
-import 'package:sakina/data/db/hadith_extra_db.dart';
-import 'package:sakina/data/db/hadith_extra_repository.dart' as db;
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/content/bundled_content.dart';
+import 'package:prosoche/data/content/content_documents.dart';
+import 'package:prosoche/data/content/content_http_client.dart';
+import 'package:prosoche/data/content/content_pack_service.dart';
+import 'package:prosoche/data/content/db_archive.dart';
+import 'package:prosoche/data/content/hadith_extra_pack_status.dart';
+import 'package:prosoche/data/content/signature_verifier.dart';
+import 'package:prosoche/data/content/trusted_keys.dart';
+import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/db/hadith_extra_db.dart';
+import 'package:prosoche/data/db/hadith_extra_repository.dart' as db;
 import 'package:sqlite3/sqlite3.dart';
 
-export 'package:sakina/data/content/hadith_extra_pack_status.dart';
+export 'package:prosoche/data/content/hadith_extra_pack_status.dart';
 
 /// Stiahnuty balik nesedi s manifestom alebo s `meta.hadith_extra_sha256`
 /// content.db (`packHashMismatch` vo vektoroch). Zahodi sa len balik.
@@ -93,7 +93,7 @@ Future<HadithExtraPackMeta> readHadithExtraMeta(File file) async {
 ///
 /// Manifest: overeny `manifest.json` z CDN (podpis, revokacie ako D-03),
 /// inak pribaleny manifest; pouzije sa ten s `content_version` aktivnej
-/// content.db. Poradie kontrol ako `sakina-content/pipeline/sign.py`:
+/// content.db. Poradie kontrol ako `prosoche-content/pipeline/sign.py`:
 /// obalka -> `invalidManifest` -> `unknownPack` -> `packHashMismatch`;
 /// potom `meta.hadith_extra_sha256/size` content.db, `PRAGMA user_version`
 /// a `meta.content_version` balika. Az potom atomicky rename na

@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/common/common.dart';
+import 'package:prosoche/domain/common/common.dart';
 
 /// Stav dna v `day_log.status` (docs/02 D8).
 ///

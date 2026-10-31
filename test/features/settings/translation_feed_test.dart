@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/data/db/user_db.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/cards/card_providers.dart';
-import 'package:sakina/features/settings/settings_providers.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/data/db/user_db.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/cards/card_providers.dart';
+import 'package:prosoche/features/settings/settings_providers.dart';
 
 import '../../data/db/fixtures/content_fixture.dart';
 

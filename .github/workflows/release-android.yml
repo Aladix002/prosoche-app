@@ -13,7 +13,7 @@
 #                       riadok "Privacy policy" v Settings > About chyba
 #   FEEDBACK_URL        napr. mailto:<EMAIL> alebo https://.../feedback; bez nej
 #                       riadok "Send feedback" chyba
-#   CONTENT_REPO        <org>/sakina-content; bez nej release nema aktualizacie
+#   CONTENT_REPO        <org>/prosoche-content; bez nej release nema aktualizacie
 #                       obsahu ani stahovanie vysvetliviek hadisov
 # Placeholdery: kym MAJITEL hodnoty nenastavi, build zlyha (kontrola nizsie).
 # APP_VERSION netreba: appka ju cita z FLUTTER_BUILD_NAME (--build-name z pubspec).
@@ -55,7 +55,7 @@ jobs:
     permissions:
       contents: write # len kvoli prilozeniu symbolov ku GitHub Release
     env:
-      PACKAGE_NAME: app.mursa
+      PACKAGE_NAME: app.prosoche
       FLAVOR: prodLite
       AAB: build/app/outputs/bundle/prodLiteRelease/app-prod-lite-release.aab
       MAPPING: build/app/outputs/mapping/prodLiteRelease/mapping.txt
@@ -147,7 +147,7 @@ jobs:
       - name: Build AAB (prodLite, R8, obfuscated)
         env:
           # Bez key.properties build zlyha namiesto debug podpisu.
-          SAKINA_REQUIRE_RELEASE_SIGNING: 'true'
+          PROSOCHE_REQUIRE_RELEASE_SIGNING: 'true'
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           # PostHog EU projekt (M-10); bez kluca sa analytika nikdy nespusti.
           POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
@@ -164,7 +164,7 @@ jobs:
             --obfuscate --split-debug-info=build/symbols \
             --dart-define=SENTRY_DSN="$SENTRY_DSN" \
             --dart-define=SENTRY_ENVIRONMENT=prod \
-            --dart-define=SENTRY_RELEASE="sakina@${VERSION_NAME}+${VERSION_CODE}" \
+            --dart-define=SENTRY_RELEASE="prosoche@${VERSION_NAME}+${VERSION_CODE}" \
             --dart-define=SENTRY_DIST="$VERSION_CODE" \
             --dart-define=POSTHOG_API_KEY="$POSTHOG_API_KEY" \
             --dart-define=PRIVACY_POLICY_URL="$PRIVACY_POLICY_URL" \
@@ -196,7 +196,7 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ vars.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
-          SENTRY_RELEASE: sakina@${{ steps.ver.outputs.name }}+${{ steps.ver.outputs.code }}
+          SENTRY_RELEASE: prosoche@${{ steps.ver.outputs.name }}+${{ steps.ver.outputs.code }}
           SENTRY_DIST: ${{ steps.ver.outputs.code }}
         run: dart run sentry_dart_plugin
 

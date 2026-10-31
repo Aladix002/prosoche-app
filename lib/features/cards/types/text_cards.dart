@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/features/cards/card_parts.dart';
-import 'package:sakina/features/cards/card_providers.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/features/cards/card_parts.dart';
+import 'package:prosoche/features/cards/card_providers.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// UI je arabske: arabsky original zbierky a stupna (BF-02).
 bool _arabicUi(BuildContext context) =>
@@ -15,7 +15,7 @@ bool _arabicUi(BuildContext context) =>
 /// Hodnota `hadith.collection` pre hadis v Bukhari aj Muslim (HadeethEnc):
 /// "muttafaq alayh" po arabsky.
 const String hadithMuttafaqAlayh =
-    // sakina-lint: ignore sakina_arabic_text_outside_sk_arabic_text
+    // prosoche-lint: ignore prosoche_arabic_text_outside_sk_arabic_text
     '\u0645\u062A\u0641\u0642 \u0639\u0644\u064A\u0647';
 
 /// Retazec obsahuje arabske pismo (blok U+0600-U+06FF).

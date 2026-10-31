@@ -1,16 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/streak/streak.dart';
-import 'package:sakina/features/journey/card_pager.dart';
-import 'package:sakina/features/journey/journey_day_screen.dart';
-import 'package:sakina/features/journey/journey_routes.dart';
-import 'package:sakina/features/journey/journey_screen.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/streak/streak.dart';
+import 'package:prosoche/features/journey/card_pager.dart';
+import 'package:prosoche/features/journey/journey_day_screen.dart';
+import 'package:prosoche/features/journey/journey_routes.dart';
+import 'package:prosoche/features/journey/journey_screen.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../helpers/pump_app.dart';
@@ -33,7 +33,7 @@ void main() {
   }) async {
     phoneView(tester);
     final r = repos ?? FakeRepositories(streak: fixtureStreak());
-    await tester.pumpSakina(
+    await tester.pumpProsoche(
       location: JourneyRoutes.day(date ?? yesterday),
       flags: FeatureFlags.none,
       fakes: r,
@@ -115,7 +115,7 @@ void main() {
 
   testWidgets('error state', (tester) async {
     phoneView(tester);
-    await tester.pumpSakina(
+    await tester.pumpProsoche(
       location: JourneyRoutes.day(yesterday),
       flags: FeatureFlags.none,
       fakes: FakeRepositories(
@@ -128,7 +128,7 @@ void main() {
 
   testWidgets('loading state', (tester) async {
     phoneView(tester);
-    await tester.pumpSakina(
+    await tester.pumpProsoche(
       location: JourneyRoutes.day(yesterday),
       flags: FeatureFlags.none,
       fakes: FakeRepositories(streak: StuckDayLogRepository()),

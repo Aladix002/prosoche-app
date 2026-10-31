@@ -1,5 +1,5 @@
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
 
 /// Pravidla feedu bez UI (docs/02 0.4, B0.5).
 abstract final class FeedRules {

@@ -1,16 +1,16 @@
 // Pomocky pre testy D-05: content.db s meta balika, hadith_extra.db
-// (placeholder fixture z D-01) a manifest s `packs` ako sakina-content
+// (placeholder fixture z D-01) a manifest s `packs` ako prosoche-content
 // `build_manifest` + `pack_entry`.
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:path/path.dart' as p;
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/data/content/content_pack_service.dart';
-import 'package:sakina/data/content/hadith_extra_pack_service.dart';
-import 'package:sakina/data/content/trusted_keys.dart';
-import 'package:sakina/data/db/content_db.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/data/content/content_pack_service.dart';
+import 'package:prosoche/data/content/hadith_extra_pack_service.dart';
+import 'package:prosoche/data/content/trusted_keys.dart';
+import 'package:prosoche/data/db/content_db.dart';
 
 import '../db/fixtures/content_fixture.dart';
 import '../db/fixtures/hadith_extra_fixture.dart';

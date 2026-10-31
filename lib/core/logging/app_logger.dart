@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:clock/clock.dart';
 import 'package:flutter/foundation.dart';
-import 'package:sakina/core/failures.dart';
+import 'package:prosoche/core/failures.dart';
 
 /// Urovne logovania (docs/06 C.7). V prod `minLevel = info`.
 enum LogLevel { trace, debug, info, warn, error, fatal }

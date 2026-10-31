@@ -3,7 +3,7 @@ library;
 
 import 'package:alchemist/alchemist.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/ui/gallery/gallery_catalog.dart';
+import 'package:prosoche/ui/gallery/gallery_catalog.dart';
 
 import 'sk_golden.dart';
 

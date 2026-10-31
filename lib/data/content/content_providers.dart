@@ -3,20 +3,20 @@ import 'dart:io';
 
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/core/flavor/flavor.dart';
+import 'package:prosoche/core/logging/logger_provider.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/content/bundled_content.dart';
+import 'package:prosoche/data/content/content_http_client.dart';
+import 'package:prosoche/data/content/content_pack_service.dart';
+import 'package:prosoche/data/content/content_pack_state.dart';
+import 'package:prosoche/data/content/remote_config_policy.dart';
+import 'package:prosoche/data/content/sem_ver.dart';
+import 'package:prosoche/data/content/trusted_keys.dart';
+import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/db/content_integrity.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/core/flavor/flavor.dart';
-import 'package:sakina/core/logging/logger_provider.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/content/bundled_content.dart';
-import 'package:sakina/data/content/content_http_client.dart';
-import 'package:sakina/data/content/content_pack_service.dart';
-import 'package:sakina/data/content/content_pack_state.dart';
-import 'package:sakina/data/content/remote_config_policy.dart';
-import 'package:sakina/data/content/sem_ver.dart';
-import 'package:sakina/data/content/trusted_keys.dart';
-import 'package:sakina/data/db/content_db.dart';
-import 'package:sakina/data/db/content_integrity.dart';
 
 part 'content_providers.g.dart';
 

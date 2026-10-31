@@ -6,22 +6,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:patrol/patrol.dart';
-import 'package:sakina/app.dart';
-import 'package:sakina/app/background.dart';
-import 'package:sakina/app/content_wiring.dart';
-import 'package:sakina/app/data_deletion_wiring.dart';
-import 'package:sakina/app/gate_wiring.dart';
-import 'package:sakina/app/location_wiring.dart';
-import 'package:sakina/app/notification_wiring.dart';
-import 'package:sakina/app/observability_wiring.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/core/flavor/flavor.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/core/logging/logger_provider.dart';
-import 'package:sakina/core/router/app_router.dart';
-import 'package:sakina/data/content/content_providers.dart';
-import 'package:sakina/data/observability/crash_reporter.dart';
-import 'package:sakina/data/repositories/infra/databases.dart';
+import 'package:prosoche/app.dart';
+import 'package:prosoche/app/background.dart';
+import 'package:prosoche/app/content_wiring.dart';
+import 'package:prosoche/app/data_deletion_wiring.dart';
+import 'package:prosoche/app/gate_wiring.dart';
+import 'package:prosoche/app/location_wiring.dart';
+import 'package:prosoche/app/notification_wiring.dart';
+import 'package:prosoche/app/observability_wiring.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/core/flavor/flavor.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/core/logging/logger_provider.dart';
+import 'package:prosoche/core/router/app_router.dart';
+import 'package:prosoche/data/content/content_providers.dart';
+import 'package:prosoche/data/observability/crash_reporter.dart';
+import 'package:prosoche/data/repositories/infra/databases.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Fixny cas E2E: streda 11. 11. 2026 09:00 (lokalny cas zariadenia).
@@ -83,7 +83,7 @@ Future<void> startApp(
   container.read(contentDatabaseProvider.future).ignore();
 
   await $.tester.pumpWidget(
-    UncontrolledProviderScope(container: container, child: const SakinaApp()),
+    UncontrolledProviderScope(container: container, child: const ProsocheApp()),
   );
 
   startObservability(container);

@@ -2,11 +2,11 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/streak/streak.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/streak/streak.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Gregoriansky mesiac `(rok, mesiac)` osobneho kalendara.
 typedef JourneyMonth = (int, int);
@@ -101,7 +101,7 @@ class JourneyCalendar extends StatelessWidget {
     final tag = Localizations.localeOf(context).toLanguageTag();
     final title = localizeDigits(
       DateFormat.yMMMM(tag).format(DateTime(month.$1, month.$2)),
-      SakinaFormats(Localizations.localeOf(context)).digits,
+      ProsocheFormats(Localizations.localeOf(context)).digits,
     );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -207,7 +207,7 @@ class _DayCell extends StatelessWidget {
     final l10n = context.l10n;
     final sk = context.sk;
     final c = sk.colors;
-    final formats = SakinaFormats(Localizations.localeOf(context));
+    final formats = ProsocheFormats(Localizations.localeOf(context));
     final future = mark == JourneyDayMark.future;
     final done = mark == JourneyDayMark.done;
     final label = [

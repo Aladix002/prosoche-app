@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/data/repositories/repositories.dart' show ReaderMode;
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/quests.dart' show CardContext;
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/domain/streak/streak.dart';
-import 'package:sakina/features/journey/journey_calendar.dart';
-import 'package:sakina/features/journey/journey_day_screen.dart';
-import 'package:sakina/features/journey/journey_screen.dart';
-import 'package:sakina/features/journey/saved_screen.dart';
-import 'package:sakina/features/journey/surah_map.dart';
-import 'package:sakina/features/quran/reader/quran_reader_screen.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/data/repositories/repositories.dart' show ReaderMode;
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/quests.dart' show CardContext;
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/domain/streak/streak.dart';
+import 'package:prosoche/features/journey/journey_calendar.dart';
+import 'package:prosoche/features/journey/journey_day_screen.dart';
+import 'package:prosoche/features/journey/journey_screen.dart';
+import 'package:prosoche/features/journey/saved_screen.dart';
+import 'package:prosoche/features/journey/surah_map.dart';
+import 'package:prosoche/features/quran/reader/quran_reader_screen.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../fakes/in_memory_settings_repository.dart';
@@ -121,7 +121,7 @@ void main() {
             streak: fixtureStreak(),
             quran: JourneyQuranRepository(counts: {1: 7, 2: 143}, khatms: 1),
           );
-      await tester.pumpSakina(location: '/journey', flags: flags, fakes: r);
+      await tester.pumpProsoche(location: '/journey', flags: flags, fakes: r);
       return r;
     }
 
@@ -253,7 +253,7 @@ void main() {
 
     testWidgets('loading shows the calendar skeleton', (tester) async {
       phoneView(tester);
-      await tester.pumpSakina(
+      await tester.pumpProsoche(
         location: '/journey',
         flags: FeatureFlags.none,
         fakes: FakeRepositories(streak: StuckStreakRepository()),
@@ -265,7 +265,7 @@ void main() {
 
     testWidgets('error shows E-DB-1 with retry', (tester) async {
       phoneView(tester);
-      await tester.pumpSakina(
+      await tester.pumpProsoche(
         location: '/journey',
         flags: FeatureFlags.none,
         fakes: FakeRepositories(streak: StuckStreakRepository(error: 'db')),
@@ -299,7 +299,7 @@ void main() {
       tester,
     ) async {
       phoneView(tester);
-      await tester.pumpSakina(
+      await tester.pumpProsoche(
         location: '/journey',
         flags: FeatureFlags.none,
         fakes: FakeRepositories(

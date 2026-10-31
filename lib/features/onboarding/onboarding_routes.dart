@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/router/navigator_keys.dart';
-import 'package:sakina/features/onboarding/onboarding_screen.dart';
-import 'package:sakina/features/onboarding/onboarding_steps.dart';
+import 'package:prosoche/core/router/navigator_keys.dart';
+import 'package:prosoche/features/onboarding/onboarding_screen.dart';
+import 'package:prosoche/features/onboarding/onboarding_steps.dart';
 
 /// Onboarding `/onboarding/:step` (docs/02 C1, C2), fullscreen mimo shell.
 /// Guard podla `onboarding.completed` (C3) je `OnboardingGuard`.

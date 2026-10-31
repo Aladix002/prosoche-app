@@ -331,7 +331,7 @@ abstract class AppLocalizations {
   /// O5 body: explains the gate before choosing apps.
   ///
   /// In en, this message translates to:
-  /// **'When you open an app you choose, Mursa shows you a few cards first. After that, the app opens for a while. There\'s always an emergency way through, and you can turn it off anytime.'**
+  /// **'When you open an app you choose, Prosoche shows you a few cards first. After that, the app opens for a while. There\'s always an emergency way through, and you can turn it off anytime.'**
   String get blkAppsBody;
 
   /// Hint of the app search field.
@@ -415,7 +415,7 @@ abstract class AppLocalizations {
   /// O6 intro, part of the prominent disclosure.
   ///
   /// In en, this message translates to:
-  /// **'Mursa checks which app is open, only to show the gate. This never leaves your phone.'**
+  /// **'Prosoche checks which app is open, only to show the gate. This never leaves your phone.'**
   String get blkPermIntro;
 
   /// Name of the Android usage access permission.
@@ -427,25 +427,25 @@ abstract class AppLocalizations {
   /// Prominent disclosure for usage access (Google Play).
   ///
   /// In en, this message translates to:
-  /// **'Mursa uses Usage Access to notice when you open one of the apps you chose for the gate, so it can show your cards first.'**
+  /// **'Prosoche uses Usage Access to notice when you open one of the apps you chose for the gate, so it can show your cards first.'**
   String get permUsageBody;
 
   /// Prominent disclosure: what is done with usage access.
   ///
   /// In en, this message translates to:
-  /// **'What Mursa does: checks which app is on screen, only while your screen is on.'**
+  /// **'What Prosoche does: checks which app is on screen, only while your screen is on.'**
   String get permUsageDoes;
 
   /// Prominent disclosure: what is never done.
   ///
   /// In en, this message translates to:
-  /// **'What Mursa never does: it doesn\'t store or send your app history, time spent, or anything you do inside other apps.'**
+  /// **'What Prosoche never does: it doesn\'t store or send your app history, time spent, or anything you do inside other apps.'**
   String get permUsageNever;
 
   /// Steps in system settings for usage access.
   ///
   /// In en, this message translates to:
-  /// **'On the next screen, find Mursa and turn on \"Permit usage access\". Then come back.'**
+  /// **'On the next screen, find Prosoche and turn on \"Permit usage access\". Then come back.'**
   String get permUsageSteps;
 
   /// Name of the Android overlay permission.
@@ -457,13 +457,13 @@ abstract class AppLocalizations {
   /// Prominent disclosure for the overlay permission.
   ///
   /// In en, this message translates to:
-  /// **'This lets Mursa open its gate screen on top of the app you just opened.'**
+  /// **'This lets Prosoche open its gate screen on top of the app you just opened.'**
   String get permOverlayBody;
 
   /// Prominent disclosure: what is never done with overlay.
   ///
   /// In en, this message translates to:
-  /// **'What Mursa never does: read, record or change what\'s on your screen.'**
+  /// **'What Prosoche never does: read, record or change what\'s on your screen.'**
   String get permOverlayNever;
 
   /// Name of the notification permission.
@@ -475,7 +475,7 @@ abstract class AppLocalizations {
   /// Why notifications matter for the gate (foreground service).
   ///
   /// In en, this message translates to:
-  /// **'While the gate is on, Android shows a small, silent notification. It means Mursa is ready to pause the apps you chose.'**
+  /// **'While the gate is on, Android shows a small, silent notification. It means Prosoche is ready to pause the apps you chose.'**
   String get permNotifBody;
 
   /// Prominent disclosure: data is not shared.
@@ -541,7 +541,7 @@ abstract class AppLocalizations {
   /// Generic battery guide.
   ///
   /// In en, this message translates to:
-  /// **'Some phones stop apps running in the background to save battery. If the gate stops appearing, allow Mursa to run in the background.'**
+  /// **'Some phones stop apps running in the background to save battery. If the gate stops appearing, allow Prosoche to run in the background.'**
   String get batteryBodyGeneric;
 
   /// Intro of the vendor battery guide.
@@ -553,25 +553,25 @@ abstract class AppLocalizations {
   /// Battery guide steps for Samsung (One UI). Check the paths on current devices.
   ///
   /// In en, this message translates to:
-  /// **'1. Open battery settings below.\n2. Find Mursa and choose \"Unrestricted\".\n3. In Settings > Battery > Background usage limits, make sure Mursa is not in \"Sleeping apps\".'**
+  /// **'1. Open battery settings below.\n2. Find Prosoche and choose \"Unrestricted\".\n3. In Settings > Battery > Background usage limits, make sure Prosoche is not in \"Sleeping apps\".'**
   String get batteryStepsSamsung;
 
   /// Battery guide steps for Xiaomi, Redmi, POCO (HyperOS/MIUI). Check the paths on current devices.
   ///
   /// In en, this message translates to:
-  /// **'1. Open battery settings below.\n2. Find Mursa and choose \"No restrictions\".\n3. In the app info of Mursa, turn on \"Autostart\".'**
+  /// **'1. Open battery settings below.\n2. Find Prosoche and choose \"No restrictions\".\n3. In the app info of Prosoche, turn on \"Autostart\".'**
   String get batteryStepsXiaomi;
 
   /// Battery guide steps for Huawei and Honor. Check the paths on current devices.
   ///
   /// In en, this message translates to:
-  /// **'1. Open battery settings below.\n2. Find Mursa in App launch and turn off \"Manage automatically\".\n3. Allow auto-launch and running in background.'**
+  /// **'1. Open battery settings below.\n2. Find Prosoche in App launch and turn off \"Manage automatically\".\n3. Allow auto-launch and running in background.'**
   String get batteryStepsHuawei;
 
   /// Battery guide steps for Oppo, Realme, OnePlus (ColorOS). Check the paths on current devices.
   ///
   /// In en, this message translates to:
-  /// **'1. Open battery settings below.\n2. Find Mursa and allow background activity.\n3. In the app info of Mursa, turn on \"Allow auto launch\".'**
+  /// **'1. Open battery settings below.\n2. Find Prosoche and allow background activity.\n3. In the app info of Prosoche, turn on \"Allow auto launch\".'**
   String get batteryStepsOppo;
 
   /// Button that opens the battery optimization list.
@@ -589,7 +589,7 @@ abstract class AppLocalizations {
   /// Short reassurance under the battery guide.
   ///
   /// In en, this message translates to:
-  /// **'Mursa uses very little battery.'**
+  /// **'Prosoche uses very little battery.'**
   String get batteryNote;
 
   /// Title of the gate settings screen.
@@ -1681,7 +1681,7 @@ abstract class AppLocalizations {
   /// Attribution of a reflection card (reviewed by a content reviewer).
   ///
   /// In en, this message translates to:
-  /// **'Mursa reflection · reviewed'**
+  /// **'Prosoche reflection · reviewed'**
   String get cardReflectionAttribution;
 
   /// Surah info on an event card. The surah name comes from the content database.
@@ -3511,7 +3511,7 @@ abstract class AppLocalizations {
   /// Intro of the sources and licenses screen (docs/09 4).
   ///
   /// In en, this message translates to:
-  /// **'Mursa shows these texts without any changes, as published by their sources.'**
+  /// **'Prosoche shows these texts without any changes, as published by their sources.'**
   String get setSourcesIntro;
 
   /// Empty state when content has no source records.
@@ -3523,7 +3523,7 @@ abstract class AppLocalizations {
   /// Group header on the sources screen by type of content.
   ///
   /// In en, this message translates to:
-  /// **'{kind, select, quran_text{Quran text} quran_text_search{Quran text for search} quran_metadata{Quran metadata} translation{Translations of the meanings} word{Word by word} hadith{Hadith} dua{Dua} name{Names of Allah} reflection{Reflections} curated{Mursa content} audio{Recitations} city{Places} font{Fonts} other{Other}}'**
+  /// **'{kind, select, quran_text{Quran text} quran_text_search{Quran text for search} quran_metadata{Quran metadata} translation{Translations of the meanings} word{Word by word} hadith{Hadith} dua{Dua} name{Names of Allah} reflection{Reflections} curated{Prosoche content} audio{Recitations} city{Places} font{Fonts} other{Other}}'**
   String setSourceKind(String kind);
 
   /// Version of the bundled content, e.g. 'Content version 2026.11.1'.
@@ -3595,7 +3595,7 @@ abstract class AppLocalizations {
   /// Religious content disclaimer (docs/11 12.3). Legal text, translate faithfully.
   ///
   /// In en, this message translates to:
-  /// **'Mursa is a reminder and habit tool. It does not issue religious rulings (fatwas). For questions of religious practice, please consult a qualified scholar.'**
+  /// **'Prosoche is a reminder and habit tool. It does not issue religious rulings (fatwas). For questions of religious practice, please consult a qualified scholar.'**
   String get setDisclaimerRulings;
 
   /// Section header with links on the About screen.
@@ -3922,7 +3922,7 @@ abstract class AppLocalizations {
   /// **'It\'s time for {prayer}.'**
   String notifPrayerBody(String prayer);
 
-  /// Neutral title of a prayer notification in private mode (lock screen), e.g. 'Mursa · 15:12'.
+  /// Neutral title of a prayer notification in private mode (lock screen), e.g. 'Prosoche · 15:12'.
   ///
   /// In en, this message translates to:
   /// **'{appName} · {time}'**
@@ -3985,7 +3985,7 @@ abstract class AppLocalizations {
   /// Application name.
   ///
   /// In en, this message translates to:
-  /// **'Mursa'**
+  /// **'Prosoche'**
   String get appTitle;
 
   /// Bottom navigation label for the Today tab.
@@ -4141,7 +4141,7 @@ abstract class AppLocalizations {
   /// Body shown when content failed its integrity check.
   ///
   /// In en, this message translates to:
-  /// **'Mursa couldn’t verify this content. Please try again later.'**
+  /// **'Prosoche couldn’t verify this content. Please try again later.'**
   String get skContentUnavailableBody;
 
   /// Progress such as '5 of 12'.

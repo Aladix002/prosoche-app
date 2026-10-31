@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/feed/feed_inputs.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/feed/feed_inputs.dart';
 
 /// Cooldowny opakovania obsahu v dnoch (docs/03 P7).
 abstract final class FeedCooldowns {

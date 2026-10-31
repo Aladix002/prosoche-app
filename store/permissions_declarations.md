@@ -23,7 +23,7 @@ Not used, never add: `USE_EXACT_ALARM`, `QUERY_ALL_PACKAGES`, `REQUEST_IGNORE_BA
 ### SCHEDULE_EXACT_ALARM (special access, not granted by default on Android 14+)
 - **Play Console:** no declaration form exists for `SCHEDULE_EXACT_ALARM` (only for
   `USE_EXACT_ALARM`, which we do not use). If asked in review, use this text:
-  > Mursa schedules local reminders at the five daily Islamic prayer times, which the user
+  > Prosoche schedules local reminders at the five daily Islamic prayer times, which the user
   > enables. Prayer times are minute-specific, and a reminder that arrives 10+ minutes late
   > can miss the prayer window. The app asks for "Alarms & reminders" through
   > ACTION_REQUEST_SCHEDULE_EXACT_ALARM only after explaining why, and works without it:
@@ -66,11 +66,11 @@ reflection screen before it."
 
 **Play Console > App content > Foreground service permissions > Other (special use):**
 - Feature description:
-  > Mursa has an optional "app gate" that the user turns on and configures. The user picks
+  > Prosoche has an optional "app gate" that the user turns on and configures. The user picks
   > apps (for example social media) that should show a short reflection screen first. While
   > the gate is on, a foreground service with a persistent, silent notification checks which
   > app is in the foreground using UsageStatsManager, only while the screen is on. When a
-  > user-selected app is opened, Mursa shows its own screen with a few cards, then lets the
+  > user-selected app is opened, Prosoche shows its own screen with a few cards, then lets the
   > app open for a set number of minutes. An "Emergency" button always opens the app. No
   > usage data is stored or sent. The user can turn the gate off at any time in the app.
 - Impact if the system defers or stops the task:
@@ -83,16 +83,16 @@ reflection screen before it."
 - Video link: [MAJITEL: unlisted YouTube URL]
 
 **Video script (30-60 s, one take, screen recording of a release `prodFull` build):**
-1. Open Mursa on a clean install. Show the onboarding step "A pause before social apps"; tap to set up.
+1. Open Prosoche on a clean install. Show the onboarding step "A pause before social apps"; tap to set up.
 2. Choose 1-2 apps (e.g. a social app) in the app picker (final screen title from B-03).
-3. Show the Usage Access disclosure screen; tap "Allow in settings"; system list; enable "Permit usage access" for Mursa; return.
+3. Show the Usage Access disclosure screen; tap "Allow in settings"; system list; enable "Permit usage access" for Prosoche; return.
 4. Show the "Display over other apps" disclosure; enable it in system settings; return.
 5. Pull down the shade: show the silent "App gate is on" notification (FGS running).
-6. Go home, open the chosen app: the Mursa gate appears with "A pause before <app>".
+6. Go home, open the chosen app: the Prosoche gate appears with "A pause before <app>".
 7. Read the cards, tap through; the app opens and stays open for the set minutes.
 8. Open the app again, show the "Emergency" button opens it (countdown).
 9. Open a non-selected app: nothing happens.
-10. Back in Mursa: Settings > The gate > turn off; notification disappears; chosen app opens directly.
+10. Back in Prosoche: Settings > The gate > turn off; notification disappears; chosen app opens directly.
 Captions in English on each step. No personal accounts visible in the target app.
 
 ### PACKAGE_USAGE_STATS (special access)
@@ -100,25 +100,25 @@ Captions in English on each step. No personal accounts visible in the target app
   declaration, the listing text and prominent disclosure.
 - Disclosure texts (docs/01 7.3, to be added by B-03):
   - "Allow Usage Access"
-  - "Mursa uses Usage Access to notice when you open one of the apps you chose for the gate,
+  - "Prosoche uses Usage Access to notice when you open one of the apps you chose for the gate,
     so it can show your cards first."
-  - "What Mursa does: checks which app is on screen, only while your screen is on."
-  - "What Mursa never does: it doesn't store or send your app history, time spent, or
+  - "What Prosoche does: checks which app is on screen, only while your screen is on."
+  - "What Prosoche never does: it doesn't store or send your app history, time spent, or
     anything you do inside other apps."
   - "This stays on your phone and is not shared with anyone."
   - Buttons: "Allow in settings" / "Not now".
-- docs/01 uses the name "Sakina"; replace with "Mursa" when adding to arb.
+- docs/01 uses the name "Prosoche"; replace with "Prosoche" when adding to arb.
 
 ### SYSTEM_ALERT_WINDOW (special access)
 - Use: exemption to start `GateActivity` from the background on top of the opened app
   (docs/08 A). It does not draw or read other apps' content.
 - Disclosure texts (docs/01 7.3, to be added by B-03):
-  - "Allow Mursa to appear over other apps"
-  - "This lets Mursa open its gate screen on top of the app you just opened."
-  - "What Mursa does: shows its own gate screen, only for the apps you chose."
-  - "What Mursa never does: read, record or change what's on your screen."
+  - "Allow Prosoche to appear over other apps"
+  - "This lets Prosoche open its gate screen on top of the app you just opened."
+  - "What Prosoche does: shows its own gate screen, only for the apps you chose."
+  - "What Prosoche never does: read, record or change what's on your screen."
   - Buttons: "Allow in settings" / "Not now".
-- If Play asks: same reasoning as the FGS declaration, plus "only launches Mursa's own
+- If Play asks: same reasoning as the FGS declaration, plus "only launches Prosoche's own
   activity; no overlay window is drawn on other apps."
 
 ### FGS notification text (native, `android/app/src/full/res/values/strings.xml`)

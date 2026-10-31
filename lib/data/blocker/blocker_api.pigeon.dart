@@ -440,7 +440,7 @@ class BlockerHostApi {
 
   Future<BlockerStatus> status() async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakina.BlockerHostApi.status$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.prosoche.BlockerHostApi.status$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -459,7 +459,7 @@ class BlockerHostApi {
 
   Future<PermissionsDetail> permissionsDetail() async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakina.BlockerHostApi.permissionsDetail$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.prosoche.BlockerHostApi.permissionsDetail$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -480,7 +480,7 @@ class BlockerHostApi {
   /// aktualny stav (Flutter ho po navrate znova overi cez [status]).
   Future<BlockerPermission> requestPermission() async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakina.BlockerHostApi.requestPermission$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.prosoche.BlockerHostApi.requestPermission$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -500,7 +500,7 @@ class BlockerHostApi {
   /// Intenty podla verzie Androidu, fallback detail appky.
   Future<void> openSystemSettings(SystemSettingsKind kind) async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakina.BlockerHostApi.openSystemSettings$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.prosoche.BlockerHostApi.openSystemSettings$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -522,7 +522,7 @@ class BlockerHostApi {
   /// Flutter UI nad [installedApps]).
   Future<List<BlockedTarget>> pickTargets() async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakina.BlockerHostApi.pickTargets$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.prosoche.BlockerHostApi.pickTargets$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -542,7 +542,7 @@ class BlockerHostApi {
   /// Spustitelne appky okrem samotnej Mursy, zoradene podla nazvu.
   Future<List<InstalledApp>> installedApps() async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakina.BlockerHostApi.installedApps$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.prosoche.BlockerHostApi.installedApps$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -562,7 +562,7 @@ class BlockerHostApi {
   /// PNG ikona appky (cca 96 px) alebo null, ak appka neexistuje.
   Future<Uint8List?> appIcon(String ref) async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakina.BlockerHostApi.appIcon$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.prosoche.BlockerHostApi.appIcon$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -583,7 +583,7 @@ class BlockerHostApi {
 
   Future<void> setTargets(List<BlockedTarget> targets) async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakina.BlockerHostApi.setTargets$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.prosoche.BlockerHostApi.setTargets$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -605,7 +605,7 @@ class BlockerHostApi {
   /// Bez usage access hodi `permission_missing`.
   Future<void> setEnabled(bool enabled) async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakina.BlockerHostApi.setEnabled$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.prosoche.BlockerHostApi.setEnabled$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -626,7 +626,7 @@ class BlockerHostApi {
   /// Odomkne [ref] na [minutes] minut (1-1440), meria sa monotonnym casom.
   Future<void> unlockFor(String ref, int minutes) async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakina.BlockerHostApi.unlockFor$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.prosoche.BlockerHostApi.unlockFor$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -647,7 +647,7 @@ class BlockerHostApi {
   /// Zavrie branu. true: cielova appka, false: home screen.
   Future<void> closeGate(bool openTarget) async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakina.BlockerHostApi.closeGate$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.prosoche.BlockerHostApi.closeGate$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -669,7 +669,7 @@ class BlockerHostApi {
   /// data" (A10.9).
   Future<void> clearUnlocks() async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakina.BlockerHostApi.clearUnlocks$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.prosoche.BlockerHostApi.clearUnlocks$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -688,7 +688,7 @@ class BlockerHostApi {
   /// `Build.MANUFACTURER` malymi pismenami (navod k baterii v O6).
   Future<String> deviceManufacturer() async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakina.BlockerHostApi.deviceManufacturer$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.prosoche.BlockerHostApi.deviceManufacturer$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -712,7 +712,7 @@ class BlockerHostApi {
     int durationMinutes,
   ) async {
     final pigeonVar_channelName =
-        'dev.flutter.pigeon.sakina.BlockerHostApi.schedulePrayerLocks$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.prosoche.BlockerHostApi.schedulePrayerLocks$pigeonVar_messageChannelSuffix';
     final pigeonVar_channel = BasicMessageChannel<Object?>(
       pigeonVar_channelName,
       pigeonChannelCodec,
@@ -747,7 +747,7 @@ abstract class BlockerFlutterApi {
         : '';
     {
       final pigeonVar_channel = BasicMessageChannel<Object?>(
-        'dev.flutter.pigeon.sakina.BlockerFlutterApi.onGateRequested$messageChannelSuffix',
+        'dev.flutter.pigeon.prosoche.BlockerFlutterApi.onGateRequested$messageChannelSuffix',
         pigeonChannelCodec,
         binaryMessenger: binaryMessenger,
       );

@@ -2,15 +2,15 @@ import 'dart:ui';
 
 import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/l10n/generated/app_localizations.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/data/notifications/notification_platform.dart';
-import 'package:sakina/data/notifications/notification_service.dart';
-import 'package:sakina/data/notifications/notification_texts.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/notifications/notifications.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/core/l10n/generated/app_localizations.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/data/notifications/notification_platform.dart';
+import 'package:prosoche/data/notifications/notification_service.dart';
+import 'package:prosoche/data/notifications/notification_texts.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/notifications/notifications.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 import '../../fakes/in_memory_settings_repository.dart';
@@ -242,14 +242,14 @@ void main() {
     test('private mode (default) uses neutral text', () async {
       await service.reschedule();
       for (final n in prayers()) {
-        expect(n.title, startsWith('Mursa · '));
+        expect(n.title, startsWith('Prosoche · '));
         expect(n.body, 'Reminder');
         expect(n.private, isTrue);
       }
       final daily = platform.scheduled.values.firstWhere(
         (n) => n.channel == NotificationChannel.daily,
       );
-      expect(daily.title, 'Mursa');
+      expect(daily.title, 'Prosoche');
       expect(daily.body, 'Your daily reminder');
     });
 
@@ -275,7 +275,7 @@ void main() {
         (n) => n.channel == NotificationChannel.system,
       );
       expect(open.title, 'Prayer reminders paused soon');
-      expect(open.body, contains('Mursa'));
+      expect(open.body, contains('Prosoche'));
     });
 
     test('switching private mode re-renders all notifications', () async {
@@ -290,7 +290,7 @@ void main() {
       final n = prayers().first;
       expect(
         NotificationService.deepLinkOf(n.payload),
-        startsWith('mursa://prayer?p='),
+        startsWith('prosoche://prayer?p='),
       );
       expect(NotificationService.deepLinkOf(null), isNull);
       expect(NotificationService.deepLinkOf(''), isNull);
@@ -370,7 +370,10 @@ void main() {
         at: tz.TZDateTime(ba, 2026, 11, 6, 7, 30),
         eventName: 'Allah test',
       );
-      expect(texts.render(n, private: false), ('Mursa', 'Your daily reminder'));
+      expect(texts.render(n, private: false), (
+        'Prosoche',
+        'Your daily reminder',
+      ));
       expect(texts.localeName, 'en');
     });
   });

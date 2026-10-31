@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/blocker/blocked_apps_repository.dart';
-import 'package:sakina/data/blocker/blocker_gateway.dart';
-import 'package:sakina/data/blocker/fake_blocker_gateway.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/settings/blocking/blocking_providers.dart';
-import 'package:sakina/features/settings/blocking/blocking_screen.dart';
-import 'package:sakina/features/settings/blocking/blocking_subscreens.dart';
-import 'package:sakina/features/settings/settings_paths.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/blocker/blocked_apps_repository.dart';
+import 'package:prosoche/data/blocker/blocker_gateway.dart';
+import 'package:prosoche/data/blocker/fake_blocker_gateway.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/settings/blocking/blocking_providers.dart';
+import 'package:prosoche/features/settings/blocking/blocking_screen.dart';
+import 'package:prosoche/features/settings/blocking/blocking_subscreens.dart';
+import 'package:prosoche/features/settings/settings_paths.dart';
 
 import '../settings_test_app.dart';
 import 'blocking_test_app.dart';

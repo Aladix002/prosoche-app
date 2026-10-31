@@ -1,4 +1,4 @@
-// Vektory manifest_pack_* (sakina-content tests/vectors, kopia
+// Vektory manifest_pack_* (prosoche-content tests/vectors, kopia
 // v test/fixtures/content_vectors) cez HadithExtraPackService.download():
 // rovnaky vysledok ako `pipeline/sign.py verify_pack`.
 import 'dart:convert';
@@ -8,11 +8,11 @@ import 'dart:typed_data';
 import 'package:drift/drift.dart' show driftRuntimeOptions;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/content/hadith_extra_pack_service.dart';
-import 'package:sakina/data/content/trusted_keys.dart';
-import 'package:sakina/data/db/content_db.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/content/hadith_extra_pack_service.dart';
+import 'package:prosoche/data/content/trusted_keys.dart';
+import 'package:prosoche/data/db/content_db.dart';
 
 import 'content_test_helpers.dart';
 import 'hadith_extra_pack_test_helpers.dart';

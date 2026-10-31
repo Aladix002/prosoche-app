@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/db/user_db.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/ramadan/fast_log.dart';
-import 'package:sakina/features/ramadan/drift_fast_log_repository.dart';
+import 'package:prosoche/data/db/user_db.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/ramadan/fast_log.dart';
+import 'package:prosoche/features/ramadan/drift_fast_log_repository.dart';
 
 void main() {
   late UserDb db;

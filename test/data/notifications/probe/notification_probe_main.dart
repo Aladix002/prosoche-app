@@ -3,15 +3,15 @@
 //   flutter build apk --debug --flavor devLite \
 //     -t test/data/notifications/probe/notification_probe_main.dart
 //   adb install -r build/app/outputs/flutter-apk/app-devlite-debug.apk
-//   adb shell am start -n app.mursa.dev/app.mursa.MainActivity
+//   adb shell am start -n app.prosoche.dev/app.prosoche.MainActivity
 //
 // Naplanuje plan pre Bratislavu (NotificationService, standardne texty)
 // a dve testovacie notifikacie o +1 a +4 minuty mimo rozsahu planu.
 import 'package:flutter/material.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:sakina/data/notifications/notifications.dart';
-import 'package:sakina/domain/notifications/notifications.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/data/notifications/notifications.dart';
+import 'package:prosoche/domain/notifications/notifications.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 import '../../../fakes/in_memory_settings_repository.dart';

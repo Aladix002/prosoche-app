@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/common/ayah_id.dart';
+import 'package:prosoche/domain/common/ayah_id.dart';
 
 void main() {
   test('value is surah * 1000 + ayah', () {

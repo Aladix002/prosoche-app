@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/quest_rule.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/quest_rule.dart';
 
 /// Sablona questu z `quest_template` (docs/03 4.2), uz len schvalena
 /// (`status=approved`, filtruje pipeline).

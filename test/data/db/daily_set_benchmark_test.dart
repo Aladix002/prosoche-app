@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:drift/drift.dart' show driftRuntimeOptions;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/db/content_db.dart';
-import 'package:sakina/data/db/user_db.dart';
-import 'package:sakina/domain/common/common.dart';
+import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/db/user_db.dart';
+import 'package:prosoche/domain/common/common.dart';
 
 import 'fixtures/content_fixture.dart';
 

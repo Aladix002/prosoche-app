@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:sakina/data/blocker/blocked_apps_repository.dart';
-import 'package:sakina/data/blocker/blocker_gateway.dart';
+import 'package:prosoche/data/blocker/blocked_apps_repository.dart';
+import 'package:prosoche/data/blocker/blocker_gateway.dart';
 
 /// Pamatovy [BlockedAppsRepository] pre widget testy a galeriu. Zmeny
 /// zrkadli do [gateway] ako drift verzia.

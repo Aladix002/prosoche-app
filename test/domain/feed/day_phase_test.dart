@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/feed/feed.dart';
+import 'package:prosoche/domain/feed/feed.dart';
 
 void main() {
   DateTime at(int h, [int m = 0]) => DateTime(2026, 10, 29, h, m);

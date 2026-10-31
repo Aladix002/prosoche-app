@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart' hide Timeout;
-import 'package:sakina/core/result.dart';
+import 'package:prosoche/core/result.dart';
 
 void main() {
   group('Result', () {

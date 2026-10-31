@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
-import 'package:sakina/bootstrap.dart';
-import 'package:sakina/core/flavor/flavor.dart';
+import 'package:prosoche/bootstrap.dart';
+import 'package:prosoche/core/flavor/flavor.dart';
 
 /// Jediny entrypoint. Flavor sa cita z `flutter run/build --flavor X`,
 /// X = devLite, devFull, prodLite, prodFull (Flutter `appFlavor`).

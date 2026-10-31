@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/data/db/content_db.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
 /// Mesto z offline tabulky `city` (docs/02 D9, A7.3).
 @immutable

@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/features/prayer/prayer_paths.dart';
-import 'package:sakina/features/prayer/prayer_providers.dart';
-import 'package:sakina/features/prayer/prayer_texts.dart';
-import 'package:sakina/features/prayer/qibla/compass.dart';
-import 'package:sakina/features/prayer/qibla/compass_math.dart';
-import 'package:sakina/features/prayer/qibla/qibla_dial.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/features/prayer/prayer_paths.dart';
+import 'package:prosoche/features/prayer/prayer_providers.dart';
+import 'package:prosoche/features/prayer/prayer_texts.dart';
+import 'package:prosoche/features/prayer/qibla/compass.dart';
+import 'package:prosoche/features/prayer/qibla/compass_math.dart';
+import 'package:prosoche/features/prayer/qibla/qibla_dial.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Odchylka, pri ktorej telefon "smeruje na qiblu" (A7.2).
 const qiblaAlignedDegrees = 5.0;

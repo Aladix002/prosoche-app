@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
-import 'package:sakina/data/repositories/infra/databases.dart';
-import 'package:sakina/data/repositories/infra/time_providers.dart';
-import 'package:sakina/data/repositories/settings/drift_settings_repository.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/data/repositories/infra/databases.dart';
+import 'package:prosoche/data/repositories/infra/time_providers.dart';
+import 'package:prosoche/data/repositories/settings/drift_settings_repository.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
 /// Repozitar nastaveni. V testoch obrazoviek ho prepise
 /// `InMemorySettingsRepository` z `test/fakes/`.

@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/ramadan/ramadan.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/ramadan/ramadan_providers.dart';
-import 'package:sakina/features/ramadan/ramadan_today_card.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/ramadan/ramadan.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/ramadan/ramadan_providers.dart';
+import 'package:prosoche/features/ramadan/ramadan_today_card.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../fakes/in_memory_settings_repository.dart';
@@ -57,8 +57,9 @@ void main() {
         ],
         child: LocalizedTestApp(
           locale: const Locale('en'),
-          theme: (b) =>
-              b == Brightness.dark ? SakinaTheme.dark() : SakinaTheme.light(),
+          theme: (b) => b == Brightness.dark
+              ? ProsocheTheme.dark()
+              : ProsocheTheme.light(),
           child: const SingleChildScrollView(child: RamadanTodayCard()),
         ),
       ),

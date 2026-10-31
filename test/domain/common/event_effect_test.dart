@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/common/common.dart';
+import 'package:prosoche/domain/common/common.dart';
 
 void main() {
   // Tvar z docs/02 D2 (pravidlo jumuah, testovacia fixture).

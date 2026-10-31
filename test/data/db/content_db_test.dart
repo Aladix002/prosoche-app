@@ -6,10 +6,10 @@ import 'package:drift/drift.dart' show driftRuntimeOptions;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/db/content_db.dart';
-import 'package:sakina/data/db/content_integrity.dart';
-import 'package:sakina/data/db/daos/quran_dao.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/db/content_integrity.dart';
+import 'package:prosoche/data/db/daos/quran_dao.dart';
 
 import 'fixtures/content_fixture.dart';
 import 'fixtures/content_fixture.dart' as fixture show main;

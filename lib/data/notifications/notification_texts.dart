@@ -1,10 +1,10 @@
 import 'dart:ui';
 
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:sakina/core/l10n/generated/app_localizations.dart';
-import 'package:sakina/domain/notifications/notifications.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/ui/i18n/localized_formats.dart';
+import 'package:prosoche/core/l10n/generated/app_localizations.dart';
+import 'package:prosoche/domain/notifications/notifications.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/ui/i18n/localized_formats.dart';
 
 /// Texty notifikacii z ARB (docs/01 7.5). Len UI texty, ziadny vers,
 /// meno Allaha ani hadis; text, ktory by pravidlo porusil (napr. nazov
@@ -24,12 +24,12 @@ final class NotificationTexts {
     await initializeDateFormatting(resolved.toLanguageTag());
     return NotificationTexts(
       lookupAppLocalizations(resolved),
-      SakinaFormats(resolved),
+      ProsocheFormats(resolved),
     );
   }
 
   final AppLocalizations l10n;
-  final SakinaFormats formats;
+  final ProsocheFormats formats;
 
   String get localeName => l10n.localeName;
 

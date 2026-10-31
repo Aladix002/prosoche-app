@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/common/event_effect.dart';
+import 'package:prosoche/domain/common/event_effect.dart';
 
 /// Kedy sa podmienka eventu vyhodnocuje (docs/03 4.4).
 enum EventPhase {

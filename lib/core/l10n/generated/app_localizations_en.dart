@@ -195,7 +195,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get blkAppsBody =>
-      'When you open an app you choose, Mursa shows you a few cards first. After that, the app opens for a while. There\'s always an emergency way through, and you can turn it off anytime.';
+      'When you open an app you choose, Prosoche shows you a few cards first. After that, the app opens for a while. There\'s always an emergency way through, and you can turn it off anytime.';
 
   @override
   String get blkAppsSearch => 'Search apps';
@@ -262,44 +262,44 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get blkPermIntro =>
-      'Mursa checks which app is open, only to show the gate. This never leaves your phone.';
+      'Prosoche checks which app is open, only to show the gate. This never leaves your phone.';
 
   @override
   String get permUsageTitle => 'Usage access';
 
   @override
   String get permUsageBody =>
-      'Mursa uses Usage Access to notice when you open one of the apps you chose for the gate, so it can show your cards first.';
+      'Prosoche uses Usage Access to notice when you open one of the apps you chose for the gate, so it can show your cards first.';
 
   @override
   String get permUsageDoes =>
-      'What Mursa does: checks which app is on screen, only while your screen is on.';
+      'What Prosoche does: checks which app is on screen, only while your screen is on.';
 
   @override
   String get permUsageNever =>
-      'What Mursa never does: it doesn\'t store or send your app history, time spent, or anything you do inside other apps.';
+      'What Prosoche never does: it doesn\'t store or send your app history, time spent, or anything you do inside other apps.';
 
   @override
   String get permUsageSteps =>
-      'On the next screen, find Mursa and turn on \"Permit usage access\". Then come back.';
+      'On the next screen, find Prosoche and turn on \"Permit usage access\". Then come back.';
 
   @override
   String get permOverlayTitle => 'Display over other apps';
 
   @override
   String get permOverlayBody =>
-      'This lets Mursa open its gate screen on top of the app you just opened.';
+      'This lets Prosoche open its gate screen on top of the app you just opened.';
 
   @override
   String get permOverlayNever =>
-      'What Mursa never does: read, record or change what\'s on your screen.';
+      'What Prosoche never does: read, record or change what\'s on your screen.';
 
   @override
   String get permNotifTitle => 'Notifications';
 
   @override
   String get permNotifBody =>
-      'While the gate is on, Android shows a small, silent notification. It means Mursa is ready to pause the apps you chose.';
+      'While the gate is on, Android shows a small, silent notification. It means Prosoche is ready to pause the apps you chose.';
 
   @override
   String get permLocal =>
@@ -342,7 +342,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get batteryBodyGeneric =>
-      'Some phones stop apps running in the background to save battery. If the gate stops appearing, allow Mursa to run in the background.';
+      'Some phones stop apps running in the background to save battery. If the gate stops appearing, allow Prosoche to run in the background.';
 
   @override
   String batteryBodyVendor(String manufacturer) {
@@ -351,19 +351,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get batteryStepsSamsung =>
-      '1. Open battery settings below.\n2. Find Mursa and choose \"Unrestricted\".\n3. In Settings > Battery > Background usage limits, make sure Mursa is not in \"Sleeping apps\".';
+      '1. Open battery settings below.\n2. Find Prosoche and choose \"Unrestricted\".\n3. In Settings > Battery > Background usage limits, make sure Prosoche is not in \"Sleeping apps\".';
 
   @override
   String get batteryStepsXiaomi =>
-      '1. Open battery settings below.\n2. Find Mursa and choose \"No restrictions\".\n3. In the app info of Mursa, turn on \"Autostart\".';
+      '1. Open battery settings below.\n2. Find Prosoche and choose \"No restrictions\".\n3. In the app info of Prosoche, turn on \"Autostart\".';
 
   @override
   String get batteryStepsHuawei =>
-      '1. Open battery settings below.\n2. Find Mursa in App launch and turn off \"Manage automatically\".\n3. Allow auto-launch and running in background.';
+      '1. Open battery settings below.\n2. Find Prosoche in App launch and turn off \"Manage automatically\".\n3. Allow auto-launch and running in background.';
 
   @override
   String get batteryStepsOppo =>
-      '1. Open battery settings below.\n2. Find Mursa and allow background activity.\n3. In the app info of Mursa, turn on \"Allow auto launch\".';
+      '1. Open battery settings below.\n2. Find Prosoche and allow background activity.\n3. In the app info of Prosoche, turn on \"Allow auto launch\".';
 
   @override
   String get batteryOpen => 'Open battery settings';
@@ -372,7 +372,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get batteryDone => 'I\'ve done this';
 
   @override
-  String get batteryNote => 'Mursa uses very little battery.';
+  String get batteryNote => 'Prosoche uses very little battery.';
 
   @override
   String get blkTitle => 'The gate';
@@ -1136,7 +1136,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cardOpen => 'Open';
 
   @override
-  String get cardReflectionAttribution => 'Mursa reflection · reviewed';
+  String get cardReflectionAttribution => 'Prosoche reflection · reviewed';
 
   @override
   String cardEventSurah(String surah, int count) {
@@ -2418,7 +2418,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get setSourcesIntro =>
-      'Mursa shows these texts without any changes, as published by their sources.';
+      'Prosoche shows these texts without any changes, as published by their sources.';
 
   @override
   String get setSourcesEmpty => 'No sources found';
@@ -2435,7 +2435,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'dua': 'Dua',
       'name': 'Names of Allah',
       'reflection': 'Reflections',
-      'curated': 'Mursa content',
+      'curated': 'Prosoche content',
       'audio': 'Recitations',
       'city': 'Places',
       'font': 'Fonts',
@@ -2486,7 +2486,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get setDisclaimerRulings =>
-      'Mursa is a reminder and habit tool. It does not issue religious rulings (fatwas). For questions of religious practice, please consult a qualified scholar.';
+      'Prosoche is a reminder and habit tool. It does not issue religious rulings (fatwas). For questions of religious practice, please consult a qualified scholar.';
 
   @override
   String get setMore => 'More';
@@ -2757,7 +2757,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Reminders may arrive up to 10 minutes late or more. Allow \"Alarms & reminders\" for exact times.';
 
   @override
-  String get appTitle => 'Mursa';
+  String get appTitle => 'Prosoche';
 
   @override
   String get tabToday => 'Today';
@@ -2836,7 +2836,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skContentUnavailableBody =>
-      'Mursa couldn’t verify this content. Please try again later.';
+      'Prosoche couldn’t verify this content. Please try again later.';
 
   @override
   String skProgressOf(int n, int total) {

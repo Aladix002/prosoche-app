@@ -1,14 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meta/meta.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/data/db/user_db.dart';
-import 'package:sakina/data/repositories/infra/card_events.dart';
-import 'package:sakina/data/repositories/infra/databases.dart';
-import 'package:sakina/data/repositories/infra/reading_progress.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/quests.dart' as q;
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/data/db/user_db.dart';
+import 'package:prosoche/data/repositories/infra/card_events.dart';
+import 'package:prosoche/data/repositories/infra/databases.dart';
+import 'package:prosoche/data/repositories/infra/reading_progress.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/quests.dart' as q;
 
-export 'package:sakina/data/db/user_enums.dart' show GateResult, UnlockSource;
+export 'package:prosoche/data/db/user_enums.dart' show GateResult, UnlockSource;
 
 /// Blokovana appka, ako ju vidi brana (`blocked_app`, docs/02 A4, D12).
 @immutable

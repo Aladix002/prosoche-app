@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sakina/ui/foundation/sk_ui_strings.dart';
-import 'package:sakina/ui/theme/sk_context.dart';
-import 'package:sakina/ui/tokens/sk_space.dart';
+import 'package:prosoche/ui/foundation/sk_ui_strings.dart';
+import 'package:prosoche/ui/theme/sk_context.dart';
+import 'package:prosoche/ui/tokens/sk_space.dart';
 
 /// Varianty tlacidla (docs/01 3.2 `SkButton`).
 enum SkButtonVariant { primary, secondary, tertiary, outlined, destructive }
 
-/// Tlacidlo Sakina. Label sa zalamuje (nikdy ellipsis), min. vyska 52 dp
+/// Tlacidlo Prosoche. Label sa zalamuje (nikdy ellipsis), min. vyska 52 dp
 /// pre `primary`, inak 48 dp. `loading` nahradi label spinnerom 20 dp bez
 /// zmeny sirky. Disabled = `onPressed: null`.
 class SkButton extends StatelessWidget {

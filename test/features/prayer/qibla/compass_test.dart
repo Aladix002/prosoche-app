@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/features/prayer/qibla/compass.dart';
-import 'package:sakina/features/prayer/qibla/compass_math.dart';
+import 'package:prosoche/features/prayer/qibla/compass.dart';
+import 'package:prosoche/features/prayer/qibla/compass_math.dart';
 
 const _accel = EventChannel('dev.fluttercommunity.plus/sensors/accelerometer');
 const _magnet = EventChannel('dev.fluttercommunity.plus/sensors/magnetometer');

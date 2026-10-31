@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/db/content_db.dart';
-import 'package:sakina/domain/common/common.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/domain/common/common.dart';
 
 /// sha256 Uthmani textu pribalenej content.db (plan 17.3), algoritmus
 /// `meta.surah_hash_algo`: sha256(utf8(join('\n', text_uthmani ORDER BY
-/// id))). Zdroj: `sakina-content` build 2026102901 (Tanzil Uthmani 1.1).
+/// id))). Zdroj: `prosoche-content` build 2026102901 (Tanzil Uthmani 1.1).
 const kUthmaniSha256 =
     'c787f3002b99299f4481a0874912fb5c2da9ed17fa763da23a1acbdee1660f58';
 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/ui/components/sk_dialogs.dart';
-import 'package:sakina/ui/foundation/sk_text_scaling.dart';
-import 'package:sakina/ui/gallery/gallery_catalog.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
-import 'package:sakina/ui/theme/sakina_typography.dart';
-import 'package:sakina/ui/theme/sk_context.dart';
-import 'package:sakina/ui/tokens/sk_space.dart';
+import 'package:prosoche/ui/components/sk_dialogs.dart';
+import 'package:prosoche/ui/foundation/sk_text_scaling.dart';
+import 'package:prosoche/ui/gallery/gallery_catalog.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
+import 'package:prosoche/ui/theme/prosoche_typography.dart';
+import 'package:prosoche/ui/theme/sk_context.dart';
+import 'package:prosoche/ui/tokens/sk_space.dart';
 
 /// Dev obrazovka so vsetkymi komponentmi a stavmi (PLAN U-01 Vystupy).
 ///
@@ -28,11 +28,11 @@ class _SkGalleryScreenState extends State<SkGalleryScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = _dark
-        ? SakinaTheme.dark(
+        ? ProsocheTheme.dark(
             highContrast: _highContrast,
             arabicScale: _arabicScale,
           )
-        : SakinaTheme.light(
+        : ProsocheTheme.light(
             highContrast: _highContrast,
             arabicScale: _arabicScale,
           );
@@ -45,7 +45,7 @@ class _SkGalleryScreenState extends State<SkGalleryScreen> {
           child: Builder(
             builder: (context) => Scaffold(
               appBar: AppBar(
-                title: const Text('Sakina UI gallery'),
+                title: const Text('Prosoche UI gallery'),
                 actions: [
                   IconButton(
                     tooltip: 'Settings',

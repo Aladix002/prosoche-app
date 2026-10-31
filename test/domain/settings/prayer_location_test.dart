@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/settings/prayer_location.dart';
+import 'package:prosoche/domain/settings/prayer_location.dart';
 
 void main() {
   test('rounds coordinates to 2 decimals', () {

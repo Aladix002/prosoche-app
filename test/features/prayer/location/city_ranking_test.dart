@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/features/prayer/location/city_ranking.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/features/prayer/location/city_ranking.dart';
 
 City city(int id, String name, String tz, {String country = 'XX'}) =>
     City(id: id, name: name, countryCode: country, lat: 0, lng: 0, tz: tz);

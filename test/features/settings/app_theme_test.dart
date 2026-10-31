@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/today/today_screen.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/today/today_screen.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../fakes/in_memory_settings_repository.dart';
@@ -17,7 +17,7 @@ void main() {
     final settings = InMemorySettingsRepository();
     await settings.set(SettingsKeys.displayTheme, 'dark');
     await settings.set(SettingsKeys.displayArabicScale, 1.45);
-    await tester.pumpSakina(fakes: FakeRepositories(settings: settings));
+    await tester.pumpProsoche(fakes: FakeRepositories(settings: settings));
     final context = tester.element(find.byType(TodayScreen));
     expect(Theme.of(context).brightness, Brightness.dark);
     expect(context.sk.type.arabicScale, SkArabicScale.xl);

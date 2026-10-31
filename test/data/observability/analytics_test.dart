@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/observability/analytics.dart';
+import 'package:prosoche/data/observability/analytics.dart';
 
 void main() {
   // docs/02 0.6: nic z tohto nesmie odist v analytike.

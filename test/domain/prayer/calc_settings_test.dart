@@ -1,9 +1,9 @@
 import 'package:adhan_dart/adhan_dart.dart' as adhan;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/prayer/calc_settings.dart';
-import 'package:sakina/domain/prayer/country_defaults.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/domain/prayer/calc_settings.dart';
+import 'package:prosoche/domain/prayer/country_defaults.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
 import '../../fakes/in_memory_settings_repository.dart';
 

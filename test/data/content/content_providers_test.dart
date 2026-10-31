@@ -6,15 +6,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:sakina/core/flavor/flavor.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/content/bundled_content.dart';
-import 'package:sakina/data/content/content_http_client.dart';
-import 'package:sakina/data/content/content_pack_service.dart';
-import 'package:sakina/data/content/content_providers.dart';
-import 'package:sakina/data/content/remote_config_policy.dart';
-import 'package:sakina/data/content/sem_ver.dart';
+import 'package:prosoche/core/flavor/flavor.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/content/bundled_content.dart';
+import 'package:prosoche/data/content/content_http_client.dart';
+import 'package:prosoche/data/content/content_pack_service.dart';
+import 'package:prosoche/data/content/content_providers.dart';
+import 'package:prosoche/data/content/remote_config_policy.dart';
+import 'package:prosoche/data/content/sem_ver.dart';
 
 import 'content_test_helpers.dart';
 

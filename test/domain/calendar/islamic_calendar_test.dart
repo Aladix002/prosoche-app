@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/calendar/hijri_date.dart';
-import 'package:sakina/domain/calendar/islamic_calendar.dart';
-import 'package:sakina/domain/common/local_date.dart';
+import 'package:prosoche/domain/calendar/hijri_date.dart';
+import 'package:prosoche/domain/calendar/islamic_calendar.dart';
+import 'package:prosoche/domain/common/local_date.dart';
 
 import 'reference_dates.dart';
 

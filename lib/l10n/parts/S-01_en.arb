@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "Mursa",
+  "appTitle": "Prosoche",
   "@appTitle": {"description": "Application name."},
   "tabToday": "Today",
   "@tabToday": {"description": "Bottom navigation label for the Today tab."},

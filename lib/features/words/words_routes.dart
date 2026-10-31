@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/router/placeholder_route.dart';
+import 'package:prosoche/core/router/placeholder_route.dart';
 
 /// Slovicka (docs/02 C1). Vstup je z tabu Journey (docs/01 D1), preto
 /// routy idu nad shell. Registruju sa len pri `FEATURE_WORDS`.

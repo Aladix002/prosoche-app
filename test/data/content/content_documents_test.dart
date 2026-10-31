@@ -4,13 +4,13 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/content/content_documents.dart';
-import 'package:sakina/data/content/content_pack_state.dart';
-import 'package:sakina/data/content/remote_config_policy.dart';
-import 'package:sakina/data/content/sem_ver.dart';
-import 'package:sakina/data/content/signature_verifier.dart';
-import 'package:sakina/data/content/trusted_keys.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/content/content_documents.dart';
+import 'package:prosoche/data/content/content_pack_state.dart';
+import 'package:prosoche/data/content/remote_config_policy.dart';
+import 'package:prosoche/data/content/sem_ver.dart';
+import 'package:prosoche/data/content/signature_verifier.dart';
+import 'package:prosoche/data/content/trusted_keys.dart';
 
 import 'content_test_helpers.dart';
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/ui/tokens/sk_fonts.dart';
+import 'package:prosoche/ui/tokens/sk_fonts.dart';
 
 /// Nazvy rodin fontov z `assets/fonts/` (dodava U-01, docs/01 2.3,
 /// PLAN_VYVOJA U-01). Aliasy na [SkFonts], aby sedeli s `family:`
 /// v pubspec.yaml (overuje test/ui/i18n/locale_fonts_test.dart).
-abstract final class SakinaFontFamilies {
+abstract final class ProsocheFontFamilies {
   static const String inter = SkFonts.inter;
   static const String literata = SkFonts.literata;
   static const String notoNaskhArabic = SkFonts.notoNaskhArabic;
@@ -47,13 +47,13 @@ final class LocaleFontSpec {
 /// vychodiskove, overia ich goldeny s realnymi fontami (Q-03).
 abstract final class LocaleFonts {
   static const latin = LocaleFontSpec(
-    family: SakinaFontFamilies.inter,
-    fallback: [SakinaFontFamilies.notoNaskhArabic],
+    family: ProsocheFontFamilies.inter,
+    fallback: [ProsocheFontFamilies.notoNaskhArabic],
   );
 
   static const arabic = LocaleFontSpec(
-    family: SakinaFontFamilies.notoNaskhArabic,
-    fallback: [SakinaFontFamilies.inter],
+    family: ProsocheFontFamilies.notoNaskhArabic,
+    fallback: [ProsocheFontFamilies.inter],
     lineHeightScale: 1.15,
     minLineHeight: 1.6,
   );
@@ -61,15 +61,21 @@ abstract final class LocaleFonts {
   /// Nastaliq ma velky vertikalny rozsah (sikme spojenia), preto vyrazne
   /// vacsia vyska riadku.
   static const urdu = LocaleFontSpec(
-    family: SakinaFontFamilies.notoNastaliqUrdu,
-    fallback: [SakinaFontFamilies.notoNaskhArabic, SakinaFontFamilies.inter],
+    family: ProsocheFontFamilies.notoNastaliqUrdu,
+    fallback: [
+      ProsocheFontFamilies.notoNaskhArabic,
+      ProsocheFontFamilies.inter,
+    ],
     lineHeightScale: 1.5,
     minLineHeight: 2.2,
   );
 
   static const bengali = LocaleFontSpec(
-    family: SakinaFontFamilies.notoSansBengali,
-    fallback: [SakinaFontFamilies.inter, SakinaFontFamilies.notoNaskhArabic],
+    family: ProsocheFontFamilies.notoSansBengali,
+    fallback: [
+      ProsocheFontFamilies.inter,
+      ProsocheFontFamilies.notoNaskhArabic,
+    ],
     lineHeightScale: 1.15,
     minLineHeight: 1.6,
   );

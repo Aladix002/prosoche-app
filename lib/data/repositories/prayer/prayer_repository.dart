@@ -2,17 +2,17 @@ import 'dart:async';
 
 import 'package:clock/clock.dart';
 import 'package:meta/meta.dart';
-import 'package:sakina/data/db/user_db.dart';
-import 'package:sakina/data/repositories/infra/time_providers.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/feed/feed.dart';
-import 'package:sakina/domain/prayer/calc_settings.dart';
-import 'package:sakina/domain/prayer/country_defaults.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/prayer/prayer_schedule.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/data/db/user_db.dart';
+import 'package:prosoche/data/repositories/infra/time_providers.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/feed/feed.dart';
+import 'package:prosoche/domain/prayer/calc_settings.dart';
+import 'package:prosoche/domain/prayer/country_defaults.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/prayer/prayer_schedule.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
-export 'package:sakina/data/db/user_enums.dart' show PrayerStatus;
+export 'package:prosoche/data/db/user_enums.dart' show PrayerStatus;
 
 /// Ulozena poloha a nastavenia vypoctu (docs/02 0.7 `prayer.*`).
 @immutable

@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/calendar/calendar.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/ramadan/ramadan.dart';
+import 'package:prosoche/domain/calendar/calendar.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/ramadan/ramadan.dart';
 
 /// Umm al-Qura 1448: 29. Shaban = 6. 2. 2027, Shaban ma 30 dni,
 /// 1. Ramadan = 8. 2. 2027, Ramadan 29 dni, Eid = 9. 3. 2027.

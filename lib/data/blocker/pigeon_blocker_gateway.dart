@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/blocker/blocker_api.pigeon.dart' as api;
-import 'package:sakina/data/blocker/blocker_gateway.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/blocker/blocker_api.pigeon.dart' as api;
+import 'package:prosoche/data/blocker/blocker_gateway.dart';
 
 /// [BlockerGateway] nad Pigeon API (docs/06 C.5). V `lite` a na iOS
 /// nativna strana neexistuje, volania vratia [UnsupportedOnPlatform].

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
 
 void main() {
   setUpAll(initializeDateFormatting);
@@ -43,18 +43,18 @@ void main() {
     expect(localizeDigits('Asr', DigitStyle.arabicIndic), 'Asr');
   });
 
-  group('SakinaFormats', () {
+  group('ProsocheFormats', () {
     test('time 24h and 12h', () {
-      expect(SakinaFormats(SakinaLocales.en).time(evening), '18:05');
+      expect(ProsocheFormats(ProsocheLocales.en).time(evening), '18:05');
       expect(
-        SakinaFormats(SakinaLocales.en).time(evening, use24h: false),
+        ProsocheFormats(ProsocheLocales.en).time(evening, use24h: false),
         '6:05\u202FPM', // intl: uzka nedelitelna medzera
       );
-      expect(SakinaFormats(SakinaLocales.id).time(evening), '18.05');
-      expect(SakinaFormats(SakinaLocales.bn).time(evening), '১৮:০৫');
+      expect(ProsocheFormats(ProsocheLocales.id).time(evening), '18.05');
+      expect(ProsocheFormats(ProsocheLocales.bn).time(evening), '১৮:০৫');
       expect(
-        SakinaFormats(
-          SakinaLocales.ar,
+        ProsocheFormats(
+          ProsocheLocales.ar,
           digits: DigitStyle.arabicIndic,
         ).time(evening),
         '١٨:٠٥',
@@ -62,61 +62,64 @@ void main() {
     });
 
     test('numbers with grouping and native separators', () {
-      expect(SakinaFormats(SakinaLocales.en).number(1234.5), '1,234.5');
-      expect(SakinaFormats(SakinaLocales.tr).number(1234.5), '1.234,5');
-      expect(SakinaFormats(SakinaLocales.bn).number(1234.5), '১,২৩৪.৫');
+      expect(ProsocheFormats(ProsocheLocales.en).number(1234.5), '1,234.5');
+      expect(ProsocheFormats(ProsocheLocales.tr).number(1234.5), '1.234,5');
+      expect(ProsocheFormats(ProsocheLocales.bn).number(1234.5), '১,২৩৪.৫');
       expect(
-        SakinaFormats(
-          SakinaLocales.ar,
+        ProsocheFormats(
+          ProsocheLocales.ar,
           digits: DigitStyle.arabicIndic,
         ).number(1234.5),
         '١٬٢٣٤٫٥',
       );
       expect(
-        SakinaFormats(
-          SakinaLocales.ur,
+        ProsocheFormats(
+          ProsocheLocales.ur,
           digits: DigitStyle.extendedArabicIndic,
         ).number(1234.5),
         '۱٬۲۳۴٫۵',
       );
       expect(
-        SakinaFormats(SakinaLocales.ar, digits: DigitStyle.latin).number(7),
+        ProsocheFormats(ProsocheLocales.ar, digits: DigitStyle.latin).number(7),
         '7',
       );
     });
 
     test('dates use intl month names and chosen digits', () {
-      expect(SakinaFormats(SakinaLocales.en).date(evening), 'Mar 7, 2026');
-      expect(SakinaFormats(SakinaLocales.bn).date(evening), contains('২০২৬'));
+      expect(ProsocheFormats(ProsocheLocales.en).date(evening), 'Mar 7, 2026');
       expect(
-        SakinaFormats(
-          SakinaLocales.ar,
+        ProsocheFormats(ProsocheLocales.bn).date(evening),
+        contains('২০২৬'),
+      );
+      expect(
+        ProsocheFormats(
+          ProsocheLocales.ar,
           digits: DigitStyle.arabicIndic,
         ).date(evening),
         contains('٢٠٢٦'),
       );
       expect(
-        SakinaFormats(SakinaLocales.en).weekdayDate(evening),
+        ProsocheFormats(ProsocheLocales.en).weekdayDate(evening),
         'Saturday, March 7',
       );
     });
 
     test('ayahRef is isolated and localized', () {
-      final ref = SakinaFormats(
-        SakinaLocales.ar,
+      final ref = ProsocheFormats(
+        ProsocheLocales.ar,
         digits: DigitStyle.arabicIndic,
       ).ayahRef(2, 255);
       expect(ref, '${Bidi.fsi}٢:٢٥٥${Bidi.pdi}');
       expect(
-        Bidi.strip(SakinaFormats(SakinaLocales.en).ayahRef(2, 255)),
+        Bidi.strip(ProsocheFormats(ProsocheLocales.en).ayahRef(2, 255)),
         '2:255',
       );
     });
 
     test('defaults digits from the locale', () {
-      expect(SakinaFormats(SakinaLocales.bn).digits, DigitStyle.bengali);
-      expect(SakinaFormats(SakinaLocales.ar).digits, DigitStyle.latin);
-      expect(SakinaFormats(SakinaLocales.ur).locale, SakinaLocales.ur);
+      expect(ProsocheFormats(ProsocheLocales.bn).digits, DigitStyle.bengali);
+      expect(ProsocheFormats(ProsocheLocales.ar).digits, DigitStyle.latin);
+      expect(ProsocheFormats(ProsocheLocales.ur).locale, ProsocheLocales.ur);
     });
   });
 }

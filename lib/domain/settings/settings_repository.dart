@@ -1,8 +1,8 @@
-import 'package:sakina/domain/settings/setting_key.dart';
+import 'package:prosoche/domain/settings/setting_key.dart';
 
-export 'package:sakina/domain/settings/prayer_location.dart';
-export 'package:sakina/domain/settings/setting_key.dart';
-export 'package:sakina/domain/settings/settings_keys.dart';
+export 'package:prosoche/domain/settings/prayer_location.dart';
+export 'package:prosoche/domain/settings/setting_key.dart';
+export 'package:prosoche/domain/settings/settings_keys.dart';
 
 /// Pristup k tabulke `settings` v user.db (docs/02 0.7).
 ///

@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/ramadan/ramadan.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/ramadan/ramadan.dart';
 
 /// Fake [FastLogRepository] pre widget testy (bez databazy).
 class FakeFastLogRepository implements FastLogRepository {

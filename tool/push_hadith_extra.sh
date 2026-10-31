@@ -2,10 +2,10 @@
 # Nahra hadith_extra.db do app support adresara DEBUG dev buildu (D-05).
 # Len na lokalne testovanie; balik sa do APK nepribaluje.
 #
-#   tool/push_hadith_extra.sh [cesta k sakina-content]
+#   tool/push_hadith_extra.sh [cesta k prosoche-content]
 #
-# Default: $SAKINA_CONTENT_DIR, inak ../sakina-content vedla repa.
-# Env: APP_ID (default app.mursa.dev), ANDROID_SERIAL (vyber zariadenia).
+# Default: $PROSOCHE_CONTENT_DIR, inak ../prosoche-content vedla repa.
+# Env: APP_ID (default app.prosoche.dev), ANDROID_SERIAL (vyber zariadenia).
 #
 # Balik musi byt z toho isteho buildu ako pribalena content.db
 # (tool/bundle_content.sh): appka ho pri starte porovna s
@@ -15,13 +15,13 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-src="${1:-${SAKINA_CONTENT_DIR:-../sakina-content}}"
+src="${1:-${PROSOCHE_CONTENT_DIR:-../prosoche-content}}"
 pack="$src/dist/hadith_extra.db"
-app="${APP_ID:-app.mursa.dev}"
+app="${APP_ID:-app.prosoche.dev}"
 
 fail() { printf 'FAIL: %s\n' "$*" >&2; exit 1; }
 
-[[ -f "$pack" ]] || fail "chyba $pack (spusti make all v sakina-content)"
+[[ -f "$pack" ]] || fail "chyba $pack (spusti make all v prosoche-content)"
 command -v adb >/dev/null || fail "adb nie je v PATH"
 [[ "$app" == *.dev ]] || fail "len dev build ($app)"
 
@@ -47,7 +47,7 @@ adb shell run-as "$app" mkdir -p files/content
 # Cez /data/local/tmp (exec-in + run-as na emulatore subor nevytvori);
 # adb spaja argumenty do jedneho prikazu, preto vnorene uvodzovky.
 # Najprv .next, potom atomicky mv.
-tmp=/data/local/tmp/mursa_hadith_extra.db
+tmp=/data/local/tmp/prosoche_hadith_extra.db
 adb push "$pack" "$tmp" >/dev/null
 adb shell run-as "$app" sh -c "'cp $tmp files/content/hadith_extra.db.next'"
 adb shell rm -f "$tmp"

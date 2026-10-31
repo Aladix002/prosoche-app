@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/router/navigator_keys.dart';
-import 'package:sakina/core/router/routes.dart';
-import 'package:sakina/features/quran/quran_screen.dart';
-import 'package:sakina/features/quran/reader/quran_reader_screen.dart';
-import 'package:sakina/features/quran/search/quran_search_screen.dart';
+import 'package:prosoche/core/router/navigator_keys.dart';
+import 'package:prosoche/core/router/routes.dart';
+import 'package:prosoche/features/quran/quran_screen.dart';
+import 'package:prosoche/features/quran/reader/quran_reader_screen.dart';
+import 'package:prosoche/features/quran/search/quran_search_screen.dart';
 
 /// Tab Quran (docs/02 C1, C2). Vlastnik: F-04.
 abstract final class QuranRoutes {

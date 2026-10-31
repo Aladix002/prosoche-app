@@ -7,22 +7,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/features/prayer/location/city_search_screen.dart';
-import 'package:sakina/features/prayer/prayer_screen.dart';
-import 'package:sakina/features/prayer/qibla/compass.dart';
-import 'package:sakina/features/prayer/qibla/qibla_screen.dart';
-import 'package:sakina/features/prayer/settings/prayer_settings_screen.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/features/prayer/location/city_search_screen.dart';
+import 'package:prosoche/features/prayer/prayer_screen.dart';
+import 'package:prosoche/features/prayer/qibla/compass.dart';
+import 'package:prosoche/features/prayer/qibla/qibla_screen.dart';
+import 'package:prosoche/features/prayer/settings/prayer_settings_screen.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../helpers/golden/golden.dart';
 import 'f05_test_app.dart';
 
 ThemeData _theme(Brightness b) =>
-    b == Brightness.dark ? SakinaTheme.dark() : SakinaTheme.light();
+    b == Brightness.dark ? ProsocheTheme.dark() : ProsocheTheme.light();
 
 const _screen = BoxConstraints.tightFor(width: 360, height: 760);
 

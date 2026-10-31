@@ -4,11 +4,11 @@
 > Open questions for the lawyer are marked [OVERIT]. Based on TECHNICKY_PLAN 13, 24 and
 > docs/11 (8, 12.4), and on the code at tag `rc0`.
 
-# Mursa privacy policy
+# Prosoche privacy policy
 
 Effective date: [DATE]
 
-Mursa is an app for daily Quran reading, prayer times and reminders. We built it so that
+Prosoche is an app for daily Quran reading, prayer times and reminders. We built it so that
 your personal and religious data stays on your phone.
 
 ## 1. Who we are
@@ -112,7 +112,7 @@ udajov SR, Hranicna 12, 820 07 Bratislava, https://dataprotection.gov.sk.
 
 ## 8. Children
 
-Mursa is not directed at children under 13. Usage statistics and crash reports are available
+Prosoche is not directed at children under 13. Usage statistics and crash reports are available
 only to users who confirm they are 16 or older.
 
 ## 9. Security
@@ -124,7 +124,7 @@ use. Your local data is protected by Android app sandboxing.
 
 Prayer times are calculated on your device and can differ from your local mosque by several
 minutes; please confirm them locally. Translations convey the meanings of the Quran; they
-are not the Quran itself. Mursa does not issue religious rulings.
+are not the Quran itself. Prosoche does not issue religious rulings.
 
 ## 11. Changes
 

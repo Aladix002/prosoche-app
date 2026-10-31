@@ -3,19 +3,19 @@
 import 'dart:convert';
 
 import 'package:clock/clock.dart';
-import 'package:sakina/data/db/content_db.dart';
-import 'package:sakina/data/db/user_db.dart';
-import 'package:sakina/data/repositories/calendar/calendar_repository.dart';
-import 'package:sakina/data/repositories/cards/card_actions_repository.dart';
-import 'package:sakina/data/repositories/cards/card_content_repository.dart';
-import 'package:sakina/data/repositories/catalog/content_catalog.dart';
-import 'package:sakina/data/repositories/prayer/prayer_repository.dart';
-import 'package:sakina/data/repositories/quran/quran_repository.dart';
-import 'package:sakina/data/repositories/settings/drift_settings_repository.dart';
-import 'package:sakina/data/repositories/today/daily_set_repository.dart';
-import 'package:sakina/data/repositories/today/quest_repository.dart';
-import 'package:sakina/data/repositories/today/streak_repository.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/data/db/content_db.dart';
+import 'package:prosoche/data/db/user_db.dart';
+import 'package:prosoche/data/repositories/calendar/calendar_repository.dart';
+import 'package:prosoche/data/repositories/cards/card_actions_repository.dart';
+import 'package:prosoche/data/repositories/cards/card_content_repository.dart';
+import 'package:prosoche/data/repositories/catalog/content_catalog.dart';
+import 'package:prosoche/data/repositories/prayer/prayer_repository.dart';
+import 'package:prosoche/data/repositories/quran/quran_repository.dart';
+import 'package:prosoche/data/repositories/settings/drift_settings_repository.dart';
+import 'package:prosoche/data/repositories/today/daily_set_repository.dart';
+import 'package:prosoche/data/repositories/today/quest_repository.dart';
+import 'package:prosoche/data/repositories/today/streak_repository.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
 import '../db/fixtures/content_fixture.dart';
 
@@ -30,7 +30,7 @@ class TestClock extends Clock {
 }
 
 /// Prida do fixture platne pravidla eventov a sablony questov (tvar z
-/// pipeline `sakina-content`, text len placeholder).
+/// pipeline `prosoche-content`, text len placeholder).
 Future<void> addCuratedRules(ContentDb content) async {
   Future<void> exec(String sql, List<Object?> args) =>
       content.customStatement(sql, args);

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patrol/patrol.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import 'support/app_harness.dart';
 import 'support/flows.dart';

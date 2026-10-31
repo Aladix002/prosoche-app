@@ -1,11 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/core/router/app_router.dart';
-import 'package:sakina/data/observability/crash_reporter.dart';
-import 'package:sakina/data/observability/observability_providers.dart';
-import 'package:sakina/features/onboarding/onboarding_controller.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/core/router/app_router.dart';
+import 'package:prosoche/data/observability/crash_reporter.dart';
+import 'package:prosoche/data/observability/observability_providers.dart';
+import 'package:prosoche/features/onboarding/onboarding_controller.dart';
 
 /// D-04: ring buffer a Sentry sink zdielane s `AppLogger` z bootstrapu
 /// a onboarding analytika (F-01 O7) cez allowlist [analyticsProvider].

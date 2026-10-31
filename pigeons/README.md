@@ -4,4 +4,4 @@ Pigeon definicie nativneho API.
     dart format lib/data/blocker
 
 Vystup: lib/data/blocker/blocker_api.pigeon.dart a
-android/app/src/full/kotlin/app/mursa/blocker/BlockerApi.g.kt.
+android/app/src/full/kotlin/app/prosoche/blocker/BlockerApi.g.kt.

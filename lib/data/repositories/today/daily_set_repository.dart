@@ -3,17 +3,17 @@ import 'dart:async';
 import 'package:clock/clock.dart';
 import 'package:drift/drift.dart' show ComparableExpr;
 import 'package:meta/meta.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/data/db/user_db.dart' as db;
-import 'package:sakina/data/repositories/calendar/calendar_repository.dart';
-import 'package:sakina/data/repositories/catalog/content_catalog.dart';
-import 'package:sakina/data/repositories/infra/card_events.dart';
-import 'package:sakina/data/repositories/infra/reading_progress.dart';
-import 'package:sakina/data/repositories/today/quest_repository.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/feed/feed.dart';
-import 'package:sakina/domain/quests/quests.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/data/db/user_db.dart' as db;
+import 'package:prosoche/data/repositories/calendar/calendar_repository.dart';
+import 'package:prosoche/data/repositories/catalog/content_catalog.dart';
+import 'package:prosoche/data/repositories/infra/card_events.dart';
+import 'package:prosoche/data/repositories/infra/reading_progress.dart';
+import 'package:prosoche/data/repositories/today/quest_repository.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/feed/feed.dart';
+import 'package:prosoche/domain/quests/quests.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
 /// Ulozena denna sada a jej progres (docs/02 0.3, D13; A2 CTA, A3).
 @immutable

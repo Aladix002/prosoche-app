@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/prayer/calc_settings.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/prayer/prayer_paths.dart';
-import 'package:sakina/features/prayer/prayer_providers.dart';
-import 'package:sakina/features/prayer/prayer_routes.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/prayer/calc_settings.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/prayer/prayer_paths.dart';
+import 'package:prosoche/features/prayer/prayer_providers.dart';
+import 'package:prosoche/features/prayer/prayer_routes.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 import '../../../fakes/fake_repositories.dart';
 import '../f05_test_app.dart';
@@ -111,7 +111,7 @@ void main() {
     String fajrText() => tester
         .widget<SkPrayerRow>(find.widgetWithText(SkPrayerRow, 'Fajr'))
         .time;
-    final en = SakinaFormats(const Locale('en'));
+    final en = ProsocheFormats(const Locale('en'));
     expect(fajrText(), en.time(before[Prayer.fajr]));
 
     await tester.tap(find.text('Bratislava'));

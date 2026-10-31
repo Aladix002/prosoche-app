@@ -4,10 +4,10 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/features/feed/feed_screen.dart';
-import 'package:sakina/features/today/today_screen.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/features/feed/feed_screen.dart';
+import 'package:prosoche/features/today/today_screen.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../helpers/golden/golden.dart';
@@ -19,7 +19,7 @@ import 'f02_harness.dart';
 ///   flutter test --update-goldens test/features/today/today_golden_test.dart
 void main() {
   ThemeData theme(Brightness b) =>
-      b == Brightness.dark ? SakinaTheme.dark() : SakinaTheme.light();
+      b == Brightness.dark ? ProsocheTheme.dark() : ProsocheTheme.light();
 
   Widget screen(BuildContext context, FakeRepositories repos, Widget child) =>
       ProviderScope(

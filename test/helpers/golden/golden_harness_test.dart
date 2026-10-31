@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
 
 import 'golden.dart';
 
@@ -17,7 +17,7 @@ class _Sample extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final locale = Localizations.localeOf(context);
-    final time = SakinaFormats(locale).time(DateTime(2026, 3, 7, 18, 5));
+    final time = ProsocheFormats(locale).time(DateTime(2026, 3, 7, 18, 5));
     return Padding(
       padding: const EdgeInsetsDirectional.only(start: 24, end: 8, top: 8),
       child: Column(
@@ -60,7 +60,7 @@ void main() {
   );
 
   group('LocalizedTestApp', () {
-    for (final locale in SakinaLocales.all) {
+    for (final locale in ProsocheLocales.all) {
       testWidgets('${locale.languageCode}: locale, direction, font, scale', (
         tester,
       ) async {
@@ -93,7 +93,7 @@ void main() {
     testWidgets('size constrains the surface', (tester) async {
       await tester.pumpWidget(
         const LocalizedTestApp(
-          locale: SakinaLocales.en,
+          locale: ProsocheLocales.en,
           size: Size(200, 100),
           child: SizedBox.expand(),
         ),
@@ -104,7 +104,7 @@ void main() {
 
   test('goldenScenarioName', () {
     expect(
-      goldenScenarioName(SakinaLocales.ur, Brightness.dark, 2),
+      goldenScenarioName(ProsocheLocales.ur, Brightness.dark, 2),
       'ur dark x2.0',
     );
     expect(fullGoldenLocales.length + smokeLocales.length, 6);
@@ -113,11 +113,11 @@ void main() {
   group('PseudoLocale', () {
     test('uses the script of the locale and keeps placeholders', () {
       const src = 'Hello {name}, 3 cards';
-      final ur = PseudoLocale.localize(src, SakinaLocales.ur);
-      final bn = PseudoLocale.localize(src, SakinaLocales.bn);
-      final ar = PseudoLocale.localize(src, SakinaLocales.ar);
-      final tr = PseudoLocale.localize(src, SakinaLocales.tr);
-      final en = PseudoLocale.localize(src, SakinaLocales.en);
+      final ur = PseudoLocale.localize(src, ProsocheLocales.ur);
+      final bn = PseudoLocale.localize(src, ProsocheLocales.bn);
+      final ar = PseudoLocale.localize(src, ProsocheLocales.ar);
+      final tr = PseudoLocale.localize(src, ProsocheLocales.tr);
+      final en = PseudoLocale.localize(src, ProsocheLocales.en);
       for (final s in [ur, bn, ar, tr, en]) {
         expect(s, startsWith('['));
         expect(s, endsWith(']'));
@@ -134,26 +134,27 @@ void main() {
 
     test('never produces Arabic alif, lam or ha', () {
       final all = [
-        for (final l in SakinaLocales.all) PseudoLocale.sentence(l, words: 40),
+        for (final l in ProsocheLocales.all)
+          PseudoLocale.sentence(l, words: 40),
       ].join();
       expect(all, isNot(matches('[اله]')));
     });
 
     test('empty input stays empty inside brackets', () {
-      expect(PseudoLocale.localize('', SakinaLocales.ar), '[]');
+      expect(PseudoLocale.localize('', ProsocheLocales.ar), '[]');
     });
   });
 
   group('UR and BN at textScale 2.0 are not clipped', () {
     // Realne fonty (Nastaliq ma najvacsiu vysku), nie testovaci font.
-    setUpAll(loadSakinaFonts);
+    setUpAll(loadProsocheFonts);
     final strings = _enStrings();
     test('ARB template has strings', () => expect(strings, isNotEmpty));
 
     for (final locale in [
-      SakinaLocales.ur,
-      SakinaLocales.bn,
-      SakinaLocales.ar,
+      ProsocheLocales.ur,
+      ProsocheLocales.bn,
+      ProsocheLocales.ar,
     ]) {
       testWidgets(locale.languageCode, (tester) async {
         await tester.binding.setSurfaceSize(const Size(360, 640));
@@ -194,12 +195,12 @@ void main() {
   ) async {
     await tester.pumpWidget(
       LocalizedTestApp(
-        locale: SakinaLocales.ur,
+        locale: ProsocheLocales.ur,
         textScale: 2,
         child: SizedBox(
           width: 100,
           child: Text(
-            PseudoLocale.sentence(SakinaLocales.ur, words: 20),
+            PseudoLocale.sentence(ProsocheLocales.ur, words: 20),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -212,11 +213,13 @@ void main() {
   testWidgets('expectNoTextClipping detects a layout overflow', (tester) async {
     await tester.pumpWidget(
       LocalizedTestApp(
-        locale: SakinaLocales.bn,
+        locale: ProsocheLocales.bn,
         textScale: 2,
         child: SizedBox(
           width: 100,
-          child: Row(children: [Text(PseudoLocale.sentence(SakinaLocales.bn))]),
+          child: Row(
+            children: [Text(PseudoLocale.sentence(ProsocheLocales.bn))],
+          ),
         ),
       ),
     );

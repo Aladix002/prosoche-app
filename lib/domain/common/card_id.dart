@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/common/ayah_id.dart';
-import 'package:sakina/domain/common/local_date.dart';
+import 'package:prosoche/domain/common/ayah_id.dart';
+import 'package:prosoche/domain/common/local_date.dart';
 
 /// Typ karty = prva cast `card_id` a hodnota `card_event.type` (docs/02 0.2).
 enum CardType {

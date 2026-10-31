@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:sakina/ui/components/sk_states.dart';
-import 'package:sakina/ui/foundation/sk_text_scaling.dart';
-import 'package:sakina/ui/foundation/sk_ui_strings.dart';
-import 'package:sakina/ui/theme/sakina_typography.dart';
-import 'package:sakina/ui/theme/sk_context.dart';
-import 'package:sakina/ui/theme/tajwid_colors.dart';
-import 'package:sakina/ui/tokens/sk_space.dart';
+import 'package:prosoche/ui/components/sk_states.dart';
+import 'package:prosoche/ui/foundation/sk_text_scaling.dart';
+import 'package:prosoche/ui/foundation/sk_ui_strings.dart';
+import 'package:prosoche/ui/theme/prosoche_typography.dart';
+import 'package:prosoche/ui/theme/sk_context.dart';
+import 'package:prosoche/ui/theme/tajwid_colors.dart';
+import 'package:prosoche/ui/tokens/sk_space.dart';
 
 /// Tajwid pravidlo segmentu (docs/01 2.2).
 enum SkTajwidRule {
@@ -118,7 +118,7 @@ class SkArabicText extends StatelessWidget {
 
   bool get isQuran => _quranStyle != null;
 
-  SkArabicStyle _token(SakinaTypography t) =>
+  SkArabicStyle _token(ProsocheTypography t) =>
       switch (_quranStyle) {
         SkQuranStyle.card => t.quranCard,
         SkQuranStyle.reader => t.quranReader,
@@ -264,7 +264,7 @@ class _RenderOverflowGuard extends RenderProxyBox {
             FlutterErrorDetails(
               exception: error,
               stack: StackTrace.current,
-              library: 'sakina ui',
+              library: 'prosoche ui',
             ),
           );
         }

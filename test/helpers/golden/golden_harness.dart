@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meta/meta.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
 
 /// Tema pre golden. Kym U-01 nedoda temu, default je cisty Material 3.
 typedef GoldenThemeBuilder = ThemeData Function(Brightness brightness);
@@ -19,7 +19,7 @@ ThemeData _defaultTheme(Brightness brightness) =>
 /// widget testy merali text realnymi fontmi a nie testovacim fontom.
 /// Alchemist to robi sam len pred `goldenTest`; widget testy (napr.
 /// `expectNoTextClipping`) by inak zaviseli od poradia testov v subore.
-Future<void> loadSakinaFonts() async {
+Future<void> loadProsocheFonts() async {
   final manifest = jsonDecode(
     await rootBundle.loadString('FontManifest.json'),
   ) as List<dynamic>;
@@ -36,13 +36,13 @@ Future<void> loadSakinaFonts() async {
 /// Jazyky pre goldeny (PLAN_VYVOJA 4.2 bod 3): plne pokrytie EN, AR, UR,
 /// BN; ID a TR su LTR latinka a staci smoke ([smokeLocales]).
 const List<Locale> fullGoldenLocales = [
-  SakinaLocales.en,
-  SakinaLocales.ar,
-  SakinaLocales.ur,
-  SakinaLocales.bn,
+  ProsocheLocales.en,
+  ProsocheLocales.ar,
+  ProsocheLocales.ur,
+  ProsocheLocales.bn,
 ];
 
-const List<Locale> smokeLocales = [SakinaLocales.id, SakinaLocales.tr];
+const List<Locale> smokeLocales = [ProsocheLocales.id, ProsocheLocales.tr];
 
 /// textScale pre obrazovky; karty pridavaju 1.5 ([cardTextScales]).
 const List<double> screenTextScales = [1.0, 2.0];
@@ -124,7 +124,7 @@ void goldenAllLocales(
   String description, {
   required String fileName,
   required WidgetBuilder builder,
-  List<Locale> locales = SakinaLocales.all,
+  List<Locale> locales = ProsocheLocales.all,
   List<Brightness> brightness = bothBrightness,
   List<double> textScales = screenTextScales,
   GoldenThemeBuilder theme = _defaultTheme,

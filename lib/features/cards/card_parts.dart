@@ -1,12 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' hide Bidi;
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/domain/calendar/calendar.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/quests/quests.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/domain/calendar/calendar.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/quests/quests.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Kde sa karta vykresluje (docs/02 B0.2).
 enum CardSurface {
@@ -171,7 +171,7 @@ class CardSourceNote extends StatelessWidget {
 
 /// Formaty pre karty a Dnes v jazyku UI (cislice podla U-02).
 extension CardFormatsX on BuildContext {
-  SakinaFormats get formats => SakinaFormats(Localizations.localeOf(this));
+  ProsocheFormats get formats => ProsocheFormats(Localizations.localeOf(this));
 
   /// "17 Jumada al-Ula 1448", izolovane podla prveho silneho znaku
   /// (BF-01): v RTL UI s latinkovym nazvom mesiaca (EN fallback UI textu)

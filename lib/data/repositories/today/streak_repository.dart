@@ -8,10 +8,10 @@ import 'package:drift/drift.dart'
         OrderingTerm,
         TableUpdateQuery;
 import 'package:meta/meta.dart';
-import 'package:sakina/data/db/user_db.dart' as db;
-import 'package:sakina/data/repositories/infra/time_providers.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/streak/streak.dart';
+import 'package:prosoche/data/db/user_db.dart' as db;
+import 'package:prosoche/data/repositories/infra/time_providers.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/streak/streak.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 /// Streak na zobrazenie (A2, A8.1). Pri `simple_mode` ho UI skryje.

@@ -3,14 +3,14 @@ import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
 import 'package:meta/meta.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/blocker/blocked_apps_repository.dart';
-import 'package:sakina/data/blocker/blocker_gateway.dart';
-import 'package:sakina/data/blocker/blocker_gateway_provider.dart';
-import 'package:sakina/data/repositories/settings/settings_providers.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/blocker/blocked_apps_repository.dart';
+import 'package:prosoche/data/blocker/blocker_gateway.dart';
+import 'package:prosoche/data/blocker/blocker_gateway_provider.dart';
+import 'package:prosoche/data/repositories/settings/settings_providers.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 
 /// Caste socialne siete, ktore O5 ukaze navrchu a predvyberie, ak su
 /// nainstalovane (docs/02 O5 `kSuggestedPackages`).

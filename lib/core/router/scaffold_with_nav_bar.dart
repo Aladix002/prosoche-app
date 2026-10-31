@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/ui/components/sk_nav_bar.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/ui/components/sk_nav_bar.dart';
 
 /// Shell so spodnou navigaciou pre 4 taby (docs/01 kap. 4.1, `SkNavBar`).
 class ScaffoldWithNavBar extends StatelessWidget {

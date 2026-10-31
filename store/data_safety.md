@@ -1,4 +1,4 @@
-# Play Console: Data safety (Mursa, app.mursa, v1.0 `prodLite`)
+# Play Console: Data safety (Prosoche, app.prosoche, v1.0 `prodLite`)
 
 State of code: `main` at tag `rc0` (fe6da4e), 2026-10-30. Re-check this file whenever
 `lib/data/observability/analytics.dart` (event allowlist), the PostHog/Sentry config or

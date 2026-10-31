@@ -1,12 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/blocker/blocker_api.pigeon.dart' as api;
-import 'package:sakina/data/blocker/blocker_gateway.dart';
-import 'package:sakina/data/blocker/pigeon_blocker_gateway.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/blocker/blocker_api.pigeon.dart' as api;
+import 'package:prosoche/data/blocker/blocker_gateway.dart';
+import 'package:prosoche/data/blocker/pigeon_blocker_gateway.dart';
 
-const _prefix = 'dev.flutter.pigeon.sakina.BlockerHostApi.';
+const _prefix = 'dev.flutter.pigeon.prosoche.BlockerHostApi.';
 const MessageCodec<Object?> _codec = api.BlockerHostApi.pigeonChannelCodec;
 
 class _MemorySink implements LogSink {
@@ -300,7 +300,7 @@ void main() {
 
   group('gateRequests (BlockerFlutterApi)', () {
     const channel =
-        'dev.flutter.pigeon.sakina.BlockerFlutterApi.onGateRequested';
+        'dev.flutter.pigeon.prosoche.BlockerFlutterApi.onGateRequested';
 
     Future<List<Object?>?> send(String ref) async {
       final messenger =

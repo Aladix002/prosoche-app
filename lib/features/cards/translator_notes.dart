@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/features/cards/card_parts.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/features/cards/card_parts.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Znacka poznamky prekladatela QuranEnc v texte prekladu, napr. `[2]`.
 final RegExp translatorNoteMarker = RegExp(r'\[(\d+)\]');

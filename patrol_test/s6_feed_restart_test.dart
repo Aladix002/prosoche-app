@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patrol/patrol.dart';
-import 'package:sakina/data/repositories/providers.dart';
+import 'package:prosoche/data/repositories/providers.dart';
 
 import 'support/app_harness.dart';
 import 'support/flows.dart';

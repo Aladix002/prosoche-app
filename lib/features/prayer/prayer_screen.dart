@@ -4,21 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/prayer/prayer_schedule.dart';
-import 'package:sakina/features/calendar/calendar_routes.dart';
-import 'package:sakina/features/prayer/prayer_paths.dart';
-import 'package:sakina/features/prayer/prayer_providers.dart';
-import 'package:sakina/features/prayer/prayer_status_sheet.dart';
-import 'package:sakina/features/prayer/prayer_texts.dart';
-import 'package:sakina/features/prayer/prayer_view.dart';
-import 'package:sakina/features/shell/day_phase.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/prayer/prayer_schedule.dart';
+import 'package:prosoche/features/calendar/calendar_routes.dart';
+import 'package:prosoche/features/prayer/prayer_paths.dart';
+import 'package:prosoche/features/prayer/prayer_providers.dart';
+import 'package:prosoche/features/prayer/prayer_status_sheet.dart';
+import 'package:prosoche/features/prayer/prayer_texts.dart';
+import 'package:prosoche/features/prayer/prayer_view.dart';
+import 'package:prosoche/features/shell/day_phase.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Casy modlitieb a tracker (docs/02 A7.1). Route `/prayer`.
 class PrayerScreen extends ConsumerStatefulWidget {
@@ -520,7 +520,7 @@ class _SunriseRow extends StatelessWidget {
             ),
             Text(
               time,
-              style: SakinaTypography.tabular(
+              style: ProsocheTypography.tabular(
                 sk.text.bodyLarge!.copyWith(color: color),
               ),
             ),

@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/prayer/qibla.dart';
-import 'package:sakina/features/prayer/prayer_routes.dart';
-import 'package:sakina/features/prayer/qibla/compass.dart';
-import 'package:sakina/features/prayer/qibla/qibla_dial.dart';
+import 'package:prosoche/domain/prayer/qibla.dart';
+import 'package:prosoche/features/prayer/prayer_routes.dart';
+import 'package:prosoche/features/prayer/qibla/compass.dart';
+import 'package:prosoche/features/prayer/qibla/qibla_dial.dart';
 
 import '../../../fakes/fake_repositories.dart';
 import '../f05_test_app.dart';

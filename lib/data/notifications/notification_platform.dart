@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/notifications/notifications.dart';
+import 'package:prosoche/domain/notifications/notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 /// Hotova notifikacia na naplanovanie (text uz je vybrany a prelozeny).

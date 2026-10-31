@@ -1,5 +1,5 @@
 // Spolocny harness pre widget testy F-02 (Dnes, Feed, karty): GoRouter
-// s /today, /feed a zastupnymi cielmi navigacie, tema a texty Sakina,
+// s /today, /feed a zastupnymi cielmi navigacie, tema a texty Prosoche,
 // fake repozitare D-02.
 import 'dart:async';
 
@@ -8,15 +8,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/app.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/core/router/routes.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/features/feed/feed_routes.dart';
-import 'package:sakina/features/today/today_routes.dart';
-import 'package:sakina/ui/foundation/sk_ui_strings.dart';
-import 'package:sakina/ui/theme/sakina_theme.dart';
+import 'package:prosoche/app.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/core/router/routes.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/features/feed/feed_routes.dart';
+import 'package:prosoche/features/today/today_routes.dart';
+import 'package:prosoche/ui/foundation/sk_ui_strings.dart';
+import 'package:prosoche/ui/theme/prosoche_theme.dart';
 
 import '../../fakes/fake_repositories.dart';
 
@@ -112,14 +112,14 @@ Future<GoRouter> pumpF02(
       child: MaterialApp.router(
         routerConfig: router,
         locale: locale,
-        theme: SakinaTheme.light(),
+        theme: ProsocheTheme.light(),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         builder: (context, child) => MediaQuery(
           data: MediaQuery.of(context)
               .copyWith(textScaler: TextScaler.linear(textScale)),
           child: Theme(
-            data: sakinaAppTheme(
+            data: prosocheAppTheme(
               brightness: brightness,
               locale: Localizations.localeOf(context),
             ),

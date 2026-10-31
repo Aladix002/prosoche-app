@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/domain/calendar/calendar.dart';
-import 'package:sakina/domain/common/local_date.dart';
-import 'package:sakina/domain/notifications/notifications.dart';
-import 'package:sakina/domain/prayer/calc_settings.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/prayer/prayer_schedule.dart';
-import 'package:sakina/domain/ramadan/ramadan.dart';
+import 'package:prosoche/domain/calendar/calendar.dart';
+import 'package:prosoche/domain/common/local_date.dart';
+import 'package:prosoche/domain/notifications/notifications.dart';
+import 'package:prosoche/domain/prayer/calc_settings.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/prayer/prayer_schedule.dart';
+import 'package:prosoche/domain/ramadan/ramadan.dart';
 import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -105,7 +105,7 @@ void main() {
       for (final n in iftars) {
         expect(n.prayer, Prayer.maghrib);
         expect(n.channel, NotificationChannel.prayer);
-        expect(n.deepLink, 'mursa://prayer?p=maghrib');
+        expect(n.deepLink, 'prosoche://prayer?p=maghrib');
         final twin = normal.items.singleWhere((m) => m.id == n.id);
         expect(twin.prayer, Prayer.maghrib);
         expect(twin.at, n.at);
@@ -134,7 +134,7 @@ void main() {
         final fajr = bratislava.day(n.day)[Prayer.fajr];
         expect(n.at, fajr.subtract(const Duration(minutes: 45)));
         expect(n.cardMinutes, 45);
-        expect(n.deepLink, 'mursa://today');
+        expect(n.deepLink, 'prosoche://today');
         expect(normal.items.where((m) => m.id == n.id), hasLength(1));
       }
     });

@@ -3,16 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sakina/core/l10n/l10n.dart';
-import 'package:sakina/data/blocker/blocked_apps_repository.dart';
-import 'package:sakina/data/repositories/settings/settings_providers.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/features/settings/blocking/blocking_providers.dart';
-import 'package:sakina/features/settings/blocking/blocking_widgets.dart';
-import 'package:sakina/features/settings/settings_paths.dart';
-import 'package:sakina/features/settings/settings_widgets.dart';
-import 'package:sakina/ui/i18n/i18n.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/blocker/blocked_apps_repository.dart';
+import 'package:prosoche/data/repositories/settings/settings_providers.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/settings/blocking/blocking_providers.dart';
+import 'package:prosoche/features/settings/blocking/blocking_widgets.dart';
+import 'package:prosoche/features/settings/settings_paths.dart';
+import 'package:prosoche/features/settings/settings_widgets.dart';
+import 'package:prosoche/ui/i18n/i18n.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Cesty podobrazoviek brany (docs/02 A10.1, A10.2).
 abstract final class BlockingPaths {
@@ -122,7 +122,7 @@ class _BlockingScreenState extends ConsumerState<BlockingScreen> {
       GateHealth.stopped => l10n.blkStatusStopped,
     };
     final paused = health != GateHealth.off && health != GateHealth.running;
-    final formats = SakinaFormats(Localizations.localeOf(context));
+    final formats = ProsocheFormats(Localizations.localeOf(context));
 
     return SettingsList(
       children: [

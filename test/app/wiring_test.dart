@@ -3,26 +3,26 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/app/background.dart';
-import 'package:sakina/app/content_wiring.dart';
-import 'package:sakina/app/gate_wiring.dart';
-import 'package:sakina/app/location_wiring.dart';
-import 'package:sakina/app/notification_wiring.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/content/hadith_extra_pack_service.dart';
-import 'package:sakina/data/content/sem_ver.dart';
-import 'package:sakina/data/db/hadith_extra_repository.dart' as db;
-import 'package:sakina/data/notifications/notifications.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/ramadan/ramadan.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
-import 'package:sakina/domain/streak/streak.dart';
-import 'package:sakina/features/cards/hadith_explanations_pack.dart';
-import 'package:sakina/features/onboarding/onboarding_platform.dart';
-import 'package:sakina/features/prayer/prayer_providers.dart';
-import 'package:sakina/features/ramadan/ramadan_providers.dart';
+import 'package:prosoche/app/background.dart';
+import 'package:prosoche/app/content_wiring.dart';
+import 'package:prosoche/app/gate_wiring.dart';
+import 'package:prosoche/app/location_wiring.dart';
+import 'package:prosoche/app/notification_wiring.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/content/hadith_extra_pack_service.dart';
+import 'package:prosoche/data/content/sem_ver.dart';
+import 'package:prosoche/data/db/hadith_extra_repository.dart' as db;
+import 'package:prosoche/data/notifications/notifications.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/ramadan/ramadan.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/domain/streak/streak.dart';
+import 'package:prosoche/features/cards/hadith_explanations_pack.dart';
+import 'package:prosoche/features/onboarding/onboarding_platform.dart';
+import 'package:prosoche/features/prayer/prayer_providers.dart';
+import 'package:prosoche/features/ramadan/ramadan_providers.dart';
 
 import '../data/notifications/fake_notification_platform.dart';
 import '../fakes/fake_repositories.dart';
@@ -274,8 +274,11 @@ void main() {
 
   group('notifications', () {
     test('tap target maps payload deep link, default Today', () {
-      expect(notificationTarget('{"link":"mursa://prayer?p=fajr"}'), '/prayer');
-      expect(notificationTarget('{"link":"mursa://today"}'), '/today');
+      expect(
+        notificationTarget('{"link":"prosoche://prayer?p=fajr"}'),
+        '/prayer',
+      );
+      expect(notificationTarget('{"link":"prosoche://today"}'), '/today');
       expect(notificationTarget(null), '/today');
       expect(notificationTarget('not json'), '/today');
     });

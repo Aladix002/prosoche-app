@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:drift/drift.dart' show driftRuntimeOptions;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:sakina/core/logging/app_logger.dart';
-import 'package:sakina/data/content/db_archive.dart';
-import 'package:sakina/data/content/hadith_extra_pack_service.dart';
-import 'package:sakina/data/db/content_db.dart';
+import 'package:prosoche/core/logging/app_logger.dart';
+import 'package:prosoche/data/content/db_archive.dart';
+import 'package:prosoche/data/content/hadith_extra_pack_service.dart';
+import 'package:prosoche/data/db/content_db.dart';
 
 import 'content_test_helpers.dart';
 import 'hadith_extra_pack_test_helpers.dart';

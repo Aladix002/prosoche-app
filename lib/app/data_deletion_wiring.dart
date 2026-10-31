@@ -1,12 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
-import 'package:sakina/app/notification_wiring.dart';
-import 'package:sakina/core/flags/feature_flags.dart';
-import 'package:sakina/core/logging/logger_provider.dart';
-import 'package:sakina/core/result.dart';
-import 'package:sakina/data/blocker/blocker_gateway_provider.dart';
-import 'package:sakina/data/observability/observability_providers.dart';
-import 'package:sakina/features/settings/settings_providers.dart';
+import 'package:prosoche/app/notification_wiring.dart';
+import 'package:prosoche/core/flags/feature_flags.dart';
+import 'package:prosoche/core/logging/logger_provider.dart';
+import 'package:prosoche/core/result.dart';
+import 'package:prosoche/data/blocker/blocker_gateway_provider.dart';
+import 'package:prosoche/data/observability/observability_providers.dart';
+import 'package:prosoche/features/settings/settings_providers.dart';
 
 /// "Delete all my data" (docs/02 A10.9, F-07): co appka urobi po zmazani
 /// user.db.

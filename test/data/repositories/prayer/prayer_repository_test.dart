@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/repositories/infra/time_providers.dart';
-import 'package:sakina/data/repositories/prayer/city_repository.dart';
-import 'package:sakina/data/repositories/prayer/prayer_repository.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/prayer/calc_settings.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/domain/prayer/prayer_schedule.dart';
-import 'package:sakina/domain/settings/settings_repository.dart';
+import 'package:prosoche/data/repositories/infra/time_providers.dart';
+import 'package:prosoche/data/repositories/prayer/city_repository.dart';
+import 'package:prosoche/data/repositories/prayer/prayer_repository.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/prayer/calc_settings.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/prayer/prayer_schedule.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 import '../harness.dart';

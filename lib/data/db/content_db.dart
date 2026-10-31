@@ -3,22 +3,22 @@ import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/isolate.dart';
 import 'package:drift/native.dart';
-import 'package:sakina/data/db/content_tables.dart';
-import 'package:sakina/data/db/daos/content_meta_dao.dart';
-import 'package:sakina/data/db/daos/curated_dao.dart';
-import 'package:sakina/data/db/daos/hadith_dao.dart';
-import 'package:sakina/data/db/daos/places_dao.dart';
-import 'package:sakina/data/db/daos/quran_dao.dart';
-import 'package:sakina/data/db/daos/words_dao.dart';
+import 'package:prosoche/data/db/content_tables.dart';
+import 'package:prosoche/data/db/daos/content_meta_dao.dart';
+import 'package:prosoche/data/db/daos/curated_dao.dart';
+import 'package:prosoche/data/db/daos/hadith_dao.dart';
+import 'package:prosoche/data/db/daos/places_dao.dart';
+import 'package:prosoche/data/db/daos/quran_dao.dart';
+import 'package:prosoche/data/db/daos/words_dao.dart';
 import 'package:sqlite3/sqlite3.dart';
 
-export 'package:sakina/data/db/content_tables.dart';
+export 'package:prosoche/data/db/content_tables.dart';
 
 part 'content_db.g.dart';
 
 /// content.db: obsah iba na citanie (plan 3.3, 07 ADR-04).
 ///
-/// Subor vytvara pipeline `sakina-content`; appka ho nikdy nevytvara ani
+/// Subor vytvara pipeline `prosoche-content`; appka ho nikdy nevytvara ani
 /// nemigruje. Verzia schemy = `PRAGMA user_version` kontraktu.
 @DriftDatabase(
   tables: contentTables,

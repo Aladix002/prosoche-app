@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart' hide isNotNull, isNull;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sakina/data/db/user_db.dart';
-import 'package:sakina/domain/common/common.dart';
+import 'package:prosoche/data/db/user_db.dart';
+import 'package:prosoche/domain/common/common.dart';
 
 final _t0 = DateTime.utc(2026, 10, 29, 8);
 final _d = LocalDate(2026, 10, 29);

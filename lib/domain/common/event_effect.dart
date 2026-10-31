@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/common/ayah_id.dart';
-import 'package:sakina/domain/common/slot.dart';
+import 'package:prosoche/domain/common/ayah_id.dart';
+import 'package:prosoche/domain/common/slot.dart';
 
 /// Ucinok aktivneho eventu na dennu sadu a questy (docs/02 D2, plan 7.5).
 ///

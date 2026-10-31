@@ -1,11 +1,11 @@
 import 'dart:math';
 
 import 'package:meta/meta.dart';
-import 'package:sakina/domain/common/common.dart';
-import 'package:sakina/domain/feed/card_selector.dart';
-import 'package:sakina/domain/feed/daily_set.dart';
-import 'package:sakina/domain/feed/day_phase.dart';
-import 'package:sakina/domain/feed/feed_inputs.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/feed/card_selector.dart';
+import 'package:prosoche/domain/feed/daily_set.dart';
+import 'package:prosoche/domain/feed/day_phase.dart';
+import 'package:prosoche/domain/feed/feed_inputs.dart';
 
 /// Vysledok generovania: sada a nove hodnoty kurzorov pre `settings`.
 ///

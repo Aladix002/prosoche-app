@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
-import 'package:sakina/data/notifications/notifications.dart';
+import 'package:prosoche/data/notifications/notifications.dart';
 
 // Tenke rozhrania nad platformou pre onboarding (O3 poloha, O4 notifikacie).
 // Widget testy ich prepisu fake implementaciou.

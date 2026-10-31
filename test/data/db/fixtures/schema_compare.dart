@@ -1,4 +1,4 @@
-// Porovnanie drift schemy s SQL kontraktom zo sakina-content (D-01, D-06).
+// Porovnanie drift schemy s SQL kontraktom zo prosoche-content (D-01, D-06).
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
@@ -44,16 +44,16 @@ List<String> plainTables(Database db) => [
       r['name'] as String,
 ];
 
-/// Najde `sakina-content/schema/<name>` v nadradenych adresaroch (lokalne
-/// vedla sakina-app; v CI nie je).
+/// Najde `prosoche-content/schema/<name>` v nadradenych adresaroch (lokalne
+/// vedla prosoche-app; v CI nie je).
 File? findUpstreamContract(String name) =>
-    findSakinaContentFile(['schema', name]);
+    findProsocheContentFile(['schema', name]);
 
-/// Najde subor `sakina-content/<parts>` v nadradenych adresaroch.
-File? findSakinaContentFile(List<String> parts) {
+/// Najde subor `prosoche-content/<parts>` v nadradenych adresaroch.
+File? findProsocheContentFile(List<String> parts) {
   var dir = Directory.current.absolute;
   while (true) {
-    final f = File(p.joinAll([dir.path, 'sakina-content', ...parts]));
+    final f = File(p.joinAll([dir.path, 'prosoche-content', ...parts]));
     if (f.existsSync()) return f;
     final parent = dir.parent;
     if (parent.path == dir.path) return null;

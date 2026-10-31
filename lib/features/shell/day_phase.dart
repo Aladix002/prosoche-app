@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sakina/core/clock/clock_provider.dart';
-import 'package:sakina/data/repositories/repositories.dart';
-import 'package:sakina/domain/prayer/prayer.dart';
-import 'package:sakina/ui/ui.dart';
+import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/ui/ui.dart';
 
 /// Cast dna pre atmosferu hlaviciek (D-05) podla najblizsej modlitby;
 /// bez polohy (bez casov modlitieb) podla hodiny.
