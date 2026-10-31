@@ -8,72 +8,62 @@ import 'package:prosoche/domain/quests/quests.dart';
 // Sablony su testovacie fixtures (len ID, bez textov), nie produkcny obsah.
 const _engine = QuestEngine();
 final _day = LocalDate(2026, 10, 29);
-const _all = {'en', 'ar', 'id', 'ur', 'bn', 'tr'};
+const _all = {'en', 'de'};
 
-QuestRule _ayahRule([Object min = 10]) => QuestRule.fromJson({
-  'count': {'type': 'ayah', 'min': min},
+QuestRule _quoteRule([Object min = 5]) => QuestRule.fromJson({
+  'count': {'type': 'quote', 'min': min},
 });
 
 QuestTemplate _read(
   String id, {
   Set<String> langs = _all,
   bool excusedOk = false,
-  Set<String> season = const {},
   int? cooldownDays,
 }) => QuestTemplate(
   id: id,
   slot: QuestSlot.read,
   langs: langs,
-  rule: _ayahRule(const {'param': 'n'}),
+  rule: _quoteRule(const {'param': 'n'}),
   params: const {
     'n': [10, 15, 20],
   },
   excusedOk: excusedOk,
-  season: season,
   cooldownDays: cooldownDays,
 );
 
-QuestTemplate _learn(String id, {String type = 'word', Set<String>? langs}) =>
-    QuestTemplate(
-      id: id,
-      slot: QuestSlot.learn,
-      langs: langs ?? _all,
-      rule: QuestRule.fromJson({
-        'count': {'type': type, 'min': 3},
-      }),
-    );
+QuestTemplate _learn(
+  String id, {
+  String type = 'concept',
+  Set<String>? langs,
+}) => QuestTemplate(
+  id: id,
+  slot: QuestSlot.learn,
+  langs: langs ?? _all,
+  rule: QuestRule.fromJson({
+    'count': {'type': type, 'min': 1},
+  }),
+);
 
 QuestTemplate _act(
   String id, {
   Set<String> langs = _all,
   bool excusedOk = false,
   double weight = 1,
-  Set<String> season = const {},
 }) => QuestTemplate(
   id: id,
   slot: QuestSlot.act,
   langs: langs,
   excusedOk: excusedOk,
   weight: weight,
-  season: season,
 );
-
-ActiveEvent _event(String id, Map<QuestSlot, String> quests, {int prio = 0}) =>
-    ActiveEvent(
-      id: id,
-      priority: prio,
-      effect: EventEffect(quests: quests),
-    );
 
 QuestSelectionInput _input({
   List<QuestTemplate>? templates,
-  List<ActiveEvent> events = const [],
   List<QuestLogEntry> history = const [],
   LocalDate? date,
   int seed = 42,
   String lang = 'en',
   bool excused = false,
-  bool wordsEnabled = true,
 }) => QuestSelectionInput(
   date: date ?? _day,
   seed: seed,
@@ -88,10 +78,8 @@ QuestSelectionInput _input({
         _act('act.b'),
         _act('act.c'),
       ],
-  activeEvents: events,
   history: history,
   excused: excused,
-  wordsEnabled: wordsEnabled,
 );
 
 DailyQuest _slot(List<DailyQuest> qs, QuestSlot slot) =>
@@ -253,119 +241,13 @@ void main() {
     });
   });
 
-  group('event override', () {
-    test('override wins over the pool and ignores cooldown', () {
-      final qs = _engine.select(
-        _input(
-          templates: [
-            _read('read.a'),
-            _read('read.kahf', season: const {'jumuah'}),
-            _learn('learn.a'),
-            _act('act.a'),
-            _act('act.white_day'),
-          ],
-          events: [
-            _event('white_days', {QuestSlot.act: 'act.white_day'}, prio: 40),
-            _event('jumuah', {QuestSlot.read: 'read.kahf'}, prio: 50),
-          ],
-          history: [
-            QuestLogEntry(
-              date: _day.addDays(-1),
-              slot: QuestSlot.act,
-              questId: 'act.white_day',
-            ),
-          ],
-        ),
-      );
-      final read = _slot(qs, QuestSlot.read);
-      expect(read.questId, 'read.kahf');
-      expect(read.origin, QuestOrigin.eventOverride);
-      expect(read.eventId, 'jumuah');
-      final act = _slot(qs, QuestSlot.act);
-      expect(act.questId, 'act.white_day');
-      expect(act.eventId, 'white_days');
-      expect(_slot(qs, QuestSlot.learn).origin, QuestOrigin.weighted);
-    });
-
-    test('higher priority wins, equal priority sorts by id', () {
-      final templates = [
-        _read('read.a'),
-        _learn('learn.a'),
-        _act('act.x'),
-        _act('act.y'),
-        _act('act.z'),
-      ];
-      String actWith(List<ActiveEvent> events) => _slot(
-        _engine.select(_input(templates: templates, events: events)),
-        QuestSlot.act,
-      ).questId;
-
-      expect(
-        actWith([
-          _event('ramadan', {QuestSlot.act: 'act.x'}, prio: 100),
-          _event('jumuah', {QuestSlot.act: 'act.y'}, prio: 50),
-        ]),
-        'act.x',
-      );
-      expect(
-        actWith([
-          _event('b_event', {QuestSlot.act: 'act.y'}, prio: 10),
-          _event('a_event', {QuestSlot.act: 'act.z'}, prio: 10),
-        ]),
-        'act.z',
-      );
-    });
-
-    test('unknown override template falls back to the pool', () {
-      final qs = _engine.select(
-        _input(
-          events: [
-            _event('jumuah', {QuestSlot.act: 'act.missing'}),
-          ],
-        ),
-      );
-      expect(_slot(qs, QuestSlot.act).origin, QuestOrigin.weighted);
-    });
-
-    test('season templates only while their event is active', () {
-      final templates = [
-        _read('read.a'),
-        _learn('learn.a'),
-        _act('act.ramadan', season: const {'ramadan'}),
-        _act('act.any'),
-      ];
-      final off = {
-        for (var seed = 0; seed < 50; seed++)
-          _slot(
-            _engine.select(_input(templates: templates, seed: seed)),
-            QuestSlot.act,
-          ).questId,
-      };
-      expect(off, {'act.any'});
-      final on = {
-        for (var seed = 0; seed < 50; seed++)
-          _slot(
-            _engine.select(
-              _input(
-                templates: templates,
-                seed: seed,
-                events: [_event('ramadan', const {})],
-              ),
-            ),
-            QuestSlot.act,
-          ).questId,
-      };
-      expect(on, {'act.any', 'act.ramadan'});
-    });
-  });
-
   group('excused days', () {
     final templates = [
       _read('read.a'),
       _read('read.excused', excusedOk: true),
       _learn('learn.a'),
-      _act('act.fast'),
-      _act('act.dhikr', excusedOk: true),
+      _act('act.walk'),
+      _act('act.rest', excusedOk: true),
     ];
 
     test('only excused_ok templates', () {
@@ -374,112 +256,62 @@ void main() {
           _input(templates: templates, seed: seed, excused: true),
         );
         expect(_slot(qs, QuestSlot.read).questId, 'read.excused');
-        expect(_slot(qs, QuestSlot.act).questId, 'act.dhikr');
+        expect(_slot(qs, QuestSlot.act).questId, 'act.rest');
         // learn.a nie je excused_ok: genericky quest.
         expect(_slot(qs, QuestSlot.learn).origin, QuestOrigin.generic);
       }
     });
-
-    test('event override without excused_ok is replaced by the pool', () {
-      final qs = _engine.select(
-        _input(
-          templates: templates,
-          excused: true,
-          events: [
-            _event('white_days', {QuestSlot.act: 'act.fast'}, prio: 40),
-          ],
-        ),
-      );
-      expect(_slot(qs, QuestSlot.act).questId, 'act.dhikr');
-      expect(_slot(qs, QuestSlot.act).origin, QuestOrigin.weighted);
-    });
   });
 
   group('language fallback', () {
-    test('read/learn get generic quests, act is hidden', () {
-      final qs = _engine.select(_input(lang: 'bs'));
-      expect(qs.map((q) => q.slot), [QuestSlot.read, QuestSlot.learn]);
+    test('no template with text: generic quests in every slot', () {
+      final qs = _engine.select(_input(lang: 'fr'));
+      expect(qs.map((q) => q.slot), QuestSlot.values);
       final read = _slot(qs, QuestSlot.read);
       expect(read.origin, QuestOrigin.generic);
-      expect(read.generic, GenericQuest.readVerses);
-      expect(read.questId, 'generic.read.verses');
-      expect(read.target, 10);
-      expect(_slot(qs, QuestSlot.learn).generic, GenericQuest.learnWords);
+      expect(read.generic, GenericQuest.readCards);
+      expect(read.questId, 'generic.read.cards');
+      expect(read.target, 5);
+      expect(read.rule!.types, {CardType.quote, CardType.passage});
+      final learn = _slot(qs, QuestSlot.learn);
+      expect(learn.generic, GenericQuest.learnIdea);
+      expect(learn.rule!.types, {CardType.concept, CardType.author});
+      final act = _slot(qs, QuestSlot.act);
+      expect(act.generic, GenericQuest.actPractice);
+      expect(act.isSelfReport, isTrue);
     });
 
     test('generic read target fits the daily set (I-02)', () {
-      QuestSelectionInput withVerses(int? n) => QuestSelectionInput(
-        date: _input(lang: 'bs').date,
-        seed: _input(lang: 'bs').seed,
-        lang: 'bs',
+      QuestSelectionInput withCards(int? n) => QuestSelectionInput(
+        date: _day,
+        seed: 42,
+        lang: 'fr',
         templates: const [],
-        setVerses: n,
+        setCards: n,
       );
-      for (final (n, target) in [(7, 7), (12, 10), (null, 10), (0, 10)]) {
-        final read = _slot(_engine.select(withVerses(n)), QuestSlot.read);
-        expect(read.target, target, reason: '$n verses in the set');
+      for (final (n, target) in [(3, 3), (11, 5), (null, 5), (0, 5)]) {
+        final read = _slot(_engine.select(withCards(n)), QuestSlot.read);
+        expect(read.target, target, reason: '$n cards in the set');
       }
-      expect(GenericQuest.learnCards.countFor(setVerses: 0), 1);
-      expect(GenericQuest.learnWords.countFor(setVerses: 1), 3);
+      expect(GenericQuest.learnIdea.countFor(setCards: 0), 1);
+      expect(GenericQuest.actPractice.countFor(setCards: 9), 1);
+      expect(GenericQuest.actPractice.rule(1), isNull);
     });
 
     test('templates without text in the language are skipped', () {
       final qs = _engine.select(
         _input(
-          lang: 'ur',
+          lang: 'de',
           templates: [
             _read('read.en', langs: const {'en'}),
-            _read('read.ur', langs: const {'en', 'ur'}),
+            _read('read.de', langs: const {'en', 'de'}),
             _learn('learn.a'),
             _act('act.en', langs: const {'en'}),
           ],
         ),
       );
-      expect(_slot(qs, QuestSlot.read).questId, 'read.ur');
-      expect(qs.where((q) => q.slot == QuestSlot.act), isEmpty);
-    });
-
-    test('override template without text: generic read, no act', () {
-      final qs = _engine.select(
-        _input(
-          lang: 'bn',
-          templates: [
-            _read('read.a'),
-            _read('read.kahf', langs: const {'en'}),
-            _learn('learn.a'),
-            _act('act.a'),
-            _act('act.jumuah', langs: const {'en'}),
-          ],
-          events: [
-            _event('jumuah', {
-              QuestSlot.read: 'read.kahf',
-              QuestSlot.act: 'act.jumuah',
-            }),
-          ],
-        ),
-      );
-      expect(_slot(qs, QuestSlot.read).generic, GenericQuest.readVerses);
-      expect(qs.where((q) => q.slot == QuestSlot.act), isEmpty);
-    });
-
-    test('words disabled: no word templates, generic learn cards', () {
-      final qs = _engine.select(_input(wordsEnabled: false));
-      final learn = _slot(qs, QuestSlot.learn);
-      expect(learn.generic, GenericQuest.learnCards);
-      expect(learn.rule!.types, {CardType.hadith, CardType.dua});
-
-      final withNames = _engine.select(
-        _input(
-          wordsEnabled: false,
-          templates: [
-            _read('read.a'),
-            _learn('learn.word'),
-            _learn('learn.quiz', type: 'quiz'),
-            _learn('learn.name', type: 'name'),
-          ],
-        ),
-      );
-      expect(_slot(withNames, QuestSlot.learn).questId, 'learn.name');
+      expect(_slot(qs, QuestSlot.read).questId, 'read.de');
+      expect(_slot(qs, QuestSlot.act).generic, GenericQuest.actPractice);
     });
   });
 
@@ -493,7 +325,7 @@ void main() {
         for (var i = 1; i <= n; i++)
           CardActivity(
             date: _day,
-            cardId: AyahCardId(AyahId(2, i)),
+            cardId: ContentCardId.quote('q_$i'),
             action: CardAction.seen,
             ts: t(i),
           ),
@@ -512,7 +344,7 @@ void main() {
         for (var i = 1; i <= 30; i++)
           CardActivity(
             date: _day.addDays(-1),
-            cardId: AyahCardId(AyahId(2, i)),
+            cardId: ContentCardId.quote('q_$i'),
             action: CardAction.seen,
             ts: t(i),
           ),
@@ -528,75 +360,75 @@ void main() {
 
   group('P-01 generic target is stable after completion', () {
     DateTime t(int minute) => DateTime(2026, 10, 29, 9, minute);
-    DailyQuest readWith(int? setVerses) => _slot(
+    DailyQuest readWith(int? setCards) => _slot(
       _engine.select(
         QuestSelectionInput(
           date: _day,
           seed: 42,
-          lang: 'bs',
+          lang: 'fr',
           templates: const [],
-          setVerses: setVerses,
+          setCards: setCards,
         ),
       ),
       QuestSlot.read,
     );
-    List<CardActivity> verses(int n, {LocalDate? date}) => [
+    List<CardActivity> cards(int n, {LocalDate? date}) => [
       for (var i = 1; i <= n; i++)
         CardActivity(
           date: date ?? _day,
-          cardId: AyahCardId(AyahId(2, i)),
+          cardId: ContentCardId.quote('q_$i'),
           action: CardAction.seen,
           ts: t(i),
         ),
     ];
 
-    test('read 10 done before the set: stays Read 10 with a 7 verse set', () {
+    test('read 5 done before the set: stays Read 5 with a 3 card set', () {
       final before = readWith(null);
-      expect(before.target, 10);
-      final events = verses(12);
+      expect(before.target, 5);
+      final events = cards(8);
       final doneAt = _engine.progress(before, events)!.completedAt;
-      expect(doneAt, t(10));
-      // Po splneni vznikla sada so 7 versami: bez settled() by to bolo 7.
-      final after = readWith(7);
-      expect(after.target, 7);
+      expect(doneAt, t(5));
+      // Po splneni vznikla sada s 3 citatmi: bez settled() by to bolo 3.
+      final after = readWith(3);
+      expect(after.target, 3);
       final settled = _engine.settled(after, doneAt: doneAt, events: events);
-      expect(settled.target, 10);
-      expect(settled.generic, GenericQuest.readVerses);
+      expect(settled.target, 5);
+      expect(settled.generic, GenericQuest.readCards);
       expect(settled.origin, QuestOrigin.generic);
       final p = _engine.progress(settled, events)!;
-      expect((p.current, p.target, p.completedAt), (10, 10, t(10)));
+      expect((p.current, p.target, p.completedAt), (5, 5, t(5)));
     });
 
-    test('done with the set target keeps min(10, set verses)', () {
-      final read = readWith(7);
-      final events = verses(9);
+    test('done with the set target keeps min(5, set cards)', () {
+      final read = readWith(3);
+      final events = cards(4);
       final doneAt = _engine.progress(read, events)!.completedAt;
-      expect(doneAt, t(7));
+      expect(doneAt, t(3));
       expect(_engine.settled(read, doneAt: doneAt, events: events), read);
       // Ani neskorsi rozdielny stav dna ciel nezvysi.
       final settled = _engine.settled(
-        readWith(12),
+        readWith(11),
         doneAt: doneAt,
         events: events,
       );
-      expect(settled.target, 7);
+      expect(settled.target, 3);
     });
 
     test('pending, templates and missing events are unchanged', () {
       final read = readWith(7);
-      expect(_engine.settled(read, doneAt: null, events: verses(3)), read);
+      expect(_engine.settled(read, doneAt: null, events: cards(3)), read);
       expect(_engine.settled(read, doneAt: t(5), events: const []), read);
       expect(
         _engine.settled(
           read,
           doneAt: t(5),
-          events: verses(5, date: _day.addDays(-1)),
+          events: cards(5, date: _day.addDays(-1)),
         ),
         read,
       );
       final template = _slot(_engine.select(_input()), QuestSlot.read);
       expect(
-        _engine.settled(template, doneAt: t(3), events: verses(3)),
+        _engine.settled(template, doneAt: t(3), events: cards(3)),
         template,
       );
     });
@@ -627,7 +459,7 @@ void main() {
           id: 'a',
           slot: QuestSlot.act,
           langs: _all,
-          rule: _ayahRule(),
+          rule: _quoteRule(),
         ),
         throwsArgumentError,
       );
@@ -640,7 +472,7 @@ void main() {
           id: 'r',
           slot: QuestSlot.read,
           langs: _all,
-          rule: _ayahRule(const {'param': 'n'}),
+          rule: _quoteRule(const {'param': 'n'}),
         ),
         throwsArgumentError,
       );
@@ -649,7 +481,7 @@ void main() {
           id: 'r',
           slot: QuestSlot.read,
           langs: _all,
-          rule: _ayahRule(),
+          rule: _quoteRule(),
           params: const {'n': <int>[]},
         ),
         throwsArgumentError,
@@ -678,19 +510,24 @@ void main() {
       for (final g in GenericQuest.values) {
         expect(GenericQuest.fromId(g.id), g);
         expect(g.id, startsWith('generic.${g.slot.wire}.'));
-        expect(g.rule(g.defaultCount).target(const {}), g.defaultCount);
+        final rule = g.rule(g.defaultCount);
+        if (g.slot == QuestSlot.act) {
+          expect(rule, isNull);
+        } else {
+          expect(rule!.target(const {}), g.defaultCount);
+        }
       }
       expect(GenericQuest.fromId('read.a'), isNull);
     });
 
-    test('GenericQuest texts exist in the EN ARB with a count', () {
+    test('GenericQuest texts exist in the EN ARB', () {
       final arb = jsonDecode(
-        File('lib/l10n/parts/E-03_en.arb').readAsStringSync(),
+        File('lib/l10n/app_en.arb').readAsStringSync(),
       ) as Map<String, Object?>;
       for (final g in GenericQuest.values) {
         expect(arb[g.arbKey], isA<String>(), reason: g.arbKey);
-        expect(arb[g.arbKey]! as String, contains('{count'));
       }
+      expect(arb[GenericQuest.readCards.arbKey]! as String, contains('{count'));
     });
   });
 }

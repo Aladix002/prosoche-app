@@ -5,7 +5,7 @@ import 'package:prosoche/domain/common/common.dart';
 
 final _t0 = DateTime.utc(2026, 10, 29, 8);
 final _d = LocalDate(2026, 10, 29);
-final _ayah = CardId.parse('ayah:2255');
+final _quote = CardId.parse('quote:q_2255');
 
 void main() {
   // Kazdy test otvara novu DB nad vlastnym spojenim.
@@ -110,53 +110,37 @@ void main() {
     );
 
     test('seen is written once per (date, card, context)', () async {
-      expect(await log(_ayah), isTrue);
-      expect(await log(_ayah), isFalse);
-      expect(await log(_ayah, context: CardContext.gate), isTrue);
-      expect(await log(_ayah, date: _d.addDays(1)), isTrue);
+      expect(await log(_quote), isTrue);
+      expect(await log(_quote), isFalse);
+      expect(await log(_quote, context: CardContext.gate), isTrue);
+      expect(await log(_quote, date: _d.addDays(1)), isTrue);
       // ine akcie sa neobmedzuju
-      expect(await log(_ayah, action: CardAction.shared), isTrue);
-      expect(await log(_ayah, action: CardAction.shared), isTrue);
+      expect(await log(_quote, action: CardAction.shared), isTrue);
+      expect(await log(_quote, action: CardAction.shared), isTrue);
       final rows = await db.cardEventDao.forDate(_d);
       expect(rows, hasLength(4));
-      expect(rows.first.type, CardType.ayah);
-      expect(rows.first.cardId, 'ayah:2255');
+      expect(rows.first.type, CardType.quote);
+      expect(rows.first.cardId, 'quote:q_2255');
       expect(rows.first.pos, 2);
-    });
-
-    test('new seen of a verse maintains ayah_read (D6)', () async {
-      await log(_ayah, ts: _t0);
-      await log(_ayah, ts: _t0.add(_hour)); // duplicitne, nepocita sa
-      await log(_ayah, context: CardContext.reader, ts: _t0.add(_hour));
-      await log(CardId.parse('ayah:2001'));
-      await log(CardId.parse('hadith:11'));
-      await log(CardId.parse('ayah:1001'), action: CardAction.saved);
-
-      final rows = await db.select(db.ayahReads).get();
-      expect({for (final r in rows) r.ayahId: r.readCount}, {2255: 2, 2001: 1});
-      expect(rows.firstWhere((r) => r.ayahId == 2255).firstReadAt, _t0);
-      expect(await db.readingDao.readCountsBySurah(), {2: 2});
-      expect(await db.readingDao.isAyahRead(2255), isTrue);
-      expect(await db.readingDao.isAyahRead(1001), isFalse);
     });
 
     test('distinct counts for quests, card ids, history', () async {
       final dao = db.cardEventDao;
-      await log(_ayah);
-      await log(_ayah, context: CardContext.reader);
-      await log(CardId.parse('ayah:2256'), context: CardContext.gate);
-      final quiz = CardId.parse('quiz:1043:ar2mean');
+      await log(_quote);
+      await log(_quote, context: CardContext.reader);
+      await log(CardId.parse('quote:q_2256'), context: CardContext.gate);
+      final prompt = CardId.parse('prompt:p_1043');
       await log(
-        quiz,
+        prompt,
         action: CardAction.answered,
-        context: CardContext.quiz,
+        context: CardContext.feed,
         value: 4,
         correct: true,
       );
       await log(
-        quiz,
+        prompt,
         action: CardAction.answered,
-        context: CardContext.quiz,
+        context: CardContext.feed,
         value: 1,
         correct: false,
       );
@@ -164,7 +148,7 @@ void main() {
       expect(
         await dao.countDistinctCards(
           _d,
-          type: CardType.ayah,
+          type: CardType.quote,
           action: CardAction.seen,
         ),
         2,
@@ -172,7 +156,7 @@ void main() {
       expect(
         await dao.countDistinctCards(
           _d,
-          type: CardType.ayah,
+          type: CardType.quote,
           action: CardAction.seen,
           context: CardContext.gate,
         ),
@@ -186,8 +170,8 @@ void main() {
       );
       expect(await dao.countDistinctCards(_d.addDays(1)), 0);
       expect(await dao.cardIds(_d, action: CardAction.seen), {
-        'ayah:2255',
-        'ayah:2256',
+        'quote:q_2255',
+        'quote:q_2256',
       });
       expect(
         await dao.cardIds(
@@ -195,53 +179,15 @@ void main() {
           action: CardAction.seen,
           context: CardContext.reader,
         ),
-        {'ayah:2255'},
+        {'quote:q_2255'},
       );
 
-      final history = await dao.recentByPrefix('quiz:1043:');
+      final history = await dao.recentByPrefix('prompt:p_1043');
       expect([for (final h in history) h.value], [1, 4]);
       expect(history.first.correct, isFalse);
-      expect(await dao.recentByPrefix('quiz:1043:', limit: 1), hasLength(1));
+      expect(await dao.recentByPrefix('prompt:p_1043', limit: 1), hasLength(1));
       // _ a % v prefixe su literaly
-      expect(await dao.recentByPrefix('quiz_1043'), isEmpty);
-    });
-  });
-
-  group('ReadingDao', () {
-    test('reading position defaults to 0 and updates', () async {
-      final dao = db.readingDao;
-      expect(await dao.readingPosition(), 0);
-      await dao.setReadingPosition(2142, _t0);
-      await dao.setReadingPosition(2144, _t0.add(_hour));
-      expect(await dao.readingPosition(), 2144);
-      expect(await dao.watchReadingPosition().first, 2144);
-      final row = await db.select(db.readingPositions).getSingle();
-      expect(row.updatedAt, _t0.add(_hour));
-    });
-
-    test('khatm lifecycle (D7)', () async {
-      final dao = db.readingDao;
-      expect(await dao.currentKhatm(), isNull);
-      final k1 = await dao.startKhatmIfNone(_t0);
-      expect(k1.n, 1);
-      expect((await dao.startKhatmIfNone(_t0.add(_hour))).startedAt, _t0);
-      await dao.setReadingPosition(114006, _t0);
-
-      expect(await dao.completeKhatm(_t0.add(_hour)), 1);
-      expect(await dao.readingPosition(), 0);
-      expect(await dao.completedKhatmCount(), 1);
-      expect(await dao.currentKhatm(), isNull);
-
-      // dalsi khatm bez explicitneho startu
-      expect(await dao.completeKhatm(_t0.add(_hour * 2)), 2);
-      final history = await dao.khatmHistory();
-      expect([for (final k in history) k.n], [1, 2]);
-      expect(history.last.completedAt, _t0.add(_hour * 2));
-    });
-
-    test('watch read counts by surah', () async {
-      final counts = db.readingDao.watchReadCountsBySurah();
-      expect(await counts.first, isEmpty);
+      expect(await dao.recentByPrefix('prompt:p%1043'), isEmpty);
     });
   });
 
@@ -272,98 +218,6 @@ void main() {
 
       await dao.assignIfAbsent(_d.addDays(3), {QuestSlotKind.act: 'q_act'});
       expect(await dao.lastAssigned(), {'q_act': _d.addDays(3), 'q_read': _d});
-    });
-  });
-
-  group('SrsDao', () {
-    test('add, due, review with history, stats, reset, remove', () async {
-      final dao = db.srsDao;
-      expect(
-        await dao.addIfAbsent(1, source: SrsSource.wordCard, now: _t0),
-        isTrue,
-      );
-      expect(
-        await dao.addIfAbsent(1, source: SrsSource.manual, now: _t0),
-        isFalse,
-      );
-      await dao.addIfAbsent(2, source: SrsSource.manual, now: _t0.add(_hour));
-
-      final item = (await dao.item(1))!;
-      expect(item.state, SrsState.fresh);
-      expect(item.easeFactor, 2.5);
-      expect(item.stability, isNull);
-      expect(await dao.watchItem(1).first, item);
-
-      expect([for (final i in await dao.dueItems(_t0)) i.lemmaId], [1]);
-      expect(await dao.dueItems(_t0.add(_hour), limit: 1), hasLength(1));
-      expect(await dao.watchDueCount(_t0.add(_hour)).first, 2);
-      expect(await dao.nextDueAfter(_t0), _t0.add(_hour));
-      expect(await dao.nextDueAfter(_t0.add(_hour)), isNull);
-
-      final due = _t0.add(const Duration(days: 30));
-      await dao.recordReview(
-        item.copyWith(
-          state: SrsState.review,
-          intervalDays: 30,
-          reps: 3,
-          due: due,
-          lastReview: Value(_t0),
-        ),
-        SrsReviewsCompanion.insert(
-          lemmaId: 1,
-          ts: _t0,
-          grade: 5,
-          elapsedDays: 0,
-          scheduledDays: 30,
-          stateBefore: SrsState.fresh,
-        ),
-      );
-      expect((await dao.item(1))!.due, due);
-      final reviews = await dao.reviews(1);
-      expect(reviews.single.stateBefore, SrsState.fresh);
-      expect(await dao.countsByState(), {
-        SrsState.review: 1,
-        SrsState.fresh: 1,
-      });
-      expect(await dao.knownCount(), 1);
-      expect([for (final i in await dao.allByDue()) i.lemmaId], [2, 1]);
-
-      await dao.reset(1, _t0);
-      final reset = (await dao.item(1))!;
-      expect(reset.state, SrsState.fresh);
-      expect(reset.lastReview, isNull);
-      expect(await dao.knownCount(), 0);
-
-      await dao.remove(2);
-      expect(await dao.item(2), isNull);
-    });
-  });
-
-  group('PrayerLogDao', () {
-    test('set, overwrite, clear, range, fast', () async {
-      final dao = db.prayerLogDao;
-      await dao.setStatus(_d, PrayerKind.asr, PrayerStatus.onTime, _t0);
-      await dao.setStatus(_d, PrayerKind.asr, PrayerStatus.late, _t0);
-      await dao.setStatus(_d, PrayerKind.fajr, PrayerStatus.qada, _t0);
-      await dao.setStatus(
-        _d.addDays(1),
-        PrayerKind.isha,
-        PrayerStatus.excused,
-        _t0,
-      );
-      final today = await dao.forDate(_d);
-      expect(today, hasLength(2));
-      expect(
-        today.firstWhere((r) => r.prayer == PrayerKind.asr).status,
-        PrayerStatus.late,
-      );
-      await dao.clear(_d, PrayerKind.fajr);
-      expect(await dao.watchForDate(_d).first, hasLength(1));
-      expect(await dao.range(_d, _d.addDays(1)), hasLength(2));
-
-      expect(await dao.fast(_d), isNull);
-      await dao.setFast(_d, FastType.sunnah, 'done');
-      expect((await dao.fast(_d))!.type, FastType.sunnah);
     });
   });
 
@@ -408,7 +262,6 @@ void main() {
       expect(ig.cardsRequired, 3);
       expect(ig.unlockMinutes, 10);
       expect(ig.enabled, isTrue);
-      expect(ig.prayerLock, isFalse);
       expect(
         (await dao.addApp(platformRef: 'com.example.a', now: _t0)).id,
         ig.id,
@@ -422,12 +275,12 @@ void main() {
       expect(tt.cardsRequired, 5);
 
       expect(
-        await dao.updateApp(ig.id, prayerLock: true, enabled: false),
+        await dao.updateApp(ig.id, cardsRequired: 4, enabled: false),
         isTrue,
       );
       expect(await dao.updateApp(999, label: 'x'), isFalse);
       final updated = (await dao.appByRef('com.example.a'))!;
-      expect(updated.prayerLock, isTrue);
+      expect(updated.cardsRequired, 4);
       expect(updated.enabled, isFalse);
       expect(updated.label, 'A');
       expect(await dao.watchApps().first, hasLength(2));
@@ -481,25 +334,25 @@ void main() {
   group('SavedCardDao', () {
     test('save, unsave, filter by type, count', () async {
       final dao = db.savedCardDao;
-      final hadith = CardId.parse('hadith:11');
-      expect(await dao.watchIsSaved(_ayah).first, isFalse);
-      await dao.save(_ayah, _t0);
-      await dao.save(_ayah, _t0.add(_hour)); // povodny cas ostava
-      await dao.save(hadith, _t0.add(_hour));
-      expect(await dao.watchIsSaved(_ayah).first, isTrue);
+      final concept = CardId.parse('concept:logos');
+      expect(await dao.watchIsSaved(_quote).first, isFalse);
+      await dao.save(_quote, _t0);
+      await dao.save(_quote, _t0.add(_hour)); // povodny cas ostava
+      await dao.save(concept, _t0.add(_hour));
+      expect(await dao.watchIsSaved(_quote).first, isTrue);
       expect(
         [for (final r in await dao.watchAll().first) r.cardId],
-        ['hadith:11', 'ayah:2255'],
+        ['concept:logos', 'quote:q_2255'],
       );
       expect(
         [
-          for (final r in await dao.watchAll(type: CardType.ayah).first)
+          for (final r in await dao.watchAll(type: CardType.quote).first)
             r.savedAt,
         ],
         [_t0],
       );
       expect(await dao.watchCount().first, 2);
-      await dao.unsave(_ayah);
+      await dao.unsave(_quote);
       expect(await dao.watchCount().first, 1);
     });
   });

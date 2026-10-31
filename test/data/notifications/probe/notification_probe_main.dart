@@ -5,7 +5,7 @@
 //   adb install -r build/app/outputs/flutter-apk/app-devlite-debug.apk
 //   adb shell am start -n app.prosoche.dev/app.prosoche.MainActivity
 //
-// Naplanuje plan pre Bratislavu (NotificationService, standardne texty)
+// Naplanuje ranne pripomienky (NotificationService, standardne texty)
 // a dve testovacie notifikacie o +1 a +4 minuty mimo rozsahu planu.
 import 'package:flutter/material.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
@@ -27,22 +27,11 @@ Future<String> _run() async {
   await platform.initialize();
   final permission = await platform.requestPermission();
   final settings = InMemorySettingsRepository();
-  await settings.set(
-    SettingsKeys.prayerLocation,
-    PrayerLocation(
-      lat: 48.15,
-      lng: 17.11,
-      country: 'SK',
-      tz: 'Europe/Bratislava',
-      city: 'Bratislava',
-    ),
-  );
   await settings.set(SettingsKeys.notifPrivateLockscreen, false);
   final zone = (await FlutterTimezone.getLocalTimezone()).identifier;
   final service = NotificationService(
     settings: settings,
     platform: platform,
-    timeZones: SharedPrefsTimeZoneStore(),
     deviceZone: () async => zone,
   );
   final result = await service.reschedule();
@@ -68,7 +57,7 @@ Future<String> _run() async {
   final pending = await platform.pending();
   return 'zone=$zone permission=$permission exact=$exact\n'
       'planned=${result.planned} scheduled=${result.scheduled} '
-      'paused=${result.prayersPaused}\npending=${pending.length}';
+      'pending=${pending.length}';
 }
 
 class _Probe extends StatelessWidget {

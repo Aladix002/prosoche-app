@@ -1,5 +1,4 @@
 import 'package:prosoche/data/notifications/notification_platform.dart';
-import 'package:prosoche/data/notifications/notification_service.dart';
 import 'package:prosoche/domain/notifications/notifications.dart';
 
 /// [NotificationPlatform] v pamati: drzi naplanovane notifikacie ako system.
@@ -55,17 +54,4 @@ class FakeNotificationPlatform implements NotificationPlatform {
 
   @override
   Future<bool> areEnabled() async => enabled;
-}
-
-/// [TimeZoneStore] v pamati.
-class MemoryTimeZoneStore implements TimeZoneStore {
-  MemoryTimeZoneStore([this.zone]);
-
-  String? zone;
-
-  @override
-  Future<String?> confirmedZone() async => zone;
-
-  @override
-  Future<void> setConfirmedZone(String zone) async => this.zone = zone;
 }

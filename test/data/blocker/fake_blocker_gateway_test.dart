@@ -91,15 +91,12 @@ void main() {
     expect(gateway.calls, ['unlockFor']);
   });
 
-  test('targets, closeGate, prayer locks are recorded', () async {
+  test('targets and closeGate are recorded', () async {
     const t = BlockTarget(ref: 'com.a.b', cardsRequired: 3, unlockMinutes: 10);
     await gateway.setTargets([t]);
     expect(gateway.targets, [t]);
     await gateway.closeGate(openTarget: true);
     expect(gateway.lastCloseOpenTarget, isTrue);
-    await gateway.schedulePrayerLocks([now], durationMinutes: 15);
-    expect(gateway.prayerStarts, [now]);
-    expect(gateway.prayerMinutes, 15);
   });
 
   test('failNext fails exactly one call', () async {

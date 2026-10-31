@@ -9,16 +9,16 @@ void main() {
     expect(DayPhase.resolve(at(5)), DayPhase.morning);
     expect(DayPhase.resolve(at(11, 59)), DayPhase.morning);
     expect(DayPhase.resolve(at(12)), DayPhase.day);
-    expect(DayPhase.resolve(at(15)), DayPhase.evening);
-    expect(DayPhase.resolve(at(20)), DayPhase.night);
+    expect(DayPhase.resolve(at(17)), DayPhase.evening);
+    expect(DayPhase.resolve(at(21)), DayPhase.night);
   });
 
-  test('prayer boundaries', () {
+  test('custom boundaries', () {
     final b = DayBoundaries(
-      fajr: at(6),
-      dhuhr: at(11, 40),
-      asr: at(14),
-      isha: at(18, 30),
+      morning: at(6),
+      day: at(11, 40),
+      evening: at(14),
+      night: at(18, 30),
     );
     expect(DayPhase.resolve(at(5, 30), boundaries: b), DayPhase.night);
     expect(DayPhase.resolve(at(11, 45), boundaries: b), DayPhase.day);
@@ -28,8 +28,12 @@ void main() {
 
   test('boundaries must be ordered', () {
     expect(
-      () =>
-          DayBoundaries(fajr: at(12), dhuhr: at(6), asr: at(14), isha: at(20)),
+      () => DayBoundaries(
+        morning: at(12),
+        day: at(6),
+        evening: at(14),
+        night: at(20),
+      ),
       throwsArgumentError,
     );
   });
@@ -43,5 +47,8 @@ void main() {
     expect(TimeOfDayFacet.fromPhase(DayPhase.day), TimeOfDayFacet.day);
     expect(TimeOfDayFacet.fromPhase(DayPhase.evening), TimeOfDayFacet.evening);
     expect(TimeOfDayFacet.fromPhase(DayPhase.night), TimeOfDayFacet.night);
+    expect(TimeOfDayFacet.fromWire('evening'), TimeOfDayFacet.evening);
+    expect(TimeOfDayFacet.fromWire(null), TimeOfDayFacet.any);
+    expect(TimeOfDayFacet.fromWire('x'), TimeOfDayFacet.any);
   });
 }

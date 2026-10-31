@@ -37,23 +37,18 @@ void main() {
     final schema = await verifier.schemaAt(1);
     final old = v1.DatabaseAtV1(schema.newConnection());
     await old.customStatement(
-      "INSERT INTO settings VALUES ('ui.locale', '\"ar\"')",
+      "INSERT INTO settings VALUES ('ui.locale', '\"en\"')",
     );
     await old.customStatement(
       'INSERT INTO card_event (date, card_id, type, context, action, ts) '
-      "VALUES ('2026-10-29', 'ayah:2255', 'ayah', 'feed', 'seen', 0)",
-    );
-    await old.customStatement(
-      'INSERT INTO reading_position (id, ayah_id, updated_at) '
-      'VALUES (1, 2255, 0)',
+      "VALUES ('2026-10-29', 'quote:q_1', 'quote', 'feed', 'seen', 0)",
     );
     await old.close();
 
     final db = UserDb(schema.newConnection());
     addTearDown(db.close);
     await verifier.migrateAndValidate(db, UserDb.currentSchemaVersion);
-    expect(await db.settingsDao.read('ui.locale'), '"ar"');
-    expect(await db.readingDao.readingPosition(), 2255);
+    expect(await db.settingsDao.read('ui.locale'), '"en"');
     expect(
       (await db.cardEventDao.forDate(LocalDate(2026, 10, 29))).single.action,
       CardAction.seen,

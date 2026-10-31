@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:prosoche/data/db/user_db.dart' as db;
 import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/quests/quests.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/domain/streak/streak.dart';
 
 import '../harness.dart';
@@ -15,113 +16,73 @@ void main() {
   group('QuestRepository', () {
     setUp(() async => h = await Harness.create());
 
-    test('assigns quests once with template, generic learn and act', () async {
+    Future<void> logSeen(String card, int minute, {LocalDate? date}) =>
+        h.user.cardEventDao.log(
+          date: date ?? thu,
+          card: CardId.parse(card),
+          context: db.CardContext.reader,
+          action: db.CardAction.seen,
+          ts: DateTime.utc(2026, 10, 29, 8, minute),
+        );
+
+    test('assigns quests once from templates with texts', () async {
       final quests = await h.quests.ensure(thu);
       expect(quests.map((q) => q.slot), QuestSlot.values);
       final read = quests[0];
-      expect(read.quest.questId, 'read.fx.verses');
-      expect(read.title, '[PLACEHOLDER read quest]');
-      expect(read.progress, const QuestProgress(current: 0, target: 3));
+      expect(read.quest.questId, 'read.quotes_n');
+      expect(read.title, '[PLACEHOLDER quest read.quotes_n]');
+      expect(read.progress!.target, isIn([3, 4]));
       final learn = quests[1];
-      expect(learn.generic, GenericQuest.learnCards);
-      expect(learn.genericCount, 1, reason: 'Read 1 hadith or dua card');
-      expect(learn.title, isNull);
-      expect(quests[2].quest.questId, 'q_act');
+      expect(learn.quest.questId, 'learn.idea');
+      expect(learn.quest.rule!.types, {CardType.concept, CardType.author});
+      expect(quests[2].quest.questId, 'act.placeholder');
       expect(quests[2].progress, isNull);
       expect(await h.user.questLogDao.forDate(thu), hasLength(3));
       expect(await h.quests.ensure(thu), hasLength(3));
     });
 
-    test('language without texts gets generic quests and no act', () async {
-      h.lang = 'tr';
+    test('language without texts gets generic quests in every slot', () async {
+      h.lang = 'de';
       final quests = await h.quests.ensure(thu);
       expect(quests.map((q) => q.quest.questId), [
-        GenericQuest.readVerses.id,
-        GenericQuest.learnCards.id,
+        GenericQuest.readCards.id,
+        GenericQuest.learnIdea.id,
+        GenericQuest.actPractice.id,
       ]);
+      expect(quests.first.title, isNull);
+      expect(quests.first.genericCount, 5);
     });
 
     test('generic read quest is completable by the daily set alone', () async {
-      h.lang = 'tr';
-      // P-01: prvy vyber questov vytvori sadu, ciel je hned min(10, versy).
+      h.lang = 'de';
       final first = (await h.quests.ensure(thu)).first;
       final set = (await h.dailySets.get(thu))!;
-      final verses = [
-        for (final c in set.set.cards)
-          if (c.cardId is AyahCardId) c,
-      ];
-      expect(verses.length, inInclusiveRange(1, 9));
-      expect(first.generic, GenericQuest.readVerses);
-      expect(first.genericCount, verses.length);
+      expect(first.generic, GenericQuest.readCards);
       for (final c in set.set.cards) {
         await h.dailySets.markSeen(thu, c);
       }
       await h.quests.syncAuto(thu);
       final read = (await h.quests.ensure(thu)).first;
       expect(read.isDone, isTrue);
-      expect(read.genericCount, verses.length, reason: 'target is stable');
+      expect(read.genericCount, 5, reason: 'target is stable');
     });
 
-    test(
-      'P-01: done generic read keeps its target when a set appears',
-      () async {
-        h.lang = 'tr';
-        // Quest vybrany este bez sady (napr. starsi stav z RC1): ciel 10.
-        await h.user.questLogDao.assignIfAbsent(thu, {
-          db.QuestSlotKind.read: GenericQuest.readVerses.id,
-        });
-        expect((await h.quests.ensure(thu)).first.genericCount, 10);
-        final ids = [for (var a = 1; a <= 7; a++) 1000 + a, 2001, 2002, 2003];
-        for (final (i, a) in ids.indexed) {
-          await h.user.cardEventDao.log(
-            date: thu,
-            card: AyahCardId(AyahId.fromValue(a)),
-            context: db.CardContext.reader,
-            action: db.CardAction.seen,
-            ts: DateTime.utc(2026, 10, 29, 8, i),
-          );
-        }
-        await h.quests.syncAuto(thu);
-        expect((await h.quests.ensure(thu)).first.isDone, isTrue);
-        // Sada s < 10 versami vznikne az po splneni: ciel ostava 10.
-        final set = await h.dailySets.ensure(thu);
-        expect(
-          set.set.cards.where((c) => c.cardId is AyahCardId).length,
-          lessThan(10),
-        );
-        final read = (await h.quests.ensure(thu)).first;
-        expect(read.isDone, isTrue);
-        expect(read.genericCount, 10);
-        expect(
-          read.progress,
-          isA<QuestProgress>()
-              .having((p) => p.current, 'current', 10)
-              .having((p) => p.target, 'target', 10),
-        );
-      },
-    );
-
-    test('lower target from the set is marked done by watch', () async {
-      h.lang = 'tr';
+    test('lower target from a small set is marked done by watch', () async {
+      h.lang = 'de';
+      await h.settings.set(SettingsKeys.feedCardsCount, 8);
+      await h.content.customStatement(
+        "DELETE FROM quote WHERE id NOT IN ('q_0001', 'q_0002', 'q_0003')",
+      );
       final set = await h.dailySets.ensure(thu);
-      final n = set.set.cards.where((c) => c.cardId is AyahCardId).length;
-      expect(n, lessThan(10));
-      // n roznych versov v citacke, bez syncAuto.
-      final ids = [for (var a = 1; a <= 7; a++) 1000 + a, 2001, 2002, 2003];
-      for (final a in ids.take(n)) {
-        await h.user.cardEventDao.log(
-          date: thu,
-          card: AyahCardId(AyahId.fromValue(a)),
-          context: db.CardContext.reader,
-          action: db.CardAction.seen,
-          ts: DateTime.utc(2026, 10, 29, 8, a % 60),
-        );
+      expect(set.n, 4);
+      for (final (i, c) in set.set.cards.skip(1).indexed) {
+        await logSeen(c.cardId.format(), i);
       }
       final done = await h.quests
           .watch(thu)
           .firstWhere((qs) => qs.first.isDone)
           .timeout(const Duration(seconds: 5));
-      expect(done.first.genericCount, n);
+      expect(done.first.genericCount, 3);
     });
 
     test('act can be done, undone and skipped', () async {
@@ -138,30 +99,33 @@ void main() {
     });
 
     test('auto quest completes from card events and watch emits', () async {
+      final target = (await h.quests.ensure(thu)).first.progress!.target;
       final done = h.quests
           .watch(thu)
           .firstWhere((qs) => qs.isNotEmpty && qs.first.isDone);
-      for (final a in [1001, 1002, 1003]) {
-        await h.user.cardEventDao.log(
-          date: thu,
-          card: AyahCardId(AyahId.fromValue(a)),
-          context: db.CardContext.reader,
-          action: db.CardAction.seen,
-          ts: DateTime.utc(2026, 10, 29, 8, a % 10),
-        );
+      for (var i = 1; i <= target; i++) {
+        await logSeen('quote:x_$i', i);
       }
       await h.quests.syncAuto(thu);
       final read = (await done).first;
-      expect(read.doneAt, DateTime.utc(2026, 10, 29, 8, 3).toLocal());
+      expect(read.doneAt, DateTime.utc(2026, 10, 29, 8, target).toLocal());
+    });
+
+    test('learn completes from an idea card', () async {
+      await h.quests.ensure(thu);
+      await logSeen('concept:logos', 1);
+      await h.quests.syncAuto(thu);
+      final learn = (await h.quests.ensure(thu))[1];
+      expect(learn.isDone, isTrue);
     });
 
     test('stored quest unknown today keeps its template', () async {
       await h.user.questLogDao.assignIfAbsent(thu, {
-        db.QuestSlotKind.read: GenericQuest.readVerses.id,
+        db.QuestSlotKind.read: GenericQuest.readCards.id,
         db.QuestSlotKind.act: 'act.removed',
       });
       final quests = await h.quests.ensure(thu);
-      expect(quests.first.generic, GenericQuest.readVerses);
+      expect(quests.first.generic, GenericQuest.readCards);
       expect(quests.last.quest.questId, 'act.removed');
       expect(quests.last.quest.rule, isNull);
     });

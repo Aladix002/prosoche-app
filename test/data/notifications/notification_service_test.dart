@@ -9,7 +9,6 @@ import 'package:prosoche/data/notifications/notification_service.dart';
 import 'package:prosoche/data/notifications/notification_texts.dart';
 import 'package:prosoche/domain/common/local_date.dart';
 import 'package:prosoche/domain/notifications/notifications.dart';
-import 'package:prosoche/domain/prayer/prayer.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -24,61 +23,43 @@ void main() {
 
   late InMemorySettingsRepository settings;
   late FakeNotificationPlatform platform;
-  late MemoryTimeZoneStore zones;
   late String deviceZone;
   late RingBufferLog log;
   late NotificationService service;
-  late Set<LocalDate> excused;
 
   NotificationService build({Locale system = const Locale('en')}) =>
       NotificationService(
         settings: settings,
         platform: platform,
-        timeZones: zones,
         deviceZone: () async => deviceZone,
         clock: Clock.fixed(now),
         logger: AppLogger(sinks: [log], echoToConsole: false),
         systemLocale: () async => system,
-        excusedDays: () async => excused,
       );
 
   setUp(() async {
     settings = InMemorySettingsRepository();
-    await settings.set(
-      SettingsKeys.prayerLocation,
-      PrayerLocation(
-        lat: 48.15,
-        lng: 17.11,
-        country: 'SK',
-        tz: 'Europe/Bratislava',
-        city: 'Bratislava',
-      ),
-    );
     platform = FakeNotificationPlatform();
-    zones = MemoryTimeZoneStore();
     deviceZone = 'Europe/Bratislava';
     log = RingBufferLog();
-    excused = {};
     service = build();
   });
 
-  Iterable<ScheduledNotification> prayers() => platform.scheduled.values.where(
-    (n) => n.channel == NotificationChannel.prayer,
+  Iterable<ScheduledNotification> daily() => platform.scheduled.values.where(
+    (n) => n.channel == NotificationChannel.daily,
   );
 
   group('reschedule', () {
-    test('first run schedules the whole plan and records the zone', () async {
+    test('first run schedules the whole plan', () async {
       final r = await service.reschedule();
       expect(r.planned, platform.scheduled.length);
-      expect(r.planned, lessThanOrEqualTo(64));
+      expect(r.planned, 10);
       expect(r.scheduled, r.planned);
       expect(r.cancelled, 0);
       expect(r.exact, isTrue);
-      expect(r.prayersPaused, isFalse);
       expect(r.dropped, 0);
       expect(r.deviceZone, 'Europe/Bratislava');
-      expect(zones.zone, 'Europe/Bratislava');
-      expect(prayers(), isNotEmpty);
+      expect(daily(), hasLength(9));
       expect(platform.exactById.values.every((e) => e), isTrue);
       expect(log.entries.last.kv['status'], 'exact');
     });
@@ -117,83 +98,29 @@ void main() {
       expect(platform.scheduled.containsKey(2000000001), isTrue);
     });
 
-    test('changing morning time reschedules only mornings', () async {
+    test('changing morning time reschedules the mornings', () async {
       await service.reschedule();
       platform.calls.clear();
       await settings.set(SettingsKeys.notifMorningTime, '08:15');
       final r = await service.reschedule();
-      // 8 rannych (dnesna 07:30 este pride, posledna je vyzva) + vyzva.
-      expect(r.scheduled, lessThanOrEqualTo(11));
       expect(r.scheduled, greaterThan(0));
-      final morning = platform.scheduled.values.firstWhere(
-        (n) => n.channel == NotificationChannel.daily,
-      );
+      final morning = daily().first;
       expect((morning.at.hour, morning.at.minute), (8, 15));
     });
 
-    test('disabling a prayer cancels its notifications', () async {
+    test('disabling the morning reminder cancels everything', () async {
       await service.reschedule();
-      await settings.set(SettingsKeys.notifPrayer('asr'), false);
+      await settings.set(SettingsKeys.notifMorningEnabled, false);
       final r = await service.reschedule();
-      expect(r.cancelled, greaterThan(0));
-      expect(prayers().any((n) => n.body.contains('Asr')), isFalse);
-    });
-
-    test('excused days skip prayers', () async {
-      excused = {LocalDate(2026, 11, 4)};
-      await service.reschedule();
-      final onDay = prayers().where(
-        (n) => tz.TZDateTime.from(n.at, ba).day == 4,
-      );
-      expect(onDay, isEmpty);
-    });
-
-    test('without location only daily reminders', () async {
-      await settings.reset(SettingsKeys.prayerLocation);
-      await service.reschedule();
-      expect(prayers(), isEmpty);
-      expect(platform.scheduled, isNotEmpty);
+      expect(r.cancelled, 10);
+      expect(platform.scheduled, isEmpty);
     });
 
     test('unknown device zone falls back to UTC and logs', () async {
       deviceZone = 'Mars/Olympus';
-      zones.zone = 'Mars/Olympus';
       final r = await service.reschedule();
       expect(r.planned, greaterThan(0));
       expect(log.entries.any((e) => e.kv['code'] == 'tz_unknown'), isTrue);
-    });
-  });
-
-  group('time zone change', () {
-    test('pauses prayers until confirmed, morning stays', () async {
-      await service.reschedule();
-      final before = prayers().length;
-      expect(before, greaterThan(0));
-
-      deviceZone = 'Europe/Istanbul';
-      final paused = await service.reschedule();
-      expect(paused.prayersPaused, isTrue);
-      expect(paused.cancelled, greaterThanOrEqualTo(before));
-      expect(prayers(), isEmpty);
-      expect(
-        platform.scheduled.values.where(
-          (n) => n.channel == NotificationChannel.daily,
-        ),
-        isNotEmpty,
-      );
-      expect(log.entries.last.kv['status'], 'tz_paused');
-
-      final confirmed = await service.confirmTimeZone();
-      expect(confirmed.prayersPaused, isFalse);
-      expect(zones.zone, 'Europe/Istanbul');
-      expect(prayers(), hasLength(before));
-    });
-
-    test('zone with the same rules does not pause', () async {
-      await service.reschedule();
-      deviceZone = 'Europe/Prague';
-      final r = await service.reschedule();
-      expect(r.prayersPaused, isFalse);
     });
   });
 
@@ -241,40 +168,24 @@ void main() {
   group('texts', () {
     test('private mode (default) uses neutral text', () async {
       await service.reschedule();
-      for (final n in prayers()) {
-        expect(n.title, startsWith('Prosoche · '));
-        expect(n.body, 'Reminder');
-        expect(n.private, isTrue);
-      }
-      final daily = platform.scheduled.values.firstWhere(
-        (n) => n.channel == NotificationChannel.daily,
-      );
-      expect(daily.title, 'Prosoche');
-      expect(daily.body, 'Your daily reminder');
+      final morning = daily().first;
+      expect(morning.title, 'Prosoche');
+      expect(morning.body, 'Your daily reminder');
+      expect(morning.private, isTrue);
     });
 
-    test('standard mode names the prayer and time', () async {
+    test('standard mode shows the morning text', () async {
       await settings.set(SettingsKeys.notifPrivateLockscreen, false);
       await service.reschedule();
-      final asr = prayers().firstWhere((n) => n.body.contains('Asr'));
-      final local = tz.TZDateTime.from(asr.at, ba);
-      final hm =
-          '${local.hour.toString().padLeft(2, '0')}:'
-          '${local.minute.toString().padLeft(2, '0')}';
-      expect(asr.title, 'Asr · $hm');
-      expect(asr.body, "It's time for Asr.");
-      expect(asr.private, isFalse);
-      expect(asr.channelName, 'Prayer times');
-      expect(prayers().where((n) => n.title.startsWith("Jumu'ah")), isNotEmpty);
-      final morning = platform.scheduled.values.firstWhere(
-        (n) => n.channel == NotificationChannel.daily,
-      );
+      final morning = daily().first;
       expect(morning.title, 'Good morning');
       expect(morning.body, "Today's cards are ready. About 10 minutes.");
+      expect(morning.private, isFalse);
+      expect(morning.channelName, 'Daily reminder');
       final open = platform.scheduled.values.singleWhere(
         (n) => n.channel == NotificationChannel.system,
       );
-      expect(open.title, 'Prayer reminders paused soon');
+      expect(open.title, 'Reminders pause soon');
       expect(open.body, contains('Prosoche'));
     });
 
@@ -287,11 +198,8 @@ void main() {
 
     test('payload carries the deep link', () async {
       await service.reschedule();
-      final n = prayers().first;
-      expect(
-        NotificationService.deepLinkOf(n.payload),
-        startsWith('prosoche://prayer?p='),
-      );
+      final n = daily().first;
+      expect(NotificationService.deepLinkOf(n.payload), 'prosoche://today');
       expect(NotificationService.deepLinkOf(null), isNull);
       expect(NotificationService.deepLinkOf(''), isNull);
       expect(NotificationService.deepLinkOf('not json'), isNull);
@@ -300,59 +208,34 @@ void main() {
 
     test('ui.locale wins over system locale, unsupported falls back', () async {
       await settings.set(SettingsKeys.uiLocale, 'xx');
-      service = build(system: const Locale('ar'));
+      service = build(system: const Locale('de'));
       await service.reschedule();
-      expect(prayers().first.body, 'Reminder');
+      expect(daily().first.body, 'Your daily reminder');
       await settings.reset(SettingsKeys.uiLocale);
       await service.reschedule();
       expect(platform.scheduled, isNotEmpty);
     });
 
-    test('no notification text names Allah, in any locale or mode', () async {
-      final zone = tz.getLocation('Europe/Bratislava');
+    test('every kind and channel has texts in every locale', () async {
       final day = LocalDate(2026, 11, 6);
-      final at = tz.TZDateTime(zone, 2026, 11, 6, 12);
+      final at = tz.TZDateTime(ba, 2026, 11, 6, 7, 30);
       final samples = [
-        for (final p in Prayer.salah)
-          PlannedNotification(
-            kind: NotificationKind.prayer,
-            day: day,
-            at: at,
-            prayer: p,
-          ),
-        PlannedNotification(
-          kind: NotificationKind.jumuah,
-          day: day,
-          at: at,
-          prayer: Prayer.dhuhr,
-        ),
         PlannedNotification(
           kind: NotificationKind.morning,
           day: day,
           at: at,
           cardMinutes: 1,
         ),
-        PlannedNotification(
-          kind: NotificationKind.morningEvent,
-          day: day,
-          at: at,
-          eventName: 'Test',
-        ),
         PlannedNotification(kind: NotificationKind.openApp, day: day, at: at),
       ];
       for (final locale in AppLocalizations.supportedLocales) {
         final texts = await NotificationTexts.load(locale);
+        expect(texts.localeName, locale.languageCode);
         for (final n in samples) {
           for (final private in [true, false]) {
             final (title, body) = texts.render(n, private: private);
             expect(title, isNotEmpty);
             expect(body, isNotEmpty);
-            expect(
-              NotificationContentPolicy.allows(title) &&
-                  NotificationContentPolicy.allows(body),
-              isTrue,
-              reason: '$locale $n $private: $title / $body',
-            );
           }
         }
         for (final c in NotificationChannel.values) {
@@ -360,21 +243,6 @@ void main() {
           expect(texts.channelDescription(c), isNotEmpty);
         }
       }
-    });
-
-    test('event name with the name of Allah falls back to private', () async {
-      final texts = await NotificationTexts.load(const Locale('en'));
-      final n = PlannedNotification(
-        kind: NotificationKind.morningEvent,
-        day: LocalDate(2026, 11, 6),
-        at: tz.TZDateTime(ba, 2026, 11, 6, 7, 30),
-        eventName: 'Allah test',
-      );
-      expect(texts.render(n, private: false), (
-        'Prosoche',
-        'Your daily reminder',
-      ));
-      expect(texts.localeName, 'en');
     });
   });
 }

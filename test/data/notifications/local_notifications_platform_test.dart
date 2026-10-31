@@ -95,13 +95,13 @@ void main() {
     test('exact schedule uses exactAllowWhileIdle', () async {
       final platform = LocalNotificationsPlatform();
       await platform.schedule(
-        notification(NotificationChannel.prayer),
+        notification(NotificationChannel.daily),
         exact: true,
       );
       final args = calls.single.arguments as Map<Object?, Object?>;
       final specifics = args['platformSpecifics']! as Map;
       expect(specifics['scheduleMode'], 'exactAllowWhileIdle');
-      expect(specifics['channelId'], 'prayer');
+      expect(specifics['channelId'], 'daily');
       expect(args['title'], 'Prosoche · 12:00');
       expect(args['payload'], '{"v":1}');
     });
@@ -146,13 +146,13 @@ void main() {
   });
 
   group('details', () {
-    test('prayer channel: sound, default importance, private visibility', () {
+    test('system channel: silent, private visibility', () {
       final d = LocalNotificationsPlatform.details(
-        notification(NotificationChannel.prayer),
+        notification(NotificationChannel.system),
       ).android!;
-      expect(d.channelId, 'prayer');
-      expect(d.importance, Importance.defaultImportance);
-      expect(d.playSound, isTrue);
+      expect(d.channelId, 'system');
+      expect(d.importance, Importance.low);
+      expect(d.playSound, isFalse);
       expect(d.visibility, NotificationVisibility.private);
     });
 

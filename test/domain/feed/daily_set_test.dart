@@ -14,29 +14,14 @@ void main() {
       DailySetCard(pos: 1, cardId: IntroCardId(date), slot: Slot.intro),
       DailySetCard(
         pos: 2,
-        cardId: AyahCardId(AyahId(2, 255)),
-        slot: Slot.ayah,
-        khatm: true,
+        cardId: ContentCardId.quote('q_0001'),
+        slot: Slot.quote,
       ),
       DailySetCard(
         pos: 3,
-        cardId: WordCardId(1043),
-        slot: Slot.word,
-        ctxAyahId: AyahId(2, 255),
+        cardId: ContentCardId(CardType.practice, 'morning'),
+        slot: Slot.practice,
       ),
-      DailySetCard(
-        pos: 4,
-        cardId: QuizCardId(880, 'ar2mean'),
-        slot: Slot.srs,
-        distractors: const [12, 501, 77],
-      ),
-      DailySetCard(pos: 5, cardId: KhatmCardId(1), slot: Slot.khatm),
-      DailySetCard(
-        pos: 6,
-        cardId: EventCardId('jumuah', date),
-        slot: Slot.event,
-      ),
-      DailySetCard(pos: 7, cardId: ReflectionCardId(31), slot: Slot.reflection),
     ],
   );
 
@@ -46,8 +31,8 @@ void main() {
     expect(back, s);
     expect(back.hashCode, s.hashCode);
     expect(back.cards.first.hashCode, s.cards.first.hashCode);
-    expect(back.toString(), contains('ayah:2255'));
-    expect(back.cards[1].toString(), contains('ayah:2255'));
+    expect(back.toString(), contains('quote:q_0001'));
+    expect(back.cards[1].toString(), contains('quote:q_0001'));
   });
 
   test('json shape follows docs/02 0.3', () {
@@ -63,48 +48,27 @@ void main() {
       'card_id': 'intro:2026-10-29',
       'slot': 'intro',
     });
-    expect(cards[1], {
-      'pos': 2,
-      'card_id': 'ayah:2255',
-      'slot': 'ayah',
-      'khatm': true,
-    });
-    expect(cards[2], containsPair('ctx_ayah_id', 2255));
-    expect(cards[3], containsPair('distractors', [12, 501, 77]));
+    expect(cards[1], {'pos': 2, 'card_id': 'quote:q_0001', 'slot': 'quote'});
   });
 
-  test('n excludes khatm, done is N+1 outside cards', () {
+  test('n counts all cards, done is N+1 outside cards', () {
     final s = sample();
-    expect(s.cards, hasLength(7));
-    expect(s.n, 6);
-    expect(s.contentCards.any((c) => c.cardId is KhatmCardId), isFalse);
+    expect(s.n, 3);
+    expect(s.contentCards, s.cards);
     expect(s.doneCardId, DoneCardId(date));
-    expect(s.cards.any((c) => c.cardId is DoneCardId), isFalse);
   });
 
-  test('intro event_id round trip, optional keys omitted', () {
+  test('optional keys omitted', () {
     final s = DailySet(
       date: date,
       phase: DayPhase.day,
       cards: [
-        DailySetCard(
-          pos: 1,
-          cardId: IntroCardId(date),
-          slot: Slot.intro,
-          eventId: 'jumuah',
-        ),
+        DailySetCard(pos: 1, cardId: IntroCardId(date), slot: Slot.intro),
       ],
     );
-    expect(s.toJson()['cards'], [
-      {
-        'pos': 1,
-        'card_id': 'intro:2026-10-29',
-        'slot': 'intro',
-        'event_id': 'jumuah',
-      },
-    ]);
-    expect(DailySet.decode(s.encode(), date: date), s);
     expect(s.toJson().containsKey('tz'), isFalse);
+    expect(s.toJson().containsKey('content_version'), isFalse);
+    expect(DailySet.decode(s.encode(), date: date), s);
     expect(s, isNot(sample()));
   });
 
@@ -137,31 +101,23 @@ void main() {
       throwsFormatException,
     );
 
-    Map<String, Object?> withCard(Map<String, Object?> card) =>
-        base()..['cards'] = [card];
-
     test('rejects malformed json', () {
       bad(base()..['v'] = 2);
       bad(base()..['phase'] = 'noon');
       bad(base()..remove('cards'));
       bad(base()..['cards'] = [1]);
       bad(base()..['tz'] = 1);
-      bad(withCard({'pos': 1, 'card_id': 'intro:2026-10-29', 'slot': 'x'}));
       bad(
-        withCard({
-          'pos': 1,
-          'card_id': 'word:1',
-          'slot': 'word',
-          'ctx_ayah_id': 1999,
-        }),
+        base()
+          ..['cards'] = [
+            {'pos': 1, 'card_id': 'intro:2026-10-29', 'slot': 'x'},
+          ],
       );
       bad(
-        withCard({
-          'pos': 1,
-          'card_id': 'quiz:1:ar2mean',
-          'slot': 'srs',
-          'distractors': ['a'],
-        }),
+        base()
+          ..['cards'] = [
+            {'pos': 1, 'card_id': 'ayah:2255', 'slot': 'quote'},
+          ],
       );
       expect(() => DailySet.decode('[]', date: date), throwsFormatException);
     });

@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:prosoche/domain/common/local_date.dart';
 import 'package:prosoche/domain/notifications/notifications.dart';
-import 'package:prosoche/domain/prayer/prayer.dart';
 import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -21,16 +20,14 @@ void main() {
     test('deterministic and distinct per day and slot', () {
       final d = LocalDate(2026, 11, 3);
       final ids = {
-        for (final p in Prayer.salah)
-          NotificationIds.of(NotificationKind.prayer, d, p),
         NotificationIds.of(NotificationKind.morning, d),
         NotificationIds.of(NotificationKind.openApp, d),
-        NotificationIds.of(NotificationKind.prayer, d.addDays(1), Prayer.fajr),
+        NotificationIds.of(NotificationKind.morning, d.addDays(1)),
       };
-      expect(ids, hasLength(8));
+      expect(ids, hasLength(3));
       expect(
-        NotificationIds.of(NotificationKind.jumuah, d, Prayer.dhuhr),
-        NotificationIds.of(NotificationKind.prayer, d, Prayer.dhuhr),
+        NotificationIds.of(NotificationKind.morning, d),
+        NotificationIds.of(NotificationKind.morning, d),
       );
       expect(ids.every(NotificationIds.isPlanned), isTrue);
     });
@@ -42,18 +39,10 @@ void main() {
         throwsArgumentError,
       );
       expect(
-        () => NotificationIds.of(
-          NotificationKind.prayer,
-          LocalDate(2026, 1, 1),
-          Prayer.sunrise,
-        ),
-        throwsArgumentError,
-      );
-      expect(
         () => PlannedNotification(
-          kind: NotificationKind.prayer,
-          day: LocalDate(2026, 1, 1),
-          at: tz.TZDateTime(utc, 2026),
+          kind: NotificationKind.openApp,
+          day: LocalDate(2019, 12, 31),
+          at: tz.TZDateTime(utc, 2019),
         ),
         throwsArgumentError,
       );
@@ -124,88 +113,6 @@ void main() {
         const PendingNotification(1, 'a').hashCode,
       );
       expect(const PendingNotification(1, 'a').toString(), contains('1'));
-    });
-  });
-
-  group('checkTimeZone', () {
-    final now = DateTime.utc(2026, 11, 3, 12);
-
-    test('first run, unchanged, changed', () {
-      expect(
-        checkTimeZone(
-          confirmedZone: null,
-          deviceZone: 'Europe/Bratislava',
-          now: now,
-        ),
-        TimeZoneStatus.firstRun,
-      );
-      expect(
-        checkTimeZone(
-          confirmedZone: 'Europe/Bratislava',
-          deviceZone: 'Europe/Bratislava',
-          now: now,
-        ),
-        TimeZoneStatus.unchanged,
-      );
-      expect(
-        checkTimeZone(
-          confirmedZone: 'Europe/Bratislava',
-          deviceZone: 'Europe/Istanbul',
-          now: now,
-        ),
-        TimeZoneStatus.changed,
-      );
-    });
-
-    test('zones with identical rules count as unchanged', () {
-      expect(
-        checkTimeZone(
-          confirmedZone: 'Europe/Bratislava',
-          deviceZone: 'Europe/Prague',
-          now: now,
-        ),
-        TimeZoneStatus.unchanged,
-      );
-    });
-
-    test('same offset now but different DST is a change', () {
-      // V novembri maju Londyn a Lisabon UTC+0, v lete tiez rovnako,
-      // ale Reykjavik letny cas nema.
-      expect(
-        checkTimeZone(
-          confirmedZone: 'Europe/London',
-          deviceZone: 'Atlantic/Reykjavik',
-          now: now,
-        ),
-        TimeZoneStatus.changed,
-      );
-    });
-
-    test('unknown zone compares by name', () {
-      expect(
-        checkTimeZone(
-          confirmedZone: 'Europe/Bratislava',
-          deviceZone: 'Mars/Olympus',
-          now: now,
-        ),
-        TimeZoneStatus.changed,
-      );
-    });
-  });
-
-  group('NotificationContentPolicy', () {
-    test('rejects the name of Allah in any script', () {
-      expect(NotificationContentPolicy.allows('May Allah accept'), isFalse);
-      expect(NotificationContentPolicy.allows('ALLAH'), isFalse);
-      expect(NotificationContentPolicy.allows('الله'), isFalse);
-      expect(NotificationContentPolicy.allows('اللَّه'), isFalse);
-      expect(NotificationContentPolicy.allows('ﷲ'), isFalse);
-    });
-
-    test('allows neutral reminders', () {
-      expect(NotificationContentPolicy.allows(null), isTrue);
-      expect(NotificationContentPolicy.allows("It's time for Asr."), isTrue);
-      expect(NotificationContentPolicy.allows('Reminder'), isTrue);
     });
   });
 }

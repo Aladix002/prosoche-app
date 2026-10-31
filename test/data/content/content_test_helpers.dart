@@ -70,12 +70,9 @@ class TestKeys {
       TrustedKeySet([root.trusted, contentA.trusted, contentB.trusted]);
 }
 
-/// Integrita nad malym fixture (293 versov, placeholder hash).
-ContentIntegrityChecker fixtureIntegrity() => ContentIntegrityChecker(
-  expectedAyahCount: fixtureAyahCount,
-  expectedUthmaniSha256: fixtureUthmaniSha256(),
-  allowDevContent: true,
-);
+/// Integrita nad malym fixture (dev obsah povoleny).
+ContentIntegrityChecker fixtureIntegrity() =>
+    const ContentIntegrityChecker(allowDevContent: true);
 
 /// Bajty fixture content.db s danou `meta.content_version`.
 Uint8List fixtureDbBytes(
@@ -90,7 +87,7 @@ Uint8List fixtureDbBytes(
       '$contentVersion',
     ]);
   if (corruptText) {
-    db.execute("UPDATE ayah SET text_uthmani = 'x' WHERE id = 1001");
+    db.execute('DELETE FROM quote');
   }
   db.close();
   final bytes = file.readAsBytesSync();
@@ -126,10 +123,9 @@ Uint8List manifestBytes({
       'gz_sha256': sha(gz),
       'gz_size': gz.length,
     },
-    'uthmani_sha256': fixtureUthmaniSha256(),
     'disabled_ids': disabledIds,
     'sources': [
-      {'id': 'fx-uthmani', 'kind': 'quran_text', 'lang': 'ar', 'version': '1'},
+      {'id': 'fx-text', 'kind': 'text', 'lang': 'en', 'version': '1'},
     ],
   }),
 );

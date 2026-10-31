@@ -9,7 +9,7 @@ import 'package:prosoche/domain/common/common.dart';
 import 'fixtures/content_fixture.dart';
 
 /// Dotaz dennej sady (A3 Feed): `daily_set` z user.db a obsah vsetkych
-/// kariet z content.db (versy s prekladom, hadis, dua, meno, zamyslenie).
+/// kariet z content.db.
 Future<int> loadDailySet(UserDb user, ContentDb content, LocalDate date) async {
   final set = (await user.dailySetDao.byDate(date))!;
   final cards = [
@@ -18,38 +18,12 @@ Future<int> loadDailySet(UserDb user, ContentDb content, LocalDate date) async {
             as List<Object?>)
       CardId.parse((c! as Map<String, Object?>)['card_id']! as String),
   ];
-  final ayahIds = [
-    for (final c in cards)
-      if (c is AyahCardId) c.ayahId.value,
-  ];
-  final ayahs = await content.quranDao.ayahsByIds(ayahIds);
-  final translations = await content.quranDao.translationsFor(
-    ayahIds,
-    lang: 'en',
-    sourceId: 'fx-en-a',
-  );
-  var loaded = ayahs.length + translations.length;
+  var loaded = 0;
   for (final c in cards) {
-    final row = switch (c) {
-      HadithCardId(:final hadithId) => await content.hadithDao.hadithText(
-        hadithId,
-        'en',
-      ),
-      NameCardId(:final nameId) => await content.curatedDao.nameText(
-        nameId,
-        'en',
-      ),
-      _ => null,
-    };
-    if (row != null) loaded++;
+    if (c case ContentCardId(type: CardType.quote, :final key)) {
+      if (await content.curatedDao.quote(key) != null) loaded++;
+    }
   }
-  loaded += (await content.curatedDao.duaText('dua_morning', 'en')) != null
-      ? 1
-      : 0;
-  loaded += (await content.curatedDao.reflectionText('refl_a', 'en')) != null
-      ? 1
-      : 0;
-  loaded += (await user.readingDao.readingPosition()) >= 0 ? 1 : 0;
   return loaded;
 }
 
@@ -65,17 +39,7 @@ void main() {
     final date = LocalDate(2026, 10, 29);
     final ids = [
       'intro:2026-10-29',
-      'ayah:2001',
-      'ayah:2002',
-      'ayah:2003',
-      'word:1',
-      'ayah:2004',
-      'ayah:2005',
-      'quiz:1:ar2mean',
-      'hadith:11',
-      'ayah:2006',
-      'name:1',
-      'reflection:1',
+      for (var i = 1; i <= 11; i++) 'quote:${fixtureQuoteId(i)}',
     ];
     await user.dailySetDao.insertIfAbsent(
       date: date,
@@ -94,7 +58,7 @@ void main() {
 
     // zahriatie (prepared statements, JIT)
     for (var i = 0; i < 5; i++) {
-      expect(await loadDailySet(user, content, date), 17);
+      expect(await loadDailySet(user, content, date), 11);
     }
     final times = <int>[];
     for (var i = 0; i < 30; i++) {

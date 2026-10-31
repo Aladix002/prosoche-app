@@ -1,5 +1,5 @@
 {
-  "_comment": "TEST VEKTORY, len testovacie kluce (tests/vectors/generate.py). Poradie kontrol: malformedSignature (obalka nie je JSON objekt) -> unknownAlgorithm -> unknownKey -> wrongKeyRole -> revokedKey -> malformedSignature (sig nie je base64 alebo nema 64 B) -> badSignature -> (manifest) invalidManifest -> dbHashMismatch nad gz (gz_sha256/gz_size) aj rozbalenym (sha256/size) -> (pack, C-06) unknownPack (id nie je v manifest.packs) -> packHashMismatch (rovnako nad gz aj rozbalenym). expect = vysledok overenia podpisu a hashov; app_expect = co ma dalej rozhodnut logika appky.",
+  "_comment": "TEST VEKTORY, len testovacie kluce (tests/vectors/generate.py). Poradie kontrol: malformedSignature (obalka nie je JSON objekt) -> unknownAlgorithm -> unknownKey -> wrongKeyRole -> revokedKey -> malformedSignature (sig nie je base64 alebo nema 64 B) -> badSignature -> (manifest) invalidManifest -> dbHashMismatch nad gz (gz_sha256/gz_size) aj rozbalenym (sha256/size). expect = vysledok overenia podpisu a hashov; app_expect = co ma dalej rozhodnut logika appky. Kopia vektorov zo sakina-content rc1.2 (podpisane bajty sa nemenia); pripady balikov (hadith_extra) odstranene v S-01, F-01 ich nahradi vektormi z prosoche-content.",
   "public_keys": "public_keys.json",
   "cases": [
     {
@@ -216,93 +216,6 @@
         "result": "notNewer"
       },
       "note": "anti-rollback: akceptuje len vyssiu content_version"
-    },
-    {
-      "name": "manifest_pack_ok",
-      "kind": "manifest",
-      "payload": "cases/manifest_pack_ok/manifest.json",
-      "sig": "cases/manifest_pack_ok/manifest.json.sig",
-      "allowed_roles": [
-        "content",
-        "root"
-      ],
-      "revoked": [],
-      "expect": "ok",
-      "gz": "content.db.gz",
-      "pack": {
-        "id": "hadith_extra",
-        "gz": "hadith_extra.db.gz"
-      },
-      "note": "manifest.packs[hadith_extra] + hadith_extra.db.gz (sha256/size sedia)"
-    },
-    {
-      "name": "manifest_pack_hash_mismatch",
-      "kind": "manifest",
-      "payload": "cases/manifest_pack_hash_mismatch/manifest.json",
-      "sig": "cases/manifest_pack_hash_mismatch/manifest.json.sig",
-      "allowed_roles": [
-        "content",
-        "root"
-      ],
-      "revoked": [],
-      "expect": "packHashMismatch",
-      "gz": "content.db.gz",
-      "pack": {
-        "id": "hadith_extra",
-        "gz": "hadith_extra_corrupt.db.gz"
-      },
-      "note": "podpis aj content.db OK, stiahnuty balik nesedi: zahodit balik, content.db ostava"
-    },
-    {
-      "name": "manifest_pack_unknown",
-      "kind": "manifest",
-      "payload": "cases/manifest_pack_unknown/manifest.json",
-      "sig": "cases/manifest_pack_unknown/manifest.json.sig",
-      "allowed_roles": [
-        "content",
-        "root"
-      ],
-      "revoked": [],
-      "expect": "unknownPack",
-      "pack": {
-        "id": "hadith_extra",
-        "gz": "hadith_extra.db.gz"
-      },
-      "note": "manifest bez packs (format C-05): balik nie je k dispozicii"
-    },
-    {
-      "name": "manifest_pack_tampered",
-      "kind": "manifest",
-      "payload": "cases/manifest_pack_tampered/manifest.json",
-      "sig": "cases/manifest_pack_tampered/manifest.json.sig",
-      "allowed_roles": [
-        "content",
-        "root"
-      ],
-      "revoked": [],
-      "expect": "badSignature",
-      "pack": {
-        "id": "hadith_extra",
-        "gz": "hadith_extra.db.gz"
-      },
-      "note": "packs su sucastou podpisanych bajtov"
-    },
-    {
-      "name": "manifest_pack_invalid_entry",
-      "kind": "manifest",
-      "payload": "cases/manifest_pack_invalid_entry/manifest.json",
-      "sig": "cases/manifest_pack_invalid_entry/manifest.json.sig",
-      "allowed_roles": [
-        "content",
-        "root"
-      ],
-      "revoked": [],
-      "expect": "invalidManifest",
-      "pack": {
-        "id": "hadith_extra",
-        "gz": "hadith_extra.db.gz"
-      },
-      "note": "platny podpis, packs[0].optional nie je bool"
     },
     {
       "name": "remote_config_ok",

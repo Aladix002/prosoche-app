@@ -118,13 +118,13 @@ void main() {
       expect(r.isOk, isTrue);
     });
 
-    test('next start checks meta only, not the full Uthmani hash', () async {
+    test('next start checks meta only, not the full content', () async {
       await install(service());
       bundled.db = null;
       // Zmena textu po instalacii: plna kontrola (17.3) bezi len pri
       // instalacii a po aktualizacii, nie pri kazdom starte.
       sqlite3.open(active().path)
-        ..execute("UPDATE ayah SET text_uthmani = 'x' WHERE id = 1001")
+        ..execute('DELETE FROM quote')
         ..close();
       final r = await service().ensureInstalled();
       expect(r.isOk, isTrue);
@@ -174,12 +174,9 @@ void main() {
     test('bundled db failing integrity is an error', () async {
       bundled.db = fixtureDbBytes(tmp, v1, corruptText: true);
       final r = await service().ensureInstalled();
-      expect(r, const Err<File>(ContentIntegrityFailed('uthmani_hash')));
+      expect(r, const Err<File>(ContentIntegrityFailed('empty')));
       expect(active().existsSync(), isFalse);
-      expect(
-        failureCodes(log),
-        contains('data.content_integrity.uthmani_hash'),
-      );
+      expect(failureCodes(log), contains('data.content_integrity.empty'));
     });
 
     test('bundled gz is inflated, temp files removed', () async {
@@ -263,7 +260,7 @@ void main() {
     test('valid newer manifest downloads, verifies and swaps', () async {
       final s = service();
       await install(s);
-      await publish(v2, disabledIds: ['hadith:1234']);
+      await publish(v2, disabledIds: ['quote:q_1234']);
       final swaps = <int>[];
       s.swaps.listen(swaps.add);
 
@@ -272,7 +269,7 @@ void main() {
       final st = await s.state();
       expect(st.installedVersion, v2);
       expect(st.origin, ContentDbOrigin.downloaded);
-      expect(st.disabledIds, {'hadith:1234'});
+      expect(st.disabledIds, {'quote:q_1234'});
       await pumpEventQueue();
       expect(swaps, [v2]);
       expect(dir.listSync().map((e) => p.basename(e.path)).toSet(), {
@@ -415,7 +412,7 @@ void main() {
     test('higher min_app_version skips update', () async {
       final s = service();
       await install(s);
-      await publish(v2, minApp: '99.0.0', disabledIds: ['ayah:2255']);
+      await publish(v2, minApp: '99.0.0', disabledIds: ['quote:q_2255']);
       expect(
         await s.checkForUpdate(),
         const Ok(ContentUpdateOutcome.appTooOld),
@@ -423,24 +420,24 @@ void main() {
       expect(await activeVersion(), '$v1');
       expect(http.count('https://cdn.test/db/$v2/content.db.gz'), 0);
       // disabled_ids sa aplikuju aj bez novej db.
-      expect((await s.state()).disabledIds, {'ayah:2255'});
+      expect((await s.state()).disabledIds, {'quote:q_2255'});
     });
 
     test('same or lower content_version is not newer', () async {
       final s = service();
       await install(s);
-      await publish(v1, disabledIds: ['hadith:1']);
+      await publish(v1, disabledIds: ['quote:q_0001']);
       expect(await s.checkForUpdate(), const Ok(ContentUpdateOutcome.notNewer));
-      await publish(v1 - 1, disabledIds: ['hadith:2']);
+      await publish(v1 - 1, disabledIds: ['quote:q_0002']);
       expect(await s.checkForUpdate(), const Ok(ContentUpdateOutcome.notNewer));
       // Starsi manifest neprepise disabled_ids.
-      expect((await s.state()).disabledIds, {'hadith:1'});
+      expect((await s.state()).disabledIds, {'quote:q_0001'});
     });
 
     test('different schema_version is skipped', () async {
       final s = service();
       await install(s);
-      await publish(v2, schemaVersion: 1);
+      await publish(v2, schemaVersion: ContentDb.contractVersion + 1);
       expect(
         await s.checkForUpdate(),
         const Ok(ContentUpdateOutcome.schemaIncompatible),
@@ -453,7 +450,7 @@ void main() {
       await publish(v2, corruptText: true);
       expect(
         await s.checkForUpdate(),
-        const Err<ContentUpdateOutcome>(ContentIntegrityFailed('uthmani_hash')),
+        const Err<ContentUpdateOutcome>(ContentIntegrityFailed('empty')),
       );
       expect(await activeVersion(), '$v1');
       expect((await s.state()).rejectedVersion, v2);

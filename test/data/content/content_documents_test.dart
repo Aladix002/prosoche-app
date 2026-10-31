@@ -16,7 +16,7 @@ import 'content_test_helpers.dart';
 
 Uint8List _json(Object o) => utf8.encode(jsonEncode(o));
 
-Map<String, Object?> _pack([String id = 'hadith_extra']) => {
+Map<String, Object?> _pack([String id = 'extra_pack']) => {
   'id': id,
   'url': 'https://cdn.test/packs/$id.db.gz',
   'fallback_url': 'https://fallback.test/packs/$id.db.gz',
@@ -67,9 +67,9 @@ void main() {
       final m = ContentManifest.parse(
         _json(_manifestWithPack()..['packs'] = [_pack(), _pack('other_2')]),
       ).valueOrNull!;
-      expect(m.packs.keys, ['hadith_extra', 'other_2']);
-      final pack = m.packs['hadith_extra']!;
-      expect(pack.id, 'hadith_extra');
+      expect(m.packs.keys, ['extra_pack', 'other_2']);
+      final pack = m.packs['extra_pack']!;
+      expect(pack.id, 'extra_pack');
       expect(pack.optional, isTrue);
       expect(pack.schemaVersion, 1);
       expect(pack.archive.url.host, 'cdn.test');
@@ -86,10 +86,10 @@ void main() {
     for (final (name, mutate)
         in <(String, void Function(Map<String, Object?>))>[
           ('packs null', (m) => m['packs'] = null),
-          ('packs not list', (m) => m['packs'] = {'hadith_extra': _pack()}),
-          ('pack not object', (m) => m['packs'] = ['hadith_extra']),
+          ('packs not list', (m) => m['packs'] = {'extra_pack': _pack()}),
+          ('pack not object', (m) => m['packs'] = ['extra_pack']),
           ('pack without id', (m) => _firstPack(m).remove('id')),
-          ('pack bad id', (m) => _firstPack(m)['id'] = 'Hadith-Extra'),
+          ('pack bad id', (m) => _firstPack(m)['id'] = 'Extra-Pack'),
           ('pack duplicate id', (m) => m['packs'] = [_pack(), _pack()]),
           ('pack http url', (m) => _firstPack(m)['url'] = 'http://x.test/a'),
           ('pack bad sha', (m) => _firstPack(m)['gz_sha256'] = 'abc'),
@@ -124,8 +124,8 @@ void main() {
           ('no host', (m) => (m['db']! as Map)['fallback_url'] = 'https://'),
           ('bad sha', (m) => (m['db']! as Map)['sha256'] = 'abc'),
           ('compression', (m) => (m['db']! as Map)['compression'] = 'zstd'),
-          ('disabled not list', (m) => m['disabled_ids'] = 'hadith:1'),
-          ('bad card id', (m) => m['disabled_ids'] = ['Hadith 1']),
+          ('disabled not list', (m) => m['disabled_ids'] = 'quote:q_0001'),
+          ('bad card id', (m) => m['disabled_ids'] = ['Quote 1']),
           ('no sources', (m) => m['sources'] = <Object?>[]),
         ]) {
       test('rejects $name', () {
@@ -321,7 +321,7 @@ void main() {
         origin: ContentDbOrigin.downloaded,
         revokedKids: const {'b', 'a'},
         revocationsSeq: 2,
-        disabledIds: const {'hadith:1'},
+        disabledIds: const {'quote:q_0001'},
         disabledIdsVersion: 7,
         remoteConfigSeq: 3,
         remoteConfigRaw: Uint8List.fromList([1, 2]),

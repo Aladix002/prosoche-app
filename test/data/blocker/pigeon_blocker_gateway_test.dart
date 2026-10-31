@@ -208,13 +208,8 @@ void main() {
       expect(targets.first.hashCode, isNot(targets.last.hashCode));
     });
 
-    test('setEnabled, unlockFor, closeGate, schedulePrayerLocks', () async {
-      for (final m in [
-        'setEnabled',
-        'unlockFor',
-        'closeGate',
-        'schedulePrayerLocks',
-      ]) {
+    test('setEnabled, unlockFor, closeGate', () async {
+      for (final m in ['setEnabled', 'unlockFor', 'closeGate']) {
         native.on(m, (_) => null);
       }
       expect((await gateway.setEnabled(enabled: true)).isOk, isTrue);
@@ -225,16 +220,6 @@ void main() {
 
       expect((await gateway.closeGate(openTarget: false)).isOk, isTrue);
       expect(native.received['closeGate'], [false]);
-
-      final start = DateTime.utc(2026, 11, 3, 12);
-      expect(
-        (await gateway.schedulePrayerLocks([start], durationMinutes: 20)).isOk,
-        isTrue,
-      );
-      expect(native.received['schedulePrayerLocks'], [
-        [start.millisecondsSinceEpoch],
-        20,
-      ]);
     });
   });
 

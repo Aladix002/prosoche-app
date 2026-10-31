@@ -24,7 +24,11 @@ void main() {
     final a = await h.dailySets.ensure(thu);
     final b = await h.dailySets.ensure(thu);
     expect(a.set, b.set);
-    expect(a.n, 10, reason: 'words disabled = N 10 (docs/02 0.3)');
+    expect(a.n, 12, reason: 'feed.cards_count default 12');
+    expect(
+      a.set.cards.skip(1).every((c) => c.cardId.type == CardType.quote),
+      isTrue,
+    );
     expect(a.cursor, 0);
     expect(a.isStarted, isFalse);
     expect(a.nextCard!.pos, 1);
@@ -66,19 +70,42 @@ void main() {
   test('same install and date regenerate the identical set', () async {
     final first = await h.dailySets.ensure(thu);
     await h.user.delete(h.user.dailySets).go();
-    await h.settings.reset(SettingsKeys.namesCursor);
     final again = await h.dailySets.ensure(thu);
     expect(again.set.cards, first.set.cards);
   });
 
-  test('stores advanced names cursor and event cursor', () async {
-    await h.dailySets.ensure(fri);
-    expect(await h.settings.get(SettingsKeys.namesCursor), greaterThan(1));
-    final cursor = await h.settings.get(SettingsKeys.eventCursor('fx_friday'));
-    expect(cursor, isNotNull);
-    final set = (await h.dailySets.get(fri))!.set;
-    expect(set.cards[1].cardId, EventCardId('fx_friday', fri));
-    expect(set.cards[2].khatm, isFalse, reason: 'event verses keep position');
+  test('cards count setting and disabled ids are applied', () async {
+    await h.settings.set(SettingsKeys.feedCardsCount, 8);
+    final repo = DriftDailySetRepository(
+      userDb: h.user,
+      catalog: h.catalog,
+      quests: h.quests,
+      settings: h.settings,
+      clock: h.clock,
+      installId: () async => 'test-install',
+      timeZone: () async => 'Europe/Bratislava',
+      disabledIds: () => {
+        for (var i = 1; i <= 15; i++)
+          ContentCardId.quote('q_00${'$i'.padLeft(2, '0')}'),
+      },
+    );
+    final set = (await repo.ensure(fri)).set;
+    expect(set.n, 6, reason: 'len 5 povolenych citatov + intro');
+    expect(
+      set.cards.skip(1).map((c) => c.cardId.key),
+      everyElement(isIn(['q_0016', 'q_0017', 'q_0018', 'q_0019', 'q_0020'])),
+    );
+  });
+
+  test('next day avoids quotes shown yesterday', () async {
+    final a = (await h.dailySets.ensure(thu)).set;
+    final b = (await h.dailySets.ensure(fri)).set;
+    final yesterday = a.cards.skip(1).map((c) => c.cardId).toSet();
+    expect(
+      b.cards.skip(1).where((c) => yesterday.contains(c.cardId)),
+      hasLength(lessThanOrEqualTo(3)),
+      reason: '20 citatov, 11 za den: opakuje sa len nutne minimum',
+    );
   });
 
   test('activeSetDate keeps the highest set when travelling west', () async {
@@ -121,8 +148,7 @@ void main() {
     expect(r2.cursor, 3);
   });
 
-  test('khatm verse moves reading position, finishing completes the set '
-      'and auto quests', () async {
+  test('finishing completes the set and auto quests', () async {
     final s = await h.dailySets.ensure(thu);
     final cards = s.set.cards;
     SeenResult? last;
@@ -135,11 +161,6 @@ void main() {
     final state = (await h.dailySets.get(thu))!;
     expect(state.isCompleted, isTrue);
     expect(state.nextCard, isNull);
-
-    final khatmVerses = cards.where((c) => c.khatm).toList();
-    expect(khatmVerses, isNotEmpty);
-    final lastVerse = (khatmVerses.last.cardId as AyahCardId).ayahId;
-    expect(await h.user.readingDao.readingPosition(), lastVerse.value);
 
     final quests = await h.quests.ensure(thu);
     final read = quests.firstWhere((q) => q.slot == QuestSlot.read);
@@ -182,22 +203,20 @@ void main() {
     expect((await states.first)!.cursor, 1);
   });
 
-  test('day phase uses prayer boundaries when given', () async {
+  test('day phase uses custom boundaries when given', () async {
     final repo = DriftDailySetRepository(
       userDb: h.user,
       catalog: h.catalog,
-      calendar: h.calendar,
       quests: h.quests,
       settings: h.settings,
       clock: h.clock..time = DateTime(2026, 10, 29, 4),
       installId: () async => 'test-install',
-      language: () async => 'en',
       timeZone: () async => 'Europe/Bratislava',
       dayBoundaries: (d) async => DayBoundaries(
-        fajr: DateTime(2026, 10, 29, 3),
-        dhuhr: DateTime(2026, 10, 29, 11),
-        asr: DateTime(2026, 10, 29, 14),
-        isha: DateTime(2026, 10, 29, 18),
+        morning: DateTime(2026, 10, 29, 3),
+        day: DateTime(2026, 10, 29, 11),
+        evening: DateTime(2026, 10, 29, 14),
+        night: DateTime(2026, 10, 29, 18),
       ),
       disabledIds: () => const {},
     );

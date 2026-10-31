@@ -1,5 +1,5 @@
-// Fake repozitare D-02 pre widget testy obrazoviek (F-01, F-02, F-04,
-// F-05). Drzia stav v pamati, zmeny posielaju do streamov a zaznamenavaju
+// Fake repozitare D-02 pre widget testy obrazoviek (F-01, F-02, F-06,
+// F-07). Drzia stav v pamati, zmeny posielaju do streamov a zaznamenavaju
 // volania. Obsah je len placeholder (PLAN_VYVOJA 5.5).
 //
 //   await tester.pumpWidget(ProviderScope(
@@ -12,11 +12,8 @@ import 'dart:async';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:prosoche/core/clock/clock_provider.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
-import 'package:prosoche/domain/calendar/calendar.dart';
 import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/feed/feed.dart';
-import 'package:prosoche/domain/prayer/calc_settings.dart';
-import 'package:prosoche/domain/prayer/prayer.dart';
 import 'package:prosoche/domain/quests/quests.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/domain/streak/streak.dart';
@@ -42,19 +39,18 @@ class _Watched<T> {
   }
 }
 
-/// Jednoducha sada s N placeholder kartami (intro + versy).
+/// `quote:q_NNNN` pre testy.
+ContentCardId fakeQuoteId(int n) =>
+    ContentCardId.quote('q_${n.toString().padLeft(4, '0')}');
+
+/// Jednoducha sada s N placeholder kartami (intro + citaty).
 DailySet fakeDailySet(LocalDate date, {int n = 10}) => DailySet(
   date: date,
   phase: DayPhase.morning,
   cards: [
     DailySetCard(pos: 1, cardId: IntroCardId(date), slot: Slot.intro),
     for (var i = 2; i <= n; i++)
-      DailySetCard(
-        pos: i,
-        cardId: AyahCardId(AyahId(2, i)),
-        slot: Slot.ayah,
-        khatm: true,
-      ),
+      DailySetCard(pos: i, cardId: fakeQuoteId(i), slot: Slot.quote),
   ],
 );
 
@@ -166,20 +162,20 @@ class FakeQuestRepository implements QuestRepository {
       quest: DailyQuest(
         date: date,
         slot: QuestSlot.read,
-        questId: GenericQuest.readVerses.id,
+        questId: GenericQuest.readCards.id,
         origin: QuestOrigin.generic,
-        rule: GenericQuest.readVerses.rule(10),
+        rule: GenericQuest.readCards.rule(5),
       ),
       status: QuestStatus.pending,
-      progress: const QuestProgress(current: 0, target: 10),
+      progress: const QuestProgress(current: 0, target: 5),
     ),
     QuestView(
       quest: DailyQuest(
         date: date,
         slot: QuestSlot.learn,
-        questId: GenericQuest.learnCards.id,
+        questId: GenericQuest.learnIdea.id,
         origin: QuestOrigin.generic,
-        rule: GenericQuest.learnCards.rule(1),
+        rule: GenericQuest.learnIdea.rule(1),
       ),
       status: QuestStatus.pending,
       progress: const QuestProgress(current: 0, target: 1),
@@ -269,397 +265,26 @@ class FakeStreakRepository implements StreakRepository {
       ]);
 }
 
-/// Poloha Bratislava pre testy modlitieb.
-final fakeBratislava = PrayerLocation(
-  lat: 48.15,
-  lng: 17.11,
-  country: 'SK',
-  tz: 'Europe/Bratislava',
-  city: 'Bratislava',
-);
-
-class FakePrayerRepository implements PrayerRepository {
-  FakePrayerRepository({PrayerLocation? location}) {
-    ensureTimeZoneData();
-    if (location != null) {
-      _config.value = PrayerConfig(
-        location,
-        CalcSettings.resolve(lat: location.lat, country: location.country),
-      );
-    }
-  }
-
-  final _config = _Watched<PrayerConfig?>(null);
-  final _logs = <LocalDate, _Watched<Map<Prayer, PrayerStatus>>>{};
-
-  /// Pocet volani, ktore maju preplanovat notifikacie (F-05 DoD).
-  int changes = 0;
-
-  _Watched<Map<Prayer, PrayerStatus>> _log(LocalDate d) =>
-      _logs.putIfAbsent(d, () => _Watched(const {}));
-
-  void _update(CalcSettings Function(CalcSettings s) f) {
-    final c = _config.value;
-    if (c != null) _config.value = PrayerConfig(c.location, f(c.settings));
-    changes++;
-  }
-
-  @override
-  Future<PrayerConfig?> config() async => _config.value;
-
-  @override
-  Stream<PrayerConfig?> watchConfig() => _config.watch();
-
-  @override
-  Future<void> saveLocation(
-    PrayerLocation location, {
-    bool resetAsr = false,
-  }) async {
-    final s =
-        _config.value?.settings ??
-        CalcSettings.resolve(lat: location.lat, country: location.country);
-    _config.value = PrayerConfig(location, s);
-    changes++;
-  }
-
-  CalcSettings _with(
-    CalcSettings s, {
-    PrayerMethod? method,
-    AsrMadhab? asr,
-    HighLatRule? rule,
-    Map<Prayer, int>? adjust,
-  }) => CalcSettings(
-    method: method ?? s.method,
-    asr: asr ?? s.asr,
-    highLatRule: rule ?? s.highLatRule,
-    adjust: adjust ?? s.adjust,
-  );
-
-  @override
-  Future<void> setMethod(PrayerMethod? method) async => _update(
-    (s) => _with(
-      s,
-      method:
-          method ??
-          CalcSettings.resolve(
-            lat: _config.value!.location.lat,
-            country: _config.value!.location.country,
-          ).method,
-    ),
-  );
-
-  @override
-  Future<void> setAsr(AsrMadhab asr) async =>
-      _update((s) => _with(s, asr: asr));
-
-  @override
-  Future<void> setHighLatRule(HighLatRule? rule) async =>
-      _update((s) => _with(s, rule: rule ?? HighLatRule.middleOfNight));
-
-  @override
-  Future<void> setAdjust(Prayer prayer, int minutes) async =>
-      _update((s) => _with(s, adjust: {...s.adjust, prayer: minutes}));
-
-  @override
-  Stream<Map<Prayer, PrayerStatus>> watchLog(LocalDate date) =>
-      _log(date).watch();
-
-  @override
-  Future<void> setStatus(
-    LocalDate date,
-    Prayer prayer,
-    PrayerStatus status,
-  ) async => _log(date).value = {..._log(date).value, prayer: status};
-
-  @override
-  Future<void> clearStatus(LocalDate date, Prayer prayer) async =>
-      _log(date).value = {..._log(date).value}..remove(prayer);
-}
-
-class FakeCityRepository implements CityRepository {
-  FakeCityRepository([List<City>? cities])
-    : cities =
-          cities ??
-          const [
-            City(
-              id: 1,
-              name: 'Bratislava',
-              countryCode: 'SK',
-              countryName: 'Slovakia',
-              lat: 48.15,
-              lng: 17.11,
-              tz: 'Europe/Bratislava',
-            ),
-            City(
-              id: 2,
-              name: 'Sarajevo',
-              countryCode: 'BA',
-              countryName: 'Bosnia and Herzegovina',
-              lat: 43.85,
-              lng: 18.36,
-              tz: 'Europe/Sarajevo',
-            ),
-          ];
-
-  final List<City> cities;
-
-  @override
-  Future<List<City>> search(String prefix, {int limit = 30}) async {
-    final p = prefix.trim().toLowerCase();
-    if (p.isEmpty) return const [];
-    return cities
-        .where((c) => c.name.toLowerCase().startsWith(p))
-        .take(limit)
-        .toList();
-  }
-
-  @override
-  Future<City?> nearest(double lat, double lng) async => cities.firstOrNull;
-}
-
-class FakeCalendarRepository implements CalendarRepository {
-  FakeCalendarRepository({
-    List<EventRule> rules = const [],
-    this.texts = const {},
-    this.offset = 0,
-  }) : _rules = List.unmodifiable(rules);
-
-  final List<EventRule> _rules;
-
-  /// `event_id` -> titulok (len `en`).
-  final Map<String, String> texts;
-  int offset;
-
-  EventResolver get _resolver =>
-      EventResolver(_rules, IslamicCalendar(offset: offset));
-
-  @override
-  Future<IslamicCalendar> calendar() async => IslamicCalendar(offset: offset);
-
-  @override
-  Future<HijriDate> hijriDate(LocalDate date) async =>
-      IslamicCalendar(offset: offset).hijriOf(date);
-
-  @override
-  Future<EventResolution> resolve(LocalDate date) async =>
-      _resolver.resolve(date);
-
-  @override
-  Future<CalendarMonth> month(int year, int month) async {
-    final r = _resolver;
-    return CalendarMonth(
-      year: year,
-      month: month,
-      days: [
-        for (final d in r.calendar.daysOfMonth(year, month))
-          CalendarDay(
-            date: d,
-            hijri: r.calendar.hijriOf(d),
-            eventIds: [for (final e in r.resolve(d).active) e.id],
-          ),
-      ],
-    );
-  }
-
-  @override
-  Future<EventText?> eventText(
-    String eventId,
-    String lang, {
-    bool allowEnFallback = false,
-  }) async {
-    final title = texts[eventId];
-    if (title == null || (lang != 'en' && !allowEnFallback)) return null;
-    return EventText(eventId: eventId, lang: 'en', title: title);
-  }
-}
-
-/// Placeholder Koran: sury 1 a 2, preklad len `en`.
-class FakeQuranRepository implements QuranRepository {
-  final _position = _Watched<AyahId?>(null);
-  final _counts = _Watched<Map<int, int>>(const {});
-  final read = <(AyahId, ReaderMode)>[];
-  final selected = <String, TranslationSource>{};
-
-  static const sources = [
-    TranslationSource(
-      id: 'fake-en',
-      lang: 'en',
-      name: 'Fake translation',
-      version: '1',
-      attribution: '[PLACEHOLDER attribution]',
-      license: 'test-only',
-    ),
-  ];
-
-  static SurahInfo _surah(int id) => SurahInfo(
-    id: id,
-    nameAr: '[PLACEHOLDER name_ar $id]',
-    nameTranslit: 'Placeholder $id',
-    nameMeaning: '[PLACEHOLDER meaning $id]',
-    revelationPlace: 'meccan',
-    ayahCount: AyahId.ayahCount(id),
-    bismillahPre: id != 1 && id != 9,
-  );
-
-  static AyahView _ayah(AyahId id, String lang) => AyahView(
-    id: id,
-    textUthmani: '[PLACEHOLDER uthmani ${id.surah}:${id.ayah}]',
-    juz: 1,
-    page: 1,
-    translation: lang == 'ar'
-        ? null
-        : TranslationText(
-            text: '[PLACEHOLDER translation ${id.surah}:${id.ayah}]',
-            sourceId: 'fake-en',
-            lang: 'en',
-            isFallback: lang != 'en',
-          ),
-  );
-
-  AyahId? get position => _position.value;
-  set position(AyahId? id) => _position.value = id;
-
-  @override
-  Future<List<SurahInfo>> surahs(String lang) async => [_surah(1), _surah(2)];
-
-  @override
-  Future<SurahInfo?> surah(int id, String lang) async =>
-      id >= 1 && id <= AyahId.surahCount ? _surah(id) : null;
-
-  @override
-  Future<List<JuzStart>> juzStarts() async => [(juz: 1, firstAyahId: 1001)];
-
-  @override
-  Future<List<AyahView>> ayahsOfSurah(
-    int surahId, {
-    required String lang,
-  }) async => [
-    for (var a = 1; a <= AyahId.ayahCount(surahId); a++)
-      _ayah(AyahId(surahId, a), lang),
-  ];
-
-  @override
-  Future<List<AyahView>> ayahs(
-    Iterable<AyahId> ids, {
-    required String lang,
-  }) async => [for (final id in ids) _ayah(id, lang)];
-
-  @override
-  Future<List<TranslationSource>> translationSources(String lang) async =>
-      lang == 'en' ? sources : const [];
-
-  @override
-  Future<TranslationSource?> selectedTranslation(String lang) async =>
-      selected[lang] ?? (await translationSources(lang)).firstOrNull;
-
-  @override
-  Future<void> selectTranslation(String lang, TranslationSource source) async =>
-      selected[lang] = source;
-
-  @override
-  Future<QuranSearchResult> search(String query, {required String lang}) async {
-    final m = RegExp(r'^(\d{1,3}):(\d{1,3})$').firstMatch(query.trim());
-    if (m != null && AyahId.isValid(int.parse(m[1]!), int.parse(m[2]!))) {
-      return QuranSearchResult(
-        reference: AyahId(int.parse(m[1]!), int.parse(m[2]!)),
-      );
-    }
-    return QuranSearchResult();
-  }
-
-  @override
-  Stream<AyahId?> watchReadingPosition() => _position.watch();
-
-  @override
-  Stream<Map<int, int>> watchReadCounts() => _counts.watch();
-
-  @override
-  Future<int> completedKhatms() async => 0;
-
-  @override
-  Future<ReadResult> markRead(
-    AyahId ayah, {
-    required ReaderMode mode,
-    required LocalDate date,
-  }) async {
-    read.add((ayah, mode));
-    final expected = _position.value?.next ?? AyahId.first;
-    final moved = mode == ReaderMode.khatm && ayah == expected;
-    if (moved) _position.value = ayah == AyahId.last ? null : ayah;
-    return (
-      newlySeen: true,
-      moved: moved,
-      khatmCompleted: moved && ayah == AyahId.last ? 1 : null,
-    );
-  }
-}
-
 /// Obsah kariet: placeholder pre kazdy typ; [missing] vrati null.
 class FakeCardContentRepository implements CardContentRepository {
   FakeCardContentRepository({this.missing = const {}});
 
   final Set<CardId> missing;
-  final _quran = FakeQuranRepository();
 
   @override
   Future<CardContent?> load(CardId id, {required String lang}) async {
     if (missing.contains(id)) return null;
-    // Ako ContentCardRepository (BF-01): v `ar` je arabsky original sam
-    // textom, preklad nabozenskeho textu sa nedoplna z `en`.
-    final ar = lang == 'ar';
     return switch (id) {
-      IntroCardId(:final date) => IntroContent(
+      IntroCardId(:final date) => IntroContent(id, date: date),
+      ContentCardId(type: CardType.quote, :final key) => QuoteContent(
         id,
-        date: date,
-        hijri: IslamicCalendar().hijriOf(date),
-      ),
-      AyahCardId(:final ayahId) => AyahContent(
-        id,
-        ayah: (await _quran.ayahs([ayahId], lang: lang)).single,
-        surah: (await _quran.surah(ayahId.surah, lang))!,
-        arabicOnly: ar,
-      ),
-      HadithCardId() => HadithContent(
-        id,
-        textAr: '[PLACEHOLDER hadith ar]',
-        grade: 'sahih',
-        collection: '[PLACEHOLDER collection]',
+        text: '[PLACEHOLDER quote $key]',
+        author: '[PLACEHOLDER author]',
+        work: '[PLACEHOLDER work]',
+        ref: '1.1',
         sourceId: 'fake',
-        lang: ar ? null : lang,
-        text: ar ? null : '[PLACEHOLDER hadith]',
-        arabicOnly: ar,
       ),
-      DuaCardId() => DuaContent(
-        id,
-        textAr: '[PLACEHOLDER dua ar]',
-        sourceRef: 'example:1',
-        repeatCount: 1,
-        lang: ar ? null : lang,
-        text: ar ? null : '[PLACEHOLDER dua]',
-        arabicOnly: ar,
-      ),
-      NameCardId() => NameContent(
-        id,
-        textAr: '[PLACEHOLDER name ar]',
-        lang: ar ? null : lang,
-        meaning: ar ? null : '[PLACEHOLDER meaning]',
-        arabicOnly: ar,
-      ),
-      ReflectionCardId() => ReflectionContent(
-        id,
-        lang: lang,
-        text: '[PLACEHOLDER reflection]',
-      ),
-      EventCardId(:final eventId) => EventContent(
-        id,
-        text: EventText(
-          eventId: eventId,
-          lang: lang,
-          title: '[PLACEHOLDER event]',
-        ),
-      ),
-      KhatmCardId() => KhatmContent(id),
-      WordCardId() || QuizCardId() || DoneCardId() => null,
+      ContentCardId() || DoneCardId() => null,
     };
   }
 }
@@ -721,20 +346,12 @@ class FakeRepositories {
     FakeDailySetRepository? dailySets,
     FakeQuestRepository? quests,
     FakeStreakRepository? streak,
-    FakePrayerRepository? prayer,
-    FakeCityRepository? cities,
-    FakeCalendarRepository? calendar,
-    FakeQuranRepository? quran,
     FakeCardContentRepository? cards,
     FakeCardActionsRepository? actions,
   }) : settings = settings ?? InMemorySettingsRepository(),
        dailySets = dailySets ?? FakeDailySetRepository(),
        quests = quests ?? FakeQuestRepository(),
        streak = streak ?? FakeStreakRepository(),
-       prayer = prayer ?? FakePrayerRepository(),
-       cities = cities ?? FakeCityRepository(),
-       calendar = calendar ?? FakeCalendarRepository(),
-       quran = quran ?? FakeQuranRepository(),
        cards = cards ?? FakeCardContentRepository(),
        actions = actions ?? FakeCardActionsRepository();
 
@@ -742,10 +359,6 @@ class FakeRepositories {
   final FakeDailySetRepository dailySets;
   final FakeQuestRepository quests;
   final FakeStreakRepository streak;
-  final FakePrayerRepository prayer;
-  final FakeCityRepository cities;
-  final FakeCalendarRepository calendar;
-  final FakeQuranRepository quran;
   final FakeCardContentRepository cards;
   final FakeCardActionsRepository actions;
 
@@ -763,10 +376,6 @@ class FakeRepositories {
     dailySetRepositoryProvider.overrideWithValue(dailySets),
     questRepositoryProvider.overrideWithValue(quests),
     streakRepositoryProvider.overrideWithValue(streak),
-    prayerRepositoryProvider.overrideWithValue(prayer),
-    cityRepositoryProvider.overrideWithValue(cities),
-    calendarRepositoryProvider.overrideWithValue(calendar),
-    quranRepositoryProvider.overrideWithValue(quran),
     cardContentRepositoryProvider.overrideWithValue(cards),
     cardActionsRepositoryProvider.overrideWithValue(actions),
   ];

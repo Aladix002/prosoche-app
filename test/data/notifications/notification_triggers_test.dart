@@ -51,7 +51,7 @@ void main() {
       await triggers.start();
       await settings.set(SettingsKeys.notifMorningTime, '08:00');
       await settings.set(SettingsKeys.notifPrivateLockscreen, false);
-      await settings.set(SettingsKeys.notifPrayer('fajr'), false);
+      await settings.set(SettingsKeys.notifMorningEnabled, false);
       await Future<void>.delayed(const Duration(milliseconds: 60));
       expect(runs, 2);
     });
@@ -83,15 +83,15 @@ void main() {
       expect(log.entries.single.msg, 'reschedule failed');
     });
 
-    test('watched keys cover location, method and notification keys', () {
+    test('watched keys cover notification keys and locale', () {
       final names = NotificationTriggers.watchedKeys.map((k) => k.name);
       expect(
         names,
         containsAll([
-          'prayer.location',
-          'notif.prayer.isha',
+          'notif.morning.enabled',
           'notif.morning.time',
           'notif.private_lockscreen',
+          'ui.locale',
         ]),
       );
     });
@@ -139,7 +139,6 @@ void main() {
         () async => NotificationService(
           settings: InMemorySettingsRepository(),
           platform: platform,
-          timeZones: MemoryTimeZoneStore(),
           deviceZone: () async => 'Europe/Bratislava',
         ),
       );

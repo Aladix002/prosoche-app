@@ -91,7 +91,8 @@ void main() {
     test('CHECK rejects bad enum and second singleton', () async {
       await expectLater(
         db.customStatement(
-          "INSERT INTO prayer_log VALUES ('2026-10-29', 'witr', 'on_time', 0)",
+          "INSERT INTO quest_log (date, slot, quest_id, status) "
+          "VALUES ('2026-10-29', 'pray', 'q', 'open')",
         ),
         throwsA(isA<SqliteException>()),
       );
@@ -115,7 +116,7 @@ void main() {
       );
       await db.cardEventDao.log(
         date: _d,
-        card: CardId.parse('ayah:1001'),
+        card: CardId.parse('quote:q_0001'),
         context: CardContext.feed,
         action: CardAction.seen,
         ts: _t0,
@@ -132,11 +133,11 @@ void main() {
 
   group('converters', () {
     test('wire enums round trip and reject unknown values', () {
-      const c = WireEnumConverter(PrayerStatus.values);
-      for (final v in PrayerStatus.values) {
+      const c = WireEnumConverter(CardAction.values);
+      for (final v in CardAction.values) {
         expect(c.fromSql(c.toSql(v)), v);
       }
-      expect(c.toSql(PrayerStatus.onTime), 'on_time');
+      expect(c.toSql(CardAction.sourceOpened), 'source_opened');
       expect(() => c.fromSql('bogus'), throwsStateError);
     });
 
@@ -147,11 +148,6 @@ void main() {
         DayPhase.values,
         QuestSlotKind.values,
         QuestStatus.values,
-        SrsState.values,
-        SrsSource.values,
-        PrayerKind.values,
-        PrayerStatus.values,
-        FastType.values,
         DayStatus.values,
         GateResult.values,
         UnlockSource.values,
@@ -163,29 +159,30 @@ void main() {
           expect(w, matches(RegExp(r'^[a-z]+(_[a-z]+)*$')));
         }
       }
-      expect(SrsState.fresh.wire, 'new');
     });
 
     test('row JSON uses wire values, ISO dates and UTC millis', () {
-      final row = PrayerLogRow(
+      final row = QuestLogRow(
         date: _d,
-        prayer: PrayerKind.asr,
-        status: PrayerStatus.onTime,
-        ts: _t0,
+        slot: QuestSlotKind.act,
+        questId: 'q',
+        status: QuestStatus.done,
+        doneAt: _t0,
       );
       final json = row.toJson();
       expect(json, {
         'date': '2026-10-29',
-        'prayer': 'asr',
-        'status': 'on_time',
-        'ts': _t0.millisecondsSinceEpoch,
+        'slot': 'act',
+        'questId': 'q',
+        'status': 'done',
+        'doneAt': _t0.millisecondsSinceEpoch,
       });
-      expect(PrayerLogRow.fromJson(json), row);
+      expect(QuestLogRow.fromJson(json), row);
     });
 
     test('card type, date and timestamp', () {
       const t = CardTypeConverter();
-      expect(t.fromSql(t.toSql(CardType.reflection)), CardType.reflection);
+      expect(t.fromSql(t.toSql(CardType.concept)), CardType.concept);
       expect(() => t.fromSql('bogus'), throwsStateError);
       const d = LocalDateConverter();
       expect(d.toSql(_d), '2026-10-29');

@@ -18,7 +18,7 @@ void main() {
 
   test('set rejects invalid value', () async {
     await expectLater(
-      repo.set(SettingsKeys.hijriOffset, 5),
+      repo.set(SettingsKeys.feedCardsCount, 5),
       throwsArgumentError,
     );
     expect(repo.raw, isEmpty);

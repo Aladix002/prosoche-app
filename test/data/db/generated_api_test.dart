@@ -15,16 +15,9 @@ typedef _FromJson = DataClass Function(Map<String, dynamic> json);
 
 final Map<Type, _FromJson> _fromJson = {
   SettingRow: SettingRow.fromJson,
-  ReadingPositionRow: ReadingPositionRow.fromJson,
   DailySetRow: DailySetRow.fromJson,
   CardEventRow: CardEventRow.fromJson,
-  AyahReadRow: AyahReadRow.fromJson,
-  KhatmLogRow: KhatmLogRow.fromJson,
   QuestLogRow: QuestLogRow.fromJson,
-  SrsItemRow: SrsItemRow.fromJson,
-  SrsReviewRow: SrsReviewRow.fromJson,
-  PrayerLogRow: PrayerLogRow.fromJson,
-  FastLogRow: FastLogRow.fromJson,
   DayLogRow: DayLogRow.fromJson,
   StreakStateRow: StreakStateRow.fromJson,
   BlockedAppRow: BlockedAppRow.fromJson,
@@ -33,30 +26,9 @@ final Map<Type, _FromJson> _fromJson = {
   SavedCardRow: SavedCardRow.fromJson,
   MetaRow: MetaRow.fromJson,
   SourceRow: SourceRow.fromJson,
-  SurahRow: SurahRow.fromJson,
-  SurahTextRow: SurahTextRow.fromJson,
-  AyahRow: AyahRow.fromJson,
-  TranslationRow: TranslationRow.fromJson,
-  LemmaRow: LemmaRow.fromJson,
-  LemmaMeaningRow: LemmaMeaningRow.fromJson,
-  WordRow: WordRow.fromJson,
-  WordMeaningRow: WordMeaningRow.fromJson,
-  HadithRow: HadithRow.fromJson,
-  HadithTextRow: HadithTextRow.fromJson,
-  DuaRow: DuaRow.fromJson,
-  DuaTextRow: DuaTextRow.fromJson,
-  NameOfAllahRow: NameOfAllahRow.fromJson,
-  NameTextRow: NameTextRow.fromJson,
-  ReflectionRow: ReflectionRow.fromJson,
-  ReflectionTextRow: ReflectionTextRow.fromJson,
+  QuoteRow: QuoteRow.fromJson,
   QuestTemplateRow: QuestTemplateRow.fromJson,
   QuestTextRow: QuestTextRow.fromJson,
-  IslamicEventRow: IslamicEventRow.fromJson,
-  IslamicEventTextRow: IslamicEventTextRow.fromJson,
-  IntroCardRow: IntroCardRow.fromJson,
-  IntroCardTextRow: IntroCardTextRow.fromJson,
-  CountryRow: CountryRow.fromJson,
-  CityRow: CityRow.fromJson,
 };
 
 /// Prejde vsetky tabulky [db]; kazda musi mat aspon jeden riadok.
@@ -114,7 +86,6 @@ void main() {
     final d = LocalDate(2026, 10, 29);
 
     await db.settingsDao.write('k', '1');
-    await db.readingDao.setReadingPosition(1001, t);
     await db.dailySetDao.insertIfAbsent(
       date: d,
       seed: 1,
@@ -126,28 +97,13 @@ void main() {
     );
     await db.cardEventDao.log(
       date: d,
-      card: CardId.parse('ayah:1001'),
+      card: CardId.parse('quote:q_0001'),
       context: CardContext.feed,
       action: CardAction.seen,
       ts: t,
       correct: true,
     );
-    await db.readingDao.completeKhatm(t);
     await db.questLogDao.assignIfAbsent(d, {QuestSlotKind.learn: 'q'});
-    await db.srsDao.addIfAbsent(1, source: SrsSource.manual, now: t);
-    await db.srsDao.recordReview(
-      (await db.srsDao.item(1))!,
-      SrsReviewsCompanion.insert(
-        lemmaId: 1,
-        ts: t,
-        grade: 3,
-        elapsedDays: 0,
-        scheduledDays: 1,
-        stateBefore: SrsState.fresh,
-      ),
-    );
-    await db.prayerLogDao.setStatus(d, PrayerKind.isha, PrayerStatus.qada, t);
-    await db.prayerLogDao.setFast(d, FastType.nafl, 'done');
     await db.streakDao.saveEvaluation(
       current: 1,
       longest: 1,
@@ -159,7 +115,7 @@ void main() {
     final s = await db.blockerDao.openSession(app.id, t);
     await db.blockerDao.closeSession(
       s,
-      result: GateResult.prayerLocked,
+      result: GateResult.dismissed,
       cardsSeen: 0,
       now: t,
     );
@@ -169,7 +125,7 @@ void main() {
       minutes: 1,
       ts: t,
     );
-    await db.savedCardDao.save(CardId.parse('name:1'), t);
+    await db.savedCardDao.save(CardId.parse('quote:q_0002'), t);
 
     await _exercise(db);
   });

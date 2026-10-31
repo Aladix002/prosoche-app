@@ -53,33 +53,31 @@ void main() {
     }
   });
 
-  test('contract defines FTS5 tables and its user_version', () {
-    final fts = [
-      for (final r in contract.select(
-        "SELECT name FROM sqlite_master WHERE sql LIKE '%USING fts5%' "
-        'ORDER BY name',
-      ))
-        r['name'],
-    ];
-    expect(fts, ['ayah_fts', 'translation_fts']);
+  test('contract defines its user_version', () {
     expect(
       contract.select('PRAGMA user_version').single.values.single,
       ContentDb.contractVersion,
     );
   });
 
-  test('local contract copy equals prosoche-content (when available)', () {
-    final upstream = findUpstreamContract('content_schema.sql');
-    if (upstream == null) {
-      markTestSkipped('prosoche-content not found next to prosoche-app');
-      return;
-    }
-    expect(
-      File(contractPath).readAsStringSync(),
-      upstream.readAsStringSync(),
-      reason:
-          'Kontrakt sa zmenil: skopiruj ${upstream.path} do $contractPath '
-          'a uprav content_tables.dart.',
-    );
-  });
+  // S-01: lokalny kontrakt je prechodny, finalny dodava C-01. Porovnanie
+  // s prosoche-content zapne F-01 po napojeni (odstranit `skip`).
+  test(
+    'local contract copy equals prosoche-content (when available)',
+    skip: 'S-01: prechodny kontrakt, zapne F-01',
+    () {
+      final upstream = findUpstreamContract('content_schema.sql');
+      if (upstream == null) {
+        markTestSkipped('prosoche-content not found next to prosoche-app');
+        return;
+      }
+      expect(
+        File(contractPath).readAsStringSync(),
+        upstream.readAsStringSync(),
+        reason:
+            'Kontrakt sa zmenil: skopiruj ${upstream.path} do $contractPath '
+            'a uprav content_tables.dart.',
+      );
+    },
+  );
 }

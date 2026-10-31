@@ -99,8 +99,8 @@ class DbArchiveInfo {
   final int gzSize;
 }
 
-/// Volitelny obsahovy balik z `packs` v manifeste (C-06), napr.
-/// `hadith_extra`. Stahuje ho D-05, `ContentPackService` ho ignoruje.
+/// Volitelny obsahovy balik z `packs` v manifeste (C-06). `ContentPackService`
+/// ho ignoruje; stahovanie balikov zatial nie je (v Murse hadith_extra).
 @immutable
 class ContentPackInfo {
   const ContentPackInfo({
@@ -113,7 +113,7 @@ class ContentPackInfo {
   final String id;
   final DbArchiveInfo archive;
 
-  /// `PRAGMA user_version` balika (napr. `hadith_extra_schema.sql`).
+  /// `PRAGMA user_version` balika.
   final int schemaVersion;
   final bool optional;
 }
@@ -127,7 +127,6 @@ class ContentManifest {
     required this.minAppVersion,
     required this.createdAt,
     required this.db,
-    required this.uthmaniSha256,
     required this.disabledIds,
     this.packs = const {},
   });
@@ -153,8 +152,6 @@ class ContentManifest {
           minAppVersion: _semver(m['min_app_version']),
           createdAt: _ts(m['created_at']),
           db: DbArchiveInfo._fromJson(m['db']),
-          // Informativne: appka porovnava s konstantou v binarke (B.2).
-          uthmaniSha256: _match(m['uthmani_sha256'], _sha256Re),
           disabledIds: {for (final id in ids) _match(id, _cardIdRe)},
           // Chybajuce pole = ziadne baliky (format C-05).
           packs: m.containsKey('packs') ? _packs(m['packs']) : const {},
@@ -186,7 +183,6 @@ class ContentManifest {
   final SemVer minAppVersion;
   final DateTime createdAt;
   final DbArchiveInfo db;
-  final String uthmaniSha256;
   final Set<String> disabledIds;
 
   /// Volitelne baliky podla `id` (prazdne, ak manifest `packs` nema).

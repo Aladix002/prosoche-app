@@ -29,7 +29,6 @@ void main() {
       unlockMinutes: 15,
       now: now,
     );
-    await userDb.blockerDao.updateApp(row.id, prayerLock: true);
     final app = await repo.app('com.instagram.android');
     expect(
       app,
@@ -39,7 +38,6 @@ void main() {
         label: 'Instagram',
         cardsRequired: 5,
         unlockMinutes: 15,
-        prayerLock: true,
       ),
     );
     expect(app.hashCode, isNot(0));
@@ -81,18 +79,14 @@ void main() {
     });
   });
 
-  test('free reading: card_event gate and reading_position', () async {
-    expect(await repo.readingPosition(), isNull);
-    await repo.markFreeReading(date, AyahId(1, 1));
-    await repo.markFreeReading(date, AyahId(1, 2));
-    expect(await repo.readingPosition(), AyahId(1, 2));
-    // Opakovane seen v ten isty den neposuva poziciu znova.
-    await repo.markFreeReading(date, AyahId(1, 1));
-    expect(await repo.readingPosition(), AyahId(1, 2));
+  test('free reading: card_event seen in the gate, once per day', () async {
+    await repo.markFreeReading(date, ContentCardId.quote('q_1'));
+    await repo.markFreeReading(date, ContentCardId.quote('q_2'));
+    await repo.markFreeReading(date, ContentCardId.quote('q_1'));
     final events = await userDb.select(userDb.cardEvents).get();
     expect(events.map((e) => (e.cardId, e.context, e.action, e.pos)), [
-      ('ayah:1001', db.CardContext.gate, db.CardAction.seen, null),
-      ('ayah:1002', db.CardContext.gate, db.CardAction.seen, null),
+      ('quote:q_1', db.CardContext.gate, db.CardAction.seen, null),
+      ('quote:q_2', db.CardContext.gate, db.CardAction.seen, null),
     ]);
   });
 

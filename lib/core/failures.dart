@@ -70,8 +70,8 @@ final class MigrationFailed extends DataFailure {
 final class ContentIntegrityFailed extends DataFailure {
   const ContentIntegrityFailed(this.check);
 
-  /// 'ayah_count' | 'uthmani_hash' | 'sha256' | 'dev_content' (placeholder
-  /// obsah v release, `meta.dev_content`, D-01)
+  /// 'schema_version' | 'empty' | 'sha256' | 'manifest' | 'dev_content'
+  /// (placeholder obsah v release, `meta.dev_content`, D-01)
   final String check;
 
   @override

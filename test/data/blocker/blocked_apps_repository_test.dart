@@ -71,16 +71,11 @@ void main() {
 
     await repo.update(
       apps.last.id,
-      const BlockedAppPatch(
-        cardsRequired: 99,
-        unlockMinutes: 1,
-        prayerLock: true,
-      ),
+      const BlockedAppPatch(cardsRequired: 99, unlockMinutes: 1),
     );
     apps = await repo.apps();
     expect(apps.last.cardsRequired, BlockedAppLimits.maxCards);
     expect(apps.last.unlockMinutes, BlockedAppLimits.minMinutes);
-    expect(apps.last.prayerLock, isTrue);
     expect(gateway.targets.last.cardsRequired, BlockedAppLimits.maxCards);
 
     await repo.remove(apps.first.id);

@@ -77,7 +77,7 @@ void main() {
       contentVersion: v2,
       db: dbBytes,
       gz: gz,
-      disabledIds: ['hadith:7'],
+      disabledIds: ['quote:q_0007'],
     );
     http
       ..serve('$cdn/manifest.json', manifest)
@@ -93,7 +93,7 @@ void main() {
     final reopened = await container.read(contentDatabaseProvider.future);
     expect(identical(reopened, db), isFalse);
     expect(await reopened.contentMetaDao.metaValue('content_version'), '$v2');
-    expect(sub.read(), {'hadith:7'});
+    expect(sub.read(), {'quote:q_0007'});
   });
 
   test('contentDatabaseProvider fails when no valid db exists', () async {
