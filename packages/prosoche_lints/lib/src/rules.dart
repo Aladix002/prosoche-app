@@ -24,10 +24,6 @@ enum ProsocheRule {
   borderRadiusLeftRight(
     'prosoche_border_radius_left_right',
     'BorderRadius.only/horizontal(left/right) -> BorderRadiusDirectional',
-  ),
-  arabicTextOutsideSkArabicText(
-    'prosoche_arabic_text_outside_sk_arabic_text',
-    'Arabsky text len cez SkArabicText (docs/01 D13)',
   );
 
   ProsocheRule(this.code, this.message);

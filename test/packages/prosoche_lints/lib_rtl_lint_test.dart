@@ -5,7 +5,7 @@ import 'package:prosoche_lints/prosoche_lints.dart';
 /// Bezi v `flutter test`, teda aj v `tool/check.sh`. Rucne:
 /// `dart run prosoche_lints:check lib`.
 void main() {
-  test('lib/ has no RTL or Arabic text violations', () {
+  test('lib/ has no RTL violations', () {
     final violations = checkPaths(['lib']);
     expect(violations, isEmpty, reason: violations.join('\n'));
   });

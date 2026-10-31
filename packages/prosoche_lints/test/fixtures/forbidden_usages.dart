@@ -19,9 +19,6 @@ class Forbidden extends StatelessWidget {
   static const i = TextAlign.right; // expect: prosoche_text_align_left_right
   static const j = BorderRadius.only(topLeft: Radius.circular(4)); // expect: prosoche_border_radius_left_right
   static const k = BorderRadius.horizontal(right: Radius.circular(4)); // expect: prosoche_border_radius_left_right
-  static const l = 'بسم'; // expect: prosoche_arabic_text_outside_sk_arabic_text
-  static const m = 'Sura ا'; // expect: prosoche_arabic_text_outside_sk_arabic_text
-  static const n = 'اردو'; // expect: prosoche_arabic_text_outside_sk_arabic_text
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +29,7 @@ class Forbidden extends StatelessWidget {
           padding: EdgeInsets.only(right: 2), // expect: prosoche_edge_insets_left_right
           child: w.Padding(
             padding: w.EdgeInsets.only(left: 1), // expect: prosoche_edge_insets_left_right
-            child: Text('$x ١٢', textAlign: .left), // expect: prosoche_arabic_text_outside_sk_arabic_text, prosoche_text_align_left_right
+            child: Text('$x', textAlign: .left), // expect: prosoche_text_align_left_right
           ),
         ),
         Positioned(left: 0, child: Text('a')), // expect: prosoche_positioned_left_right

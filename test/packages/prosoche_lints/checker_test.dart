@@ -63,13 +63,6 @@ const c = Alignment.centerLeft;
     expect(found.single.toString(), contains('prosoche_alignment_left_right'));
   });
 
-  test('containsArabicScript', () {
-    expect(containsArabicScript('abc 123'), isFalse);
-    expect(containsArabicScript('a ا'), isTrue);
-    expect(containsArabicScript('ﷺ'), isTrue);
-    expect(containsArabicScript('দ'), isFalse); // bengalcina
-  });
-
   test('isExcludedPath skips generated code and translations', () {
     expect(isExcludedPath('lib/a.g.dart'), isTrue);
     expect(isExcludedPath('lib/a.freezed.dart'), isTrue);
