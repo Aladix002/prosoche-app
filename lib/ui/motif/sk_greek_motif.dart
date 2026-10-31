@@ -253,7 +253,7 @@ class SkCornice extends StatelessWidget {
     return IgnorePointer(
       child: ExcludeSemantics(
         child: SizedBox(
-          width: width,
+          width: width ?? double.infinity,
           height: SkCornicePainter.height,
           child: CustomPaint(
             painter: SkCornicePainter(

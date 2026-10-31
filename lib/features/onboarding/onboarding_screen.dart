@@ -244,11 +244,16 @@ class OnboardingStepBody extends StatelessWidget {
                   child: Text(title, style: titleStyle ?? text.headlineSmall),
                 ),
                 if (subtitle != null)
-                  Text(
-                    subtitle!,
-                    style: context.sk.type.attribution.copyWith(
-                      fontSize: 17,
-                      height: 24 / 17,
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                      bottom: SkSpace.space8,
+                    ),
+                    child: Text(
+                      subtitle!,
+                      style: context.sk.type.attribution.copyWith(
+                        fontSize: 17,
+                        height: 24 / 17,
+                      ),
                     ),
                   ),
                 if (body != null) ...[

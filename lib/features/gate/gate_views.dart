@@ -72,7 +72,6 @@ class GateHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               // D-01: brana = oblúk; prechadzas nim k appke. Pri velkom
               // texte sa vynecha (miesto patri karte).

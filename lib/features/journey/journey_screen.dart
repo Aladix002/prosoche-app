@@ -69,6 +69,7 @@ class _JourneyScreenState extends ConsumerState<JourneyScreen> {
           SkSpace.space32,
         ),
         children: [
+          SkScreenTitle(title: l10n.journeyTitle),
           const JourneyIntention(),
           const SizedBox(height: SkSpace.space16),
           if (!ready)
@@ -107,7 +108,10 @@ class _JourneyScreenState extends ConsumerState<JourneyScreen> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Semantics(header: true, child: Text(l10n.journeyTitle)),
+        // Nadpis je v tele (SkScreenTitle); v AppBare len pri chybe.
+        title: body is SkErrorState
+            ? Semantics(header: true, child: Text(l10n.journeyTitle))
+            : null,
         actions: const [ShellSettingsButton()],
       ),
       body: body,

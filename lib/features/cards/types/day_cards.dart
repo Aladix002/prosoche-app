@@ -149,14 +149,12 @@ class DoneCard extends StatelessWidget {
     return SkCardSurface(
       semanticLabel: semanticLabel,
       // D-01: pokojne uzavretie dna - meander sa pomaly "vytesa"
-      // (`motion.calm`, pri reduce motion staticky), portal ako znak.
-      // Ziadne konfety ani odznaky.
+      // (`motion.calm`, pri reduce motion staticky). Ziadne konfety ani
+      // odznaky.
       footer: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Center(child: SkPortalMark(size: 44)),
-          const SizedBox(height: SkSpace.space16),
           const Center(
             child: SkMeanderBand(width: 180, framed: false, animate: true),
           ),

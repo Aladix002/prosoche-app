@@ -160,9 +160,12 @@ class SkCardSurface extends StatelessWidget {
         ],
         if (attribution != null) ...[
           SizedBox(height: _compact ? SkSpace.space8 : SkSpace.space12),
+          // Autor a dielo: EB Garamond italic (docs/DESIGN.md 3.5).
           Text(
             attribution!,
-            style: sk.text.bodySmall!.copyWith(color: c.textTertiary),
+            style: _compact
+                ? sk.text.bodySmall!.copyWith(color: c.textTertiary)
+                : sk.type.attribution,
           ),
         ],
       ];
