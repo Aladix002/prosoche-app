@@ -1,16 +1,20 @@
-Fonty (U-01). Vsetky SIL OFL 1.1, licencia v OFL.txt v kazdom adresari.
-Stiahnute 2026-10-29 z oficialnych zdrojov, subory nemenene (bez subsetu).
-Ziadny KFGQPC font (docs/09 2.7).
+Fonty (D-01, docs/DESIGN.md 3.1). Vsetky SIL OFL 1.1, licencia v OFL.txt
+v kazdom adresari. Ziadny font nema Reserved Font Name.
 
-amiri_quran/        AmiriQuran.ttf 1.003
-                    https://github.com/aliftype/amiri/releases/tag/1.003
-noto_naskh_arabic/  NotoNaskhArabic 2.021 (unhinted) Regular, Medium, SemiBold
-                    https://github.com/notofonts/arabic/releases/tag/NotoNaskhArabic-v2.021
-noto_nastaliq_urdu/ NotoNastaliqUrdu 4.000 (unhinted) Regular
-                    https://github.com/notofonts/nastaliq/releases/tag/NotoNastaliqUrdu-v4.000
-noto_sans_bengali/  NotoSansBengali 3.011 (unhinted) Regular, Medium, SemiBold
-                    https://github.com/notofonts/bengali/releases/tag/NotoSansBengali-v3.011
-inter/              Inter 4.1 static (extras/ttf) Regular, Medium, SemiBold
-                    https://github.com/rsms/inter/releases/tag/v4.1 (OFL.txt = LICENSE.txt)
-literata/           Literata 3.103 Regular, Italic, SemiBold
-                    https://github.com/googlefonts/literata/releases/tag/3.103
+eb_garamond/         EB Garamond (Georg Duffner, Octavio Pardo)
+                     Regular 400, Medium 500, Italic 400
+cormorant_garamond/  Cormorant Garamond (Christian Thalmann)
+                     Medium 500, SemiBold 600
+  Zdroj: https://github.com/google/fonts (main, stiahnute 2026-10-31)
+    ofl/ebgaramond/EBGaramond[wght].ttf
+      sha256 ef9512f92f6d579e5dc75af59a5a4b1b8b47d2eda89e00b954d44520e5369027
+    ofl/ebgaramond/EBGaramond-Italic[wght].ttf
+      sha256 bba2c4499c93c9612b90b9825d32b07da52fce2fe57562a1eb6b833553f93c4e
+    ofl/cormorantgaramond/CormorantGaramond[wght].ttf
+      sha256 b20b7d9626dd956b2c5e558692ad328b1f19e3275e2782db4fa07670d83f35e0
+  Upravene (OFL 1.1 to dovoluje): staticke rezy z osi wght a subset
+  latinka + latin-ext + grectina (tool/fonts/build_fonts.py, fonttools).
+
+inter/               Inter 4.1 static (extras/ttf) Regular, Medium, SemiBold
+                     https://github.com/rsms/inter/releases/tag/v4.1
+                     (OFL.txt = LICENSE.txt), subory nemenene

@@ -1,6 +1,9 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:prosoche/ui/motif/sk_greek_motif.dart';
+import 'package:prosoche/ui/theme/sk_context.dart';
+import 'package:prosoche/ui/tokens/sk_space.dart';
 
 /// Najvacsi nasobok pisma titulku [AppBar] (Material ho clampuje na 1.34,
 /// aby titulok neprebil hierarchiu obrazovky).
@@ -72,5 +75,46 @@ double skAppBarToolbarHeight(
     return math.max(kToolbarHeight, painter.height + 2 * 12);
   } finally {
     painter.dispose();
+  }
+}
+
+/// Nadpis tabovej obrazovky v tele (Journey, Library, Practice;
+/// docs/DESIGN.md 7): volitelny eyebrow (terakota), nazov v Cormorant
+/// a rimsa. V tele, nie v AppBare, aby sa pri textScale 2.0 neorezal.
+class SkScreenTitle extends StatelessWidget {
+  const SkScreenTitle({required this.title, this.eyebrow, super.key});
+
+  final String title;
+
+  /// Napr. datum alebo "Marcus Aurelius"; zobrazi sa verzalkami.
+  final String? eyebrow;
+
+  @override
+  Widget build(BuildContext context) {
+    final sk = context.sk;
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(bottom: SkSpace.space16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (eyebrow != null) ...[
+            Text(eyebrow!.toUpperCase(), style: sk.type.eyebrow),
+            const SizedBox(height: SkSpace.space4),
+          ],
+          Semantics(
+            header: true,
+            child: Text(
+              title,
+              style: sk.largeText
+                  ? sk.text.headlineSmall
+                  : sk.text.headlineMedium,
+            ),
+          ),
+          const SizedBox(height: SkSpace.space12),
+          const SkCornice(),
+        ],
+      ),
+    );
   }
 }

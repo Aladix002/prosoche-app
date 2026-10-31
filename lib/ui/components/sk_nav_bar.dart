@@ -36,11 +36,12 @@ class SkNavBar extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onSelected;
 
-  /// Vsetky Prosoche taby (docs/01 4.1) maju 4 destinacie.
+  /// Vsetky Prosoche taby (docs/01 4.1) maju 4 destinacie. Practice =
+  /// presypacie hodiny (memento mori), nie ludska postava (docs/DESIGN.md 1.1).
   static const List<(IconData, IconData)> tabIcons = [
     (Icons.wb_twilight_outlined, Icons.wb_twilight),
     (Icons.menu_book_outlined, Icons.menu_book),
-    (Icons.self_improvement_outlined, Icons.self_improvement),
+    (Icons.hourglass_empty_outlined, Icons.hourglass_full),
     (Icons.route_outlined, Icons.route),
   ];
 

@@ -724,6 +724,12 @@ abstract class AppLocalizations {
   /// **'Text not yet available in your language'**
   String get cardTranslationNotYetAvailable;
 
+  /// Under the app name on the welcome screen: the Greek word prosoche and its meaning. Keep the Greek word as is, translate only 'attention'.
+  ///
+  /// In en, this message translates to:
+  /// **'προσοχή · attention'**
+  String get onbWelcomeMeaning;
+
   /// Tooltip and screen reader label of the gear icon that opens Settings (app bar of Today and Journey).
   ///
   /// In en, this message translates to:

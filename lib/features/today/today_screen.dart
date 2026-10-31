@@ -87,7 +87,7 @@ class _Header extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final sk = context.sk;
-    // D-05: hlavicka s atmosferou podla casti dna (jemny gradient a vzor).
+    // Hlavicka s atmosferou podla casti dna (svetlo na kameni).
     return SkAtmospherePanel(
       phase: watchDayPhase(ref),
       padding: sk.largeText
@@ -103,6 +103,8 @@ class _Header extends ConsumerWidget {
               SkSpace.space8,
               SkSpace.space16,
             ),
+      // D-01: datum len raz (eyebrow v terakote), nadpis "Today"
+      // (Cormorant) a pod nim rimsa.
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -112,17 +114,27 @@ class _Header extends ConsumerWidget {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsetsDirectional.only(
-                    top: SkSpace.space8,
+                    top: SkSpace.space12,
                   ),
                   child: Semantics(
                     header: true,
-                    child: Text(
-                      context.formats.weekdayDate(date.toLocalDateTime()),
-                      // Pri velkom texte mensi stupen, aby sa den v tyzdni
-                      // nelamal uprostred slova.
-                      style: sk.largeText
-                          ? sk.text.headlineSmall
-                          : sk.text.headlineMedium,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          context.formats
+                              .weekdayDate(date.toLocalDateTime())
+                              .toUpperCase(),
+                          style: sk.type.eyebrow,
+                        ),
+                        const SizedBox(height: SkSpace.space4),
+                        Text(
+                          l10n.tabToday,
+                          style: sk.largeText
+                              ? sk.text.headlineSmall
+                              : sk.text.headlineMedium,
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -134,11 +146,8 @@ class _Header extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: SkSpace.space8),
-          Text(
-            context.longDateLabel(date),
-            style: sk.text.titleMedium!.copyWith(color: sk.colors.accentText),
-          ),
+          const SizedBox(height: SkSpace.space12),
+          const SkCornice(),
         ],
       ),
     );
@@ -518,7 +527,6 @@ class _StreakLine extends ConsumerWidget {
       spacing: SkSpace.space8,
       runSpacing: SkSpace.space4,
       children: [
-        SkRosette(size: 16, ring: false, strokeWidth: 1, color: c.goldDeco),
         Text(
           // Kazda cast izolovana: cislo na zaciatku (aj EN fallback) sa v RTL
           // inak presunie na koniec ("day streak-1").

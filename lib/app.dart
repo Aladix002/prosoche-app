@@ -138,6 +138,10 @@ SkUiStrings skUiStringsOf(AppLocalizations l10n) => SkUiStrings(
   contentUnavailableTitle: l10n.skContentUnavailableTitle,
   contentUnavailableBody: l10n.skContentUnavailableBody,
   progressOf: l10n.skProgressOf,
+  // F-01: "Translated by George Long (1862)" (karty, citacka, obrazok).
+  translatedBy: (translator, year) => year == null
+      ? l10n.cardTranslatedBy(translator)
+      : l10n.cardTranslatedByYear(translator, year),
 );
 
 class _ErrorFallback extends StatelessWidget {

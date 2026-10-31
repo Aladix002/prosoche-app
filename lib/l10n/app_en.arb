@@ -568,6 +568,10 @@
   "@cardTranslationNotYetAvailable": {
     "description": "Small note on a card when its text is not available in the user's language yet."
   },
+  "onbWelcomeMeaning": "προσοχή · attention",
+  "@onbWelcomeMeaning": {
+    "description": "Under the app name on the welcome screen: the Greek word prosoche and its meaning. Keep the Greek word as is, translate only 'attention'."
+  },
   "shellSettings": "Settings",
   "@shellSettings": {
     "description": "Tooltip and screen reader label of the gear icon that opens Settings (app bar of Today and Journey)."

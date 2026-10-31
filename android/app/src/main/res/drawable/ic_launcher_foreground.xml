@@ -1,27 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- DOCASNA ikona (D-05): osemcipa hviezda z motivu appky, kreslena rucne.
-     Finalnu ikonu navrhne ludsky dizajner. -->
+<!-- DOCASNA ikona (D-01, docs/DESIGN.md 9): portal - dva stlpy a architrav
+     (okra) a bod pozornosti (mramor). Rovnaka geometria ako
+     SkPortalMarkPainter (padding 26/108). Finalnu posudi clovek. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
     <path
-        android:fillColor="#00000000"
-        android:pathData="M25,54 A29,29 0 1,1 83,54 A29,29 0 1,1 25,54 Z"
-        android:strokeWidth="1.6"
-        android:strokeColor="#E3C77E" />
+        android:fillColor="#C6A05C"
+        android:pathData="M29.36,33.84 L78.64,33.84 L78.64,38.32 L29.36,38.32 Z M32.72,39.44 L75.28,39.44 L75.28,41.68 L32.72,41.68 Z M35.8,43.36 L43.08,43.36 L43.92,70.8 L34.96,70.8 Z M64.92,43.36 L72.2,43.36 L73.04,70.8 L64.08,70.8 Z M29.36,72.48 L78.64,72.48 L78.64,74.72 L29.36,74.72 Z" />
     <path
-        android:fillColor="#00000000"
-        android:pathData="M54.00,30.00 L61.03,37.03 L70.97,37.03 L70.97,46.97 L78.00,54.00 L70.97,61.03 L70.97,70.97 L61.03,70.97 L54.00,78.00 L46.97,70.97 L37.03,70.97 L37.03,61.03 L30.00,54.00 L37.03,46.97 L37.03,37.03 L46.97,37.03 Z"
-        android:strokeWidth="2.2"
-        android:strokeColor="#E3C77E" />
-    <path
-        android:fillColor="#00000000"
-        android:pathData="M59.69,40.25 L62.05,45.95 L67.75,48.31 L65.39,54.00 L67.75,59.69 L62.05,62.05 L59.69,67.75 L54.00,65.39 L48.31,67.75 L45.95,62.05 L40.25,59.69 L42.61,54.00 L40.25,48.31 L45.95,45.95 L48.31,40.25 L54.00,42.61 Z"
-        android:strokeWidth="1.6"
-        android:strokeColor="#E3C77E" />
-    <path
-        android:fillColor="#E3C77E"
-        android:pathData="M51,54 A3,3 0 1,1 57,54 A3,3 0 1,1 51,54 Z" />
+        android:fillColor="#F2EFE9"
+        android:pathData="M50.64,52.32 A3.36,3.36 0 1,1 57.36,52.32 A3.36,3.36 0 1,1 50.64,52.32 Z" />
 </vector>

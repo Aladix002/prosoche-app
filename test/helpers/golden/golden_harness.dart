@@ -15,8 +15,9 @@ typedef GoldenThemeBuilder = ThemeData Function(Brightness brightness);
 ThemeData _defaultTheme(Brightness brightness) =>
     ThemeData(brightness: brightness, colorSchemeSeed: const Color(0xFF2E6B5E));
 
-/// Nacita pribalene fonty z `FontManifest.json` (Inter, Literata), aby
-/// widget testy merali text realnymi fontmi a nie testovacim fontom.
+/// Nacita pribalene fonty z `FontManifest.json` (Inter, EB Garamond,
+/// Cormorant Garamond), aby widget testy merali text realnymi fontmi
+/// a nie testovacim fontom.
 /// Alchemist to robi sam len pred `goldenTest`; widget testy (napr.
 /// `expectNoTextClipping`) by inak zaviseli od poradia testov v subore.
 Future<void> loadProsocheFonts() async {

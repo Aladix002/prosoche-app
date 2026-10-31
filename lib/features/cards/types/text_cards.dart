@@ -72,7 +72,8 @@ class CardLink extends StatelessWidget {
 }
 
 /// Citat alebo uryvok: text doslovne z content.db, referencia
-/// ("Meditations 2.1"), autor a prekladatel ("Translated by George Long").
+/// ("Meditations 2.1"), autor a prekladatel ("Translated by George Long")
+/// cez `SkQuoteCard` (D-01).
 class QuoteCard extends StatelessWidget {
   const QuoteCard({
     required this.content,
@@ -92,22 +93,19 @@ class QuoteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final sk = context.sk;
     final q = content;
-    final style = q.isPassage
-        ? sk.type.translation.copyWith(color: sk.colors.lead)
-        : sk.type.reflection.copyWith(color: sk.colors.lead);
     final t = q.translation;
-    return SkCardSurface(
+    return SkQuoteCard(
       semanticLabel: semanticLabel,
       eyebrow: cardTypeLabel(context, q),
-      eyebrowDetail: q.reference,
+      text: q.text,
+      work: q.work,
+      locus: q.ref,
+      author: q.author.isEmpty ? null : q.author,
+      translator: t?.translator,
+      year: t?.year,
+      style: q.isPassage ? SkQuoteStyle.passage : SkQuoteStyle.quote,
       headerActions: actions.build(context),
-      translation: _Paragraphs(text: q.text, style: style),
-      attribution: [
-        q.author,
-        if (t != null) translatedBy(context, t),
-      ].where((s) => s.isNotEmpty).join(' · '),
       footer: onReadInContext == null
           ? null
           : CardLink(
@@ -147,7 +145,7 @@ class PracticeCard extends StatelessWidget {
       eyebrowDetail: p.title,
       headerActions: actions.build(context),
       lead: p.subtitle == null ? null : _Subtitle(p.subtitle!),
-      translation: PracticeSteps(steps: p.steps),
+      translation: SkPracticeSteps(steps: p.steps),
       attribution: p.reference == null
           ? null
           : l10n.cardRelatedReference(p.reference!),
@@ -170,7 +168,7 @@ class PromptCard extends StatelessWidget {
   final PromptContent content;
   final CardActions actions;
 
-  /// "Reflect tonight" / zapis do dennika.
+  /// Zapis odpovede do lokalneho dennika.
   final VoidCallback? onReflect;
   final VoidCallback? onReadInContext;
   final String? semanticLabel;
@@ -178,20 +176,13 @@ class PromptCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final sk = context.sk;
     final p = content;
     return SkCardSurface(
       semanticLabel: semanticLabel,
       eyebrow: cardTypeLabel(context, p),
       eyebrowDetail: p.reference,
       headerActions: actions.build(context),
-      translation: Text(
-        p.text,
-        style: sk.type.reflection.copyWith(
-          color: sk.colors.lead,
-          fontStyle: FontStyle.italic,
-        ),
-      ),
+      translation: SkQuoteText(p.text, style: SkQuoteStyle.prompt),
       footer: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
@@ -209,7 +200,15 @@ class PromptCard extends StatelessWidget {
   }
 }
 
-/// Pojem: nadpis, povodny termin s vyznamom, vysvetlenie.
+/// `card.subtitle` pojmu ("prosoche - attention") -> (termin, vyznam).
+(String, String) conceptTerm(String title, String? subtitle) {
+  final s = subtitle;
+  if (s == null) return (title.toLowerCase(), '');
+  final i = s.indexOf(' - ');
+  return i < 0 ? (s, '') : (s.substring(0, i), s.substring(i + 3));
+}
+
+/// Pojem: `SkConceptHeader` (termin a vyznam), vysvetlenie.
 class ConceptCard extends StatelessWidget {
   const ConceptCard({
     required this.content,
@@ -227,33 +226,18 @@ class ConceptCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final sk = context.sk;
     final c = content;
+    final (term, gloss) = conceptTerm(c.title, c.subtitle);
     return SkCardSurface(
       semanticLabel: semanticLabel,
       eyebrow: cardTypeLabel(context, c),
+      eyebrowDetail: c.title,
       headerActions: actions.build(context),
-      lead: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Semantics(
-            header: true,
-            child: Text(c.title, style: sk.text.headlineMedium),
-          ),
-          if (c.subtitle case final s?) ...[
-            const SizedBox(height: SkSpace.space4),
-            Text(
-              s,
-              style: sk.text.titleMedium!.copyWith(
-                color: sk.colors.textSecondary,
-                fontStyle: FontStyle.italic,
-              ),
-            ),
-          ],
-        ],
+      lead: SkConceptHeader(term: term, gloss: gloss),
+      translation: _Paragraphs(
+        text: c.text,
+        style: SkQuoteText.styleOf(context, SkQuoteStyle.passage),
       ),
-      translation: _Paragraphs(text: c.text, style: sk.type.translation),
       attribution: c.reference == null
           ? null
           : l10n.cardRelatedReference(c.reference!),
@@ -262,7 +246,7 @@ class ConceptCard extends StatelessWidget {
   }
 }
 
-/// Uvod k autorovi (bez portretu): meno, roky, text.
+/// Uvod k autorovi (bez portretu): `SkAuthorHeader`, text.
 class AuthorCard extends StatelessWidget {
   const AuthorCard({
     required this.content,
@@ -282,32 +266,16 @@ class AuthorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final sk = context.sk;
     final a = content;
     return SkCardSurface(
       semanticLabel: semanticLabel,
       eyebrow: cardTypeLabel(context, a),
       headerActions: actions.build(context),
-      lead: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Semantics(
-            header: true,
-            child: Text(a.name, style: sk.text.headlineMedium),
-          ),
-          if (a.lifespan case final l?) ...[
-            const SizedBox(height: SkSpace.space4),
-            Text(
-              l,
-              style: sk.text.titleMedium!.copyWith(
-                color: sk.colors.textSecondary,
-              ),
-            ),
-          ],
-        ],
+      lead: SkAuthorHeader(name: a.name, dates: a.lifespan),
+      translation: _Paragraphs(
+        text: a.text,
+        style: SkQuoteText.styleOf(context, SkQuoteStyle.passage),
       ),
-      translation: _Paragraphs(text: a.text, style: sk.type.translation),
       footer: onReadWork == null || a.firstWorkTitle == null
           ? null
           : CardLink(
@@ -318,41 +286,14 @@ class AuthorCard extends StatelessWidget {
   }
 }
 
-/// Postup cvicenia: odstavce ako cislovane kroky (vlastny text z obsahu).
+/// Postup cvicenia: odstavce ako cislovane kroky (`SkPracticeSteps`).
 class PracticeSteps extends StatelessWidget {
   const PracticeSteps({required this.steps, super.key});
 
   final List<String> steps;
 
   @override
-  Widget build(BuildContext context) {
-    final sk = context.sk;
-    final style = DefaultTextStyle.of(context).style;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        for (final (i, s) in steps.indexed) ...[
-          if (i > 0) const SizedBox(height: SkSpace.space12),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ExcludeSemantics(
-                child: SizedBox(
-                  width: 28,
-                  child: Text(
-                    '${i + 1}.',
-                    style: style.copyWith(color: sk.colors.accentText),
-                  ),
-                ),
-              ),
-              Expanded(child: Text(s, style: style)),
-            ],
-          ),
-        ],
-      ],
-    );
-  }
+  Widget build(BuildContext context) => SkPracticeSteps(steps: steps);
 }
 
 class _Subtitle extends StatelessWidget {

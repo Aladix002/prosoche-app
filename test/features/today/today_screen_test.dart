@@ -46,8 +46,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(TodayScreen), findsOneWidget);
-    expect(find.text('Thursday, October 29'), findsOneWidget);
-    expect(find.text('October 29, 2026'), findsOneWidget);
+    // D-01: datum len raz (eyebrow verzalkami), nadpis "Today".
+    expect(find.text('THURSDAY, OCTOBER 29'), findsOneWidget);
+    expect(find.text('October 29, 2026'), findsNothing);
+    expect(find.text('Today'), findsWidgets);
     expect(find.text("Today's intentions"), findsOneWidget);
     expect(find.text('Read 5 cards'), findsOneWidget);
     expect(find.text('Learn one idea'), findsOneWidget);
@@ -223,7 +225,7 @@ void main() {
 
     await tester.pump(const Duration(seconds: 61));
     await tester.pumpAndSettle();
-    expect(find.text('Friday, October 30'), findsOneWidget);
+    expect(find.text('FRIDAY, OCTOBER 30'), findsOneWidget);
     expect(find.text("Begin today's cards"), findsOneWidget);
   });
 
