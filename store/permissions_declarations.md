@@ -11,10 +11,14 @@ a vecerna pripomienka su nepresne, `inexactAllowWhileIdle`), `QUERY_ALL_PACKAGES
 
 ## v1.0 (`prodLite`)
 
-Povolenia v release manifeste: `POST_NOTIFICATIONS`, `RECEIVE_BOOT_COMPLETED`,
-`INTERNET` a `ACCESS_NETWORK_STATE` (len aktualizacie obsahu a opt-in
-analytika/crash), `VIBRATE` a `WAKE_LOCK` z kniznic (overit vypisom
-v `tool/check_manifest.sh`). Ziadne z nich nepotrebuje formular v Play Console.
+Povolenia v release manifeste `prodLiteRelease` (overene I-01, 2026-10-31):
+`POST_NOTIFICATIONS`, `RECEIVE_BOOT_COMPLETED`, `INTERNET`,
+`ACCESS_NETWORK_STATE` (aktualizacie obsahu, opt-in analytika a crash),
+`VIBRATE`, `WAKE_LOCK`, `FOREGROUND_SERVICE` a
+`FOREGROUND_SERVICE_SHORT_SERVICE` (oboje z `workmanager_android`, expedited
+praca ako `shortService`), `app.prosoche.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION`
+(AndroidX, interne). [OVERIT: `shortService` podla dokumentacie kniznice
+nepotrebuje FGS deklaraciu v Play Console; potvrdit pri prvom uploade.]
 
 ### POST_NOTIFICATIONS (runtime, Android 13+)
 
@@ -30,7 +34,7 @@ Restores the scheduled (inexact) reminders after a device restart
 
 ## v1.1 (`prodFull`, app gate) - prepare now, submit with B-03
 
-Navyse k v1.0: `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_SPECIAL_USE`,
+Navyse k v1.0 (overene na `prodFullRelease`): `FOREGROUND_SERVICE_SPECIAL_USE`,
 `PACKAGE_USAGE_STATS`, `SYSTEM_ALERT_WINDOW`. Prominent disclosure je v appke
 (onboarding O6 a Settings > The gate > Permissions) pred systemovou obrazovkou,
 s aktivnym tlacidlom "Allow in settings" a "Not now".

@@ -12,6 +12,22 @@
 - [x] Reminders inexact; evening reflection reminder opt-in (default off).
 - [x] No "Project Gutenberg" text in the app or store texts.
 
+### Release build (I-01, lokalne)
+
+- `flutter build appbundle --release --flavor prodFull` aj `prodLite` s
+  `--obfuscate --split-debug-info=build/symbols` a dart-defines ako v
+  `.github/workflows/release-android.yml` (hodnoty zastupne) prejde
+  kompilaciou. Bez `android/key.properties` je AAB podpisany **debug** klucom
+  (len lokalne, do Play nejde; CI ma `PROSOCHE_REQUIRE_RELEASE_SIGNING=true`).
+- `tool/check_manifest.sh` OK pre `full` aj `lite`.
+- Ocakavane: prod flavor odmietne dev `content.db` (`meta.dev_content=1`,
+  `ContentIntegrityChecker(allowDevContent: false)`, podpis len
+  `kTrustedKeys` bez dev kluca). Pribalena dev db sa v prod builde
+  nenainstaluje, appka ukaze chybu obsahu. Pred releasom treba finalnu
+  podpisanu db bez `dev_content`.
+- Flutter hlasi "unobfuscated DWARF debugging information ... use --strip";
+  zvazit `--strip` (alebo overit, ze symboly v `build/symbols` staci).
+
 ## B. Fix before the first closed-test build
 
 - [ ] Final reviewed `content.db` (today `dev_content=1`, all cards `draft`; prod
