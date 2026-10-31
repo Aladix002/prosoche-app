@@ -208,10 +208,6 @@ class DriftQuestRepository implements QuestRepository {
     final templates = {
       for (final t in await _catalog.questTemplates()) t.id: t,
     };
-    final texts = await (await _catalog.db).curatedDao.questTextsFor(
-      rows.map((r) => r.questId),
-      lang,
-    );
     final activities = cardActivities(events);
     final out = <QuestView>[];
     for (final r in rows) {
@@ -224,15 +220,12 @@ class DriftQuestRepository implements QuestRepository {
         doneAt: doneAt,
         events: activities,
       );
-      final text = texts[r.questId];
       out.add(
         QuestView(
           quest: quest,
           status: _status(r.status),
           doneAt: r.doneAt?.toLocal(),
           progress: _engine.progress(quest, activities),
-          title: quest.generic == null ? text?.title : null,
-          body: quest.generic == null ? text?.body : null,
         ),
       );
     }

@@ -72,7 +72,7 @@ void main() {
   group('O4 notifications', () {
     testWidgets('denied permission links to system settings', (tester) async {
       final h = OnboardingHarness(
-        notifications: FakeOnboardingNotifications(grant: false, exact: true),
+        notifications: FakeOnboardingNotifications(grant: false),
       );
       await pumpStep(tester, h, OnboardingStep.notifications);
       await tapVisible(tester, find.text('Allow notifications'));

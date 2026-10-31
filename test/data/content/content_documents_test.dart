@@ -16,23 +16,29 @@ import 'content_test_helpers.dart';
 
 Uint8List _json(Object o) => utf8.encode(jsonEncode(o));
 
-Map<String, Object?> _pack([String id = 'extra_pack']) => {
-  'id': id,
-  'url': 'https://cdn.test/packs/$id.db.gz',
-  'fallback_url': 'https://fallback.test/packs/$id.db.gz',
-  'compression': 'gzip',
-  'sha256': 'a' * 64,
-  'size': 456,
-  'gz_sha256': 'b' * 64,
-  'gz_size': 479,
-  'schema_version': 1,
-  'optional': true,
-};
-
-Map<String, Object?> _manifestWithPack() => _manifest()..['packs'] = [_pack()];
-
-Map<String, Object?> _firstPack(Map<String, Object?> m) =>
-    (m['packs']! as List).first as Map<String, Object?>;
+Uint8List remoteConfigBytes({
+  int seq = 1,
+  String expiresAt = '2099-01-01T00:00:00Z',
+  String minSupported = '0.1.0',
+  String? recommended,
+  bool autoUpdate = true,
+  List<String> broken = const [],
+  Map<String, Object?>? notice,
+  Map<String, Object?> extraFeatures = const {},
+}) => _json({
+  'schema': 1,
+  'seq': seq,
+  'issued_at': '2026-01-01T00:00:00Z',
+  'expires_at': expiresAt,
+  'min_supported_version': minSupported,
+  'recommended_version': recommended,
+  'features': {
+    'content_auto_update': {'enabled': autoUpdate},
+    ...extraFeatures,
+  },
+  'broken_versions': broken,
+  'notice': notice,
+});
 
 Map<String, Object?> _manifest() =>
     jsonDecode(utf8.decode(manifestBytes(contentVersion: 5, db: [1], gz: [2])))
@@ -60,55 +66,14 @@ void main() {
       expect(m.contentVersion, 5);
       expect(m.db.url.host, 'cdn.test');
       expect(m.createdAt, DateTime.utc(2026));
-      expect(m.packs, isEmpty);
+      expect(m.sectionsSha256, fixtureSectionsSha256());
+      expect(m.devContent, isTrue);
     });
 
-    test('parses packs', () {
-      final m = ContentManifest.parse(
-        _json(_manifestWithPack()..['packs'] = [_pack(), _pack('other_2')]),
-      ).valueOrNull!;
-      expect(m.packs.keys, ['extra_pack', 'other_2']);
-      final pack = m.packs['extra_pack']!;
-      expect(pack.id, 'extra_pack');
-      expect(pack.optional, isTrue);
-      expect(pack.schemaVersion, 1);
-      expect(pack.archive.url.host, 'cdn.test');
-      expect(pack.archive.size, 456);
-      expect(pack.archive.gzSize, 479);
-      expect(pack.archive.sha256, 'a' * 64);
+    test('ignores unknown packs field (v1 has none)', () {
+      final m = ContentManifest.parse(_json(_manifest()..['packs'] = [1]));
+      expect(m.isOk, isTrue);
     });
-
-    test('empty packs list parses', () {
-      final m = ContentManifest.parse(_json(_manifest()..['packs'] = []));
-      expect(m.valueOrNull!.packs, isEmpty);
-    });
-
-    for (final (name, mutate)
-        in <(String, void Function(Map<String, Object?>))>[
-          ('packs null', (m) => m['packs'] = null),
-          ('packs not list', (m) => m['packs'] = {'extra_pack': _pack()}),
-          ('pack not object', (m) => m['packs'] = ['extra_pack']),
-          ('pack without id', (m) => _firstPack(m).remove('id')),
-          ('pack bad id', (m) => _firstPack(m)['id'] = 'Extra-Pack'),
-          ('pack duplicate id', (m) => m['packs'] = [_pack(), _pack()]),
-          ('pack http url', (m) => _firstPack(m)['url'] = 'http://x.test/a'),
-          ('pack bad sha', (m) => _firstPack(m)['gz_sha256'] = 'abc'),
-          ('pack zero size', (m) => _firstPack(m)['size'] = 0),
-          ('pack compression', (m) => _firstPack(m)['compression'] = 'zstd'),
-          ('pack zero schema', (m) => _firstPack(m)['schema_version'] = 0),
-          ('pack bool schema', (m) => _firstPack(m)['schema_version'] = true),
-          ('pack optional', (m) => _firstPack(m)['optional'] = 'yes'),
-          ('pack no optional', (m) => _firstPack(m).remove('optional')),
-        ]) {
-      test('rejects $name', () {
-        final m = _manifestWithPack();
-        mutate(m);
-        expect(
-          ContentManifest.parse(_json(m)),
-          const Err<ContentManifest>(ContentIntegrityFailed('manifest')),
-        );
-      });
-    }
 
     for (final (name, mutate)
         in <(String, void Function(Map<String, Object?>))>[
@@ -127,6 +92,10 @@ void main() {
           ('disabled not list', (m) => m['disabled_ids'] = 'quote:q_0001'),
           ('bad card id', (m) => m['disabled_ids'] = ['Quote 1']),
           ('no sources', (m) => m['sources'] = <Object?>[]),
+          ('no sections_sha256', (m) => m.remove('sections_sha256')),
+          ('bad sections_sha256', (m) => m['sections_sha256'] = 'x'),
+          ('no dev_content', (m) => m.remove('dev_content')),
+          ('string dev_content', (m) => m['dev_content'] = 'true'),
         ]) {
       test('rejects $name', () {
         final m = _manifest();
@@ -242,23 +211,6 @@ void main() {
     }
   });
 
-  group('Revocations', () {
-    test('rejects bad shapes', () {
-      expect(Revocations.parse(_json({'schema': 2})).isOk, isFalse);
-      expect(
-        Revocations.parse(
-          _json({
-            'schema': 1,
-            'seq': 1,
-            'revoked': 'x',
-            'issued_at': '2026-01-01T00:00:00Z',
-          }),
-        ).isOk,
-        isFalse,
-      );
-    });
-  });
-
   group('SignatureVerifier', () {
     late TestKeys keys;
     setUpAll(() async => keys = await TestKeys.create());
@@ -283,8 +235,9 @@ void main() {
 
     test('valid signature returns the key', () async {
       final payload = utf8.encode('payload');
-      final r = await SignatureVerifier(keys.set)
-          .verify(payload, await keys.root.sign(payload), allowed: kRootOnly);
+      final r = await SignatureVerifier(
+        keys.set,
+      ).verify(payload, await keys.root.sign(payload), allowed: {KeyRole.root});
       expect(r.valueOrNull?.kid, 'test-root-1');
       expect(KeyRole.fromWire('x'), isNull);
     });
@@ -316,27 +269,25 @@ void main() {
     test('round trip', () async {
       final store = ContentPackStateStore(File(p.join(tmp.path, 's.json')));
       expect((await store.load()).installedVersion, isNull);
-      final state = ContentPackState(
+      const state = ContentPackState(
         installedVersion: 7,
         origin: ContentDbOrigin.downloaded,
-        revokedKids: const {'b', 'a'},
-        revocationsSeq: 2,
-        disabledIds: const {'quote:q_0001'},
+        disabledIds: {'quote:q_0001'},
         disabledIdsVersion: 7,
-        remoteConfigSeq: 3,
-        remoteConfigRaw: Uint8List.fromList([1, 2]),
-        remoteConfigFetchedAt: DateTime.utc(2026, 3),
         rejectedVersion: 8,
       );
       await store.save(state);
       final loaded = await store.load();
       expect(loaded.toJson(), state.toJson());
-      expect(loaded.remoteConfigRaw, [1, 2]);
+      expect(loaded.rejectedVersion, 8);
     });
 
     test('corrupted file yields empty state', () async {
       final file = File(p.join(tmp.path, 's.json'))..writeAsStringSync('{');
-      expect((await ContentPackStateStore(file).load()).revokedKids, isEmpty);
+      expect((await ContentPackStateStore(file).load()).disabledIds, isEmpty);
+      // Stare kluce Mursy (revokacie, remote config) sa ignoruju.
+      file.writeAsStringSync('{"revoked_kids": ["a"], "installed_version": 3}');
+      expect((await ContentPackStateStore(file).load()).installedVersion, 3);
       file.writeAsStringSync('[1]');
       expect((await ContentPackStateStore(file).load()).origin, isNull);
       file.writeAsStringSync('{"origin": "nope", "installed_version": "x"}');

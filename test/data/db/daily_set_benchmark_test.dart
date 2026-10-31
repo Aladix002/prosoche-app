@@ -20,8 +20,8 @@ Future<int> loadDailySet(UserDb user, ContentDb content, LocalDate date) async {
   ];
   var loaded = 0;
   for (final c in cards) {
-    if (c case ContentCardId(type: CardType.quote, :final key)) {
-      if (await content.curatedDao.quote(key) != null) loaded++;
+    if (c is ContentCardId && await content.cardDao.card(c.format()) != null) {
+      loaded++;
     }
   }
   return loaded;

@@ -94,3 +94,14 @@ enum UnlockSource implements WireEnum {
   @override
   String get wire => name;
 }
+
+/// `journal_entry.kind` a `practice_log.routine` (F-01): ranna priprava,
+/// vecerna reflexia, volna poznamka (len dennik).
+enum JournalKind implements WireEnum {
+  morning,
+  evening,
+  note;
+
+  @override
+  String get wire => name;
+}

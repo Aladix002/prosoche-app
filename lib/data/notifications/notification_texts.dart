@@ -41,6 +41,7 @@ final class NotificationTexts {
       l10n.notifMorningTitle,
       l10n.notifMorningBody(n.cardMinutes ?? 10),
     ),
+    NotificationKind.evening => (l10n.notifEveningTitle, l10n.notifEveningBody),
     NotificationKind.openApp => (
       l10n.notifOpenAppTitle,
       l10n.notifOpenAppBody(l10n.appTitle),
@@ -49,6 +50,7 @@ final class NotificationTexts {
 
   (String, String) _private(PlannedNotification n) => switch (n.kind) {
     NotificationKind.morning => (l10n.appTitle, l10n.notifMorningPrivateBody),
+    NotificationKind.evening => (l10n.appTitle, l10n.notifEveningPrivateBody),
     NotificationKind.openApp => (l10n.appTitle, l10n.notifOpenAppPrivateBody),
   };
 

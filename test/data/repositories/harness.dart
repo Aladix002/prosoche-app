@@ -28,19 +28,13 @@ class TestClock extends Clock {
 class Harness {
   Harness._(this.user, this.content, this.clock, {required this.tz});
 
-  /// [templates] = false zmaze sablony questov z fixture (genericke questy).
   static Future<Harness> create({
     DateTime? now,
-    bool templates = true,
     String tz = 'Europe/Bratislava',
     String lang = 'en',
     UserDb? user,
   }) async {
     final content = openContentFixture();
-    if (!templates) {
-      await content.customStatement('DELETE FROM quest_text');
-      await content.customStatement('DELETE FROM quest_template');
-    }
     final h = Harness._(
       user ?? UserDb.memory(),
       content,

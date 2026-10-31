@@ -3,10 +3,6 @@
 // ignore_for_file: type=lint
 import 'package:flutter/widgets.dart';
 
-class SkArabicText {
-  const SkArabicText.text(String text);
-}
-
 class Allowed extends StatelessWidget {
   const Allowed({super.key});
 
@@ -21,7 +17,6 @@ class Allowed extends StatelessWidget {
   static const i = TextAlign.center;
   static const j = BorderRadiusDirectional.only(topStart: Radius.circular(4));
   static const k = BorderRadius.vertical(top: Radius.circular(4));
-  static const l = SkArabicText.text('بسم');
   static const m = 'Prosoche 2:255';
   // prosoche-lint: ignore prosoche_text_align_left_right
   static const n = TextAlign.left;
@@ -38,7 +33,7 @@ class Allowed extends StatelessWidget {
         Directionality(textDirection: .rtl, child: Text('d')),
         Container(padding: .only(top: 3)),
         Container(padding: .symmetric(horizontal: 3)),
-        SkArabicText.text('اردو ${sides.left}'),
+        Text('${sides.left}'),
         Text('${sides.right}', textAlign: .end),
         Text('x', style: TextStyle(fontFamily: 'Inter')),
       ],

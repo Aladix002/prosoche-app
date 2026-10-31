@@ -1,5 +1,5 @@
 {
   "alg": "Ed25519",
-  "kid": "test-content-a",
-  "sig": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  "kid": "content-dev",
+  "sig": "eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHg="
 }

@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "content_version": 2026010101,
+  "schema_version": 1,
+  "min_app_version": "1.0.0",
+  "created_at": "2026-01-01T00:00:00Z",
+  "kid": "content-dev",
+  "db": {
+    "url": "https://cdn.jsdelivr.net/gh/example/prosoche-content@cdn-v2026010101/content.db.gz",
+    "fallback_url": "https://github.com/example/prosoche-content/releases/download/content-v2026010101/content.db.gz",
+    "compression": "gzip",
+    "sha256": "64e98b625f11524cf8b8012f530541fcfdf0a614df0d4a16c5056f4d21796283",
+    "size": 98304,
+    "gz_sha256": "e1cc06f9beadeb12eba4b0ba91229aa303c430b037f0142d1f5d1234b39c1bf0",
+    "gz_size": 3106
+  },
+  "sections_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "dev_content": false,
+  "disabled_ids": [
+    "quote:meditations.2.1.a"
+  ],
+  "sources": [
+    {
+      "id": "prosoche-curated",
+      "kind": "curated",
+      "version": "2026010101"
+    }
+  ]
+}

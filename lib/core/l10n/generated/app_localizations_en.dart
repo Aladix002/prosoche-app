@@ -596,6 +596,304 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onbFinish => 'Finish';
 
   @override
+  String get cardTypePassage => 'Passage';
+
+  @override
+  String get cardTypePractice => 'Practice';
+
+  @override
+  String get cardTypePrompt => 'Reflect';
+
+  @override
+  String get cardTypeConcept => 'Concept';
+
+  @override
+  String get cardTypeAuthor => 'Author';
+
+  @override
+  String cardTranslatedBy(String translator) {
+    return 'Translated by $translator';
+  }
+
+  @override
+  String cardTranslatedByYear(String translator, int year) {
+    return 'Translated by $translator ($year)';
+  }
+
+  @override
+  String get cardReadInContext => 'Read in context';
+
+  @override
+  String cardReadReference(String reference) {
+    return 'Read $reference';
+  }
+
+  @override
+  String cardRelatedReference(String reference) {
+    return 'Related: $reference';
+  }
+
+  @override
+  String cardReadWork(String title) {
+    return 'Read $title';
+  }
+
+  @override
+  String get cardOpenPractice => 'Open in Practice';
+
+  @override
+  String get cardWriteInJournal => 'Write in journal';
+
+  @override
+  String get librarySearch => 'Search';
+
+  @override
+  String get librarySearchHint => 'Search the works';
+
+  @override
+  String get librarySearchHintTitle => 'Search all works';
+
+  @override
+  String get librarySearchHintBody =>
+      'Find a word or phrase in every book and section.';
+
+  @override
+  String get librarySearchEmpty => 'Nothing found';
+
+  @override
+  String get libraryBookmarks => 'Bookmarks';
+
+  @override
+  String get libraryBookmarksEmptyTitle => 'No bookmarks yet';
+
+  @override
+  String get libraryBookmarksEmptyBody =>
+      'Tap the bookmark in the reader to keep a section here.';
+
+  @override
+  String get libraryEmptyTitle => 'No works';
+
+  @override
+  String get libraryEmptyBody => 'The texts could not be found.';
+
+  @override
+  String libraryBooks(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count books',
+      one: '1 book',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String librarySections(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sections',
+      one: '1 section',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String libraryContinueAt(String reference) {
+    return 'Continue at $reference';
+  }
+
+  @override
+  String get readerContents => 'Contents';
+
+  @override
+  String get readerAddBookmark => 'Bookmark this section';
+
+  @override
+  String get readerRemoveBookmark => 'Remove bookmark';
+
+  @override
+  String get readerBookmarkAdded => 'Bookmarked';
+
+  @override
+  String get readerBookmarkRemoved => 'Bookmark removed';
+
+  @override
+  String get readerPrevious => 'Previous section';
+
+  @override
+  String get readerNext => 'Next section';
+
+  @override
+  String get readerProgressA11y => 'Reading position';
+
+  @override
+  String readerProgressValue(int current, int total) {
+    return '$current / $total';
+  }
+
+  @override
+  String get readerMissingTitle => 'This work is not available';
+
+  @override
+  String get readerMissingBody =>
+      'It may have been removed in a content update.';
+
+  @override
+  String get practiceMorning => 'Morning';
+
+  @override
+  String get practiceEvening => 'Evening';
+
+  @override
+  String get practiceMorningTitle => 'Morning preparation';
+
+  @override
+  String get practiceEveningTitle => 'Evening reflection';
+
+  @override
+  String get practiceMarkDone => 'Done';
+
+  @override
+  String get practiceDoneToday => 'Done today';
+
+  @override
+  String get practiceMarkedDone => 'Marked as done.';
+
+  @override
+  String get practiceIDidThis => 'I did this';
+
+  @override
+  String get practiceExercises => 'Exercises';
+
+  @override
+  String get exerciseMissing => 'This exercise is not available';
+
+  @override
+  String get journalTitle => 'Journal';
+
+  @override
+  String get journalSubtitleEmpty => 'Notes stay on this device';
+
+  @override
+  String journalSubtitleCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count entries',
+      one: '1 entry',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get journalPrivacyNote =>
+      'Your journal stays on this device. It is never sent anywhere.';
+
+  @override
+  String get journalYourAnswer => 'Your answer';
+
+  @override
+  String get journalSave => 'Save';
+
+  @override
+  String get journalNewNote => 'New note';
+
+  @override
+  String get journalNote => 'Note';
+
+  @override
+  String get journalDelete => 'Delete';
+
+  @override
+  String get journalDeleteAllTitle => 'Delete journal';
+
+  @override
+  String get journalDeleteAllBody =>
+      'All journal entries will be deleted from this device. This cannot be undone.';
+
+  @override
+  String get journalExport => 'Export journal';
+
+  @override
+  String journalExportTitle(String app) {
+    return '$app journal';
+  }
+
+  @override
+  String get journalEmptyTitle => 'No entries yet';
+
+  @override
+  String get journalEmptyBody =>
+      'Answers from the morning and evening practice appear here.';
+
+  @override
+  String get mementoTitle => 'Memento mori';
+
+  @override
+  String get mementoSubtitle => 'Your life in weeks';
+
+  @override
+  String get mementoAddYear => 'Add birth year';
+
+  @override
+  String get mementoBirthYear => 'Year of birth';
+
+  @override
+  String get mementoBirthYearHelp => 'Optional. Used only to draw the weeks.';
+
+  @override
+  String get mementoChangeYear => 'Change year';
+
+  @override
+  String get mementoClearYear => 'Remove year';
+
+  @override
+  String mementoWeeks(int lived, int total) {
+    final intl.NumberFormat livedNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String livedString = livedNumberFormat.format(lived);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return '$livedString of $totalString weeks';
+  }
+
+  @override
+  String mementoGridA11y(int lived, int left) {
+    return '$lived weeks lived, $left weeks left of 80 years';
+  }
+
+  @override
+  String get mementoNote => 'Each square is one week of an 80 year life.';
+
+  @override
+  String get mementoPrivacy => 'The year stays on this device.';
+
+  @override
+  String get notifEveningTitle => 'Evening reflection';
+
+  @override
+  String get notifEveningBody => 'A few minutes to look back at the day.';
+
+  @override
+  String get notifEveningPrivateBody => 'A reminder for this evening.';
+
+  @override
+  String get setEvening => 'Evening';
+
+  @override
+  String get setEveningToggle => 'Evening reflection';
+
+  @override
+  String get setEveningHelp =>
+      'A quiet reminder to review the day. Off by default.';
+
+  @override
+  String get setEveningTime => 'Time';
+
+  @override
   String get todaySettings => 'Settings';
 
   @override
@@ -1120,25 +1418,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Show only the app name and time on the lock screen, without what the reminder is about.';
 
   @override
-  String get setExactAlarms => 'Exact reminders';
-
-  @override
-  String get setStatusUnknown => 'Checking…';
-
-  @override
-  String get setExactOn => 'Allowed';
-
-  @override
-  String get setExactOff => 'Not allowed';
-
-  @override
-  String get setExactHelp =>
-      'Without exact reminders, reminders may arrive up to 10 minutes late or more.';
-
-  @override
-  String get setAllow => 'Allow';
-
-  @override
   String get setOsDelayNote =>
       'Reminders may be delayed by Android or battery settings.';
 
@@ -1338,10 +1617,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notifOpenAppPrivateBody => 'Open the app to keep reminders on';
-
-  @override
-  String get notifInexactNote =>
-      'Reminders may arrive up to 10 minutes late or more. Allow \"Alarms & reminders\" for exact times.';
 
   @override
   String get appTitle => 'Prosoche';

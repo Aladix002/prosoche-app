@@ -1,25 +1,44 @@
 #!/usr/bin/env bash
 # Pribali content.db do assetov (D-03, Q-03). Subory su gitignored.
 #
-#   tool/bundle_content.sh [cesta k prosoche-content]
+#   tool/bundle_content.sh [--build] [cesta k prosoche-content]
 #
-# Default: $PROSOCHE_CONTENT_DIR, inak ../prosoche-content vedla repa.
+# Default: $PROSOCHE_CONTENT_DIR, inak prvy existujuci z ../prosoche-content
+# a ../../prosoche-content (git worktree v prosoche/wt/<ID>).
+# --build (alebo chybajuci dist/) spusti v prosoche-content `make build sign`
+# (lokalny dev kluc keys/content-dev.pem, nikdy v gite).
 # Skopiruje dist/content.db.gz a dist/manifest.json do assets/content/
-# a overi gz_sha256/gz_size podla manifestu. Db sa pribaluje komprimovana
-# (~9,5 MB namiesto ~32 MB), appka ju rozbali pri prvom starte a overi
-# sha256/size rozbalenej db (ContentPackService.ensureInstalled).
+# a overi gz_sha256/gz_size podla manifestu. Db (content.db v1, ~3,5 MB) sa
+# pribaluje komprimovana (~1,4 MB), appka ju rozbali pri prvom starte
+# a overi sha256/size a integritu (ContentPackService.ensureInstalled).
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-src="${1:-${PROSOCHE_CONTENT_DIR:-../prosoche-content}}"
-dist="$src/dist"
-out="assets/content"
+build=false
+if [[ "${1:-}" == "--build" ]]; then
+  build=true
+  shift
+fi
 
 fail() { printf 'FAIL: %s\n' "$*" >&2; exit 1; }
 
+src="${1:-${PROSOCHE_CONTENT_DIR:-}}"
+if [[ -z "$src" ]]; then
+  for c in ../prosoche-content ../../prosoche-content; do
+    if [[ -d "$c/schema" ]]; then src="$c"; break; fi
+  done
+fi
+[[ -n "$src" && -d "$src" ]] || fail "prosoche-content nenajdeny (PROSOCHE_CONTENT_DIR)"
+dist="$src/dist"
+out="assets/content"
+
+if $build || [[ ! -f "$dist/content.db.gz" || ! -f "$dist/manifest.json" ]]; then
+  make -C "$src" build sign
+fi
+
 for f in content.db.gz manifest.json; do
-  [[ -f "$dist/$f" ]] || fail "chyba $dist/$f (spusti make all v prosoche-content)"
+  [[ -f "$dist/$f" ]] || fail "chyba $dist/$f (spusti make build sign v prosoche-content)"
 done
 
 # Hodnota z bloku "db" v manifeste.

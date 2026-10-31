@@ -73,8 +73,18 @@
             "dsl_features": []
           },
           {
-            "name": "lang",
-            "getter_name": "lang",
+            "name": "name",
+            "getter_name": "name",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "translator",
+            "getter_name": "translator",
             "moor_type": "string",
             "nullable": true,
             "customConstraints": null,
@@ -83,10 +93,20 @@
             "dsl_features": []
           },
           {
-            "name": "name",
-            "getter_name": "name",
-            "moor_type": "string",
-            "nullable": false,
+            "name": "translator_died",
+            "getter_name": "translatorDied",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "edition_year",
+            "getter_name": "editionYear",
+            "moor_type": "int",
+            "nullable": true,
             "customConstraints": null,
             "default_dart": null,
             "default_client_dart": null,
@@ -113,18 +133,8 @@
             "dsl_features": []
           },
           {
-            "name": "license_url",
-            "getter_name": "licenseUrl",
-            "moor_type": "string",
-            "nullable": true,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "license_text",
-            "getter_name": "licenseText",
+            "name": "license_note",
+            "getter_name": "licenseNote",
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
@@ -146,17 +156,7 @@
             "name": "url",
             "getter_name": "url",
             "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "commercial_status",
-            "getter_name": "commercialStatus",
-            "moor_type": "string",
-            "nullable": false,
+            "nullable": true,
             "customConstraints": null,
             "default_dart": null,
             "default_client_dart": null,
@@ -183,12 +183,10 @@
     },
     {
       "id": 2,
-      "references": [
-        1
-      ],
+      "references": [],
       "type": "table",
       "data": {
-        "name": "quote",
+        "name": "author",
         "was_declared_in_moor": false,
         "columns": [
           {
@@ -202,8 +200,8 @@
             "dsl_features": []
           },
           {
-            "name": "status",
-            "getter_name": "status",
+            "name": "name",
+            "getter_name": "name",
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
@@ -212,8 +210,8 @@
             "dsl_features": []
           },
           {
-            "name": "origin",
-            "getter_name": "origin",
+            "name": "full_name",
+            "getter_name": "fullName",
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
@@ -222,8 +220,8 @@
             "dsl_features": []
           },
           {
-            "name": "text",
-            "getter_name": "textContent",
+            "name": "lifespan",
+            "getter_name": "lifespan",
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
@@ -232,8 +230,38 @@
             "dsl_features": []
           },
           {
-            "name": "author",
-            "getter_name": "author",
+            "name": "ord",
+            "getter_name": "ord",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [],
+        "explicit_pk": [
+          "id"
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "references": [
+        2,
+        1
+      ],
+      "type": "table",
+      "data": {
+        "name": "work",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
@@ -242,54 +270,30 @@
             "dsl_features": []
           },
           {
-            "name": "work",
-            "getter_name": "work",
+            "name": "author_id",
+            "getter_name": "authorId",
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
+            "defaultConstraints": "REFERENCES author (id)",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES author (id)"
+            },
             "default_dart": null,
             "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "ref",
-            "getter_name": "ref",
-            "moor_type": "string",
-            "nullable": true,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "tags",
-            "getter_name": "tags",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "time_of_day",
-            "getter_name": "timeOfDay",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": "const CustomExpression('\\'any\\'')",
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "weight",
-            "getter_name": "weight",
-            "moor_type": "double",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": "const CustomExpression('1.0')",
-            "default_client_dart": null,
-            "dsl_features": []
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "author",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": null
+                }
+              }
+            ]
           },
           {
             "name": "source_id",
@@ -316,27 +320,10 @@
                 }
               }
             ]
-          }
-        ],
-        "is_virtual": false,
-        "without_rowid": false,
-        "constraints": [],
-        "explicit_pk": [
-          "id"
-        ]
-      }
-    },
-    {
-      "id": 3,
-      "references": [],
-      "type": "table",
-      "data": {
-        "name": "quest_template",
-        "was_declared_in_moor": false,
-        "columns": [
+          },
           {
-            "name": "id",
-            "getter_name": "id",
+            "name": "title",
+            "getter_name": "title",
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
@@ -345,110 +332,60 @@
             "dsl_features": []
           },
           {
-            "name": "version",
-            "getter_name": "version",
+            "name": "original_title",
+            "getter_name": "originalTitle",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "translator",
+            "getter_name": "translator",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "short_ref",
+            "getter_name": "shortRef",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "book_count",
+            "getter_name": "bookCount",
             "moor_type": "int",
             "nullable": false,
             "customConstraints": null,
-            "default_dart": "const CustomExpression('1')",
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "status",
-            "getter_name": "status",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
             "default_dart": null,
             "default_client_dart": null,
             "dsl_features": []
           },
           {
-            "name": "origin",
-            "getter_name": "origin",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "slot",
-            "getter_name": "slot",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "rule_json",
-            "getter_name": "ruleJson",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "tags",
-            "getter_name": "tags",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "facets_json",
-            "getter_name": "facetsJson",
-            "moor_type": "string",
-            "nullable": true,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "weight",
-            "getter_name": "weight",
-            "moor_type": "double",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": "const CustomExpression('1.0')",
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "cooldown_days",
-            "getter_name": "cooldownDays",
+            "name": "section_count",
+            "getter_name": "sectionCount",
             "moor_type": "int",
             "nullable": false,
             "customConstraints": null,
-            "default_dart": "const CustomExpression('21')",
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "reviewed_by",
-            "getter_name": "reviewedBy",
-            "moor_type": "string",
-            "nullable": true,
-            "customConstraints": null,
             "default_dart": null,
             "default_client_dart": null,
             "dsl_features": []
           },
           {
-            "name": "reviewed_at",
-            "getter_name": "reviewedAt",
-            "moor_type": "string",
-            "nullable": true,
+            "name": "ord",
+            "getter_name": "ord",
+            "moor_type": "int",
+            "nullable": false,
             "customConstraints": null,
             "default_dart": null,
             "default_client_dart": null,
@@ -466,23 +403,22 @@
     {
       "id": 4,
       "references": [
-        3,
-        1
+        3
       ],
       "type": "table",
       "data": {
-        "name": "quest_text",
+        "name": "book",
         "was_declared_in_moor": false,
         "columns": [
           {
-            "name": "quest_id",
-            "getter_name": "questId",
+            "name": "work_id",
+            "getter_name": "workId",
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
-            "defaultConstraints": "REFERENCES quest_template (id)",
+            "defaultConstraints": "REFERENCES work (id)",
             "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES quest_template (id)"
+              "sqlite": "REFERENCES work (id)"
             },
             "default_dart": null,
             "default_client_dart": null,
@@ -490,7 +426,7 @@
               {
                 "foreign_key": {
                   "to": {
-                    "table": "quest_template",
+                    "table": "work",
                     "column": "id"
                   },
                   "initially_deferred": false,
@@ -501,9 +437,9 @@
             ]
           },
           {
-            "name": "lang",
-            "getter_name": "lang",
-            "moor_type": "string",
+            "name": "number",
+            "getter_name": "number",
+            "moor_type": "int",
             "nullable": false,
             "customConstraints": null,
             "default_dart": null,
@@ -521,10 +457,335 @@
             "dsl_features": []
           },
           {
-            "name": "body",
-            "getter_name": "body",
+            "name": "section_count",
+            "getter_name": "sectionCount",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [],
+        "explicit_pk": [
+          "work_id",
+          "number"
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "references": [
+        3,
+        4
+      ],
+      "type": "table",
+      "data": {
+        "name": "section",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "key",
+            "getter_name": "key",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "UNIQUE",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "UNIQUE"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              "unique"
+            ]
+          },
+          {
+            "name": "work_id",
+            "getter_name": "workId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES work (id)",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES work (id)"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "work",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": null
+                }
+              }
+            ]
+          },
+          {
+            "name": "book",
+            "getter_name": "book",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "number",
+            "getter_name": "number",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "ref",
+            "getter_name": "ref",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "title",
+            "getter_name": "title",
             "moor_type": "string",
             "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "text",
+            "getter_name": "textContent",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "char_count",
+            "getter_name": "charCount",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "sha256",
+            "getter_name": "sha256",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "FOREIGN KEY (work_id, book) REFERENCES book(work_id, number)"
+        ],
+        "explicit_pk": [
+          "id"
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "references": [
+        2,
+        3,
+        5,
+        1
+      ],
+      "type": "table",
+      "data": {
+        "name": "card",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "type",
+            "getter_name": "type",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "author_id",
+            "getter_name": "authorId",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES author (id)",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES author (id)"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "author",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": null
+                }
+              }
+            ]
+          },
+          {
+            "name": "work_id",
+            "getter_name": "workId",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES work (id)",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES work (id)"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "work",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": null
+                }
+              }
+            ]
+          },
+          {
+            "name": "section_key",
+            "getter_name": "sectionKey",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES section (\"key\")",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES section (\"key\")"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "section",
+                    "column": "key"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": null
+                }
+              }
+            ]
+          },
+          {
+            "name": "ref",
+            "getter_name": "ref",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "title",
+            "getter_name": "title",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "subtitle",
+            "getter_name": "subtitle",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "text",
+            "getter_name": "textContent",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "tags",
+            "getter_name": "tags",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('\\'[]\\'')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "status",
+            "getter_name": "status",
+            "moor_type": "string",
+            "nullable": false,
             "customConstraints": null,
             "default_dart": null,
             "default_client_dart": null,
@@ -555,14 +816,23 @@
                 }
               }
             ]
+          },
+          {
+            "name": "ord",
+            "getter_name": "ord",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
           }
         ],
         "is_virtual": false,
         "without_rowid": false,
         "constraints": [],
         "explicit_pk": [
-          "quest_id",
-          "lang"
+          "id"
         ]
       }
     }
@@ -582,34 +852,52 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"source\" (\"id\" TEXT NOT NULL, \"kind\" TEXT NOT NULL, \"lang\" TEXT NULL, \"name\" TEXT NOT NULL, \"version\" TEXT NOT NULL, \"license\" TEXT NOT NULL, \"license_url\" TEXT NULL, \"license_text\" TEXT NOT NULL, \"attribution\" TEXT NOT NULL, \"url\" TEXT NOT NULL, \"commercial_status\" TEXT NOT NULL, \"sha256\" TEXT NULL, PRIMARY KEY (\"id\"));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"source\" (\"id\" TEXT NOT NULL, \"kind\" TEXT NOT NULL, \"name\" TEXT NOT NULL, \"translator\" TEXT NULL, \"translator_died\" INTEGER NULL, \"edition_year\" INTEGER NULL, \"version\" TEXT NOT NULL, \"license\" TEXT NOT NULL, \"license_note\" TEXT NOT NULL, \"attribution\" TEXT NOT NULL, \"url\" TEXT NULL, \"sha256\" TEXT NULL, PRIMARY KEY (\"id\"));"
         }
       ]
     },
     {
-      "name": "quote",
+      "name": "author",
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"quote\" (\"id\" TEXT NOT NULL, \"status\" TEXT NOT NULL, \"origin\" TEXT NOT NULL, \"text\" TEXT NOT NULL, \"author\" TEXT NOT NULL, \"work\" TEXT NOT NULL, \"ref\" TEXT NULL, \"tags\" TEXT NOT NULL, \"time_of_day\" TEXT NOT NULL DEFAULT 'any', \"weight\" REAL NOT NULL DEFAULT 1.0, \"source_id\" TEXT NOT NULL REFERENCES source (id), PRIMARY KEY (\"id\"));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"author\" (\"id\" TEXT NOT NULL, \"name\" TEXT NOT NULL, \"full_name\" TEXT NOT NULL, \"lifespan\" TEXT NOT NULL, \"ord\" INTEGER NOT NULL, PRIMARY KEY (\"id\"));"
         }
       ]
     },
     {
-      "name": "quest_template",
+      "name": "work",
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"quest_template\" (\"id\" TEXT NOT NULL, \"version\" INTEGER NOT NULL DEFAULT 1, \"status\" TEXT NOT NULL, \"origin\" TEXT NOT NULL, \"slot\" TEXT NOT NULL, \"rule_json\" TEXT NOT NULL, \"tags\" TEXT NOT NULL, \"facets_json\" TEXT NULL, \"weight\" REAL NOT NULL DEFAULT 1.0, \"cooldown_days\" INTEGER NOT NULL DEFAULT 21, \"reviewed_by\" TEXT NULL, \"reviewed_at\" TEXT NULL, PRIMARY KEY (\"id\"));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"work\" (\"id\" TEXT NOT NULL, \"author_id\" TEXT NOT NULL REFERENCES author (id), \"source_id\" TEXT NOT NULL REFERENCES source (id), \"title\" TEXT NOT NULL, \"original_title\" TEXT NOT NULL, \"translator\" TEXT NOT NULL, \"short_ref\" TEXT NOT NULL, \"book_count\" INTEGER NOT NULL, \"section_count\" INTEGER NOT NULL, \"ord\" INTEGER NOT NULL, PRIMARY KEY (\"id\"));"
         }
       ]
     },
     {
-      "name": "quest_text",
+      "name": "book",
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"quest_text\" (\"quest_id\" TEXT NOT NULL REFERENCES quest_template (id), \"lang\" TEXT NOT NULL, \"title\" TEXT NOT NULL, \"body\" TEXT NULL, \"source_id\" TEXT NOT NULL REFERENCES source (id), PRIMARY KEY (\"quest_id\", \"lang\"));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"book\" (\"work_id\" TEXT NOT NULL REFERENCES work (id), \"number\" INTEGER NOT NULL, \"title\" TEXT NOT NULL, \"section_count\" INTEGER NOT NULL, PRIMARY KEY (\"work_id\", \"number\"));"
+        }
+      ]
+    },
+    {
+      "name": "section",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"section\" (\"id\" INTEGER NOT NULL, \"key\" TEXT NOT NULL UNIQUE, \"work_id\" TEXT NOT NULL REFERENCES work (id), \"book\" INTEGER NULL, \"number\" INTEGER NOT NULL, \"ref\" TEXT NOT NULL, \"title\" TEXT NULL, \"text\" TEXT NOT NULL, \"char_count\" INTEGER NOT NULL, \"sha256\" TEXT NOT NULL, PRIMARY KEY (\"id\"), FOREIGN KEY (work_id, book) REFERENCES book(work_id, number));"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"card\" (\"id\" TEXT NOT NULL, \"type\" TEXT NOT NULL, \"author_id\" TEXT NULL REFERENCES author (id), \"work_id\" TEXT NULL REFERENCES work (id), \"section_key\" TEXT NULL REFERENCES section (\"key\"), \"ref\" TEXT NULL, \"title\" TEXT NULL, \"subtitle\" TEXT NULL, \"text\" TEXT NOT NULL, \"tags\" TEXT NOT NULL DEFAULT '[]', \"status\" TEXT NOT NULL, \"source_id\" TEXT NOT NULL REFERENCES source (id), \"ord\" INTEGER NOT NULL, PRIMARY KEY (\"id\"));"
         }
       ]
     }

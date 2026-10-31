@@ -23,6 +23,6 @@ abstract final class FeedRules {
 
 /// Pocet znakov textu, ktory pouzivatel cita (text karty).
 int translationChars(CardContent? content) => switch (content) {
-  QuoteContent(:final text) => text.length,
   IntroContent() || null => 0,
+  final CardContent c => c.shareText?.length ?? 0,
 };

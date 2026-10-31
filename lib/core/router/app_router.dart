@@ -68,6 +68,7 @@ GoRouter buildAppRouter({
     ),
     // Fullscreen a push routy nad shellom (bez bottom nav).
     ...feedRoutes(),
+    ...readerRoutes(),
     if (flags.gate) ...gateRoutes(),
     ...settingsRoutes(gate: flags.gate),
     ...onboardingRoutes(gate: flags.gate),

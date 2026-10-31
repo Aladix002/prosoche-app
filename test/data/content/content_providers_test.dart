@@ -120,23 +120,14 @@ void main() {
     );
   });
 
-  test('remoteConfigPolicyProvider uses defaults, then config', () async {
+  test('remoteConfigPolicyProvider uses code defaults (v1)', () async {
     expect(
       container
           .read(remoteConfigPolicyProvider)
           .isFeatureEnabled(RemoteFeature.contentAutoUpdate),
       isTrue,
     );
-    final sub = container.listen(remoteConfigPolicyProvider, (_, _) {});
-    await container.read(contentPackStateProvider.future);
-    final cfg = remoteConfigBytes(autoUpdate: false);
-    http
-      ..serve('$cdn/remote_config.json', cfg)
-      ..serve('$cdn/remote_config.json.sig', await keys.contentA.sign(cfg));
-    await service.refreshRemoteConfig();
-    await pumpEventQueue();
-    expect(sub.read().isFeatureEnabled(RemoteFeature.contentAutoUpdate), false);
-    expect(container.read(disabledContentIdsProvider), isEmpty);
+    expect(container.read(remoteConfigPolicyProvider).updateRequired, isFalse);
   });
 
   test('default providers', () {

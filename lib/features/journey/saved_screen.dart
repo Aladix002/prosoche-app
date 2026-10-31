@@ -156,13 +156,20 @@ IconData savedTypeIcon(CardType type) => switch (type) {
 
 /// Titulok a nahlad ulozenej karty; texty su doslovne z content.db.
 ///
-/// Bez obsahu (typ, ktory S-01 este nevie nacitat) je titulok typ karty.
+/// Bez obsahu (karta v content.db uz nie je) je titulok typ karty.
 (String, String?) savedPreview(
   BuildContext context,
   CardId card,
   CardContent? content,
 ) => switch (content) {
   QuoteContent(:final reference, :final text) => (reference, text),
+  PracticeContent(:final title, :final text) => (title, text),
+  ConceptContent(:final title, :final text) => (title, text),
+  AuthorContent(:final name, :final text) => (name, text),
+  PromptContent(:final text) => (
+    context.l10n.journeyCardType(card.type.wire),
+    text,
+  ),
   _ => (context.l10n.journeyCardType(card.type.wire), null),
 };
 

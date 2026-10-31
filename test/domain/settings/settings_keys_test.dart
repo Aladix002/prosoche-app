@@ -17,17 +17,23 @@ void main() {
       'simple_mode',
       'notif.morning.enabled',
       'notif.morning.time',
+      'notif.evening.enabled',
+      'notif.evening.time',
       'notif.private_lockscreen',
+      'practice.birth_year',
       'content.update_wifi_only',
       'blocker.enabled',
       'analytics_opt_in',
       'crash_reports',
     });
-    expect(SettingsKeys.all.map((k) => k.name).toSet(), hasLength(18));
+    expect(SettingsKeys.all.map((k) => k.name).toSet(), hasLength(21));
   });
 
   test('defaults', () {
     expect(SettingsKeys.onboardingCompleted.defaultValue, isFalse);
+    expect(SettingsKeys.notifEveningEnabled.defaultValue, isFalse);
+    expect(SettingsKeys.notifEveningTime.defaultValue, '21:00');
+    expect(SettingsKeys.practiceBirthYear.defaultValue, isNull);
     expect(SettingsKeys.onboardingStep.defaultValue, 'welcome');
     expect(SettingsKeys.feedCardsCount.defaultValue, 12);
     expect(SettingsKeys.cardSeenDwellMs.defaultValue, 2500);

@@ -66,17 +66,7 @@ Future<FakeRepositories> _host(
   return repos;
 }
 
-/// Zdroj `fake` (citat z FakeCardContentRepository) ako riadok `source`.
-final Override _quoteSource = cardSourceProvider.overrideWith(
-  (ref, id) async => CardSourceInfo(
-    id: id,
-    name: 'Project Gutenberg (sample)',
-    version: 'pg-1',
-    attribution: 'Project Gutenberg, version pg-1',
-  ),
-);
-
-const _quoteSourceLine = 'Source: Project Gutenberg, version pg-1';
+const _translator = 'Translated by [PLACEHOLDER translator] (1862)';
 
 List<CardAction> _actions(FakeRepositories repos) => [
   for (final l in repos.actions.logged) l.$2,
@@ -94,10 +84,84 @@ void main() {
     expect(find.text('QUOTE'), findsOneWidget);
     expect(find.text('[PLACEHOLDER work] 1.1'), findsOneWidget);
     expect(find.text('[PLACEHOLDER quote q_0002]'), findsOneWidget);
+    expect(find.text('[PLACEHOLDER author]'), findsOneWidget);
+    expect(find.text(_translator), findsOneWidget);
+    expect(find.text('Read in context'), findsOneWidget);
+    expect(find.textContaining('Gutenberg'), findsNothing);
+  });
+
+  testWidgets('read in context opens the reader at the source section', (
+    tester,
+  ) async {
+    final repos = await _host(tester, _quote);
+    await tester.tap(find.text('Read in context'));
+    await tester.pumpAndSettle();
     expect(
-      find.text('[PLACEHOLDER author], [PLACEHOLDER work] 1.1'),
+      find.byKey(const ValueKey('reader:section:fake-books.1.1')),
       findsOneWidget,
     );
+    expect(_actions(repos), [CardAction.sourceOpened]);
+    expect(
+      repos.library.positions.value['fake-books']?.sectionKey,
+      'fake-books.1.1',
+    );
+  });
+
+  for (final (type, widget) in <(CardType, Type)>[
+    (CardType.passage, QuoteCard),
+    (CardType.practice, PracticeCard),
+    (CardType.prompt, PromptCard),
+    (CardType.concept, ConceptCard),
+    (CardType.author, AuthorCard),
+  ]) {
+    testWidgets('${type.wire} card renders with type label', (tester) async {
+      await _host(tester, ContentCardId(type, 'x1'));
+      expect(find.byType(widget), findsOneWidget);
+      expect(find.byType(SkErrorState), findsNothing);
+      expect(find.byTooltip('Save'), findsOneWidget);
+      expectNoTextClipping(tester);
+    });
+  }
+
+  testWidgets('practice card opens the exercise in Practice', (tester) async {
+    await _host(
+      tester,
+      ContentCardId(CardType.practice, 'morning-preparation'),
+    );
+    await tester.tap(find.text('Open in Practice'));
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const ValueKey('exercise:body:morning-preparation')),
+      findsOneWidget,
+    );
+    await tester.tap(find.byKey(const ValueKey('exercise:done')));
+    await tester.pumpAndSettle();
+    expect(find.text('Marked as done.'), findsOneWidget);
+  });
+
+  testWidgets('prompt card writes an answer to the local journal', (
+    tester,
+  ) async {
+    final repos = await _host(tester, ContentCardId(CardType.prompt, 'q1'));
+    await tester.tap(find.text('Write in journal'));
+    await tester.pumpAndSettle();
+    await tester.enterText(
+      find.byKey(const ValueKey('prompt:field')),
+      'my answer',
+    );
+    await tester.tap(find.byKey(const ValueKey('prompt:save')));
+    await tester.pumpAndSettle();
+    final entry = repos.practice.journal.value.single;
+    expect(entry.body, 'my answer');
+    expect(entry.promptId, 'prompt:q1');
+    expect(_actions(repos), [CardAction.answered]);
+  });
+
+  testWidgets('author card opens the first work', (tester) async {
+    await _host(tester, ContentCardId(CardType.author, 'a'));
+    await tester.tap(find.text('Read [PLACEHOLDER] Work'));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('reader:pages')), findsOneWidget);
   });
 
   testWidgets('bookmark saves with Undo', (tester) async {
@@ -137,6 +201,7 @@ void main() {
 [PLACEHOLDER quote q_0002]
 
 - [PLACEHOLDER work] 1.1 ([PLACEHOLDER author])
+$_translator
 via Prosoche''');
     expect(_actions(repos), [CardAction.shared]);
   });
@@ -168,13 +233,13 @@ via Prosoche''');
   });
 
   testWidgets('show source logs source_opened', (tester) async {
-    final repos = await _host(tester, _quote, extra: [_quoteSource]);
+    final repos = await _host(tester, _quote);
     await tester.tap(find.byTooltip('More options'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Show source'));
     await tester.pumpAndSettle();
     expect(find.text('Source'), findsOneWidget);
-    expect(find.text(_quoteSourceLine), findsWidgets);
+    expect(find.text(_translator), findsWidgets);
     expect(_actions(repos), [CardAction.sourceOpened]);
   });
 
@@ -349,35 +414,15 @@ via Prosoche''');
     expect(long, isNull);
   });
 
-  testWidgets('quote shows the source with version (docs/09)', (tester) async {
+  testWidgets('shared text never names Project Gutenberg', (tester) async {
     final sharer = FakeSharer();
-    await _host(tester, _quote, sharer: sharer, extra: [_quoteSource]);
-    expect(find.text(_quoteSourceLine), findsOneWidget);
+    await _host(tester, _quote, sharer: sharer);
     await tester.tap(find.byTooltip('More options'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Share as text'));
     await tester.pumpAndSettle();
-    expect(sharer.texts.single, contains(_quoteSourceLine));
-  });
-
-  testWidgets('source line adds the version when attribution lacks it', (
-    tester,
-  ) async {
-    await _host(
-      tester,
-      _quote,
-      extra: [
-        cardSourceProvider.overrideWith(
-          (ref, id) async => const CardSourceInfo(
-            id: 'fake',
-            name: 'Sample',
-            version: 'v9',
-            attribution: 'Sample source',
-          ),
-        ),
-      ],
-    );
-    expect(find.text('Source: Sample source, version v9'), findsOneWidget);
+    expect(sharer.texts.single, contains(_translator));
+    expect(sharer.texts.single, isNot(contains('Gutenberg')));
   });
 
   testWidgets('intro card renders without bookmark', (tester) async {
@@ -386,11 +431,6 @@ via Prosoche''');
     expect(find.byType(SkErrorState), findsNothing);
     expect(find.byTooltip('Save'), findsNothing);
     expectNoTextClipping(tester);
-  });
-
-  testWidgets('types without content yet show the card error', (tester) async {
-    await _host(tester, ContentCardId(CardType.practice, 'p_1'));
-    expect(find.text("This card didn't load"), findsOneWidget);
   });
 
   testWidgets('missing content shows the card error', (tester) async {

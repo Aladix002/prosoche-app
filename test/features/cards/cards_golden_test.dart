@@ -62,9 +62,88 @@ void main() {
         work: '[PLACEHOLDER] Work',
         ref: '2.1',
         sourceId: 'fake',
+        translation: const Translation(
+          translator: '[PLACEHOLDER] Translator',
+          year: 1862,
+        ),
       ),
       actions: actions,
-      sourceLine: 'Source: [PLACEHOLDER] source, version 1',
+      onReadInContext: noop,
+    ),
+  );
+
+  cardGolden(
+    'passage',
+    (context) => QuoteCard(
+      content: QuoteContent(
+        ContentCardId(CardType.passage, 'p1'),
+        text:
+            '[PLACEHOLDER passage] A longer sample paragraph that wraps '
+            'over several lines and carries no meaning at all.\n\n'
+            '[PLACEHOLDER] A second paragraph.',
+        author: '[PLACEHOLDER] Author',
+        work: '[PLACEHOLDER] Work',
+        ref: '5',
+        sourceId: 'fake',
+      ),
+      actions: actions,
+    ),
+  );
+
+  cardGolden(
+    'practice',
+    (context) => PracticeCard(
+      content: PracticeContent(
+        ContentCardId(CardType.practice, 'x'),
+        title: '[PLACEHOLDER] Practice',
+        subtitle: '[PLACEHOLDER] subtitle',
+        text: '[PLACEHOLDER] Step one.\n\n[PLACEHOLDER] Step two.',
+        ref: '[PLACEHOLDER] Work 2.1',
+        sectionKey: 'w.2.1',
+      ),
+      actions: actions,
+      onOpen: noop,
+    ),
+  );
+
+  cardGolden(
+    'prompt',
+    (context) => PromptCard(
+      content: PromptContent(
+        ContentCardId(CardType.prompt, 'x'),
+        text: '[PLACEHOLDER] A question to reflect on?',
+      ),
+      actions: actions,
+      onReflect: noop,
+    ),
+  );
+
+  cardGolden(
+    'concept',
+    (context) => ConceptCard(
+      content: ConceptContent(
+        ContentCardId(CardType.concept, 'x'),
+        title: '[PLACEHOLDER] Concept',
+        subtitle: '[PLACEHOLDER] term - gloss',
+        text: '[PLACEHOLDER] Explanation of the concept.',
+      ),
+      actions: actions,
+    ),
+  );
+
+  cardGolden(
+    'author',
+    (context) => AuthorCard(
+      content: AuthorContent(
+        ContentCardId(CardType.author, 'x'),
+        name: '[PLACEHOLDER] Author',
+        lifespan: 'AD 1-2',
+        text: '[PLACEHOLDER] A short introduction.',
+        firstWorkId: 'w',
+        firstWorkTitle: '[PLACEHOLDER] Work',
+      ),
+      actions: actions,
+      onReadWork: noop,
     ),
   );
 

@@ -9,18 +9,21 @@ import 'package:prosoche/features/onboarding/onboarding_platform.dart';
 import 'package:prosoche/features/settings/settings_widgets.dart';
 import 'package:prosoche/ui/ui.dart';
 
-/// Stav systemoveho povolenia notifikacii a presnych alarmov. Obnovi sa
-/// pri navrate do appky (napr. zo systemovych nastaveni).
+/// Stav systemoveho povolenia notifikacii. Obnovi sa pri navrate do appky
+/// (napr. zo systemovych nastaveni).
 final FutureProvider<NotificationAccess> notificationAccessProvider =
     FutureProvider.autoDispose<NotificationAccess>(
       (ref) => ref.watch(onboardingNotificationsProvider).access(),
       name: 'notificationAccessProvider',
     );
 
-/// `HH:mm` -> [TimeOfDay]; neplatne = 07:30 (default kluca).
-TimeOfDay parseMorningTime(String value) {
+/// `HH:mm` -> [TimeOfDay]; neplatne = [fallback] (07:30, default kluca).
+TimeOfDay parseMorningTime(
+  String value, {
+  TimeOfDay fallback = const TimeOfDay(hour: 7, minute: 30),
+}) {
   final m = RegExp(r'^(\d{2}):(\d{2})$').firstMatch(value);
-  if (m == null) return const TimeOfDay(hour: 7, minute: 30);
+  if (m == null) return fallback;
   return TimeOfDay(hour: int.parse(m[1]!), minute: int.parse(m[2]!));
 }
 
@@ -59,7 +62,7 @@ class _NotificationSettingsScreenState
     super.dispose();
   }
 
-  Future<void> _pickMorningTime(String current) async {
+  Future<void> _pickTime(SettingKey<String> key, String current) async {
     final picked = await showTimePicker(
       context: context,
       initialTime: parseMorningTime(current),
@@ -67,7 +70,7 @@ class _NotificationSettingsScreenState
     if (picked == null) return;
     await ref
         .read(settingsRepositoryProvider)
-        .set(SettingsKeys.notifMorningTime, formatMorningTime(picked));
+        .set(key, formatMorningTime(picked));
   }
 
   @override
@@ -81,6 +84,10 @@ class _NotificationSettingsScreenState
         ref.watch(settingOf(SettingsKeys.notifMorningTime)).value ??
         SettingsKeys.notifMorningTime.defaultValue;
     final morningOn = value(SettingsKeys.notifMorningEnabled);
+    final eveningTime =
+        ref.watch(settingOf(SettingsKeys.notifEveningTime)).value ??
+        SettingsKeys.notifEveningTime.defaultValue;
+    final eveningOn = value(SettingsKeys.notifEveningEnabled);
     final access = ref.watch(notificationAccessProvider).value;
 
     Widget toggle(
@@ -125,7 +132,30 @@ class _NotificationSettingsScreenState
             MaterialLocalizations.of(context)
                 .formatTimeOfDay(parseMorningTime(morningTime)),
           ),
-          onTap: () => unawaited(_pickMorningTime(morningTime)),
+          onTap: () =>
+              unawaited(_pickTime(SettingsKeys.notifMorningTime, morningTime)),
+        ),
+        SettingsSection(l10n.setEvening),
+        toggle(
+          'notif:evening',
+          SettingsKeys.notifEveningEnabled,
+          l10n.setEveningToggle,
+          l10n.setEveningHelp,
+        ),
+        ListTile(
+          key: const ValueKey('notif:evening_time'),
+          enabled: eveningOn,
+          title: Text(l10n.setEveningTime),
+          trailing: Text(
+            MaterialLocalizations.of(context).formatTimeOfDay(
+              parseMorningTime(
+                eveningTime,
+                fallback: const TimeOfDay(hour: 21, minute: 0),
+              ),
+            ),
+          ),
+          onTap: () =>
+              unawaited(_pickTime(SettingsKeys.notifEveningTime, eveningTime)),
         ),
         SettingsSection(l10n.setLockScreen),
         toggle(
@@ -133,24 +163,6 @@ class _NotificationSettingsScreenState
           SettingsKeys.notifPrivateLockscreen,
           l10n.setPrivateText,
           l10n.setPrivateTextHelp,
-        ),
-        SettingsSection(l10n.setExactAlarms),
-        ListTile(
-          key: const ValueKey('notif:exact'),
-          title: Text(
-            access == null
-                ? l10n.setStatusUnknown
-                : access.exact
-                ? l10n.setExactOn
-                : l10n.setExactOff,
-          ),
-          subtitle: Text(l10n.setExactHelp),
-          trailing: access == null || access.exact
-              ? null
-              : TextButton(
-                  onPressed: () => unawaited(platform.requestExactAlarms()),
-                  child: Text(l10n.setAllow),
-                ),
         ),
         SettingsNote(l10n.setOsDelayNote),
       ],

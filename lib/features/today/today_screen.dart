@@ -11,6 +11,7 @@ import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/quests/quests.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/cards/cards.dart';
+import 'package:prosoche/features/library/widgets/library_widgets.dart';
 import 'package:prosoche/features/settings/blocking/blocking_providers.dart';
 import 'package:prosoche/features/settings/settings_routes.dart';
 import 'package:prosoche/features/shell/day_phase.dart';
@@ -65,6 +66,7 @@ class _TodayScreenState extends ConsumerState<TodayScreen>
             _Quests(date: setDate),
             const SizedBox(height: SkSpace.space24),
             const _SetPanel(child: TodaySetCta()),
+            const _KeepReading(),
             const SizedBox(height: SkSpace.space24),
             const _StreakLine(),
             const _IntentionLine(),
@@ -336,8 +338,11 @@ class _Quests extends ConsumerWidget {
       progress: q.progress?.current ?? 0,
       target: q.progress?.target ?? 0,
       subtitle: q.body,
-      // READ/LEARN: kontext (feed alebo reader), ACT: self report.
-      onTap: isAct ? null : () => _open(context, ref),
+      // READ/LEARN: kontext (feed alebo reader), ACT: Practice (F-01),
+      // splnenie potvrdi pouzivatel.
+      onTap: isAct
+          ? () => context.go(AppRoutes.practice)
+          : () => _open(context, ref),
       onAction: isAct && state == SkQuestState.open
           ? () => unawaited(_setAct(context, ref, QuestStatus.done))
           : null,
@@ -472,6 +477,32 @@ class _TodaySetCtaState extends ConsumerState<TodaySetCta> {
           style: sk.text.bodyMedium!.copyWith(color: sk.colors.textSecondary),
         ),
       ],
+    );
+  }
+}
+
+/// "Keep reading" (F-01): naposledy citane dielo a sekcia z Library.
+class _KeepReading extends ConsumerWidget {
+  const _KeepReading();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final last = ref.watch(lastReadingProvider).value;
+    if (last == null) return const SizedBox.shrink();
+    final work = ref
+        .watch(libraryAuthorsProvider)
+        .value
+        ?.expand((a) => a.works)
+        .where((w) => w.id == last.workId)
+        .firstOrNull;
+    if (work == null) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(top: SkSpace.space12),
+      child: ContinueReadingTile(
+        key: const ValueKey('today:keepReading'),
+        work: work,
+        position: last,
+      ),
     );
   }
 }

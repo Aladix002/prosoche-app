@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:typed_data';
 
-import 'package:clock/clock.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
 import 'package:prosoche/core/logging/app_logger.dart';
@@ -38,16 +37,16 @@ enum ContentUpdateOutcome {
   /// Tato `content_version` uz opakovane nesedela so sha256 (docs/06 C.6).
   previouslyRejected,
 
-  /// Kill-switch `content_auto_update` je vypnuty.
-  disabledByRemoteConfig,
+  /// Manifest ma `dev_content = true` a appka (prod flavor) dev obsah
+  /// neprijima (kontrakt kap. 2, 8).
+  devContentRejected,
 
   /// Nie su nastavene URL (`CONTENT_REPO`), kontrola sa nerobi.
   notConfigured,
 }
 
-/// Odkial sa stahuju `manifest.json`, `remote_config.json`,
-/// `revocations.json` a ich `.sig` (prosoche-content
-/// `config/release.yaml` `latest_urls`). `{file}` = nazov suboru.
+/// Odkial sa stahuje `manifest.json` a jeho `.sig` (prosoche-content
+/// `config/release.yaml`). `{file}` = nazov suboru.
 @immutable
 class ContentEndpoints {
   const ContentEndpoints(this.templates);
@@ -77,7 +76,13 @@ class ContentEndpoints {
 }
 
 /// Instalacia, kontrola integrity a aktualizacia content.db
-/// (plan 6.3, 17.2, 17.3; docs/06 A.7, B.2, C.6).
+/// (plan 6.3, 17.2, 17.3; docs/06 B.2, C.6; kontrakt content.db v1 kap. 8).
+///
+/// Poradie pri aktualizacii: obalka `.sig` proti zapecenym klucom ->
+/// manifest -> `min_app_version`, anti-rollback, schema, `dev_content` ->
+/// stiahnutie gz -> `gz_sha256` -> rozbalenie -> `sha256` -> integrita db
+/// (`schema_version`, `sections_sha256` z db aj manifestu). v1 nema
+/// `packs`, `remote_config` ani `revocations`.
 ///
 /// Subory v adresari `directory`: `content.db` (aktivna), `state.json`,
 /// docasne `content.db.gz.part` a `content.db.next`. Vsetky operacie idu
@@ -92,12 +97,9 @@ class ContentPackService {
     required AppLogger logger,
     this._endpoints = ContentEndpoints.none,
     this._integrity = const ContentIntegrityChecker(),
-    this._clock = const Clock(),
     this._delay = _sleep,
-    this.remoteConfigInterval = const Duration(hours: 12),
     this.maxDocumentBytes = 1 << 20,
   }) : _verifier = SignatureVerifier(keys),
-       _keys = keys,
        _log = logger;
 
   static const tag = 'content';
@@ -111,18 +113,13 @@ class ContentPackService {
   final BundledContentSource _bundled;
   final ContentHttpClient _http;
   final SignatureVerifier _verifier;
-  final TrustedKeySet _keys;
   final SemVer _appVersion;
   final AppLogger _log;
   final ContentEndpoints _endpoints;
   final ContentIntegrityChecker _integrity;
-  final Clock _clock;
   final Future<void> Function(Duration) _delay;
 
-  /// Remote config sa pri starte stahuje max 1x za tento interval (A.7).
-  final Duration remoteConfigInterval;
-
-  /// Limit pre manifest, config, revokacie a `.sig`.
+  /// Limit pre manifest a `.sig`.
   final int maxDocumentBytes;
 
   final _changes = StreamController<ContentPackState>.broadcast();
@@ -132,7 +129,7 @@ class ContentPackService {
   Directory? _dir;
   File? _verified;
 
-  /// Kazda zmena perzistentneho stavu (disabled_ids, config, verzia).
+  /// Kazda zmena perzistentneho stavu (disabled_ids, verzia).
   Stream<ContentPackState> get changes => _changes.stream;
 
   /// `content_version` po atomickej vymene db; otvorene spojenia treba
@@ -144,21 +141,10 @@ class ContentPackService {
   /// Aktualny perzistentny stav.
   Future<ContentPackState> state() => _serial(_loadState);
 
-  /// Posledny overeny a neexpirovany remote config, alebo `null`
-  /// (defaulty z kodu).
-  RemoteConfig? remoteConfigOf(ContentPackState state) {
-    final raw = state.remoteConfigRaw;
-    if (raw == null) return null;
-    final config = RemoteConfig.parse(raw).valueOrNull;
-    if (config == null || config.isExpiredAt(_clock.now().toUtc())) {
-      return null;
-    }
-    return config;
-  }
-
-  /// Kill-switch pre tuto verziu appky.
+  /// Kill-switch pre tuto verziu appky. Obsah v1 nepublikuje
+  /// `remote_config.json`, platia defaulty z kodu (vsetko zapnute).
   RemoteConfigPolicy policyOf(ContentPackState state) =>
-      RemoteConfigPolicy(remoteConfigOf(state), _appVersion);
+      RemoteConfigPolicy(null, _appVersion);
 
   // ------------------------------------------------------------ instalacia
 
@@ -237,7 +223,7 @@ class ContentPackService {
       _log.failure(tag, failure);
       return Err(failure);
     }
-    final check = await _checkDb(next);
+    final check = await _checkDb(next, manifest?.sectionsSha256);
     switch (check) {
       case Err(:final failure):
         _deleteQuietly(next);
@@ -287,11 +273,14 @@ class ContentPackService {
 
   /// Integrita (17.3) a `meta.content_version`. Ziadna vynimka nevybuchne
   /// von: poskodeny subor alebo novsia schema = [DbCorrupted].
-  Future<Result<int>> _checkDb(File file) async {
+  Future<Result<int>> _checkDb(File file, String? sectionsSha256) async {
     ContentDb? db;
     try {
       db = ContentDb.openReadOnly(file);
-      final r = await _integrity.check(db);
+      final r = await _integrity.check(
+        db,
+        expectedSectionsSha256: sectionsSha256,
+      );
       if (r case Err(:final failure)) return Err(failure);
       final cv = await db.contentMetaDao.metaValue('content_version');
       return Ok(int.tryParse(cv ?? '') ?? 0);
@@ -305,8 +294,8 @@ class ContentPackService {
 
   // ------------------------------------------------------------ aktualizacia
 
-  /// Stiahne revokacie, remote config a manifest; ak je obsah novsi
-  /// a kompatibilny, stiahne, overi a atomicky vymeni db (plan 6.3).
+  /// Stiahne a overi manifest; ak je obsah novsi a kompatibilny, stiahne,
+  /// overi a atomicky vymeni db (plan 6.3).
   ///
   /// `disabled_ids` z platneho manifestu sa aplikuju hned, aj bez novej
   /// db. Pri akejkolvek chybe ostava stara db.
@@ -317,12 +306,7 @@ class ContentPackService {
     if (_endpoints.isEmpty) {
       return const Ok(ContentUpdateOutcome.notConfigured);
     }
-    await _refreshRevocations();
-    await _refreshRemoteConfig(force: false);
     var st = await _loadState();
-    if (!policyOf(st).isFeatureEnabled(RemoteFeature.contentAutoUpdate)) {
-      return const Ok(ContentUpdateOutcome.disabledByRemoteConfig);
-    }
     final fetched = await _fetchVerified('manifest.json', kContentRoles);
     final Uint8List bytes;
     switch (fetched) {
@@ -346,6 +330,7 @@ class ContentPackService {
       appVersion: _appVersion,
       installedVersion: st.installedVersion,
       rejectedVersion: st.rejectedVersion,
+      allowDevContent: _integrity.allowDevContent,
     );
     if (skip != null) {
       _log.info(tag, 'content update skipped', {
@@ -358,12 +343,14 @@ class ContentPackService {
   }
 
   /// Rozhodnutie nad overenym manifestom; `null` = stiahnut. Poradie:
-  /// `min_app_version`, anti-rollback, odmietnuta verzia, schema.
+  /// `min_app_version`, anti-rollback, odmietnuta verzia, schema,
+  /// `dev_content` (len ak [allowDevContent] je false, prod flavor).
   static ContentUpdateOutcome? decide(
     ContentManifest manifest, {
     required SemVer appVersion,
     int? installedVersion,
     int? rejectedVersion,
+    bool allowDevContent = false,
   }) {
     if (manifest.minAppVersion > appVersion) {
       return ContentUpdateOutcome.appTooOld;
@@ -376,6 +363,9 @@ class ContentPackService {
     }
     if (manifest.schemaVersion != ContentDb.contractVersion) {
       return ContentUpdateOutcome.schemaIncompatible;
+    }
+    if (manifest.devContent && !allowDevContent) {
+      return ContentUpdateOutcome.devContentRejected;
     }
     return null;
   }
@@ -419,7 +409,7 @@ class ContentPackService {
     _deleteQuietly(part);
     final failure = switch (inflated) {
       Err(:final failure) => failure,
-      Ok() => switch (await _checkDb(next)) {
+      Ok() => switch (await _checkDb(next, m.sectionsSha256)) {
         Err(:final failure) => failure,
         Ok(:final value) when value != m.contentVersion =>
           const ContentIntegrityFailed('content_version'),
@@ -512,102 +502,8 @@ class ContentPackService {
     return await checkArchive(part, db);
   }
 
-  // ---------------------------------------------------- revokacie, config
-
-  /// Stiahne a overi `remote_config.json` (A.7). Bez [force] max 1x za
-  /// [remoteConfigInterval]. Vracia platny config alebo `null`, ak sa
-  /// nestahoval.
-  Future<Result<RemoteConfig?>> refreshRemoteConfig({bool force = false}) =>
-      _serial(() => _refreshRemoteConfig(force: force));
-
-  Future<Result<RemoteConfig?>> _refreshRemoteConfig({
-    required bool force,
-  }) async {
-    if (_endpoints.isEmpty) return const Ok(null);
-    final st = await _loadState();
-    final now = _clock.now().toUtc();
-    final last = st.remoteConfigFetchedAt;
-    if (!force && last != null && now.difference(last) < remoteConfigInterval) {
-      return const Ok(null);
-    }
-    final fetched = await _fetchVerified('remote_config.json', kContentRoles);
-    final Uint8List bytes;
-    switch (fetched) {
-      case Err(:final failure):
-        _log.failure(tag, failure);
-        return Err(failure);
-      case Ok(:final value):
-        bytes = value;
-    }
-    final RemoteConfig config;
-    switch (RemoteConfig.parse(bytes)) {
-      case Err(:final failure):
-        _log.failure(tag, failure);
-        return Err(failure);
-      case Ok(:final value):
-        config = value;
-    }
-    if (config.seq < st.remoteConfigSeq) {
-      const f = SecurityFailure.rollback();
-      _log.failure(tag, f);
-      return const Err(f);
-    }
-    if (config.isExpiredAt(now)) {
-      _log.warn(tag, 'remote config expired, ignored', {'to': config.seq});
-      return const Ok(null);
-    }
-    await _saveState(
-      st.copyWith(
-        remoteConfigSeq: config.seq,
-        remoteConfigRaw: bytes,
-        remoteConfigFetchedAt: now,
-      ),
-    );
-    return Ok(config);
-  }
-
-  /// `revocations.json` podpisany len root klucom. Revokovane `kid` sa
-  /// pridaju natrvalo (aj zo starsieho suboru sa len pridavaju).
-  Future<void> _refreshRevocations() async {
-    final fetched = await _fetchVerified('revocations.json', kRootOnly);
-    final Uint8List bytes;
-    switch (fetched) {
-      case Err(failure: HttpStatus(status: 404)):
-        return;
-      case Err(:final failure):
-        _log.failure(tag, failure);
-        return;
-      case Ok(:final value):
-        bytes = value;
-    }
-    final rootKids = [
-      for (final kid in _keys.kids)
-        if (_keys[kid]!.role == KeyRole.root) kid,
-    ];
-    switch (Revocations.parse(bytes, rootKids: rootKids)) {
-      case Err(:final failure):
-        _log.failure(tag, failure);
-      case Ok(:final value):
-        final st = await _loadState();
-        final union = {...st.revokedKids, ...value.revoked};
-        if (union.length == st.revokedKids.length &&
-            value.seq <= st.revocationsSeq) {
-          return;
-        }
-        await _saveState(
-          st.copyWith(
-            revokedKids: union,
-            revocationsSeq: value.seq > st.revocationsSeq
-                ? value.seq
-                : st.revocationsSeq,
-          ),
-        );
-        _log.warn(tag, 'signing keys revoked', {'to': value.seq});
-    }
-  }
-
   /// Subor a jeho `.sig` z prveho zrkadla, ktore odpovie a prejde
-  /// overenim podpisu (revokovane kluce sa neprijmu).
+  /// overenim podpisu.
   Future<Result<Uint8List>> _fetchVerified(
     String file,
     Set<KeyRole> roles,
@@ -618,13 +514,7 @@ class ContentPackService {
     for (var i = 0; i < payloads.length; i++) {
       final r = await _fetchAndVerify(payloads[i], sigs[i], roles);
       if (r case Err(:final failure)) {
-        // 404 revokacii je bezny stav; ostatne do logu (bez URL).
-        if (failure is! HttpStatus || failure.status != 404) {
-          _log.warn(tag, 'document rejected', {
-            'code': failure.code,
-            'op': file,
-          });
-        }
+        _log.warn(tag, 'document rejected', {'code': failure.code, 'op': file});
         // Chyba overenia ma prednost pred sietovou chybou dalsieho zrkadla.
         if (failure is! NetworkFailure || last.isNetworkFailure) last = r;
         continue;
@@ -653,12 +543,7 @@ class ContentPackService {
       case Ok(:final value):
         sig = value;
     }
-    final verified = await _verifier.verify(
-      payload,
-      sig,
-      allowed: roles,
-      revoked: (await _loadState()).revokedKids,
-    );
+    final verified = await _verifier.verify(payload, sig, allowed: roles);
     return switch (verified) {
       Ok() => Ok(payload),
       Err(:final failure) => Err(failure),

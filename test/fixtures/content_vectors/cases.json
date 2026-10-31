@@ -1,6 +1,8 @@
 {
-  "_comment": "TEST VEKTORY, len testovacie kluce (tests/vectors/generate.py). Poradie kontrol: malformedSignature (obalka nie je JSON objekt) -> unknownAlgorithm -> unknownKey -> wrongKeyRole -> revokedKey -> malformedSignature (sig nie je base64 alebo nema 64 B) -> badSignature -> (manifest) invalidManifest -> dbHashMismatch nad gz (gz_sha256/gz_size) aj rozbalenym (sha256/size). expect = vysledok overenia podpisu a hashov; app_expect = co ma dalej rozhodnut logika appky. Kopia vektorov zo sakina-content rc1.2 (podpisane bajty sa nemenia); pripady balikov (hadith_extra) odstranene v S-01, F-01 ich nahradi vektormi z prosoche-content.",
+  "_comment": "TEST VEKTORY (prosoche-content tests/vectors/generate.py). content-dev = lokalny dev kluc, ostatne kluce su docasne (len verejne casti). Poradie kontrol: malformedSignature (obalka) -> unknownAlgorithm -> unknownKey -> wrongKeyRole -> malformedSignature (sig) -> badSignature -> invalidManifest -> dbHashMismatch. expect = overenie podpisu a hashov; app_expect = rozhodnutie appky.",
   "public_keys": "public_keys.json",
+  "content_version": 2026010101,
+  "sections_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "cases": [
     {
       "name": "manifest_ok",
@@ -11,10 +13,46 @@
         "content",
         "root"
       ],
-      "revoked": [],
       "expect": "ok",
       "gz": "content.db.gz",
-      "note": "platny manifest + content.db.gz (sha256/size sedia)"
+      "app_expect": {
+        "allow_dev_content": true,
+        "result": "download"
+      },
+      "note": "platny dev manifest + content.db.gz (sha256/size sedia)"
+    },
+    {
+      "name": "manifest_dev_content_in_prod",
+      "kind": "manifest",
+      "payload": "cases/manifest_dev_content_in_prod/manifest.json",
+      "sig": "cases/manifest_dev_content_in_prod/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "expect": "ok",
+      "app_expect": {
+        "allow_dev_content": false,
+        "result": "devContentRejected"
+      },
+      "note": "prod flavor neprijme dev_content = true"
+    },
+    {
+      "name": "manifest_release_ok",
+      "kind": "manifest",
+      "payload": "cases/manifest_release_ok/manifest.json",
+      "sig": "cases/manifest_release_ok/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "expect": "ok",
+      "gz": "content_release.db.gz",
+      "app_expect": {
+        "allow_dev_content": false,
+        "result": "download"
+      },
+      "note": "dev_content = false"
     },
     {
       "name": "manifest_ok_successor_key",
@@ -25,7 +63,6 @@
         "content",
         "root"
       ],
-      "revoked": [],
       "expect": "ok",
       "note": "rotacia: podpis nasledovnikom"
     },
@@ -38,9 +75,8 @@
         "content",
         "root"
       ],
-      "revoked": [],
       "expect": "ok",
-      "note": "root smie v nudzi podpisat obsah (06 B.2)"
+      "note": "root smie v nudzi podpisat obsah"
     },
     {
       "name": "manifest_bad_signature",
@@ -51,7 +87,6 @@
         "content",
         "root"
       ],
-      "revoked": [],
       "expect": "badSignature",
       "note": "1 bit v podpise"
     },
@@ -64,9 +99,8 @@
         "content",
         "root"
       ],
-      "revoked": [],
       "expect": "badSignature",
-      "note": "zmeneny bajt v manifeste po podpise"
+      "note": "zmeneny bajt po podpise"
     },
     {
       "name": "manifest_reformatted_json",
@@ -77,9 +111,8 @@
         "content",
         "root"
       ],
-      "revoked": [],
       "expect": "badSignature",
-      "note": "rovnaky JSON, ine bajty: podpis je nad surovymi bajtmi, ziadna kanonikalizacia"
+      "note": "rovnaky JSON, ine bajty: podpis je nad surovymi bajtmi"
     },
     {
       "name": "manifest_wrong_key_same_kid",
@@ -90,9 +123,8 @@
         "content",
         "root"
       ],
-      "revoked": [],
       "expect": "badSignature",
-      "note": "kid test-content-a, ale podpisane inym klucom"
+      "note": "kid content-dev, ale podpisane inym klucom"
     },
     {
       "name": "manifest_unknown_kid",
@@ -103,23 +135,7 @@
         "content",
         "root"
       ],
-      "revoked": [],
       "expect": "unknownKey"
-    },
-    {
-      "name": "manifest_revoked_kid",
-      "kind": "manifest",
-      "payload": "cases/manifest_revoked_kid/manifest.json",
-      "sig": "cases/manifest_revoked_kid/manifest.json.sig",
-      "allowed_roles": [
-        "content",
-        "root"
-      ],
-      "revoked": [
-        "test-content-a"
-      ],
-      "expect": "revokedKey",
-      "note": "revoked = perzistentna mnozina v appke"
     },
     {
       "name": "manifest_wrong_alg",
@@ -130,7 +146,6 @@
         "content",
         "root"
       ],
-      "revoked": [],
       "expect": "unknownAlgorithm"
     },
     {
@@ -142,7 +157,6 @@
         "content",
         "root"
       ],
-      "revoked": [],
       "expect": "malformedSignature"
     },
     {
@@ -154,7 +168,6 @@
         "content",
         "root"
       ],
-      "revoked": [],
       "expect": "malformedSignature"
     },
     {
@@ -166,7 +179,6 @@
         "content",
         "root"
       ],
-      "revoked": [],
       "expect": "malformedSignature",
       "note": "podpis musi mat 64 B"
     },
@@ -179,10 +191,20 @@
         "content",
         "root"
       ],
-      "revoked": [],
       "expect": "dbHashMismatch",
       "gz": "content_corrupt.db.gz",
       "note": "podpis OK, stiahnuty subor nesedi"
+    },
+    {
+      "name": "manifest_missing_sections_sha256",
+      "kind": "manifest",
+      "payload": "cases/manifest_missing_sections_sha256/manifest.json",
+      "sig": "cases/manifest_missing_sections_sha256/manifest.json.sig",
+      "allowed_roles": [
+        "content",
+        "root"
+      ],
+      "expect": "invalidManifest"
     },
     {
       "name": "manifest_min_app_too_high",
@@ -193,10 +215,10 @@
         "content",
         "root"
       ],
-      "revoked": [],
       "expect": "ok",
       "app_expect": {
         "app_version": "1.0.0",
+        "allow_dev_content": true,
         "result": "appTooOld"
       }
     },
@@ -209,77 +231,28 @@
         "content",
         "root"
       ],
-      "revoked": [],
       "expect": "ok",
       "app_expect": {
         "installed_content_version": 2026010101,
+        "allow_dev_content": true,
         "result": "notNewer"
       },
       "note": "anti-rollback: akceptuje len vyssiu content_version"
     },
     {
-      "name": "remote_config_ok",
-      "kind": "remote_config",
-      "payload": "cases/remote_config_ok/remote_config.json",
-      "sig": "cases/remote_config_ok/remote_config.json.sig",
+      "name": "manifest_schema_2",
+      "kind": "manifest",
+      "payload": "cases/manifest_schema_2/manifest.json",
+      "sig": "cases/manifest_schema_2/manifest.json.sig",
       "allowed_roles": [
         "content",
         "root"
       ],
-      "revoked": [],
-      "expect": "ok"
-    },
-    {
-      "name": "remote_config_tampered",
-      "kind": "remote_config",
-      "payload": "cases/remote_config_tampered/remote_config.json",
-      "sig": "cases/remote_config_tampered/remote_config.json.sig",
-      "allowed_roles": [
-        "content",
-        "root"
-      ],
-      "revoked": [],
-      "expect": "badSignature"
-    },
-    {
-      "name": "remote_config_expired",
-      "kind": "remote_config",
-      "payload": "cases/remote_config_expired/remote_config.json",
-      "sig": "cases/remote_config_expired/remote_config.json.sig",
-      "allowed_roles": [
-        "content",
-        "root"
-      ],
-      "revoked": [],
       "expect": "ok",
       "app_expect": {
-        "now": "2026-05-01T00:00:00Z",
-        "result": "expired"
-      },
-      "note": "po expires_at appka pouzije defaulty z kodu"
-    },
-    {
-      "name": "revocations_ok",
-      "kind": "revocations",
-      "payload": "cases/revocations_ok/revocations.json",
-      "sig": "cases/revocations_ok/revocations.json.sig",
-      "allowed_roles": [
-        "root"
-      ],
-      "revoked": [],
-      "expect": "ok"
-    },
-    {
-      "name": "revocations_signed_by_content",
-      "kind": "revocations",
-      "payload": "cases/revocations_signed_by_content/revocations.json",
-      "sig": "cases/revocations_signed_by_content/revocations.json.sig",
-      "allowed_roles": [
-        "root"
-      ],
-      "revoked": [],
-      "expect": "wrongKeyRole",
-      "note": "online kluc nesmie revokovat"
+        "allow_dev_content": true,
+        "result": "schemaIncompatible"
+      }
     }
   ]
 }

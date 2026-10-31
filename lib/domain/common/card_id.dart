@@ -3,8 +3,8 @@ import 'package:prosoche/domain/common/local_date.dart';
 
 /// Typ karty = prva cast `card_id` a hodnota `card_event.type` (docs/02 0.2).
 ///
-/// Obsahove typy podla PLAN.md kap. 2 (Prosoche). S-01 generuje vo feede
-/// zatial len [quote]; ostatne typy napoji F-01 na content.db z C-01.
+/// Obsahove typy podla PLAN.md kap. 2 (Prosoche) a kontraktu content.db v1
+/// (`card.type`).
 enum CardType {
   intro('intro', canSave: false, canShare: false),
 
@@ -48,7 +48,7 @@ enum CardType {
 /// Stabilny identifikator karty `typ:kluc` (docs/02 0.2).
 ///
 /// ```dart
-/// final id = CardId.parse('quote:meditations_2_1');
+/// final id = CardId.parse('quote:meditations.2.1.a');
 /// switch (id) {
 ///   case ContentCardId(:final type, :final key): ...
 ///   case IntroCardId() || DoneCardId(): ...
@@ -71,7 +71,7 @@ sealed class CardId {
       CardType.intro => IntroCardId(LocalDate.parse(rest)),
       CardType.done => DoneCardId(LocalDate.parse(rest)),
       _ when keyPattern.hasMatch(rest) => ContentCardId(type, rest),
-      _ => throw FormatException('Expected [a-z0-9_] key', text),
+      _ => throw FormatException('Expected [A-Za-z0-9_.:-] key', text),
     };
   }
 
@@ -102,8 +102,10 @@ sealed class CardId {
   @override
   int get hashCode => format().hashCode;
 
-  /// Povoleny tvar textovych klucov (`id` obsahu v content.db).
-  static final keyPattern = RegExp(r'^[a-z0-9_]{1,64}$');
+  /// Povoleny tvar kluca za `typ:` (kontrakt content.db v1:
+  /// `card.id` = `^[a-z][a-z_]*:[A-Za-z0-9_.:-]+$`, napr.
+  /// `meditations.2.1.a`, `morning-preparation`). Max 128 znakov.
+  static final keyPattern = RegExp(r'^[A-Za-z0-9_.:-]{1,128}$');
 }
 
 /// `intro:{date}` - uvodna karta dna.
@@ -126,16 +128,17 @@ final class DoneCardId extends CardId {
   String get key => '$date';
 }
 
-/// `{typ}:{id}` - obsahova karta z content.db, napr. `quote:q_0001`.
+/// `{typ}:{kluc}` - obsahova karta z content.db, napr.
+/// `quote:meditations.2.1.a`. Cely retazec je `card.id` v content.db.
 ///
-/// [key] je stabilne textove `id` riadku obsahu (`[a-z0-9_]{1,64}`).
+/// [key] je cast za `typ:` ([CardId.keyPattern]).
 final class ContentCardId extends CardId {
   ContentCardId(this.type, this.key) {
     if (!type.isContent) {
       throw ArgumentError.value(type, 'type', 'must be a content type');
     }
     if (!CardId.keyPattern.hasMatch(key)) {
-      throw ArgumentError.value(key, 'key', 'must match [a-z0-9_]{1,64}');
+      throw ArgumentError.value(key, 'key', 'must match [A-Za-z0-9_.:-]');
     }
   }
 

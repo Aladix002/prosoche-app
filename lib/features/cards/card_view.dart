@@ -4,16 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
 import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/quests/quests.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/cards/card_parts.dart';
-import 'package:prosoche/features/cards/card_providers.dart';
 import 'package:prosoche/features/cards/card_share.dart';
 import 'package:prosoche/features/cards/types/day_cards.dart';
 import 'package:prosoche/features/cards/types/text_cards.dart';
+import 'package:prosoche/features/library/library_routes.dart';
+import 'package:prosoche/features/practice/practice_routes.dart';
+import 'package:prosoche/features/practice/widgets/journal_prompt_sheet.dart';
 import 'package:prosoche/features/settings/problem_report_sheet.dart';
 import 'package:prosoche/ui/ui.dart';
 
@@ -104,15 +107,6 @@ class _TypedCard extends ConsumerWidget {
     final type = id.type;
     final saved =
         type.canSave && (ref.watch(isSavedProvider(id)).value ?? false);
-    // Atribucia zdroja textu s verziou (docs/09).
-    final contentSource = switch (content) {
-      QuoteContent(:final sourceId) =>
-        ref.watch(cardSourceProvider(sourceId)).value,
-      _ => null,
-    };
-    final sourceLine = contentSource == null
-        ? null
-        : sourceAttributionLine(context, contentSource);
     final ops = _CardOps(
       ref: ref,
       context: context,
@@ -120,8 +114,7 @@ class _TypedCard extends ConsumerWidget {
       date: date,
       surface: surface,
       pos: pos,
-      share: shareDataFor(context, content, sourceLine: sourceLine),
-      source: contentSource,
+      share: shareDataFor(context, content),
     );
     final actions = CardActions(
       saved: saved,
@@ -130,6 +123,10 @@ class _TypedCard extends ConsumerWidget {
       onMore: type.canShare || type.canSave ? ops.openOptions : null,
     );
     final label = _semanticLabel(context);
+    final links = surface.showReadInContext;
+    final inContext = links && content.sectionKey != null
+        ? ops.readInContext
+        : null;
 
     final card = switch (content) {
       final IntroContent c => _IntroCardView(
@@ -141,7 +138,33 @@ class _TypedCard extends ConsumerWidget {
       final QuoteContent c => QuoteCard(
         content: c,
         actions: actions,
-        sourceLine: sourceLine,
+        onReadInContext: inContext,
+        semanticLabel: label,
+      ),
+      final PracticeContent c => PracticeCard(
+        content: c,
+        actions: actions,
+        onOpen: links ? ops.openPractice : null,
+        onReadInContext: inContext,
+        semanticLabel: label,
+      ),
+      final PromptContent c => PromptCard(
+        content: c,
+        actions: actions,
+        onReflect: links ? ops.reflect : null,
+        onReadInContext: inContext,
+        semanticLabel: label,
+      ),
+      final ConceptContent c => ConceptCard(
+        content: c,
+        actions: actions,
+        onReadInContext: inContext,
+        semanticLabel: label,
+      ),
+      final AuthorContent c => AuthorCard(
+        content: c,
+        actions: actions,
+        onReadWork: links && c.firstWorkId != null ? ops.readWork : null,
         semanticLabel: label,
       ),
     };
@@ -164,8 +187,11 @@ class _TypedCard extends ConsumerWidget {
   String? _semanticLabel(BuildContext context) {
     final l10n = context.l10n;
     final what = switch (content) {
-      QuoteContent(:final author) => l10n.cardQuoteA11y(author),
+      QuoteContent(isPassage: false, :final author) => l10n.cardQuoteA11y(
+        author,
+      ),
       IntroContent() => null,
+      final c => cardTypeLabel(context, c).toLowerCase(),
     };
     final p = pos;
     final n = total;
@@ -175,22 +201,45 @@ class _TypedCard extends ConsumerWidget {
   }
 }
 
-/// Obsah na zdielanie a kopirovanie (docs/02 B0.7); null = typ sa
-/// nezdiela (0.2).
-CardShareData? shareDataFor(
-  BuildContext context,
-  CardContent content, {
-  String? sourceLine,
-}) => switch (content) {
-  final QuoteContent q => CardShareData(
-    text: q.text,
-    textLang: 'en',
-    reference: q.reference,
-    attribution: q.author,
-    source: sourceLine,
-  ),
-  IntroContent() => null,
-};
+/// Obsah na zdielanie a kopirovanie (docs/02 B0.7): cely text, referencia
+/// a prekladatel; null = typ sa nezdiela (0.2). Nikdy nie "Project
+/// Gutenberg" (kontrakt kap. 5): atribucia je len prekladatel a rok.
+CardShareData? shareDataFor(BuildContext context, CardContent content) =>
+    switch (content) {
+      final QuoteContent q => CardShareData(
+        text: q.text,
+        textLang: 'en',
+        reference: q.reference,
+        attribution: q.author,
+        source: q.translation == null
+            ? null
+            : translatedBy(context, q.translation!),
+      ),
+      final PracticeContent p => CardShareData(
+        text: p.text,
+        textLang: 'en',
+        reference: p.title,
+        attribution: p.reference,
+      ),
+      final PromptContent p => CardShareData(
+        text: p.text,
+        textLang: 'en',
+        reference: cardTypeLabel(context, p),
+        attribution: p.reference,
+      ),
+      final ConceptContent c => CardShareData(
+        text: c.text,
+        textLang: 'en',
+        reference: c.subtitle == null ? c.title : '${c.title} (${c.subtitle})',
+        attribution: c.reference,
+      ),
+      final AuthorContent a => CardShareData(
+        text: a.text,
+        textLang: 'en',
+        reference: a.lifespan == null ? a.name : '${a.name}, ${a.lifespan}',
+      ),
+      IntroContent() => null,
+    };
 
 /// Riadok `card:` reportu problemu: `card_id` a referencia (dielo
 /// a sekcia), bez textu karty.
@@ -209,7 +258,6 @@ class _CardOps {
     required this.surface,
     required this.share,
     this.pos,
-    this.source,
   });
 
   final WidgetRef ref;
@@ -219,7 +267,6 @@ class _CardOps {
   final CardSurface surface;
   final int? pos;
   final CardShareData? share;
-  final CardSourceInfo? source;
 
   CardId get id => content.id;
   CardActionsRepository get _repo => ref.read(cardActionsRepositoryProvider);
@@ -309,11 +356,50 @@ class _CardOps {
           if (data != null) Text(data.reference),
           if (data?.attribution case final a?) CardMeta(a),
           if (data?.source case final s?) CardMeta(s),
-          if (source case final s? when data?.source == null)
-            if (s.attribution.isNotEmpty) CardMeta(s.attribution),
         ],
       ),
     );
+  }
+
+  /// "Read in context": citacka Library na zdrojovej sekcii karty
+  /// (citat zvyrazneny).
+  Future<void> readInContext() async {
+    final key = content.sectionKey;
+    if (key == null) return;
+    unawaited(_log(CardAction.sourceOpened));
+    await openReader(
+      context,
+      workId: workIdOfSection(key),
+      section: key,
+      highlight: switch (content) {
+        QuoteContent(:final text) => text,
+        _ => null,
+      },
+    );
+  }
+
+  /// Uvod k autorovi: prve dielo autora v Library.
+  Future<void> readWork() async {
+    final c = content;
+    if (c is! AuthorContent || c.firstWorkId == null) return;
+    await openReader(context, workId: c.firstWorkId!);
+  }
+
+  /// Cvicenie v Practice (postup, "I did this").
+  Future<void> openPractice() =>
+      context.push(PracticeRoutes.exercise(content.id.key));
+
+  /// Otazka: odpoved do lokalneho dennika (`answered`).
+  Future<void> reflect() async {
+    final c = content;
+    if (c is! PromptContent) return;
+    final saved = await showJournalPromptSheet(
+      context,
+      date: date,
+      promptId: c.id.format(),
+      prompt: c.text,
+    );
+    if (saved) await _log(CardAction.answered);
   }
 
   /// "Report a problem" (D-04): pouzivatel posle `.txt` report sam cez

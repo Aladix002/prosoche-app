@@ -14,7 +14,7 @@ casti su odstranene. Plan: `../PLAN.md`.
 ```
 flutter pub get
 dart run build_runner build -d
-tool/bundle_content.sh            # content.db z ../prosoche-content
+tool/bundle_content.sh            # content.db v1 z prosoche-content (--build = make build sign)
 flutter run --flavor devLite
 ```
 
@@ -46,8 +46,9 @@ Zatial len EN. Texty v `lib/l10n/parts/<ID>_en.arb`, zlucenie
 ## Struktura
 
 `lib/core`, `lib/domain` (cisty Dart), `lib/data` (DB, siet, nativ),
-`lib/features` (obrazovky). Taby: Today, Library, Practice, Journey
-(Library a Practice su zatial placeholdery pre F-01).
+`lib/features` (obrazovky). Taby: Today, Library (diela, citacka,
+zalozky, FTS5 vyhladavanie), Practice (ranna priprava, vecerna reflexia,
+lokalny dennik, memento mori, cvicenia), Journey.
 
 Deep linky: `prosoche://today`, `prosoche://feed`, `prosoche://library`,
 `prosoche://practice`, `prosoche://journey`, `prosoche://settings/notifications`,

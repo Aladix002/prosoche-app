@@ -19,7 +19,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-content="${PROSOCHE_CONTENT_DIR:-../prosoche-content}"
+content="${PROSOCHE_CONTENT_DIR:-}"
 if [[ "${1:-}" == "-c" ]]; then
   content="$2"
   shift 2
@@ -33,7 +33,7 @@ command -v adb >/dev/null || fail "chyba adb (PATH += \$ANDROID_HOME/platform-to
 [[ -n "$(adb devices | sed -n '2,$p' | grep -w device || true)" ]] ||
   fail "ziadne zariadenie v adb devices"
 
-tool/bundle_content.sh "$content"
+tool/bundle_content.sh ${content:+"$content"}
 
 # Vygenerovany bundle testov nema ostat v strome (analyze).
 trap 'rm -f patrol_test/test_bundle.dart' EXIT

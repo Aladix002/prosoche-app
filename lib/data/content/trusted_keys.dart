@@ -3,8 +3,8 @@ import 'dart:typed_data';
 
 import 'package:meta/meta.dart';
 
-/// Rola kluca (docs/06 B.2). `root` podpisuje revokacie a v nudzi obsah,
-/// `content` podpisuje manifest a remote config.
+/// Rola kluca (docs/06 B.2). `root` v nudzi podpisuje obsah, `content`
+/// podpisuje manifest.
 enum KeyRole {
   root,
   content;
@@ -16,11 +16,8 @@ enum KeyRole {
   };
 }
 
-/// Role, ktore smu podpisat manifest a remote config.
+/// Role, ktore smu podpisat manifest.
 const Set<KeyRole> kContentRoles = {KeyRole.content, KeyRole.root};
-
-/// Role, ktore smu podpisat `revocations.json` (len root).
-const Set<KeyRole> kRootOnly = {KeyRole.root};
 
 /// Dovereny verejny Ed25519 kluc zapeceny v binarke.
 @immutable
@@ -50,7 +47,7 @@ const kTrustedKeys = <TrustedKey>[
 const kDevTrustedKeys = <TrustedKey>[
   TrustedKey(
     'content-dev',
-    '4hJ2HKlfOYpaITcjOquhTJB5vMa7wCqnIcsQ17igrgU=',
+    'oeoVvFn/reb+GWwlp8vYYxrdzNfDxbcq9Nz6hMbCme4=',
     KeyRole.content,
   ),
 ];

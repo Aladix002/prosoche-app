@@ -1,5 +1,5 @@
 {
   "alg": "Ed25519",
   "kid": "test-rogue",
-  "sig": "mnZFJHrrhbI6moaz7VIgikUb9caVYBIfByWuA011+LOQyYFOvSP2qCqnqsw7Sju2/zB1MX/DICLZB3NSDMffBQ=="
+  "sig": "iu4/GCjkGAbLnstsuTPwr0/mEB0qLoIk7yamHlJ08BJ2HlGJw7fZVTx8REmWgdUjrDuIVI0MJQnSG6F4WzHhAw=="
 }

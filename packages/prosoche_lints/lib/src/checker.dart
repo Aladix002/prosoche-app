@@ -39,10 +39,7 @@ bool isExcludedPath(String path) {
 /// Subory, kde su vybrane pravidla dovolene. `lib/ui/i18n/` je jedine
 /// miesto, ktore smie natvrdo rozhodovat o smere a obsahuje tabulky cislic.
 const Map<String, Set<ProsocheRule>> allowedRulesByPathPrefix = {
-  'lib/ui/i18n/': {
-    ProsocheRule.hardcodedTextDirection,
-    ProsocheRule.arabicTextOutsideSkArabicText,
-  },
+  'lib/ui/i18n/': {ProsocheRule.hardcodedTextDirection},
 };
 
 /// Skontroluje vsetky `.dart` subory pod [roots]. Cesty vo vysledku su
@@ -80,14 +77,6 @@ List<LintViolation> checkPaths(List<String> roots, {String? base}) {
   return out;
 }
 
-final _arabicScript = RegExp(
-  '[\u0600-\u06FF\u0750-\u077F\u0870-\u089F\u08A0-\u08FF'
-  '\uFB50-\uFDFF\uFE70-\uFEFF]',
-);
-
-/// Ci text obsahuje znak arabskeho pisma (arabcina, urdcina, ...).
-bool containsArabicScript(String text) => _arabicScript.hasMatch(text);
-
 const _alignmentTypes = {'Alignment', 'FractionalOffset'};
 const _leftRightAlignments = {
   'topLeft',
@@ -99,7 +88,6 @@ const _leftRightAlignments = {
 };
 const _leftRight = {'left', 'right'};
 const _corners = {'topLeft', 'topRight', 'bottomLeft', 'bottomRight'};
-const _skArabicText = 'SkArabicText';
 
 class _Visitor extends RecursiveAstVisitor<void> {
   _Visitor(this.path, this.lineInfo);
@@ -237,50 +225,6 @@ class _Visitor extends RecursiveAstVisitor<void> {
     } else if (type == 'TextAlign' && _leftRight.contains(member)) {
       _report(ProsocheRule.textAlignLeftRight, node);
     }
-  }
-
-  @override
-  void visitSimpleStringLiteral(SimpleStringLiteral node) {
-    _checkArabic(node, node.value);
-    super.visitSimpleStringLiteral(node);
-  }
-
-  @override
-  void visitStringInterpolation(StringInterpolation node) {
-    final text = node.elements
-        .whereType<InterpolationString>()
-        .map((e) => e.value)
-        .join();
-    _checkArabic(node, text);
-    super.visitStringInterpolation(node);
-  }
-
-  void _checkArabic(StringLiteral node, String value) {
-    if (!containsArabicScript(value)) return;
-    // Sucast AdjacentStrings sa hlasi raz, cez rodica nie (rodic nema value).
-    if (_insideSkArabicText(node)) return;
-    _report(ProsocheRule.arabicTextOutsideSkArabicText, node);
-  }
-
-  bool _insideSkArabicText(AstNode node) {
-    for (var n = node.parent; n != null; n = n.parent) {
-      switch (n) {
-        case InstanceCreationExpression(:final constructorName):
-          final t = constructorName.type;
-          if (t.name.lexeme == _skArabicText ||
-              t.importPrefix?.name.lexeme == _skArabicText) {
-            return true;
-          }
-        case MethodInvocation(:final target, :final methodName):
-          if (methodName.name == _skArabicText) return true;
-          if (target is SimpleIdentifier && target.name == _skArabicText) {
-            return true;
-          }
-        case FunctionBody() || ClassMember() || CompilationUnitMember():
-          return false;
-      }
-    }
-    return false;
   }
 }
 

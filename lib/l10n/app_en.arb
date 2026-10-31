@@ -734,6 +734,405 @@
   "@onbFinish": {
     "description": "Button on the last onboarding step: finish and open Today."
   },
+  "cardTypePassage": "Passage",
+  "@cardTypePassage": {
+    "description": "Card eyebrow for a longer passage from a work."
+  },
+  "cardTypePractice": "Practice",
+  "@cardTypePractice": {
+    "description": "Card eyebrow for an exercise card."
+  },
+  "cardTypePrompt": "Reflect",
+  "@cardTypePrompt": {
+    "description": "Card eyebrow for a question to reflect on."
+  },
+  "cardTypeConcept": "Concept",
+  "@cardTypeConcept": {
+    "description": "Card eyebrow for a Stoic concept."
+  },
+  "cardTypeAuthor": "Author",
+  "@cardTypeAuthor": {
+    "description": "Card eyebrow for an introduction to an author."
+  },
+  "cardTranslatedBy": "Translated by {translator}",
+  "@cardTranslatedBy": {
+    "description": "Translator attribution on cards, reader and shared image.",
+    "placeholders": {
+      "translator": {
+        "type": "String"
+      }
+    }
+  },
+  "cardTranslatedByYear": "Translated by {translator} ({year})",
+  "@cardTranslatedByYear": {
+    "description": "Translator attribution with year of the translation.",
+    "placeholders": {
+      "translator": {
+        "type": "String"
+      },
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "cardReadInContext": "Read in context",
+  "@cardReadInContext": {
+    "description": "Link from a card to the source section in Library."
+  },
+  "cardReadReference": "Read {reference}",
+  "@cardReadReference": {
+    "description": "Link to the related section, e.g. 'Read Meditations 2.1'.",
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "cardRelatedReference": "Related: {reference}",
+  "@cardRelatedReference": {
+    "description": "Line under a practice or concept card with the related section.",
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "cardReadWork": "Read {title}",
+  "@cardReadWork": {
+    "description": "Link from an author card to the first work in Library.",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "cardOpenPractice": "Open in Practice",
+  "@cardOpenPractice": {
+    "description": "Link from a practice card to the exercise screen."
+  },
+  "cardWriteInJournal": "Write in journal",
+  "@cardWriteInJournal": {
+    "description": "Link from a question card to the local journal."
+  },
+  "librarySearch": "Search",
+  "@librarySearch": {
+    "description": "Tooltip: search in all works."
+  },
+  "librarySearchHint": "Search the works",
+  "@librarySearchHint": {
+    "description": "Hint in the search field."
+  },
+  "librarySearchHintTitle": "Search all works",
+  "@librarySearchHintTitle": {
+    "description": "Empty search screen title."
+  },
+  "librarySearchHintBody": "Find a word or phrase in every book and section.",
+  "@librarySearchHintBody": {
+    "description": "Empty search screen body."
+  },
+  "librarySearchEmpty": "Nothing found",
+  "@librarySearchEmpty": {
+    "description": "No search results."
+  },
+  "libraryBookmarks": "Bookmarks",
+  "@libraryBookmarks": {
+    "description": "Bookmarked sections (title and tooltip)."
+  },
+  "libraryBookmarksEmptyTitle": "No bookmarks yet",
+  "@libraryBookmarksEmptyTitle": {
+    "description": "Empty bookmarks title."
+  },
+  "libraryBookmarksEmptyBody": "Tap the bookmark in the reader to keep a section here.",
+  "@libraryBookmarksEmptyBody": {
+    "description": "Empty bookmarks body."
+  },
+  "libraryEmptyTitle": "No works",
+  "@libraryEmptyTitle": {
+    "description": "Library without content."
+  },
+  "libraryEmptyBody": "The texts could not be found.",
+  "@libraryEmptyBody": {
+    "description": "Library without content, body."
+  },
+  "libraryBooks": "{count, plural, one{1 book} other{{count} books}}",
+  "@libraryBooks": {
+    "description": "Number of books in a work.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "librarySections": "{count, plural, one{1 section} other{{count} sections}}",
+  "@librarySections": {
+    "description": "Number of sections in a work without books.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "libraryContinueAt": "Continue at {reference}",
+  "@libraryContinueAt": {
+    "description": "Reading position of a work, e.g. 'Continue at Meditations 2.1'.",
+    "placeholders": {
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "readerContents": "Contents",
+  "@readerContents": {
+    "description": "Reader: list of books and sections."
+  },
+  "readerAddBookmark": "Bookmark this section",
+  "@readerAddBookmark": {
+    "description": "Reader: add bookmark."
+  },
+  "readerRemoveBookmark": "Remove bookmark",
+  "@readerRemoveBookmark": {
+    "description": "Reader: remove bookmark."
+  },
+  "readerBookmarkAdded": "Bookmarked",
+  "@readerBookmarkAdded": {
+    "description": "Snackbar after adding a bookmark."
+  },
+  "readerBookmarkRemoved": "Bookmark removed",
+  "@readerBookmarkRemoved": {
+    "description": "Snackbar after removing a bookmark."
+  },
+  "readerPrevious": "Previous section",
+  "@readerPrevious": {
+    "description": "Reader: previous section."
+  },
+  "readerNext": "Next section",
+  "@readerNext": {
+    "description": "Reader: next section."
+  },
+  "readerProgressA11y": "Reading position",
+  "@readerProgressA11y": {
+    "description": "Screen reader label of the reading progress line."
+  },
+  "readerProgressValue": "{current} / {total}",
+  "@readerProgressValue": {
+    "description": "Reader position, e.g. '5 / 52'.",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "readerMissingTitle": "This work is not available",
+  "@readerMissingTitle": {
+    "description": "Reader: work missing in the content."
+  },
+  "readerMissingBody": "It may have been removed in a content update.",
+  "@readerMissingBody": {
+    "description": "Reader: work missing, body."
+  },
+  "practiceMorning": "Morning",
+  "@practiceMorning": {
+    "description": "Eyebrow of the morning preparation."
+  },
+  "practiceEvening": "Evening",
+  "@practiceEvening": {
+    "description": "Eyebrow of the evening reflection."
+  },
+  "practiceMorningTitle": "Morning preparation",
+  "@practiceMorningTitle": {
+    "description": "Fallback title of the morning routine."
+  },
+  "practiceEveningTitle": "Evening reflection",
+  "@practiceEveningTitle": {
+    "description": "Fallback title of the evening routine."
+  },
+  "practiceMarkDone": "Done",
+  "@practiceMarkDone": {
+    "description": "Button: mark the routine of today as done."
+  },
+  "practiceDoneToday": "Done today",
+  "@practiceDoneToday": {
+    "description": "State of a routine done today (tap to undo)."
+  },
+  "practiceMarkedDone": "Marked as done.",
+  "@practiceMarkedDone": {
+    "description": "Snackbar after confirming a practice."
+  },
+  "practiceIDidThis": "I did this",
+  "@practiceIDidThis": {
+    "description": "Button: the user confirms the exercise."
+  },
+  "practiceExercises": "Exercises",
+  "@practiceExercises": {
+    "description": "Section header with all practice cards."
+  },
+  "exerciseMissing": "This exercise is not available",
+  "@exerciseMissing": {
+    "description": "Exercise missing in content."
+  },
+  "journalTitle": "Journal",
+  "@journalTitle": {
+    "description": "Local journal title."
+  },
+  "journalSubtitleEmpty": "Notes stay on this device",
+  "@journalSubtitleEmpty": {
+    "description": "Journal tile subtitle without entries."
+  },
+  "journalSubtitleCount": "{count, plural, one{1 entry} other{{count} entries}}",
+  "@journalSubtitleCount": {
+    "description": "Journal tile subtitle with the number of entries.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "journalPrivacyNote": "Your journal stays on this device. It is never sent anywhere.",
+  "@journalPrivacyNote": {
+    "description": "Privacy note under journal fields."
+  },
+  "journalYourAnswer": "Your answer",
+  "@journalYourAnswer": {
+    "description": "Label of the answer field for a question card."
+  },
+  "journalSave": "Save",
+  "@journalSave": {
+    "description": "Save a journal entry."
+  },
+  "journalNewNote": "New note",
+  "@journalNewNote": {
+    "description": "Add a free note to the journal."
+  },
+  "journalNote": "Note",
+  "@journalNote": {
+    "description": "Kind of a free journal entry."
+  },
+  "journalDelete": "Delete",
+  "@journalDelete": {
+    "description": "Delete a journal entry."
+  },
+  "journalDeleteAllTitle": "Delete journal",
+  "@journalDeleteAllTitle": {
+    "description": "Delete all journal entries (title and tooltip)."
+  },
+  "journalDeleteAllBody": "All journal entries will be deleted from this device. This cannot be undone.",
+  "@journalDeleteAllBody": {
+    "description": "Confirmation before deleting the whole journal."
+  },
+  "journalExport": "Export journal",
+  "@journalExport": {
+    "description": "Share the journal as text (tooltip)."
+  },
+  "journalExportTitle": "{app} journal",
+  "@journalExportTitle": {
+    "description": "First line of the exported journal text.",
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "journalEmptyTitle": "No entries yet",
+  "@journalEmptyTitle": {
+    "description": "Empty journal title."
+  },
+  "journalEmptyBody": "Answers from the morning and evening practice appear here.",
+  "@journalEmptyBody": {
+    "description": "Empty journal body."
+  },
+  "mementoTitle": "Memento mori",
+  "@mementoTitle": {
+    "description": "Title of the weeks-of-life screen."
+  },
+  "mementoSubtitle": "Your life in weeks",
+  "@mementoSubtitle": {
+    "description": "Subtitle of the memento mori tile."
+  },
+  "mementoAddYear": "Add birth year",
+  "@mementoAddYear": {
+    "description": "Button: enter the year of birth (optional)."
+  },
+  "mementoBirthYear": "Year of birth",
+  "@mementoBirthYear": {
+    "description": "Dialog title."
+  },
+  "mementoBirthYearHelp": "Optional. Used only to draw the weeks.",
+  "@mementoBirthYearHelp": {
+    "description": "Helper under the year field."
+  },
+  "mementoChangeYear": "Change year",
+  "@mementoChangeYear": {
+    "description": "Change the year of birth."
+  },
+  "mementoClearYear": "Remove year",
+  "@mementoClearYear": {
+    "description": "Remove the stored year of birth."
+  },
+  "mementoWeeks": "{lived} of {total} weeks",
+  "@mementoWeeks": {
+    "description": "Weeks of an 80 year life already lived.",
+    "placeholders": {
+      "lived": {
+        "type": "int",
+        "format": "decimalPattern"
+      },
+      "total": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "mementoGridA11y": "{lived} weeks lived, {left} weeks left of 80 years",
+  "@mementoGridA11y": {
+    "description": "Screen reader label of the weeks grid.",
+    "placeholders": {
+      "lived": {
+        "type": "int"
+      },
+      "left": {
+        "type": "int"
+      }
+    }
+  },
+  "mementoNote": "Each square is one week of an 80 year life.",
+  "@mementoNote": {
+    "description": "Note under the grid."
+  },
+  "mementoPrivacy": "The year stays on this device.",
+  "@mementoPrivacy": {
+    "description": "Privacy note on memento mori."
+  },
+  "notifEveningTitle": "Evening reflection",
+  "@notifEveningTitle": {
+    "description": "Evening reminder title."
+  },
+  "notifEveningBody": "A few minutes to look back at the day.",
+  "@notifEveningBody": {
+    "description": "Evening reminder body."
+  },
+  "notifEveningPrivateBody": "A reminder for this evening.",
+  "@notifEveningPrivateBody": {
+    "description": "Evening reminder body when content is hidden on the lock screen."
+  },
+  "setEvening": "Evening",
+  "@setEvening": {
+    "description": "Settings section: evening reminder."
+  },
+  "setEveningToggle": "Evening reflection",
+  "@setEveningToggle": {
+    "description": "Switch: evening reminder."
+  },
+  "setEveningHelp": "A quiet reminder to review the day. Off by default.",
+  "@setEveningHelp": {
+    "description": "Help for the evening reminder switch."
+  },
+  "setEveningTime": "Time",
+  "@setEveningTime": {
+    "description": "Time of the evening reminder."
+  },
   "todaySettings": "Settings",
   "@todaySettings": {
     "description": "Tooltip of the gear button on Today that opens Settings."
@@ -1405,30 +1804,6 @@
   "@setPrivateTextHelp": {
     "description": "Explanation under the private text switch."
   },
-  "setExactAlarms": "Exact reminders",
-  "@setExactAlarms": {
-    "description": "Section header for the Android exact alarm permission."
-  },
-  "setStatusUnknown": "Checking…",
-  "@setStatusUnknown": {
-    "description": "Shown while the permission state is being read."
-  },
-  "setExactOn": "Allowed",
-  "@setExactOn": {
-    "description": "Exact alarms are allowed."
-  },
-  "setExactOff": "Not allowed",
-  "@setExactOff": {
-    "description": "Exact alarms are not allowed."
-  },
-  "setExactHelp": "Without exact reminders, reminders may arrive up to 10 minutes late or more.",
-  "@setExactHelp": {
-    "description": "Explanation of the exact alarm permission."
-  },
-  "setAllow": "Allow",
-  "@setAllow": {
-    "description": "Button that opens the Android screen to allow exact alarms."
-  },
   "setOsDelayNote": "Reminders may be delayed by Android or battery settings.",
   "@setOsDelayNote": {
     "description": "Note at the end of notification settings (docs/11 12.1)."
@@ -1688,10 +2063,6 @@
   "notifOpenAppPrivateBody": "Open the app to keep reminders on",
   "@notifOpenAppPrivateBody": {
     "description": "Neutral body of the last planned notification in private mode. Title is the app name."
-  },
-  "notifInexactNote": "Reminders may arrive up to 10 minutes late or more. Allow \"Alarms & reminders\" for exact times.",
-  "@notifInexactNote": {
-    "description": "Info line in Settings when exact alarms are not allowed (not a notification)."
   },
   "appTitle": "Prosoche",
   "@appTitle": {

@@ -22,6 +22,9 @@ final class TimeOfDayHm {
   /// Predvolba rannej notifikacie (ROZHODNUTIE, docs/02 0.7).
   static const morningDefault = TimeOfDayHm(7, 30);
 
+  /// Predvolba vecernej pripomienky (vecerna reflexia, F-01).
+  static const eveningDefault = TimeOfDayHm(21, 0);
+
   final int hour;
   final int minute;
 
@@ -50,6 +53,8 @@ final class NotificationPlanInput {
     required this.deviceZone,
     this.morningEnabled = true,
     this.morningTime = TimeOfDayHm.morningDefault,
+    this.eveningEnabled = false,
+    this.eveningTime = TimeOfDayHm.eveningDefault,
     this.cardMinutes = 10,
   });
 
@@ -61,6 +66,10 @@ final class NotificationPlanInput {
 
   final bool morningEnabled;
   final TimeOfDayHm morningTime;
+
+  /// Vecerna pripomienka reflexie (opt-in, default vypnuta).
+  final bool eveningEnabled;
+  final TimeOfDayHm eveningTime;
 
   /// Odhad minut pre text rannej notifikacie.
   final int cardMinutes;
@@ -84,8 +93,9 @@ final class NotificationPlan {
 ///
 /// Cista funkcia: rovnaky vstup = rovnaky plan s rovnakymi ID, takze
 /// opakovane preplanovanie nic nezmeni (idempotencia). Rozpocet [maxPending]
-/// (64, limit iOS) plati aj na Androide (docs/02 D17): 10 rannych a vyzva
-/// na otvorenie appky v poslednom dni okna.
+/// (64, limit iOS) plati aj na Androide (docs/02 D17): 10 rannych,
+/// 10 vecernych (ak su zapnute) a vyzva na otvorenie appky v poslednom dni
+/// okna. Vsetko su nepresne (inexact) pripomienky, ziadne presne alarmy.
 final class NotificationPlanner {
   const NotificationPlanner({
     this.days = 10,
@@ -113,6 +123,11 @@ final class NotificationPlanner {
           if (_morning(input, deviceToday.addDays(i)) case final m
               when inWindow(m.at))
             m,
+      if (input.eveningEnabled)
+        for (var i = 0; i < days; i++)
+          if (_evening(input, deviceToday.addDays(i)) case final e
+              when inWindow(e.at))
+            e,
     ]..sort(_byTime);
 
     final budget = openAppReminder ? maxPending - 1 : maxPending;
@@ -147,6 +162,13 @@ final class NotificationPlanner {
         day: day,
         at: input.morningTime.on(day, input.deviceZone),
         cardMinutes: input.cardMinutes,
+      );
+
+  PlannedNotification _evening(NotificationPlanInput input, LocalDate day) =>
+      PlannedNotification(
+        kind: NotificationKind.evening,
+        day: day,
+        at: input.eveningTime.on(day, input.deviceZone),
       );
 
   static int _byTime(PlannedNotification a, PlannedNotification b) {

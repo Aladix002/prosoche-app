@@ -6,13 +6,16 @@ void main() {
 
   final examples = <String, (CardId, CardType)>{
     'intro:2026-10-29': (IntroCardId(date), CardType.intro),
-    'quote:q_0001': (ContentCardId.quote('q_0001'), CardType.quote),
-    'passage:ench_1': (
-      ContentCardId(CardType.passage, 'ench_1'),
+    'quote:meditations.2.1.a': (
+      ContentCardId.quote('meditations.2.1.a'),
+      CardType.quote,
+    ),
+    'passage:enchiridion.1': (
+      ContentCardId(CardType.passage, 'enchiridion.1'),
       CardType.passage,
     ),
-    'practice:morning': (
-      ContentCardId(CardType.practice, 'morning'),
+    'practice:morning-preparation': (
+      ContentCardId(CardType.practice, 'morning-preparation'),
       CardType.practice,
     ),
     'prompt:p1': (ContentCardId(CardType.prompt, 'p1'), CardType.prompt),
@@ -20,8 +23,8 @@ void main() {
       ContentCardId(CardType.concept, 'logos'),
       CardType.concept,
     ),
-    'author:marcus': (
-      ContentCardId(CardType.author, 'marcus'),
+    'author:marcus-aurelius': (
+      ContentCardId(CardType.author, 'marcus-aurelius'),
       CardType.author,
     ),
     'done:2026-10-29': (DoneCardId(date), CardType.done),
@@ -70,11 +73,12 @@ void main() {
     '',
     'quote',
     'quote:',
-    'quote:Bad-Key',
+    'quote:bad key',
+    'quote:a/b',
     'unknown:1',
     'intro:2026-13-01',
     'done:x',
-    'quote:${'a' * 65}',
+    'quote:${'a' * 129}',
   ]) {
     test('rejects "$bad"', () {
       expect(() => CardId.parse(bad), throwsFormatException);
@@ -84,7 +88,7 @@ void main() {
 
   test('constructor validates type and key', () {
     expect(() => ContentCardId(CardType.intro, 'x'), throwsArgumentError);
-    expect(() => ContentCardId.quote('A'), throwsArgumentError);
+    expect(() => ContentCardId.quote('a b'), throwsArgumentError);
   });
 
   test('slot maps to card type', () {

@@ -1,5 +1,5 @@
 {
   "alg": "Ed25519",
   "kid": "test-root-1",
-  "sig": "gdQIErAT0amtpsOIsPjx2DsH8JTWc77VtBz9ev7auFDXKRtbUQPzDDZxdBvYMbHfv9OLAUL/fUnr6WcOUeCqBw=="
+  "sig": "mK95cdr/7vq6WeG+lBlBshx/9Uyvc02vjHKheOGeRUBGOVCTE9JJGpS+NWxqDnkHzlfjqzAHEjkm0/TvE+m9Dg=="
 }

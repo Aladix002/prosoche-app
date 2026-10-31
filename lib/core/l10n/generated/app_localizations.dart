@@ -946,6 +946,486 @@ abstract class AppLocalizations {
   /// **'Finish'**
   String get onbFinish;
 
+  /// Card eyebrow for a longer passage from a work.
+  ///
+  /// In en, this message translates to:
+  /// **'Passage'**
+  String get cardTypePassage;
+
+  /// Card eyebrow for an exercise card.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice'**
+  String get cardTypePractice;
+
+  /// Card eyebrow for a question to reflect on.
+  ///
+  /// In en, this message translates to:
+  /// **'Reflect'**
+  String get cardTypePrompt;
+
+  /// Card eyebrow for a Stoic concept.
+  ///
+  /// In en, this message translates to:
+  /// **'Concept'**
+  String get cardTypeConcept;
+
+  /// Card eyebrow for an introduction to an author.
+  ///
+  /// In en, this message translates to:
+  /// **'Author'**
+  String get cardTypeAuthor;
+
+  /// Translator attribution on cards, reader and shared image.
+  ///
+  /// In en, this message translates to:
+  /// **'Translated by {translator}'**
+  String cardTranslatedBy(String translator);
+
+  /// Translator attribution with year of the translation.
+  ///
+  /// In en, this message translates to:
+  /// **'Translated by {translator} ({year})'**
+  String cardTranslatedByYear(String translator, int year);
+
+  /// Link from a card to the source section in Library.
+  ///
+  /// In en, this message translates to:
+  /// **'Read in context'**
+  String get cardReadInContext;
+
+  /// Link to the related section, e.g. 'Read Meditations 2.1'.
+  ///
+  /// In en, this message translates to:
+  /// **'Read {reference}'**
+  String cardReadReference(String reference);
+
+  /// Line under a practice or concept card with the related section.
+  ///
+  /// In en, this message translates to:
+  /// **'Related: {reference}'**
+  String cardRelatedReference(String reference);
+
+  /// Link from an author card to the first work in Library.
+  ///
+  /// In en, this message translates to:
+  /// **'Read {title}'**
+  String cardReadWork(String title);
+
+  /// Link from a practice card to the exercise screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Practice'**
+  String get cardOpenPractice;
+
+  /// Link from a question card to the local journal.
+  ///
+  /// In en, this message translates to:
+  /// **'Write in journal'**
+  String get cardWriteInJournal;
+
+  /// Tooltip: search in all works.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get librarySearch;
+
+  /// Hint in the search field.
+  ///
+  /// In en, this message translates to:
+  /// **'Search the works'**
+  String get librarySearchHint;
+
+  /// Empty search screen title.
+  ///
+  /// In en, this message translates to:
+  /// **'Search all works'**
+  String get librarySearchHintTitle;
+
+  /// Empty search screen body.
+  ///
+  /// In en, this message translates to:
+  /// **'Find a word or phrase in every book and section.'**
+  String get librarySearchHintBody;
+
+  /// No search results.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing found'**
+  String get librarySearchEmpty;
+
+  /// Bookmarked sections (title and tooltip).
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmarks'**
+  String get libraryBookmarks;
+
+  /// Empty bookmarks title.
+  ///
+  /// In en, this message translates to:
+  /// **'No bookmarks yet'**
+  String get libraryBookmarksEmptyTitle;
+
+  /// Empty bookmarks body.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the bookmark in the reader to keep a section here.'**
+  String get libraryBookmarksEmptyBody;
+
+  /// Library without content.
+  ///
+  /// In en, this message translates to:
+  /// **'No works'**
+  String get libraryEmptyTitle;
+
+  /// Library without content, body.
+  ///
+  /// In en, this message translates to:
+  /// **'The texts could not be found.'**
+  String get libraryEmptyBody;
+
+  /// Number of books in a work.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 book} other{{count} books}}'**
+  String libraryBooks(int count);
+
+  /// Number of sections in a work without books.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 section} other{{count} sections}}'**
+  String librarySections(int count);
+
+  /// Reading position of a work, e.g. 'Continue at Meditations 2.1'.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue at {reference}'**
+  String libraryContinueAt(String reference);
+
+  /// Reader: list of books and sections.
+  ///
+  /// In en, this message translates to:
+  /// **'Contents'**
+  String get readerContents;
+
+  /// Reader: add bookmark.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmark this section'**
+  String get readerAddBookmark;
+
+  /// Reader: remove bookmark.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove bookmark'**
+  String get readerRemoveBookmark;
+
+  /// Snackbar after adding a bookmark.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmarked'**
+  String get readerBookmarkAdded;
+
+  /// Snackbar after removing a bookmark.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmark removed'**
+  String get readerBookmarkRemoved;
+
+  /// Reader: previous section.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous section'**
+  String get readerPrevious;
+
+  /// Reader: next section.
+  ///
+  /// In en, this message translates to:
+  /// **'Next section'**
+  String get readerNext;
+
+  /// Screen reader label of the reading progress line.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading position'**
+  String get readerProgressA11y;
+
+  /// Reader position, e.g. '5 / 52'.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} / {total}'**
+  String readerProgressValue(int current, int total);
+
+  /// Reader: work missing in the content.
+  ///
+  /// In en, this message translates to:
+  /// **'This work is not available'**
+  String get readerMissingTitle;
+
+  /// Reader: work missing, body.
+  ///
+  /// In en, this message translates to:
+  /// **'It may have been removed in a content update.'**
+  String get readerMissingBody;
+
+  /// Eyebrow of the morning preparation.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning'**
+  String get practiceMorning;
+
+  /// Eyebrow of the evening reflection.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening'**
+  String get practiceEvening;
+
+  /// Fallback title of the morning routine.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning preparation'**
+  String get practiceMorningTitle;
+
+  /// Fallback title of the evening routine.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening reflection'**
+  String get practiceEveningTitle;
+
+  /// Button: mark the routine of today as done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get practiceMarkDone;
+
+  /// State of a routine done today (tap to undo).
+  ///
+  /// In en, this message translates to:
+  /// **'Done today'**
+  String get practiceDoneToday;
+
+  /// Snackbar after confirming a practice.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked as done.'**
+  String get practiceMarkedDone;
+
+  /// Button: the user confirms the exercise.
+  ///
+  /// In en, this message translates to:
+  /// **'I did this'**
+  String get practiceIDidThis;
+
+  /// Section header with all practice cards.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercises'**
+  String get practiceExercises;
+
+  /// Exercise missing in content.
+  ///
+  /// In en, this message translates to:
+  /// **'This exercise is not available'**
+  String get exerciseMissing;
+
+  /// Local journal title.
+  ///
+  /// In en, this message translates to:
+  /// **'Journal'**
+  String get journalTitle;
+
+  /// Journal tile subtitle without entries.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes stay on this device'**
+  String get journalSubtitleEmpty;
+
+  /// Journal tile subtitle with the number of entries.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 entry} other{{count} entries}}'**
+  String journalSubtitleCount(int count);
+
+  /// Privacy note under journal fields.
+  ///
+  /// In en, this message translates to:
+  /// **'Your journal stays on this device. It is never sent anywhere.'**
+  String get journalPrivacyNote;
+
+  /// Label of the answer field for a question card.
+  ///
+  /// In en, this message translates to:
+  /// **'Your answer'**
+  String get journalYourAnswer;
+
+  /// Save a journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get journalSave;
+
+  /// Add a free note to the journal.
+  ///
+  /// In en, this message translates to:
+  /// **'New note'**
+  String get journalNewNote;
+
+  /// Kind of a free journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get journalNote;
+
+  /// Delete a journal entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get journalDelete;
+
+  /// Delete all journal entries (title and tooltip).
+  ///
+  /// In en, this message translates to:
+  /// **'Delete journal'**
+  String get journalDeleteAllTitle;
+
+  /// Confirmation before deleting the whole journal.
+  ///
+  /// In en, this message translates to:
+  /// **'All journal entries will be deleted from this device. This cannot be undone.'**
+  String get journalDeleteAllBody;
+
+  /// Share the journal as text (tooltip).
+  ///
+  /// In en, this message translates to:
+  /// **'Export journal'**
+  String get journalExport;
+
+  /// First line of the exported journal text.
+  ///
+  /// In en, this message translates to:
+  /// **'{app} journal'**
+  String journalExportTitle(String app);
+
+  /// Empty journal title.
+  ///
+  /// In en, this message translates to:
+  /// **'No entries yet'**
+  String get journalEmptyTitle;
+
+  /// Empty journal body.
+  ///
+  /// In en, this message translates to:
+  /// **'Answers from the morning and evening practice appear here.'**
+  String get journalEmptyBody;
+
+  /// Title of the weeks-of-life screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Memento mori'**
+  String get mementoTitle;
+
+  /// Subtitle of the memento mori tile.
+  ///
+  /// In en, this message translates to:
+  /// **'Your life in weeks'**
+  String get mementoSubtitle;
+
+  /// Button: enter the year of birth (optional).
+  ///
+  /// In en, this message translates to:
+  /// **'Add birth year'**
+  String get mementoAddYear;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Year of birth'**
+  String get mementoBirthYear;
+
+  /// Helper under the year field.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional. Used only to draw the weeks.'**
+  String get mementoBirthYearHelp;
+
+  /// Change the year of birth.
+  ///
+  /// In en, this message translates to:
+  /// **'Change year'**
+  String get mementoChangeYear;
+
+  /// Remove the stored year of birth.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove year'**
+  String get mementoClearYear;
+
+  /// Weeks of an 80 year life already lived.
+  ///
+  /// In en, this message translates to:
+  /// **'{lived} of {total} weeks'**
+  String mementoWeeks(int lived, int total);
+
+  /// Screen reader label of the weeks grid.
+  ///
+  /// In en, this message translates to:
+  /// **'{lived} weeks lived, {left} weeks left of 80 years'**
+  String mementoGridA11y(int lived, int left);
+
+  /// Note under the grid.
+  ///
+  /// In en, this message translates to:
+  /// **'Each square is one week of an 80 year life.'**
+  String get mementoNote;
+
+  /// Privacy note on memento mori.
+  ///
+  /// In en, this message translates to:
+  /// **'The year stays on this device.'**
+  String get mementoPrivacy;
+
+  /// Evening reminder title.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening reflection'**
+  String get notifEveningTitle;
+
+  /// Evening reminder body.
+  ///
+  /// In en, this message translates to:
+  /// **'A few minutes to look back at the day.'**
+  String get notifEveningBody;
+
+  /// Evening reminder body when content is hidden on the lock screen.
+  ///
+  /// In en, this message translates to:
+  /// **'A reminder for this evening.'**
+  String get notifEveningPrivateBody;
+
+  /// Settings section: evening reminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening'**
+  String get setEvening;
+
+  /// Switch: evening reminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening reflection'**
+  String get setEveningToggle;
+
+  /// Help for the evening reminder switch.
+  ///
+  /// In en, this message translates to:
+  /// **'A quiet reminder to review the day. Off by default.'**
+  String get setEveningHelp;
+
+  /// Time of the evening reminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get setEveningTime;
+
   /// Tooltip of the gear button on Today that opens Settings.
   ///
   /// In en, this message translates to:
@@ -1684,42 +2164,6 @@ abstract class AppLocalizations {
   /// **'Show only the app name and time on the lock screen, without what the reminder is about.'**
   String get setPrivateTextHelp;
 
-  /// Section header for the Android exact alarm permission.
-  ///
-  /// In en, this message translates to:
-  /// **'Exact reminders'**
-  String get setExactAlarms;
-
-  /// Shown while the permission state is being read.
-  ///
-  /// In en, this message translates to:
-  /// **'Checking…'**
-  String get setStatusUnknown;
-
-  /// Exact alarms are allowed.
-  ///
-  /// In en, this message translates to:
-  /// **'Allowed'**
-  String get setExactOn;
-
-  /// Exact alarms are not allowed.
-  ///
-  /// In en, this message translates to:
-  /// **'Not allowed'**
-  String get setExactOff;
-
-  /// Explanation of the exact alarm permission.
-  ///
-  /// In en, this message translates to:
-  /// **'Without exact reminders, reminders may arrive up to 10 minutes late or more.'**
-  String get setExactHelp;
-
-  /// Button that opens the Android screen to allow exact alarms.
-  ///
-  /// In en, this message translates to:
-  /// **'Allow'**
-  String get setAllow;
-
   /// Note at the end of notification settings (docs/11 12.1).
   ///
   /// In en, this message translates to:
@@ -2037,12 +2481,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open the app to keep reminders on'**
   String get notifOpenAppPrivateBody;
-
-  /// Info line in Settings when exact alarms are not allowed (not a notification).
-  ///
-  /// In en, this message translates to:
-  /// **'Reminders may arrive up to 10 minutes late or more. Allow \"Alarms & reminders\" for exact times.'**
-  String get notifInexactNote;
 
   /// Application name.
   ///

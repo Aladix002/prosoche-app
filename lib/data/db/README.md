@@ -1,12 +1,14 @@
-Drift databazy (D-01).
+Drift databazy.
 
-- `content_db.dart` + `content_tables.dart`: content.db, iba citanie. Zrkadlo
-  kontraktu `drift_schemas/content/content_schema.sql` (S-01: prechodny
-  kontrakt, finalny dodava prosoche-content cez F-01); porovnanie
-  s prosoche-content v `test/data/db/content_schema_test.dart` je vypnute.
-- `content_integrity.dart`: kontrola po otvoreni (schema, dev_content,
-  aspon jeden citat).
-- `user_db.dart` + `user_tables.dart`: user.db, WAL + busy_timeout.
+- `content_db.dart` + `content_tables.dart`: content.db v1, iba citanie. Zrkadlo
+  kontraktu `drift_schemas/content/content_schema.sql` (kopia
+  `prosoche-content/schema/content_schema.sql`); zhodu s prosoche-content
+  strazi `test/data/db/content_schema_test.dart`. FTS5 `section_fts` cez
+  `LibraryDao.search`.
+- `content_integrity.dart`: kontrola po otvoreni (schema_version,
+  dev_content, sekcie a karty, sha256 sekcii, sections_sha256).
+- `user_db.dart` + `user_tables.dart`: user.db v2 (F-01: journal_entry,
+  practice_log, reading_position, section_bookmark), WAL + busy_timeout.
 - `daos/`: dotazy pre obrazovky. `migrations/`: kroky migracii user.db.
 - Zmena schemy user.db: postup v `migrations/user_migrations.dart`.
 - Testovaci content.db: `test/data/db/fixtures/content_fixture.dart`.

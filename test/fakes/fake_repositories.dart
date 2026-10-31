@@ -18,7 +18,10 @@ import 'package:prosoche/domain/quests/quests.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/domain/streak/streak.dart';
 
+import 'fake_library_repositories.dart';
 import 'in_memory_settings_repository.dart';
+
+export 'fake_library_repositories.dart';
 
 /// Hodnota, ktora sa da sledovat (posledna hodnota + zmeny).
 class _Watched<T> {
@@ -283,6 +286,43 @@ class FakeCardContentRepository implements CardContentRepository {
         work: '[PLACEHOLDER work]',
         ref: '1.1',
         sourceId: 'fake',
+        workId: 'fake-books',
+        sectionKey: 'fake-books.1.1',
+        translation: const Translation(
+          translator: '[PLACEHOLDER translator]',
+          year: 1862,
+        ),
+      ),
+      ContentCardId(type: CardType.passage, :final key) => QuoteContent(
+        id,
+        text: '[PLACEHOLDER passage $key]',
+        author: '[PLACEHOLDER author]',
+        work: '[PLACEHOLDER work]',
+        ref: '2.1',
+        sourceId: 'fake',
+      ),
+      ContentCardId(type: CardType.practice, :final key) => PracticeContent(
+        id,
+        title: '[PLACEHOLDER practice $key]',
+        text: '[PLACEHOLDER] step',
+        sectionKey: 'fake-books.1.1',
+      ),
+      ContentCardId(type: CardType.prompt, :final key) => PromptContent(
+        id,
+        text: '[PLACEHOLDER prompt $key]?',
+      ),
+      ContentCardId(type: CardType.concept, :final key) => ConceptContent(
+        id,
+        title: '[PLACEHOLDER concept $key]',
+        subtitle: 'term - gloss',
+        text: '[PLACEHOLDER] explanation',
+      ),
+      ContentCardId(type: CardType.author, :final key) => AuthorContent(
+        id,
+        name: '[PLACEHOLDER author $key]',
+        text: '[PLACEHOLDER] intro',
+        firstWorkId: 'fake-books',
+        firstWorkTitle: '[PLACEHOLDER] Work',
       ),
       ContentCardId() || DoneCardId() => null,
     };
@@ -348,7 +388,11 @@ class FakeRepositories {
     FakeStreakRepository? streak,
     FakeCardContentRepository? cards,
     FakeCardActionsRepository? actions,
-  }) : settings = settings ?? InMemorySettingsRepository(),
+    FakeLibraryRepository? library,
+    FakePracticeRepository? practice,
+  }) : library = library ?? FakeLibraryRepository(),
+       practice = practice ?? FakePracticeRepository(),
+       settings = settings ?? InMemorySettingsRepository(),
        dailySets = dailySets ?? FakeDailySetRepository(),
        quests = quests ?? FakeQuestRepository(),
        streak = streak ?? FakeStreakRepository(),
@@ -361,6 +405,8 @@ class FakeRepositories {
   final FakeStreakRepository streak;
   final FakeCardContentRepository cards;
   final FakeCardActionsRepository actions;
+  final FakeLibraryRepository library;
+  final FakePracticeRepository practice;
 
   /// Override vsetkych repozitarov, hodin, zony a jazyka zariadenia.
   /// Ziadna databaza ani content.db sa neotvara.
@@ -378,6 +424,8 @@ class FakeRepositories {
     streakRepositoryProvider.overrideWithValue(streak),
     cardContentRepositoryProvider.overrideWithValue(cards),
     cardActionsRepositoryProvider.overrideWithValue(actions),
+    libraryRepositoryProvider.overrideWithValue(library),
+    practiceRepositoryProvider.overrideWithValue(practice),
   ];
 }
 

@@ -27,6 +27,8 @@ final class NotificationTriggers {
   static final List<SettingKey<Object?>> watchedKeys = [
     SettingsKeys.notifMorningEnabled,
     SettingsKeys.notifMorningTime,
+    SettingsKeys.notifEveningEnabled,
+    SettingsKeys.notifEveningTime,
     SettingsKeys.notifPrivateLockscreen,
     SettingsKeys.uiLocale,
   ];

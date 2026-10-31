@@ -16,7 +16,6 @@ void main() {
   final ba = tz.getLocation('Europe/Bratislava');
 
   late List<MethodCall> calls;
-  late bool exactAllowed;
 
   ScheduledNotification notification(
     NotificationChannel channel, {
@@ -38,7 +37,6 @@ void main() {
       debugDefaultTargetPlatformOverride = TargetPlatform.android;
       AndroidFlutterLocalNotificationsPlugin.registerWith();
       calls = [];
-      exactAllowed = true;
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(_channel, (call) async {
             calls.add(call);
@@ -49,19 +47,9 @@ void main() {
                 ];
               case 'zonedSchedule':
                 final args = call.arguments as Map<Object?, Object?>;
-                final specifics = args['platformSpecifics']! as Map;
-                if (specifics['scheduleMode'] == 'exactAllowWhileIdle' &&
-                    !exactAllowed) {
-                  throw PlatformException(
-                    code: LocalNotificationsPlatform.exactNotPermittedCode,
-                  );
-                }
                 if (args['id'] == 13) throw PlatformException(code: 'other');
                 return null;
-              case 'canScheduleExactNotifications':
-                return exactAllowed;
               case 'initialize':
-              case 'requestExactAlarmsPermission':
               case 'requestNotificationsPermission':
               case 'areNotificationsEnabled':
                 return true;
@@ -85,44 +73,20 @@ void main() {
       expect(await platform.pending(), [const PendingNotification(7, 'p')]);
       await platform.cancel(7);
       expect(calls.last.method, 'cancel');
-      expect(await platform.canScheduleExact(), isTrue);
-      expect(await platform.requestExactAlarms(), isTrue);
       expect(await platform.requestPermission(), isTrue);
       expect(await platform.areEnabled(), isTrue);
       await LocalNotificationsPlatform().initialize();
     });
 
-    test('exact schedule uses exactAllowWhileIdle', () async {
+    test('every reminder is inexact (inexactAllowWhileIdle)', () async {
       final platform = LocalNotificationsPlatform();
-      await platform.schedule(
-        notification(NotificationChannel.daily),
-        exact: true,
-      );
+      await platform.schedule(notification(NotificationChannel.daily));
       final args = calls.single.arguments as Map<Object?, Object?>;
       final specifics = args['platformSpecifics']! as Map;
-      expect(specifics['scheduleMode'], 'exactAllowWhileIdle');
+      expect(specifics['scheduleMode'], 'inexactAllowWhileIdle');
       expect(specifics['channelId'], 'daily');
       expect(args['title'], 'Prosoche · 12:00');
       expect(args['payload'], '{"v":1}');
-    });
-
-    test('without permission exact throws, inexact works', () async {
-      exactAllowed = false;
-      final platform = LocalNotificationsPlatform();
-      expect(await platform.canScheduleExact(), isFalse);
-      await expectLater(
-        platform.schedule(notification(NotificationChannel.daily), exact: true),
-        throwsA(isA<ExactAlarmNotPermittedException>()),
-      );
-      await platform.schedule(
-        notification(NotificationChannel.daily),
-        exact: false,
-      );
-      final specifics =
-          (calls.last.arguments as Map<Object?, Object?>)['platformSpecifics']!
-              as Map;
-      expect(specifics['scheduleMode'], 'inexactAllowWhileIdle');
-      expect(const ExactAlarmNotPermittedException().toString(), isNotEmpty);
     });
 
     test('other platform errors are rethrown', () async {
@@ -139,7 +103,7 @@ void main() {
         private: false,
       );
       await expectLater(
-        platform.schedule(n, exact: false),
+        platform.schedule(n),
         throwsA(isA<PlatformException>()),
       );
     });
@@ -173,10 +137,8 @@ void main() {
     });
     tearDown(() => debugDefaultTargetPlatformOverride = null);
 
-    test('exact alarms are not a concept, permission unknown', () async {
+    test('permission unknown off Android/iOS', () async {
       final platform = LocalNotificationsPlatform();
-      expect(await platform.canScheduleExact(), isTrue);
-      expect(await platform.requestExactAlarms(), isTrue);
       expect(await platform.requestPermission(), isFalse);
       expect(await platform.areEnabled(), isFalse);
     });

@@ -53,31 +53,36 @@ void main() {
     }
   });
 
-  test('contract defines its user_version', () {
+  test('contract declares the schema_version of the app', () {
+    // user_version nastavuje pipeline (build_db), schema ju deklaruje
+    // v hlavicke a v `meta.schema_version`.
     expect(
-      contract.select('PRAGMA user_version').single.values.single,
-      ContentDb.contractVersion,
+      File(contractPath).readAsStringSync(),
+      contains('schema_version: ${ContentDb.contractVersion}'),
     );
   });
 
-  // S-01: lokalny kontrakt je prechodny, finalny dodava C-01. Porovnanie
-  // s prosoche-content zapne F-01 po napojeni (odstranit `skip`).
-  test(
-    'local contract copy equals prosoche-content (when available)',
-    skip: 'S-01: prechodny kontrakt, zapne F-01',
-    () {
-      final upstream = findUpstreamContract('content_schema.sql');
-      if (upstream == null) {
-        markTestSkipped('prosoche-content not found next to prosoche-app');
-        return;
-      }
-      expect(
-        File(contractPath).readAsStringSync(),
-        upstream.readAsStringSync(),
-        reason:
-            'Kontrakt sa zmenil: skopiruj ${upstream.path} do $contractPath '
-            'a uprav content_tables.dart.',
-      );
-    },
-  );
+  test('FTS5 table is part of the contract', () {
+    expect(
+      contract
+          .select("SELECT name FROM sqlite_master WHERE name = 'section_fts'")
+          .single['name'],
+      'section_fts',
+    );
+  });
+
+  test('local contract copy equals prosoche-content (when available)', () {
+    final upstream = findUpstreamContract('content_schema.sql');
+    if (upstream == null) {
+      markTestSkipped('prosoche-content not found next to prosoche-app');
+      return;
+    }
+    expect(
+      File(contractPath).readAsStringSync(),
+      upstream.readAsStringSync(),
+      reason:
+          'Kontrakt sa zmenil: skopiruj ${upstream.path} do $contractPath '
+          'a uprav content_tables.dart.',
+    );
+  });
 }

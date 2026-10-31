@@ -398,7 +398,7 @@ final class ContentPackServiceProvider
 }
 
 String _$contentPackServiceHash() =>
-    r'109af41336c240645b6e73c8166388e9a270a184';
+    r'5b9ae0f47e263acb2e2b536f048fde507309587e';
 
 /// Perzistentny stav obsahu, aktualizuje sa pri kazdej zmene.
 
@@ -494,14 +494,14 @@ final class DisabledContentIdsProvider
 String _$disabledContentIdsHash() =>
     r'49a408f2c11d676cecb621d83c646c7e9d690750';
 
-/// Kill-switch (docs/06 A.7): funkcie, `updateRequired`, oznam. Bez
-/// platneho configu defaulty z kodu (vsetko zapnute).
+/// Kill-switch (docs/06 A.7): funkcie, `updateRequired`, oznam. Obsah v1
+/// nepublikuje `remote_config.json`: defaulty z kodu (vsetko zapnute).
 
 @ProviderFor(remoteConfigPolicy)
 final remoteConfigPolicyProvider = RemoteConfigPolicyProvider._();
 
-/// Kill-switch (docs/06 A.7): funkcie, `updateRequired`, oznam. Bez
-/// platneho configu defaulty z kodu (vsetko zapnute).
+/// Kill-switch (docs/06 A.7): funkcie, `updateRequired`, oznam. Obsah v1
+/// nepublikuje `remote_config.json`: defaulty z kodu (vsetko zapnute).
 
 final class RemoteConfigPolicyProvider
     extends
@@ -511,8 +511,8 @@ final class RemoteConfigPolicyProvider
           RemoteConfigPolicy
         >
     with $Provider<RemoteConfigPolicy> {
-  /// Kill-switch (docs/06 A.7): funkcie, `updateRequired`, oznam. Bez
-  /// platneho configu defaulty z kodu (vsetko zapnute).
+  /// Kill-switch (docs/06 A.7): funkcie, `updateRequired`, oznam. Obsah v1
+  /// nepublikuje `remote_config.json`: defaulty z kodu (vsetko zapnute).
   RemoteConfigPolicyProvider._()
     : super(
         from: null,
@@ -548,7 +548,7 @@ final class RemoteConfigPolicyProvider
 }
 
 String _$remoteConfigPolicyHash() =>
-    r'cd608a49583b68b5a58711c6956ce0715846e667';
+    r'a837405983215912336066bf6c71e452135a9e81';
 
 /// Otvorena, overena content.db (read-only). Po aktualizacii obsahu sa
 /// stare spojenie zavrie a otvori nove.

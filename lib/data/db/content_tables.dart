@@ -1,12 +1,14 @@
 // Deklaracie tabuliek cita len drift_dev pri generovani, za behu sa
 // nevykonavaju.
 // coverage:ignore-file
-// Drift tabulky content.db. Zrkadlo prechodneho kontraktu
-// `drift_schemas/content/content_schema.sql` (S-01, finalny dodava C-01);
-// zhodu strazi `test/data/db/content_schema_test.dart`. content.db je iba
-// na citanie, appka ju nikdy nevytvara ani nemigruje (07 ADR-04).
+// Drift tabulky content.db v1. Zrkadlo kontraktu prosoche-content
+// `drift_schemas/content/content_schema.sql` (kopia `schema/content_schema.sql`,
+// popis `docs/CONTENT_CONTRACT.md`); zhodu strazi
+// `test/data/db/content_schema_test.dart`. content.db je iba na citanie,
+// appka ju nikdy nevytvara ani nemigruje (07 ADR-04).
 //
-// CHECK obmedzenia su len v kontrakte (pipeline).
+// CHECK obmedzenia su len v kontrakte (pipeline). FTS5 tabulka `section_fts`
+// nie je v drift DSL, dotazuje sa cez `customSelect` (LibraryDao.search).
 //
 // Stlpec `text` je v Darte `textContent` (meno `text` koliduje s builderom).
 import 'package:drift/drift.dart';
@@ -30,84 +32,125 @@ class Sources extends Table {
 
   TextColumn get id => text()();
   TextColumn get kind => text()();
-  TextColumn get lang => text().nullable()();
   TextColumn get name => text()();
+  TextColumn get translator => text().nullable()();
+  IntColumn get translatorDied => integer().nullable()();
+  IntColumn get editionYear => integer().nullable()();
   TextColumn get version => text()();
   TextColumn get license => text()();
-  TextColumn get licenseUrl => text().nullable()();
-  TextColumn get licenseText => text()();
+  TextColumn get licenseNote => text()();
   TextColumn get attribution => text()();
-  TextColumn get url => text()();
-  TextColumn get commercialStatus => text()();
+  TextColumn get url => text().nullable()();
   TextColumn get sha256 => text().nullable()();
 
   @override
   Set<Column<Object>> get primaryKey => {id};
 }
 
-@DataClassName('QuoteRow')
-class Quotes extends Table {
+@DataClassName('AuthorRow')
+class Authors extends Table {
   @override
-  String get tableName => 'quote';
+  String get tableName => 'author';
 
   TextColumn get id => text()();
-  TextColumn get status => text()();
-  TextColumn get origin => text()();
-  TextColumn get textContent => text().named('text')();
-  TextColumn get author => text()();
-  TextColumn get work => text()();
-  TextColumn get ref => text().nullable()();
-  TextColumn get tags => text()();
-  TextColumn get timeOfDay => text().withDefault(const Constant('any'))();
-  RealColumn get weight => real().withDefault(const Constant(1))();
+  TextColumn get name => text()();
+  TextColumn get fullName => text()();
+  TextColumn get lifespan => text()();
+  IntColumn get ord => integer()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {id};
+}
+
+@DataClassName('WorkRow')
+class Works extends Table {
+  @override
+  String get tableName => 'work';
+
+  TextColumn get id => text()();
+  TextColumn get authorId => text().references(Authors, #id)();
   TextColumn get sourceId => text().references(Sources, #id)();
-
-  @override
-  Set<Column<Object>> get primaryKey => {id};
-}
-
-@DataClassName('QuestTemplateRow')
-class QuestTemplates extends Table {
-  @override
-  String get tableName => 'quest_template';
-
-  TextColumn get id => text()();
-  IntColumn get version => integer().withDefault(const Constant(1))();
-  TextColumn get status => text()();
-  TextColumn get origin => text()();
-  TextColumn get slot => text()();
-  TextColumn get ruleJson => text()();
-  TextColumn get tags => text()();
-  TextColumn get facetsJson => text().nullable()();
-  RealColumn get weight => real().withDefault(const Constant(1))();
-  IntColumn get cooldownDays => integer().withDefault(const Constant(21))();
-  TextColumn get reviewedBy => text().nullable()();
-  TextColumn get reviewedAt => text().nullable()();
-
-  @override
-  Set<Column<Object>> get primaryKey => {id};
-}
-
-@DataClassName('QuestTextRow')
-class QuestTexts extends Table {
-  @override
-  String get tableName => 'quest_text';
-
-  TextColumn get questId => text().references(QuestTemplates, #id)();
-  TextColumn get lang => text()();
   TextColumn get title => text()();
-  TextColumn get body => text().nullable()();
-  TextColumn get sourceId => text().references(Sources, #id)();
+  TextColumn get originalTitle => text()();
+  TextColumn get translator => text()();
+  TextColumn get shortRef => text()();
+  IntColumn get bookCount => integer()();
+  IntColumn get sectionCount => integer()();
+  IntColumn get ord => integer()();
 
   @override
-  Set<Column<Object>> get primaryKey => {questId, lang};
+  Set<Column<Object>> get primaryKey => {id};
 }
 
-/// Vsetky tabulky content.db (poradie ako v kontrakte).
+@DataClassName('BookRow')
+class Books extends Table {
+  @override
+  String get tableName => 'book';
+
+  TextColumn get workId => text().references(Works, #id)();
+  IntColumn get number => integer()();
+  TextColumn get title => text()();
+  IntColumn get sectionCount => integer()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {workId, number};
+}
+
+@DataClassName('SectionRow')
+class Sections extends Table {
+  @override
+  String get tableName => 'section';
+
+  IntColumn get id => integer()();
+  TextColumn get key => text().unique()();
+  TextColumn get workId => text().references(Works, #id)();
+  IntColumn get book => integer().nullable()();
+  IntColumn get number => integer()();
+  TextColumn get ref => text()();
+  TextColumn get title => text().nullable()();
+  TextColumn get textContent => text().named('text')();
+  IntColumn get charCount => integer()();
+  TextColumn get sha256 => text()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {id};
+
+  @override
+  List<String> get customConstraints => [
+    'FOREIGN KEY (work_id, book) REFERENCES book(work_id, number)',
+  ];
+}
+
+@DataClassName('CardRow')
+class Cards extends Table {
+  @override
+  String get tableName => 'card';
+
+  TextColumn get id => text()();
+  TextColumn get type => text()();
+  TextColumn get authorId => text().nullable().references(Authors, #id)();
+  TextColumn get workId => text().nullable().references(Works, #id)();
+  TextColumn get sectionKey => text().nullable().references(Sections, #key)();
+  TextColumn get ref => text().nullable()();
+  TextColumn get title => text().nullable()();
+  TextColumn get subtitle => text().nullable()();
+  TextColumn get textContent => text().named('text')();
+  TextColumn get tags => text().withDefault(const Constant('[]'))();
+  TextColumn get status => text()();
+  TextColumn get sourceId => text().references(Sources, #id)();
+  IntColumn get ord => integer()();
+
+  @override
+  Set<Column<Object>> get primaryKey => {id};
+}
+
+/// Vsetky bezne tabulky content.db (poradie ako v kontrakte).
 const contentTables = [
   ContentMeta,
   Sources,
-  Quotes,
-  QuestTemplates,
-  QuestTexts,
+  Authors,
+  Works,
+  Books,
+  Sections,
+  Cards,
 ];

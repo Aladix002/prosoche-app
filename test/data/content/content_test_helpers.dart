@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:clock/clock.dart';
 import 'package:crypto/crypto.dart';
 import 'package:cryptography/cryptography.dart';
 import 'package:path/path.dart' as p;
@@ -87,7 +86,7 @@ Uint8List fixtureDbBytes(
       '$contentVersion',
     ]);
   if (corruptText) {
-    db.execute('DELETE FROM quote');
+    db.execute('DELETE FROM card');
   }
   db.close();
   final bytes = file.readAsBytesSync();
@@ -96,6 +95,19 @@ Uint8List fixtureDbBytes(
 }
 
 String sha(List<int> b) => sha256.convert(b).toString();
+
+/// `meta.sections_sha256` fixture (rovnaka pre kazdu `content_version`).
+String fixtureSectionsSha256() {
+  final db = buildContentFixture();
+  try {
+    return db
+            .select("SELECT value FROM meta WHERE key = 'sections_sha256'")
+            .single['value']
+        as String;
+  } finally {
+    db.close();
+  }
+}
 
 /// Manifest ako `prosoche-content/pipeline/manifest.py` `build_manifest`.
 Uint8List manifestBytes({
@@ -106,6 +118,8 @@ Uint8List manifestBytes({
   int schemaVersion = ContentDb.contractVersion,
   List<String> disabledIds = const [],
   String kid = 'test-content-a',
+  String? sectionsSha256,
+  bool devContent = true,
 }) => utf8.encode(
   const JsonEncoder.withIndent('  ').convert({
     'schema': 1,
@@ -123,45 +137,12 @@ Uint8List manifestBytes({
       'gz_sha256': sha(gz),
       'gz_size': gz.length,
     },
+    'sections_sha256': sectionsSha256 ?? fixtureSectionsSha256(),
+    'dev_content': devContent,
     'disabled_ids': disabledIds,
     'sources': [
-      {'id': 'fx-text', 'kind': 'text', 'lang': 'en', 'version': '1'},
+      {'id': 'fx-text', 'kind': 'text', 'version': 'fx1'},
     ],
-  }),
-);
-
-Uint8List remoteConfigBytes({
-  int seq = 1,
-  String expiresAt = '2099-01-01T00:00:00Z',
-  String minSupported = '0.1.0',
-  String? recommended,
-  bool autoUpdate = true,
-  List<String> broken = const [],
-  Map<String, Object?>? notice,
-  Map<String, Object?> extraFeatures = const {},
-}) => utf8.encode(
-  jsonEncode({
-    'schema': 1,
-    'seq': seq,
-    'issued_at': '2026-01-01T00:00:00Z',
-    'expires_at': expiresAt,
-    'min_supported_version': minSupported,
-    'recommended_version': recommended,
-    'features': {
-      'content_auto_update': {'enabled': autoUpdate},
-      ...extraFeatures,
-    },
-    'broken_versions': broken,
-    'notice': notice,
-  }),
-);
-
-Uint8List revocationsBytes(List<String> revoked, {int seq = 1}) => utf8.encode(
-  jsonEncode({
-    'schema': 1,
-    'seq': seq,
-    'revoked': revoked,
-    'issued_at': '2026-01-01T00:00:00Z',
   }),
 );
 
@@ -254,7 +235,6 @@ ContentPackService buildService({
   String appVersion = '0.1.0',
   ContentEndpoints endpoints = endpoints,
   List<Duration>? delays,
-  DateTime? now,
 }) => ContentPackService(
   directory: () async => dir,
   bundled: bundled,
@@ -264,6 +244,5 @@ ContentPackService buildService({
   logger: testLogger(log),
   endpoints: endpoints,
   integrity: fixtureIntegrity(),
-  clock: Clock.fixed(now ?? DateTime.utc(2026, 6)),
   delay: (d) async => delays?.add(d),
 );

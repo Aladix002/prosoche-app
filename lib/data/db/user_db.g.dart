@@ -3650,6 +3650,1281 @@ class SavedCardsCompanion extends UpdateCompanion<SavedCardRow> {
   }
 }
 
+class $JournalEntriesTable extends JournalEntries
+    with TableInfo<$JournalEntriesTable, JournalEntryRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $JournalEntriesTable(this.attachedDatabase, [this._alias]);
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<LocalDate, String> date =
+      GeneratedColumn<String>(
+        'date',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<LocalDate>($JournalEntriesTable.$converterdate);
+  @override
+  late final GeneratedColumnWithTypeConverter<JournalKind, String> kind =
+      GeneratedColumn<String>(
+        'kind',
+        aliasedName,
+        false,
+        check: () => kind.isIn(JournalKind.values.map((e) => e.wire)),
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<JournalKind>($JournalEntriesTable.$converterkind);
+  @override
+  late final GeneratedColumn<String> promptId = GeneratedColumn<String>(
+    'prompt_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumn<String> prompt = GeneratedColumn<String>(
+    'prompt',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumn<String> body = GeneratedColumn<String>(
+    'body',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime, int> createdAt =
+      GeneratedColumn<int>(
+        'created_at',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: true,
+      ).withConverter<DateTime>($JournalEntriesTable.$convertercreatedAt);
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime, int> updatedAt =
+      GeneratedColumn<int>(
+        'updated_at',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: true,
+      ).withConverter<DateTime>($JournalEntriesTable.$converterupdatedAt);
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    date,
+    kind,
+    promptId,
+    prompt,
+    body,
+    createdAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'journal_entry';
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  JournalEntryRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return JournalEntryRow(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      date: $JournalEntriesTable.$converterdate.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}date'],
+        )!,
+      ),
+      kind: $JournalEntriesTable.$converterkind.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}kind'],
+        )!,
+      ),
+      promptId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}prompt_id'],
+      ),
+      prompt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}prompt'],
+      ),
+      body: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}body'],
+      )!,
+      createdAt: $JournalEntriesTable.$convertercreatedAt.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}created_at'],
+        )!,
+      ),
+      updatedAt: $JournalEntriesTable.$converterupdatedAt.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}updated_at'],
+        )!,
+      ),
+    );
+  }
+
+  @override
+  $JournalEntriesTable createAlias(String alias) {
+    return $JournalEntriesTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<LocalDate, String, String> $converterdate =
+      const LocalDateConverter();
+  static JsonTypeConverter2<JournalKind, String, String> $converterkind =
+      const WireEnumConverter(JournalKind.values);
+  static JsonTypeConverter2<DateTime, int, int> $convertercreatedAt =
+      const UtcMillisConverter();
+  static JsonTypeConverter2<DateTime, int, int> $converterupdatedAt =
+      const UtcMillisConverter();
+}
+
+class JournalEntryRow extends DataClass implements Insertable<JournalEntryRow> {
+  final int id;
+  final LocalDate date;
+  final JournalKind kind;
+
+  /// `card.id` otazky (prompt), ak zaznam odpoveda na otazku z obsahu.
+  final String? promptId;
+
+  /// Text otazky v case zapisu (export je citatelny aj bez content.db).
+  final String? prompt;
+  final String body;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  const JournalEntryRow({
+    required this.id,
+    required this.date,
+    required this.kind,
+    this.promptId,
+    this.prompt,
+    required this.body,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    {
+      map['date'] = Variable<String>(
+        $JournalEntriesTable.$converterdate.toSql(date),
+      );
+    }
+    {
+      map['kind'] = Variable<String>(
+        $JournalEntriesTable.$converterkind.toSql(kind),
+      );
+    }
+    if (!nullToAbsent || promptId != null) {
+      map['prompt_id'] = Variable<String>(promptId);
+    }
+    if (!nullToAbsent || prompt != null) {
+      map['prompt'] = Variable<String>(prompt);
+    }
+    map['body'] = Variable<String>(body);
+    {
+      map['created_at'] = Variable<int>(
+        $JournalEntriesTable.$convertercreatedAt.toSql(createdAt),
+      );
+    }
+    {
+      map['updated_at'] = Variable<int>(
+        $JournalEntriesTable.$converterupdatedAt.toSql(updatedAt),
+      );
+    }
+    return map;
+  }
+
+  JournalEntriesCompanion toCompanion(bool nullToAbsent) {
+    return JournalEntriesCompanion(
+      id: Value(id),
+      date: Value(date),
+      kind: Value(kind),
+      promptId: promptId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(promptId),
+      prompt: prompt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(prompt),
+      body: Value(body),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory JournalEntryRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return JournalEntryRow(
+      id: serializer.fromJson<int>(json['id']),
+      date: $JournalEntriesTable.$converterdate.fromJson(
+        serializer.fromJson<String>(json['date']),
+      ),
+      kind: $JournalEntriesTable.$converterkind.fromJson(
+        serializer.fromJson<String>(json['kind']),
+      ),
+      promptId: serializer.fromJson<String?>(json['promptId']),
+      prompt: serializer.fromJson<String?>(json['prompt']),
+      body: serializer.fromJson<String>(json['body']),
+      createdAt: $JournalEntriesTable.$convertercreatedAt.fromJson(
+        serializer.fromJson<int>(json['createdAt']),
+      ),
+      updatedAt: $JournalEntriesTable.$converterupdatedAt.fromJson(
+        serializer.fromJson<int>(json['updatedAt']),
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'date': serializer.toJson<String>(
+        $JournalEntriesTable.$converterdate.toJson(date),
+      ),
+      'kind': serializer.toJson<String>(
+        $JournalEntriesTable.$converterkind.toJson(kind),
+      ),
+      'promptId': serializer.toJson<String?>(promptId),
+      'prompt': serializer.toJson<String?>(prompt),
+      'body': serializer.toJson<String>(body),
+      'createdAt': serializer.toJson<int>(
+        $JournalEntriesTable.$convertercreatedAt.toJson(createdAt),
+      ),
+      'updatedAt': serializer.toJson<int>(
+        $JournalEntriesTable.$converterupdatedAt.toJson(updatedAt),
+      ),
+    };
+  }
+
+  JournalEntryRow copyWith({
+    int? id,
+    LocalDate? date,
+    JournalKind? kind,
+    Value<String?> promptId = const Value.absent(),
+    Value<String?> prompt = const Value.absent(),
+    String? body,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) => JournalEntryRow(
+    id: id ?? this.id,
+    date: date ?? this.date,
+    kind: kind ?? this.kind,
+    promptId: promptId.present ? promptId.value : this.promptId,
+    prompt: prompt.present ? prompt.value : this.prompt,
+    body: body ?? this.body,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  JournalEntryRow copyWithCompanion(JournalEntriesCompanion data) {
+    return JournalEntryRow(
+      id: data.id.present ? data.id.value : this.id,
+      date: data.date.present ? data.date.value : this.date,
+      kind: data.kind.present ? data.kind.value : this.kind,
+      promptId: data.promptId.present ? data.promptId.value : this.promptId,
+      prompt: data.prompt.present ? data.prompt.value : this.prompt,
+      body: data.body.present ? data.body.value : this.body,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('JournalEntryRow(')
+          ..write('id: $id, ')
+          ..write('date: $date, ')
+          ..write('kind: $kind, ')
+          ..write('promptId: $promptId, ')
+          ..write('prompt: $prompt, ')
+          ..write('body: $body, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, date, kind, promptId, prompt, body, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is JournalEntryRow &&
+          other.id == this.id &&
+          other.date == this.date &&
+          other.kind == this.kind &&
+          other.promptId == this.promptId &&
+          other.prompt == this.prompt &&
+          other.body == this.body &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class JournalEntriesCompanion extends UpdateCompanion<JournalEntryRow> {
+  final Value<int> id;
+  final Value<LocalDate> date;
+  final Value<JournalKind> kind;
+  final Value<String?> promptId;
+  final Value<String?> prompt;
+  final Value<String> body;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  const JournalEntriesCompanion({
+    this.id = const Value.absent(),
+    this.date = const Value.absent(),
+    this.kind = const Value.absent(),
+    this.promptId = const Value.absent(),
+    this.prompt = const Value.absent(),
+    this.body = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  JournalEntriesCompanion.insert({
+    this.id = const Value.absent(),
+    required LocalDate date,
+    required JournalKind kind,
+    this.promptId = const Value.absent(),
+    this.prompt = const Value.absent(),
+    required String body,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+  }) : date = Value(date),
+       kind = Value(kind),
+       body = Value(body),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<JournalEntryRow> custom({
+    Expression<int>? id,
+    Expression<String>? date,
+    Expression<String>? kind,
+    Expression<String>? promptId,
+    Expression<String>? prompt,
+    Expression<String>? body,
+    Expression<int>? createdAt,
+    Expression<int>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (date != null) 'date': date,
+      if (kind != null) 'kind': kind,
+      if (promptId != null) 'prompt_id': promptId,
+      if (prompt != null) 'prompt': prompt,
+      if (body != null) 'body': body,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  JournalEntriesCompanion copyWith({
+    Value<int>? id,
+    Value<LocalDate>? date,
+    Value<JournalKind>? kind,
+    Value<String?>? promptId,
+    Value<String?>? prompt,
+    Value<String>? body,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+  }) {
+    return JournalEntriesCompanion(
+      id: id ?? this.id,
+      date: date ?? this.date,
+      kind: kind ?? this.kind,
+      promptId: promptId ?? this.promptId,
+      prompt: prompt ?? this.prompt,
+      body: body ?? this.body,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (date.present) {
+      map['date'] = Variable<String>(
+        $JournalEntriesTable.$converterdate.toSql(date.value),
+      );
+    }
+    if (kind.present) {
+      map['kind'] = Variable<String>(
+        $JournalEntriesTable.$converterkind.toSql(kind.value),
+      );
+    }
+    if (promptId.present) {
+      map['prompt_id'] = Variable<String>(promptId.value);
+    }
+    if (prompt.present) {
+      map['prompt'] = Variable<String>(prompt.value);
+    }
+    if (body.present) {
+      map['body'] = Variable<String>(body.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(
+        $JournalEntriesTable.$convertercreatedAt.toSql(createdAt.value),
+      );
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(
+        $JournalEntriesTable.$converterupdatedAt.toSql(updatedAt.value),
+      );
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('JournalEntriesCompanion(')
+          ..write('id: $id, ')
+          ..write('date: $date, ')
+          ..write('kind: $kind, ')
+          ..write('promptId: $promptId, ')
+          ..write('prompt: $prompt, ')
+          ..write('body: $body, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PracticeLogsTable extends PracticeLogs
+    with TableInfo<$PracticeLogsTable, PracticeLogRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PracticeLogsTable(this.attachedDatabase, [this._alias]);
+  @override
+  late final GeneratedColumnWithTypeConverter<LocalDate, String> date =
+      GeneratedColumn<String>(
+        'date',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<LocalDate>($PracticeLogsTable.$converterdate);
+  @override
+  late final GeneratedColumnWithTypeConverter<JournalKind, String> routine =
+      GeneratedColumn<String>(
+        'routine',
+        aliasedName,
+        false,
+        check: () => routine.isIn(['morning', 'evening']),
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<JournalKind>($PracticeLogsTable.$converterroutine);
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime, int> doneAt =
+      GeneratedColumn<int>(
+        'done_at',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: true,
+      ).withConverter<DateTime>($PracticeLogsTable.$converterdoneAt);
+  @override
+  List<GeneratedColumn> get $columns => [date, routine, doneAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'practice_log';
+  @override
+  Set<GeneratedColumn> get $primaryKey => {date, routine};
+  @override
+  PracticeLogRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PracticeLogRow(
+      date: $PracticeLogsTable.$converterdate.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}date'],
+        )!,
+      ),
+      routine: $PracticeLogsTable.$converterroutine.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}routine'],
+        )!,
+      ),
+      doneAt: $PracticeLogsTable.$converterdoneAt.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}done_at'],
+        )!,
+      ),
+    );
+  }
+
+  @override
+  $PracticeLogsTable createAlias(String alias) {
+    return $PracticeLogsTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<LocalDate, String, String> $converterdate =
+      const LocalDateConverter();
+  static JsonTypeConverter2<JournalKind, String, String> $converterroutine =
+      const WireEnumConverter(JournalKind.values);
+  static JsonTypeConverter2<DateTime, int, int> $converterdoneAt =
+      const UtcMillisConverter();
+}
+
+class PracticeLogRow extends DataClass implements Insertable<PracticeLogRow> {
+  final LocalDate date;
+  final JournalKind routine;
+  final DateTime doneAt;
+  const PracticeLogRow({
+    required this.date,
+    required this.routine,
+    required this.doneAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    {
+      map['date'] = Variable<String>(
+        $PracticeLogsTable.$converterdate.toSql(date),
+      );
+    }
+    {
+      map['routine'] = Variable<String>(
+        $PracticeLogsTable.$converterroutine.toSql(routine),
+      );
+    }
+    {
+      map['done_at'] = Variable<int>(
+        $PracticeLogsTable.$converterdoneAt.toSql(doneAt),
+      );
+    }
+    return map;
+  }
+
+  PracticeLogsCompanion toCompanion(bool nullToAbsent) {
+    return PracticeLogsCompanion(
+      date: Value(date),
+      routine: Value(routine),
+      doneAt: Value(doneAt),
+    );
+  }
+
+  factory PracticeLogRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PracticeLogRow(
+      date: $PracticeLogsTable.$converterdate.fromJson(
+        serializer.fromJson<String>(json['date']),
+      ),
+      routine: $PracticeLogsTable.$converterroutine.fromJson(
+        serializer.fromJson<String>(json['routine']),
+      ),
+      doneAt: $PracticeLogsTable.$converterdoneAt.fromJson(
+        serializer.fromJson<int>(json['doneAt']),
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'date': serializer.toJson<String>(
+        $PracticeLogsTable.$converterdate.toJson(date),
+      ),
+      'routine': serializer.toJson<String>(
+        $PracticeLogsTable.$converterroutine.toJson(routine),
+      ),
+      'doneAt': serializer.toJson<int>(
+        $PracticeLogsTable.$converterdoneAt.toJson(doneAt),
+      ),
+    };
+  }
+
+  PracticeLogRow copyWith({
+    LocalDate? date,
+    JournalKind? routine,
+    DateTime? doneAt,
+  }) => PracticeLogRow(
+    date: date ?? this.date,
+    routine: routine ?? this.routine,
+    doneAt: doneAt ?? this.doneAt,
+  );
+  PracticeLogRow copyWithCompanion(PracticeLogsCompanion data) {
+    return PracticeLogRow(
+      date: data.date.present ? data.date.value : this.date,
+      routine: data.routine.present ? data.routine.value : this.routine,
+      doneAt: data.doneAt.present ? data.doneAt.value : this.doneAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PracticeLogRow(')
+          ..write('date: $date, ')
+          ..write('routine: $routine, ')
+          ..write('doneAt: $doneAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(date, routine, doneAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PracticeLogRow &&
+          other.date == this.date &&
+          other.routine == this.routine &&
+          other.doneAt == this.doneAt);
+}
+
+class PracticeLogsCompanion extends UpdateCompanion<PracticeLogRow> {
+  final Value<LocalDate> date;
+  final Value<JournalKind> routine;
+  final Value<DateTime> doneAt;
+  final Value<int> rowid;
+  const PracticeLogsCompanion({
+    this.date = const Value.absent(),
+    this.routine = const Value.absent(),
+    this.doneAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  PracticeLogsCompanion.insert({
+    required LocalDate date,
+    required JournalKind routine,
+    required DateTime doneAt,
+    this.rowid = const Value.absent(),
+  }) : date = Value(date),
+       routine = Value(routine),
+       doneAt = Value(doneAt);
+  static Insertable<PracticeLogRow> custom({
+    Expression<String>? date,
+    Expression<String>? routine,
+    Expression<int>? doneAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (date != null) 'date': date,
+      if (routine != null) 'routine': routine,
+      if (doneAt != null) 'done_at': doneAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  PracticeLogsCompanion copyWith({
+    Value<LocalDate>? date,
+    Value<JournalKind>? routine,
+    Value<DateTime>? doneAt,
+    Value<int>? rowid,
+  }) {
+    return PracticeLogsCompanion(
+      date: date ?? this.date,
+      routine: routine ?? this.routine,
+      doneAt: doneAt ?? this.doneAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (date.present) {
+      map['date'] = Variable<String>(
+        $PracticeLogsTable.$converterdate.toSql(date.value),
+      );
+    }
+    if (routine.present) {
+      map['routine'] = Variable<String>(
+        $PracticeLogsTable.$converterroutine.toSql(routine.value),
+      );
+    }
+    if (doneAt.present) {
+      map['done_at'] = Variable<int>(
+        $PracticeLogsTable.$converterdoneAt.toSql(doneAt.value),
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PracticeLogsCompanion(')
+          ..write('date: $date, ')
+          ..write('routine: $routine, ')
+          ..write('doneAt: $doneAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ReadingPositionsTable extends ReadingPositions
+    with TableInfo<$ReadingPositionsTable, ReadingPositionRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ReadingPositionsTable(this.attachedDatabase, [this._alias]);
+  @override
+  late final GeneratedColumn<String> workId = GeneratedColumn<String>(
+    'work_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumn<String> sectionKey = GeneratedColumn<String>(
+    'section_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumn<double> offset = GeneratedColumn<double>(
+    'offset',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime, int> updatedAt =
+      GeneratedColumn<int>(
+        'updated_at',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: true,
+      ).withConverter<DateTime>($ReadingPositionsTable.$converterupdatedAt);
+  @override
+  List<GeneratedColumn> get $columns => [workId, sectionKey, offset, updatedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'reading_position';
+  @override
+  Set<GeneratedColumn> get $primaryKey => {workId};
+  @override
+  ReadingPositionRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ReadingPositionRow(
+      workId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}work_id'],
+      )!,
+      sectionKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}section_key'],
+      )!,
+      offset: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}offset'],
+      )!,
+      updatedAt: $ReadingPositionsTable.$converterupdatedAt.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}updated_at'],
+        )!,
+      ),
+    );
+  }
+
+  @override
+  $ReadingPositionsTable createAlias(String alias) {
+    return $ReadingPositionsTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<DateTime, int, int> $converterupdatedAt =
+      const UtcMillisConverter();
+}
+
+class ReadingPositionRow extends DataClass
+    implements Insertable<ReadingPositionRow> {
+  final String workId;
+  final String sectionKey;
+
+  /// Posun v ramci sekcie 0..1 (volitelne).
+  final double offset;
+  final DateTime updatedAt;
+  const ReadingPositionRow({
+    required this.workId,
+    required this.sectionKey,
+    required this.offset,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['work_id'] = Variable<String>(workId);
+    map['section_key'] = Variable<String>(sectionKey);
+    map['offset'] = Variable<double>(offset);
+    {
+      map['updated_at'] = Variable<int>(
+        $ReadingPositionsTable.$converterupdatedAt.toSql(updatedAt),
+      );
+    }
+    return map;
+  }
+
+  ReadingPositionsCompanion toCompanion(bool nullToAbsent) {
+    return ReadingPositionsCompanion(
+      workId: Value(workId),
+      sectionKey: Value(sectionKey),
+      offset: Value(offset),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory ReadingPositionRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ReadingPositionRow(
+      workId: serializer.fromJson<String>(json['workId']),
+      sectionKey: serializer.fromJson<String>(json['sectionKey']),
+      offset: serializer.fromJson<double>(json['offset']),
+      updatedAt: $ReadingPositionsTable.$converterupdatedAt.fromJson(
+        serializer.fromJson<int>(json['updatedAt']),
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'workId': serializer.toJson<String>(workId),
+      'sectionKey': serializer.toJson<String>(sectionKey),
+      'offset': serializer.toJson<double>(offset),
+      'updatedAt': serializer.toJson<int>(
+        $ReadingPositionsTable.$converterupdatedAt.toJson(updatedAt),
+      ),
+    };
+  }
+
+  ReadingPositionRow copyWith({
+    String? workId,
+    String? sectionKey,
+    double? offset,
+    DateTime? updatedAt,
+  }) => ReadingPositionRow(
+    workId: workId ?? this.workId,
+    sectionKey: sectionKey ?? this.sectionKey,
+    offset: offset ?? this.offset,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  ReadingPositionRow copyWithCompanion(ReadingPositionsCompanion data) {
+    return ReadingPositionRow(
+      workId: data.workId.present ? data.workId.value : this.workId,
+      sectionKey: data.sectionKey.present
+          ? data.sectionKey.value
+          : this.sectionKey,
+      offset: data.offset.present ? data.offset.value : this.offset,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ReadingPositionRow(')
+          ..write('workId: $workId, ')
+          ..write('sectionKey: $sectionKey, ')
+          ..write('offset: $offset, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(workId, sectionKey, offset, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ReadingPositionRow &&
+          other.workId == this.workId &&
+          other.sectionKey == this.sectionKey &&
+          other.offset == this.offset &&
+          other.updatedAt == this.updatedAt);
+}
+
+class ReadingPositionsCompanion extends UpdateCompanion<ReadingPositionRow> {
+  final Value<String> workId;
+  final Value<String> sectionKey;
+  final Value<double> offset;
+  final Value<DateTime> updatedAt;
+  final Value<int> rowid;
+  const ReadingPositionsCompanion({
+    this.workId = const Value.absent(),
+    this.sectionKey = const Value.absent(),
+    this.offset = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ReadingPositionsCompanion.insert({
+    required String workId,
+    required String sectionKey,
+    this.offset = const Value.absent(),
+    required DateTime updatedAt,
+    this.rowid = const Value.absent(),
+  }) : workId = Value(workId),
+       sectionKey = Value(sectionKey),
+       updatedAt = Value(updatedAt);
+  static Insertable<ReadingPositionRow> custom({
+    Expression<String>? workId,
+    Expression<String>? sectionKey,
+    Expression<double>? offset,
+    Expression<int>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (workId != null) 'work_id': workId,
+      if (sectionKey != null) 'section_key': sectionKey,
+      if (offset != null) 'offset': offset,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ReadingPositionsCompanion copyWith({
+    Value<String>? workId,
+    Value<String>? sectionKey,
+    Value<double>? offset,
+    Value<DateTime>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return ReadingPositionsCompanion(
+      workId: workId ?? this.workId,
+      sectionKey: sectionKey ?? this.sectionKey,
+      offset: offset ?? this.offset,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (workId.present) {
+      map['work_id'] = Variable<String>(workId.value);
+    }
+    if (sectionKey.present) {
+      map['section_key'] = Variable<String>(sectionKey.value);
+    }
+    if (offset.present) {
+      map['offset'] = Variable<double>(offset.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<int>(
+        $ReadingPositionsTable.$converterupdatedAt.toSql(updatedAt.value),
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ReadingPositionsCompanion(')
+          ..write('workId: $workId, ')
+          ..write('sectionKey: $sectionKey, ')
+          ..write('offset: $offset, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SectionBookmarksTable extends SectionBookmarks
+    with TableInfo<$SectionBookmarksTable, SectionBookmarkRow> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $SectionBookmarksTable(this.attachedDatabase, [this._alias]);
+  @override
+  late final GeneratedColumn<String> sectionKey = GeneratedColumn<String>(
+    'section_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumn<String> workId = GeneratedColumn<String>(
+    'work_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<DateTime, int> createdAt =
+      GeneratedColumn<int>(
+        'created_at',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: true,
+      ).withConverter<DateTime>($SectionBookmarksTable.$convertercreatedAt);
+  @override
+  List<GeneratedColumn> get $columns => [sectionKey, workId, createdAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'section_bookmark';
+  @override
+  Set<GeneratedColumn> get $primaryKey => {sectionKey};
+  @override
+  SectionBookmarkRow map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SectionBookmarkRow(
+      sectionKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}section_key'],
+      )!,
+      workId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}work_id'],
+      )!,
+      createdAt: $SectionBookmarksTable.$convertercreatedAt.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}created_at'],
+        )!,
+      ),
+    );
+  }
+
+  @override
+  $SectionBookmarksTable createAlias(String alias) {
+    return $SectionBookmarksTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<DateTime, int, int> $convertercreatedAt =
+      const UtcMillisConverter();
+}
+
+class SectionBookmarkRow extends DataClass
+    implements Insertable<SectionBookmarkRow> {
+  final String sectionKey;
+  final String workId;
+  final DateTime createdAt;
+  const SectionBookmarkRow({
+    required this.sectionKey,
+    required this.workId,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['section_key'] = Variable<String>(sectionKey);
+    map['work_id'] = Variable<String>(workId);
+    {
+      map['created_at'] = Variable<int>(
+        $SectionBookmarksTable.$convertercreatedAt.toSql(createdAt),
+      );
+    }
+    return map;
+  }
+
+  SectionBookmarksCompanion toCompanion(bool nullToAbsent) {
+    return SectionBookmarksCompanion(
+      sectionKey: Value(sectionKey),
+      workId: Value(workId),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory SectionBookmarkRow.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SectionBookmarkRow(
+      sectionKey: serializer.fromJson<String>(json['sectionKey']),
+      workId: serializer.fromJson<String>(json['workId']),
+      createdAt: $SectionBookmarksTable.$convertercreatedAt.fromJson(
+        serializer.fromJson<int>(json['createdAt']),
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'sectionKey': serializer.toJson<String>(sectionKey),
+      'workId': serializer.toJson<String>(workId),
+      'createdAt': serializer.toJson<int>(
+        $SectionBookmarksTable.$convertercreatedAt.toJson(createdAt),
+      ),
+    };
+  }
+
+  SectionBookmarkRow copyWith({
+    String? sectionKey,
+    String? workId,
+    DateTime? createdAt,
+  }) => SectionBookmarkRow(
+    sectionKey: sectionKey ?? this.sectionKey,
+    workId: workId ?? this.workId,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  SectionBookmarkRow copyWithCompanion(SectionBookmarksCompanion data) {
+    return SectionBookmarkRow(
+      sectionKey: data.sectionKey.present
+          ? data.sectionKey.value
+          : this.sectionKey,
+      workId: data.workId.present ? data.workId.value : this.workId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SectionBookmarkRow(')
+          ..write('sectionKey: $sectionKey, ')
+          ..write('workId: $workId, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(sectionKey, workId, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SectionBookmarkRow &&
+          other.sectionKey == this.sectionKey &&
+          other.workId == this.workId &&
+          other.createdAt == this.createdAt);
+}
+
+class SectionBookmarksCompanion extends UpdateCompanion<SectionBookmarkRow> {
+  final Value<String> sectionKey;
+  final Value<String> workId;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const SectionBookmarksCompanion({
+    this.sectionKey = const Value.absent(),
+    this.workId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SectionBookmarksCompanion.insert({
+    required String sectionKey,
+    required String workId,
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  }) : sectionKey = Value(sectionKey),
+       workId = Value(workId),
+       createdAt = Value(createdAt);
+  static Insertable<SectionBookmarkRow> custom({
+    Expression<String>? sectionKey,
+    Expression<String>? workId,
+    Expression<int>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (sectionKey != null) 'section_key': sectionKey,
+      if (workId != null) 'work_id': workId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SectionBookmarksCompanion copyWith({
+    Value<String>? sectionKey,
+    Value<String>? workId,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return SectionBookmarksCompanion(
+      sectionKey: sectionKey ?? this.sectionKey,
+      workId: workId ?? this.workId,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (sectionKey.present) {
+      map['section_key'] = Variable<String>(sectionKey.value);
+    }
+    if (workId.present) {
+      map['work_id'] = Variable<String>(workId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<int>(
+        $SectionBookmarksTable.$convertercreatedAt.toSql(createdAt.value),
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SectionBookmarksCompanion(')
+          ..write('sectionKey: $sectionKey, ')
+          ..write('workId: $workId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$UserDb extends GeneratedDatabase {
   _$UserDb(QueryExecutor e) : super(e);
   late final $SettingsTable settings = $SettingsTable(this);
@@ -3662,6 +4937,14 @@ abstract class _$UserDb extends GeneratedDatabase {
   late final $GateSessionsTable gateSessions = $GateSessionsTable(this);
   late final $UnlockEventsTable unlockEvents = $UnlockEventsTable(this);
   late final $SavedCardsTable savedCards = $SavedCardsTable(this);
+  late final $JournalEntriesTable journalEntries = $JournalEntriesTable(this);
+  late final $PracticeLogsTable practiceLogs = $PracticeLogsTable(this);
+  late final $ReadingPositionsTable readingPositions = $ReadingPositionsTable(
+    this,
+  );
+  late final $SectionBookmarksTable sectionBookmarks = $SectionBookmarksTable(
+    this,
+  );
   late final Index cardEventDate = Index(
     'card_event_date',
     'CREATE INDEX card_event_date ON card_event (date)',
@@ -3686,6 +4969,14 @@ abstract class _$UserDb extends GeneratedDatabase {
     'saved_card_saved_at',
     'CREATE INDEX saved_card_saved_at ON saved_card (saved_at)',
   );
+  late final Index journalEntryDate = Index(
+    'journal_entry_date',
+    'CREATE INDEX journal_entry_date ON journal_entry (date)',
+  );
+  late final Index sectionBookmarkCreated = Index(
+    'section_bookmark_created',
+    'CREATE INDEX section_bookmark_created ON section_bookmark (created_at)',
+  );
   late final SettingsDao settingsDao = SettingsDao(this as UserDb);
   late final DailySetDao dailySetDao = DailySetDao(this as UserDb);
   late final CardEventDao cardEventDao = CardEventDao(this as UserDb);
@@ -3693,6 +4984,8 @@ abstract class _$UserDb extends GeneratedDatabase {
   late final StreakDao streakDao = StreakDao(this as UserDb);
   late final BlockerDao blockerDao = BlockerDao(this as UserDb);
   late final SavedCardDao savedCardDao = SavedCardDao(this as UserDb);
+  late final JournalDao journalDao = JournalDao(this as UserDb);
+  late final ReadingDao readingDao = ReadingDao(this as UserDb);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -3708,12 +5001,18 @@ abstract class _$UserDb extends GeneratedDatabase {
     gateSessions,
     unlockEvents,
     savedCards,
+    journalEntries,
+    practiceLogs,
+    readingPositions,
+    sectionBookmarks,
     cardEventDate,
     cardEventCardId,
     cardEventTypeAction,
     cardEventSeenUnique,
     unlockEventTs,
     savedCardSavedAt,
+    journalEntryDate,
+    sectionBookmarkCreated,
   ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
