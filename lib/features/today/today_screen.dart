@@ -442,12 +442,16 @@ class _TodaySetCtaState extends ConsumerState<TodaySetCta> {
               ),
             ],
           ),
-          const SizedBox(height: SkSpace.space12),
-          SkButton.secondary(
-            label: l10n.todayCtaKeepReading,
-            expand: true,
-            onPressed: () => context.go(AppRoutes.library),
-          ),
+          // Ked je pod kartou dlazdica "Keep reading" s poslednou poziciou,
+          // druhe tlacidlo s rovnakym textom by bolo duplicitne (I-01).
+          if (ref.watch(lastReadingProvider).value == null) ...[
+            const SizedBox(height: SkSpace.space12),
+            SkButton.secondary(
+              label: l10n.todayCtaKeepReading,
+              expand: true,
+              onPressed: () => context.go(AppRoutes.library),
+            ),
+          ],
         ],
       );
     }

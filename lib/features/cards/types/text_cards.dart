@@ -231,7 +231,11 @@ class ConceptCard extends StatelessWidget {
     return SkCardSurface(
       semanticLabel: semanticLabel,
       eyebrow: cardTypeLabel(context, c),
-      eyebrowDetail: c.title,
+      // Nadpis sa neopakuje, ked je rovnaky ako termin (napr. "Amor fati"
+      // a "amor fati"), I-01.
+      eyebrowDetail: c.title.toLowerCase() == term.toLowerCase()
+          ? null
+          : c.title,
       headerActions: actions.build(context),
       lead: SkConceptHeader(term: term, gloss: gloss),
       translation: _Paragraphs(

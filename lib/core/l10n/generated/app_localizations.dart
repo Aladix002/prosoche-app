@@ -805,7 +805,7 @@ abstract class AppLocalizations {
   /// Body of the notifications step (shown before the system dialog).
   ///
   /// In en, this message translates to:
-  /// **'Get one quiet notice in the morning when your cards are ready. Nothing else.'**
+  /// **'A quiet notice in the morning when your cards are ready, and in the evening only if you want one. Nothing else.'**
   String get onbNotifBody;
 
   /// Switch: one reminder in the morning. time = local time, e.g. '07:30'.
@@ -2367,6 +2367,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Other exercises'**
   String get practiceOtherExercises;
+
+  /// Human name of the license id 'public-domain' on Settings > Sources & licenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Public domain'**
+  String get setLicensePublicDomain;
+
+  /// Human name of the license id 'proprietary-own' (texts written for the app) on Settings > Sources & licenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Written for Prosoche'**
+  String get setLicenseOwn;
 
   /// Small line under a card with the source of the text, e.g. 'Source: Project Gutenberg'. The attribution comes from the content database and is not translated.
   ///

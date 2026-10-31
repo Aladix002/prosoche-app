@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prosoche/app.dart' show prosocheAppTheme, skUiStringsOf;
 import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/data/blocker/blocker_gateway_provider.dart';
+import 'package:prosoche/data/repositories/settings/settings_providers.dart';
 import 'package:prosoche/features/gate/gate_screen.dart';
 import 'package:prosoche/features/settings/settings_providers.dart';
 import 'package:prosoche/features/shell/app_locale.dart';
@@ -40,6 +41,10 @@ class _GateAppState extends ConsumerState<GateApp> {
     _requests = ref.read(blockerGatewayProvider).gateRequests.listen((app) {
       // Aktivita je uz pripojena: targetSdk 36 edge-to-edge.
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge).ignore();
+      // Predhriaty engine bezi v inom izolate nez hlavna appka: zmeny
+      // nastaveni (tema, jazyk) zapisane appkou drift stream tu nevidi.
+      // Pri kazdej brane ich nacitame znova (I-01).
+      ref.invalidate(settingProvider);
       setState(() {
         _app = app;
         _request++;

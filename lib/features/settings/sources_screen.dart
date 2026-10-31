@@ -100,7 +100,10 @@ class SourceTile extends ConsumerWidget {
             ),
             const SizedBox(height: SkSpace.space2),
             Text(
-              l10n.setSourceVersionLicense(s.version, s.license),
+              l10n.setSourceVersionLicense(
+                s.version,
+                licenseLabel(context, s.license),
+              ),
               style: sk.text.bodyMedium,
             ),
             if (s.attribution.isNotEmpty) ...[
@@ -131,7 +134,12 @@ class SourceTile extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(l10n.setSourceVersionLicense(s.version, s.license)),
+          Text(
+            l10n.setSourceVersionLicense(
+              s.version,
+              licenseLabel(context, s.license),
+            ),
+          ),
           if (s.attribution.isNotEmpty) ...[
             const SizedBox(height: SkSpace.space12),
             SelectableText(s.attribution),
@@ -214,3 +222,10 @@ void showOpenSourceLicenses(BuildContext context, {String? version}) =>
       applicationName: context.l10n.appTitle,
       applicationVersion: version,
     );
+
+/// Citatelny nazov licencie z content.db (`source.license`), I-01.
+String licenseLabel(BuildContext context, String license) => switch (license) {
+  'public-domain' => context.l10n.setLicensePublicDomain,
+  'proprietary-own' => context.l10n.setLicenseOwn,
+  _ => license,
+};

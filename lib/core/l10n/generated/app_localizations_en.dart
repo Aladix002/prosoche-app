@@ -516,7 +516,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onbNotifBody =>
-      'Get one quiet notice in the morning when your cards are ready. Nothing else.';
+      'A quiet notice in the morning when your cards are ready, and in the evening only if you want one. Nothing else.';
 
   @override
   String onbNotifMorning(String time) {
@@ -1553,6 +1553,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get practiceOtherExercises => 'Other exercises';
+
+  @override
+  String get setLicensePublicDomain => 'Public domain';
+
+  @override
+  String get setLicenseOwn => 'Written for Prosoche';
 
   @override
   String cardSourceLine(String attribution) {

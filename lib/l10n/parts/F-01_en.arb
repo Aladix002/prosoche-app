@@ -61,7 +61,7 @@
   "@onbNotifTitle": {
     "description": "Title of the notifications step."
   },
-  "onbNotifBody": "Get one quiet notice in the morning when your cards are ready. Nothing else.",
+  "onbNotifBody": "A quiet notice in the morning when your cards are ready, and in the evening only if you want one. Nothing else.",
   "@onbNotifBody": {
     "description": "Body of the notifications step (shown before the system dialog)."
   },

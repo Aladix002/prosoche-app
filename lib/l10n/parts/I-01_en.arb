@@ -33,5 +33,13 @@
   "practiceOtherExercises": "Other exercises",
   "@practiceOtherExercises": {
     "description": "Section heading on Practice under the morning and evening cards: the remaining exercises."
+  },
+  "setLicensePublicDomain": "Public domain",
+  "@setLicensePublicDomain": {
+    "description": "Human name of the license id 'public-domain' on Settings > Sources & licenses."
+  },
+  "setLicenseOwn": "Written for Prosoche",
+  "@setLicenseOwn": {
+    "description": "Human name of the license id 'proprietary-own' (texts written for the app) on Settings > Sources & licenses."
   }
 }

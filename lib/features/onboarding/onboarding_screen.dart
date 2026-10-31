@@ -172,7 +172,11 @@ class _Header extends StatelessWidget {
           if (onSkip != null)
             SkButton.tertiary(label: l10n.onbSkip, onPressed: onSkip)
           else
-            const SizedBox(height: SkSpace.minTouchTarget),
+            // Protivaha tlacidla spat: progres je symetricky (I-01).
+            const SizedBox(
+              width: SkSpace.minTouchTarget + SkSpace.space8,
+              height: SkSpace.minTouchTarget,
+            ),
         ],
       ),
     );
