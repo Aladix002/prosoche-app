@@ -62,8 +62,8 @@ flutter:
   uses-material-design: true
   generate: true
 
-  # U-01: pribalene OFL fonty (docs/01 2.3.1, docs/09 2.7), licencie v
-  # assets/fonts/*/OFL.txt.
+  # D-01: pribalene OFL fonty (docs/DESIGN.md 3.1), licencie v
+  # assets/fonts/*/OFL.txt, zdroje v assets/fonts/SOURCES.txt.
   fonts:
     - family: Inter
       fonts:
@@ -72,18 +72,25 @@ flutter:
           weight: 500
         - asset: assets/fonts/inter/Inter-SemiBold.ttf
           weight: 600
-    - family: Literata
+    - family: EB Garamond
       fonts:
-        - asset: assets/fonts/literata/Literata-Regular.ttf
-        - asset: assets/fonts/literata/Literata-Italic.ttf
+        - asset: assets/fonts/eb_garamond/EBGaramond-Regular.ttf
+        - asset: assets/fonts/eb_garamond/EBGaramond-Italic.ttf
           style: italic
-        - asset: assets/fonts/literata/Literata-SemiBold.ttf
+        - asset: assets/fonts/eb_garamond/EBGaramond-Medium.ttf
+          weight: 500
+    - family: Cormorant Garamond
+      fonts:
+        - asset: assets/fonts/cormorant_garamond/CormorantGaramond-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/cormorant_garamond/CormorantGaramond-SemiBold.ttf
           weight: 600
 
-  # Licencie fontov pre LicenseRegistry (lib/ui/fonts/font_licenses.dart).
+  # Licencie fontov pre LicenseRegistry (lib/ui/foundation/font_licenses.dart).
   assets:
     - assets/fonts/inter/OFL.txt
-    - assets/fonts/literata/OFL.txt
+    - assets/fonts/eb_garamond/OFL.txt
+    - assets/fonts/cormorant_garamond/OFL.txt
     # D-03: pribalena content.db a manifest (tool/bundle_content.sh,
     # gitignored; adresar drzi assets/content/.gitignore).
     - assets/content/

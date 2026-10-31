@@ -5,17 +5,19 @@ import 'package:prosoche/ui/motif/sk_atmosphere.dart';
 import 'package:prosoche/ui/theme/contrast.dart';
 import 'package:prosoche/ui/theme/prosoche_colors.dart';
 
-/// Kontrastny test z tokenov (docs/01 2.1.3, D10). Kazda nova kombinacia
-/// farieb v komponentoch sa prida sem.
+/// Kontrastny test z tokenov (docs/DESIGN.md 2.4, rovnake pary ako
+/// docs/tools/contrast.py v repe prosoche). Kazda nova kombinacia farieb
+/// v komponentoch sa prida sem.
 void main() {
-  test('formula matches values computed in docs/01 2.1.3', () {
+  test('formula matches values computed in docs/DESIGN.md 2.4', () {
     const l = ProsocheColors.light;
     const d = ProsocheColors.dark;
-    expect(SkContrast.ratio(l.textPrimary, l.bg), closeTo(13.37, 0.01));
-    expect(SkContrast.ratio(l.outlineStrong, l.bg), closeTo(3.48, 0.01));
-    expect(SkContrast.ratio(l.onPrimary, l.primary), closeTo(7.53, 0.01));
-    expect(SkContrast.ratio(d.textTertiary, d.surfaceAlt), closeTo(4.91, 0.01));
-    expect(SkContrast.ratio(d.lead, d.bg), closeTo(15.56, 0.01));
+    expect(SkContrast.ratio(l.textPrimary, l.bg), closeTo(13.88, 0.01));
+    expect(SkContrast.ratio(l.outlineStrong, l.bg), closeTo(3.59, 0.01));
+    expect(SkContrast.ratio(l.onPrimary, l.primary), closeTo(11.48, 0.01));
+    expect(SkContrast.ratio(l.accentText, l.surfaceAlt), closeTo(4.96, 0.01));
+    expect(SkContrast.ratio(d.textTertiary, d.surfaceAlt), closeTo(5.24, 0.01));
+    expect(SkContrast.ratio(d.lead, d.bg), closeTo(16.26, 0.01));
     // Symetria.
     expect(
       SkContrast.ratio(l.bg, l.textPrimary),
@@ -184,6 +186,12 @@ void main() {
       }
     });
   }
+
+  // Okra (motiv) je len dekor; vo svetlej teme je pod 3:1 a nesmie nikdy
+  // niest informaciu (docs/DESIGN.md 2.4).
+  test('ochre is decorative only', () {
+    expect(ProsocheColors.decorativeOnly, contains('goldDeco'));
+  });
 
   test('high contrast variants follow docs/01 8.5', () {
     for (final (base, hc) in [

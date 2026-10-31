@@ -103,31 +103,19 @@ class SkCardSurface extends StatelessWidget {
         child: Row(
           children: [
             if (eyebrow != null) ...[
-              if (!_compact) ...[
-                SkRosette(
-                  size: 14,
-                  strokeWidth: 1,
-                  ring: false,
-                  color: c.goldDeco,
-                ),
-                const SizedBox(width: SkSpace.space8),
-              ],
               Expanded(
                 child: Text(
                   _compact
                       ? [eyebrow!, ?eyebrowDetail].join(' \u00B7 ')
-                      : eyebrow!,
+                      : (ltr ? eyebrow!.toUpperCase() : eyebrow!),
                   style: _compact
                       ? sk.text.bodySmall!.copyWith(
                           color: c.textSecondary,
                           letterSpacing: ltr ? 0.4 : 0,
                         )
-                      : sk.text.labelMedium!.copyWith(
-                          color: c.accentText,
-                          // Rozostup len v latinke: arabske pismo by sa
-                          // rozpadlo (docs/01 1.3 bod 4).
-                          letterSpacing: ltr ? 1.4 : 0,
-                        ),
+                      // Typ karty: Inter verzalky v terakote (docs/DESIGN.md
+                      // 3.3); rozostup len v latinke.
+                      : sk.type.eyebrow.copyWith(letterSpacing: ltr ? null : 0),
                 ),
               ),
             ] else
@@ -147,12 +135,8 @@ class SkCardSurface extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       row,
-                      Text(
-                        detail,
-                        style: sk.text.titleMedium!.copyWith(
-                          color: c.textPrimary,
-                        ),
-                      ),
+                      // Referencia diela "Meditations 2.1" (EB Garamond).
+                      Text(detail, style: sk.type.reference),
                     ],
                   ))
           : null;
@@ -161,7 +145,7 @@ class SkCardSurface extends StatelessWidget {
         if (translation != null) ...[
           if (lead != null)
             const Padding(
-              // Spolu space32+ medzi arabcinou a prekladom (docs/01 2.4).
+              // Spolu space32+ medzi hlavnym blokom a textom.
               padding: EdgeInsetsDirectional.symmetric(
                 vertical: SkSpace.space24,
               ),
@@ -263,9 +247,9 @@ class SkCardSurface extends StatelessWidget {
               ? null
               : const [
                   BoxShadow(
-                    color: Color(0x0F1F2A2E),
-                    blurRadius: 24,
-                    offset: Offset(0, 8),
+                    color: Color(0x121B2230),
+                    blurRadius: 20,
+                    offset: Offset(0, 6),
                   ),
                 ],
         ),
@@ -276,8 +260,8 @@ class SkCardSurface extends StatelessWidget {
           child: CustomPaint(
             // Ramcek lezi v odsadeni karty, za obsahom (nikdy nad textom).
             painter: SkCardFramePainter(
-              color: c.goldDeco.withValues(alpha: dark ? 0.4 : 0.45),
-              radius: SkRadius.lg - 6,
+              color: c.goldDeco.withValues(alpha: dark ? 0.35 : 0.45),
+              radius: SkRadius.lg - 8,
             ),
             child: Padding(
               padding: EdgeInsetsDirectional.all(padding),

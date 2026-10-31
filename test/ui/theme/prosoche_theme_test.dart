@@ -50,12 +50,12 @@ void main() {
       final t = ProsocheTheme.light(
         highContrast: true,
         reduceMotion: true,
-        uiFontFamily: SkFonts.literata,
+        uiFontFamily: SkFonts.serif,
         uiHeightFactor: 1.2,
       );
       expect(t.extension<ProsocheColors>(), ProsocheColors.lightHighContrast);
       expect(t.extension<ProsocheMotion>()!.reduced, isTrue);
-      expect(t.textTheme.bodyLarge!.fontFamily, SkFonts.literata);
+      expect(t.textTheme.bodyLarge!.fontFamily, SkFonts.serif);
       expect(t.textTheme.bodyLarge!.height, closeTo(24 / 16 * 1.2, 1e-9));
       expect(
         ProsocheTheme.dark(highContrast: true).extension<ProsocheColors>(),
@@ -63,18 +63,27 @@ void main() {
       );
     });
 
-    test('UI type scale follows docs/01 2.3.2', () {
+    test('UI type scale follows docs/DESIGN.md 3.2', () {
       final t = ProsocheTheme.light().textTheme;
-      void check(TextStyle? s, double size, double line, FontWeight w) {
+      void check(
+        TextStyle? s,
+        double size,
+        double line,
+        FontWeight w, {
+        String family = SkFonts.inter,
+      }) {
         expect(s!.fontSize, size);
         expect(s.height! * size, closeTo(line, 1e-9));
         expect(s.fontWeight, w);
-        expect(s.fontFamily, SkFonts.inter);
-        expect(s.fontFamilyFallback, SkFonts.uiFallback);
+        expect(s.fontFamily, family);
+        if (family == SkFonts.inter) {
+          expect(s.fontFamilyFallback, SkFonts.uiFallback);
+        }
       }
 
-      check(t.displaySmall, 34, 40, FontWeight.w600);
-      check(t.headlineSmall, 26, 32, FontWeight.w600);
+      check(t.displaySmall, 40, 46, FontWeight.w600, family: SkFonts.display);
+      check(t.headlineMedium, 34, 40, FontWeight.w600, family: SkFonts.display);
+      check(t.headlineSmall, 28, 34, FontWeight.w600, family: SkFonts.display);
       check(t.titleLarge, 20, 28, FontWeight.w600);
       check(t.titleMedium, 17, 24, FontWeight.w500);
       check(t.bodyLarge, 16, 24, FontWeight.w400);
@@ -97,13 +106,48 @@ void main() {
   });
 
   group('typography tokens', () {
-    final type = ProsocheTypography.forColor(const Color(0xFF000000));
+    final type = ProsocheTypography.of(ProsocheColors.light);
 
-    test('reading tokens use Literata', () {
-      expect(type.translation.fontFamily, SkFonts.literata);
-      expect(type.translation.fontSize, 18);
-      expect(type.reflection.fontSize, 19);
-      expect(type.translationReader.fontSize, 17);
+    test('philosophers text uses EB Garamond (docs/DESIGN.md 3.3)', () {
+      for (final s in [
+        type.quote,
+        type.passage,
+        type.prompt,
+        type.reader,
+        type.term,
+        type.reference,
+        type.attribution,
+      ]) {
+        expect(s.fontFamily, SkFonts.serif);
+        expect(s.fontSize, greaterThanOrEqualTo(15));
+      }
+      expect(type.quote.fontSize, 22);
+      expect(type.passage.fontSize, 19);
+      expect(type.prompt.fontStyle, FontStyle.italic);
+      expect(type.attribution.fontStyle, FontStyle.italic);
+      expect(type.quote.color, ProsocheColors.light.lead);
+      expect(type.eyebrow.fontFamily, SkFonts.inter);
+      expect(type.eyebrow.color, ProsocheColors.light.accentText);
+      // Stare nazvy z forku.
+      expect(type.translation, type.quote);
+      expect(type.translationReader, type.reader);
+      expect(type.reflection, type.prompt);
+    });
+
+    test('display and headline use Cormorant Garamond from 24 sp', () {
+      final t = ProsocheTheme.light().textTheme;
+      for (final s in [
+        t.displayLarge,
+        t.displayMedium,
+        t.displaySmall,
+        t.headlineLarge,
+        t.headlineMedium,
+        t.headlineSmall,
+      ]) {
+        expect(s!.fontFamily, SkFonts.display);
+        expect(s.fontSize, greaterThanOrEqualTo(24));
+      }
+      expect(t.titleLarge!.fontFamily, SkFonts.inter);
     });
 
     test('tabular figures', () {
@@ -114,11 +158,8 @@ void main() {
     test('copyWith and lerp', () {
       final other = ProsocheTypography.forColor(const Color(0xFFFFFFFF));
       expect(type.copyWith(), isA<ProsocheTypography>());
-      expect(
-        type.copyWith(reflection: other.reflection).reflection,
-        other.reflection,
-      );
-      expect(type.lerp(other, 1).translation.color, const Color(0xFFFFFFFF));
+      expect(type.copyWith(prompt: other.prompt).prompt, other.prompt);
+      expect(type.lerp(other, 1).quote.color, const Color(0xFFFFFFFF));
       expect(type.lerp(null, 0.5), same(type));
     });
   });
@@ -137,9 +178,9 @@ void main() {
 
     test('ProsocheMotion', () {
       const m = ProsocheMotion.standard;
-      expect(m.medium.duration, const Duration(milliseconds: 300));
-      expect(m.long.duration, const Duration(milliseconds: 450));
-      expect(m.calm.duration, const Duration(milliseconds: 800));
+      expect(m.medium.duration, const Duration(milliseconds: 320));
+      expect(m.long.duration, const Duration(milliseconds: 480));
+      expect(m.calm.duration, const Duration(milliseconds: 900));
       expect(m.copyWith(reduced: true), ProsocheMotion.reducedMotion);
       expect(m.copyWith(), m);
       expect(m.lerp(ProsocheMotion.reducedMotion, 0.2), m);
@@ -184,7 +225,7 @@ void main() {
         ),
       );
       expect(sk.colors, ProsocheColors.dark);
-      expect(sk.type.translation.fontSize, 18);
+      expect(sk.type.quote.fontSize, 22);
       expect(sk.space.gutterPhone, 16);
       expect(sk.motion, ProsocheMotion.standard);
       expect(sk.largeText, isFalse);
@@ -251,7 +292,7 @@ void main() {
 
   testWidgets('fade page transition respects reduce motion', (tester) async {
     const builder = SkFadePageTransitionsBuilder();
-    expect(builder.transitionDuration, const Duration(milliseconds: 450));
+    expect(builder.transitionDuration, const Duration(milliseconds: 480));
     final route = MaterialPageRoute<void>(builder: (_) => const SizedBox());
     for (final disable in [false, true]) {
       late Widget built;
@@ -290,7 +331,7 @@ void main() {
         expect(ofl.existsSync(), isTrue, reason: dir);
         expect(ofl.readAsStringSync(), contains('SIL Open Font License'));
       }
-      for (final family in [SkFonts.inter, SkFonts.literata]) {
+      for (final family in [SkFonts.inter, SkFonts.serif, SkFonts.display]) {
         expect(pubspec, contains('family: $family'));
       }
     });

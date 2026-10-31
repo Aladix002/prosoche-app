@@ -7,6 +7,8 @@ import 'package:prosoche/ui/tokens/sk_fonts.dart';
 abstract final class ProsocheFontFamilies {
   static const String inter = SkFonts.inter;
   static const String literata = SkFonts.literata;
+  static const String serif = SkFonts.serif;
+  static const String display = SkFonts.display;
 }
 
 /// Font a riadkovanie UI pre jeden jazyk.
@@ -55,10 +57,15 @@ abstract final class LocaleFonts {
 
 /// Aplikuje font jazyka na [style]: rodina, fallback a riadkovanie
 /// s rovnomernym rozlozenim (diakritika sa neoreze hore ani dole).
+///
+/// Display font (Cormorant Garamond, nadpisy) ostava, ak jazyk pouziva
+/// latinkove UI (docs/DESIGN.md 3.2).
 TextStyle applyLocaleFont(TextStyle style, Locale locale) {
   final spec = LocaleFonts.forLocale(locale);
+  final keepDisplay =
+      style.fontFamily == SkFonts.display && spec.family == SkFonts.inter;
   return style.copyWith(
-    fontFamily: spec.family,
+    fontFamily: keepDisplay ? SkFonts.display : spec.family,
     fontFamilyFallback: spec.fallback,
     height: spec.scaleHeight(style.height),
     leadingDistribution: TextLeadingDistribution.even,

@@ -27,8 +27,7 @@ class SkTokens {
       (_isDark ? ProsocheColors.dark : ProsocheColors.light);
 
   ProsocheTypography get type =>
-      _theme.extension<ProsocheTypography>() ??
-      ProsocheTypography.forColor(colors.textPrimary);
+      _theme.extension<ProsocheTypography>() ?? ProsocheTypography.of(colors);
 
   ProsocheSpacing get space =>
       _theme.extension<ProsocheSpacing>() ?? const ProsocheSpacing();

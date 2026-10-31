@@ -24,9 +24,13 @@ class SkUiStrings {
     required this.contentUnavailableTitle,
     required this.contentUnavailableBody,
     required this.progressOf,
+    this.translatedBy = _translatedBy,
   });
 
   static String _of(int n, int total) => '$n of $total';
+
+  static String _translatedBy(String translator, int? year) =>
+      year == null ? 'tr. $translator' : 'tr. $translator, $year';
 
   static const fallbackEn = SkUiStrings(
     loading: 'Loading',
@@ -66,6 +70,9 @@ class SkUiStrings {
 
   /// "5 of 12" (cislice lokalizuje volajuci cez U-02 formatovanie).
   final String Function(int n, int total) progressOf;
+
+  /// "tr. George Long, 1862" (docs/DESIGN.md 3.5).
+  final String Function(String translator, int? year) translatedBy;
 
   static SkUiStrings of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<SkUiStringsScope>()?.strings ??

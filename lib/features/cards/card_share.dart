@@ -97,26 +97,38 @@ final Provider<CardImageRenderer> cardImageRendererProvider =
       name: 'cardImageRendererProvider',
     );
 
-/// Rozmery obrazka (docs/02 B0.7): sirka 1080 px, 4:5 (1350 px) az do
-/// 1080 x 1920. Logicke body pri sirke 360.
+/// Rozmery obrazka (docs/DESIGN.md 7.9): sirka 1080 px a dva formaty,
+/// 4:5 (1080 x 1350) a 9:16 (1080 x 1920). Logicke body pri sirke 360.
 abstract final class ShareImageSize {
   static const logicalWidth = 360.0;
+
+  /// 4:5, default.
   static const minLogicalHeight = 450.0;
+
+  /// 9:16 pre dlhsie texty; nad nim sa ponukne len zdielanie textom.
   static const maxLogicalHeight = 640.0;
+
+  /// Povolene vysky; obrazok sa "prichyti" k najmensej, do ktorej sa
+  /// obsah zmesti.
+  static const List<double> heights = [minLogicalHeight, maxLogicalHeight];
   static const pixelRatio = 3.0;
 }
 
-/// Obsah obrazka: cely text (nikdy neorezany), referencia, atribucia
-/// a znacka v paticke mimo textu.
+/// Obsah obrazka (docs/DESIGN.md 7.9): meander v hornom a dolnom okraji,
+/// referencia, cely text (nikdy neorezany, zarovnany na zaciatok),
+/// atribucia a v paticke znacka. Ziadne fotky, filtre ani text
+/// pouzivatela. Motiv je len v okrajoch, nikdy pod textom.
 ///
-/// D-05: list papiera (`surface`) s ramcekom na pozadi s neutralnym
-/// vzorom. Vzor je len v okraji okolo listu, nikdy pod textom; atribucia
-/// zdroja ostava citatelna (`textSecondary`).
+/// Bez pevnej vysky (meranie) ma prirodzenu vysku; s `minHeight`
+/// z rodica (renderer prichyti 4:5 alebo 9:16) vyplni celu plochu.
 class CardShareImage extends StatelessWidget {
   const CardShareImage({required this.data, required this.appName, super.key});
 
   final CardShareData data;
   final String appName;
+
+  /// Od tejto dlzky sa text vysadza mensim stupnom (`passage`).
+  static const longTextChars = 240;
 
   @override
   Widget build(BuildContext context) {
@@ -124,132 +136,97 @@ class CardShareImage extends StatelessWidget {
     final c = sk.colors;
     final text = data.text;
     final meta = sk.text.bodySmall!.copyWith(color: c.textSecondary);
+    final textStyle = text != null && text.length > longTextChars
+        ? sk.type.passage
+        : sk.type.quote;
+    final locale = Localizations.maybeLocaleOf(context);
+    // Verzalky a rozostup len v latinke.
+    final ltr = locale == null || !ProsocheLocales.isRtl(locale);
+    final content = <Widget>[
+      Text(
+        ltr ? data.reference.toUpperCase() : data.reference,
+        style: sk.type.eyebrow.copyWith(letterSpacing: ltr ? null : 0),
+      ),
+      if (text != null) ...[
+        const SizedBox(height: SkSpace.space16),
+        Directionality(
+          textDirection: data.textLang == null
+              ? Directionality.of(context)
+              : textDirectionForLanguage(data.textLang!),
+          child: Text(text, style: textStyle),
+        ),
+      ],
+      if (data.attribution != null || data.source != null)
+        const SizedBox(height: SkSpace.space16),
+      if (data.attribution != null)
+        Text(data.attribution!, style: sk.type.attribution),
+      if (data.source != null) Text(data.source!, style: meta),
+    ];
+    final footer = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SkPortalMark(size: 16),
+        const SizedBox(width: SkSpace.space8),
+        Text(
+          appName,
+          style: sk.text.labelLarge!.copyWith(color: c.textSecondary),
+        ),
+      ],
+    );
+    const band = SkMeanderBand(opacity: 0.55);
     return ColoredBox(
       color: c.bg,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(
-          minWidth: ShareImageSize.logicalWidth,
-          maxWidth: ShareImageSize.logicalWidth,
-          minHeight: ShareImageSize.minLogicalHeight,
-        ),
-        child: Stack(
-          children: [
-            const Positioned.fill(
-              child: SkPatternField(
-                tile: 44,
-                opacity: 0.5,
-                fadeFrom: AlignmentDirectional.topCenter,
-                fadeTo: AlignmentDirectional.bottomCenter,
-                fadeStop: 1,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(
-                SkSpace.space8,
-                SkSpace.space8,
-                SkSpace.space8,
-                0,
+      child: SizedBox(
+        width: ShareImageSize.logicalWidth,
+        child: LayoutBuilder(
+          builder: (context, box) {
+            final fixed = box.minHeight > 0 && box.minHeight.isFinite;
+            final body = Padding(
+              padding: const EdgeInsetsDirectional.symmetric(
+                horizontal: SkSpace.space32,
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: c.surface,
-                      borderRadius: BorderRadius.circular(SkRadius.lg),
-                    ),
-                    child: CustomPaint(
-                      painter: SkCardFramePainter(
-                        color: c.goldDeco.withValues(alpha: 0.5),
-                        inset: 6,
-                        radius: SkRadius.lg - 6,
-                      ),
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(
-                          minHeight:
-                              ShareImageSize.minLogicalHeight -
-                              SkSpace.space8 -
-                              _footerHeight,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsetsDirectional.symmetric(
-                            horizontal: SkSpace.space16 + SkSpace.space4,
-                            vertical: SkSpace.space16,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Text(
-                                data.reference,
-                                textAlign: TextAlign.center,
-                                style: sk.text.labelLarge!.copyWith(
-                                  color: c.accentText,
-                                ),
-                              ),
-                              if (text != null) ...[
-                                const Padding(
-                                  padding: EdgeInsetsDirectional.symmetric(
-                                    vertical: SkSpace.space4,
-                                  ),
-                                  child: SkOrnamentDivider(width: 80),
-                                ),
-                                Directionality(
-                                  textDirection: data.textLang == null
-                                      ? Directionality.of(context)
-                                      : textDirectionForLanguage(
-                                          data.textLang!,
-                                        ),
-                                  child: Text(text, style: sk.type.reflection),
-                                ),
-                              ],
-                              if (data.attribution != null ||
-                                  data.source != null)
-                                const SizedBox(height: SkSpace.space12),
-                              if (data.attribution != null)
-                                Text(data.attribution!, style: meta),
-                              if (data.source != null)
-                                Text(data.source!, style: meta),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: _footerHeight,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SkRosette(
-                          size: 16,
-                          ring: false,
-                          strokeWidth: 1,
-                          color: c.goldDeco,
-                        ),
-                        const SizedBox(width: SkSpace.space8),
-                        Text(
-                          appName,
-                          style: sk.text.labelLarge!.copyWith(
-                            color: c.textSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                children: content,
               ),
-            ),
-          ],
+            );
+            final children = <Widget>[
+              const SizedBox(height: SkSpace.space24),
+              const Padding(
+                padding: EdgeInsetsDirectional.symmetric(
+                  horizontal: SkSpace.space24,
+                ),
+                child: band,
+              ),
+              const SizedBox(height: SkSpace.space32),
+              if (fixed) const Spacer(),
+              body,
+              if (fixed) const Spacer(),
+              const SizedBox(height: SkSpace.space32),
+              const Padding(
+                padding: EdgeInsetsDirectional.symmetric(
+                  horizontal: SkSpace.space24,
+                ),
+                child: band,
+              ),
+              const SizedBox(height: SkSpace.space12),
+              footer,
+              const SizedBox(height: SkSpace.space16),
+            ];
+            final column = Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: children,
+            );
+            return fixed
+                ? SizedBox(height: box.minHeight, child: column)
+                : column;
+          },
         ),
       ),
     );
   }
-
-  /// Paticka so znackou pod listom.
-  static const _footerHeight = 36.0;
 }
 
 /// Vyska plochy na meranie (obsah sa nikdy neorezava, len sa zmeria).
@@ -258,13 +235,72 @@ const _measureHeight = 100000.0;
 /// Vyrenderuje [widget] mimo obrazovky do PNG (sirka [width], vyska podla
 /// obsahu). Vrati null, ak by obrazok bol vyssi ako [maxHeight] - text sa
 /// nikdy neoreze, ponukne sa zdielanie textom (docs/02 B0.7).
+///
+/// Vyska sa prichyti k najmensej z [heights], do ktorej sa obsah zmesti
+/// (4:5, inak 9:16); widget dostane `minHeight` a vyplni ju.
 Future<Uint8List?> renderWidgetToPng(
   BuildContext context,
   Widget widget, {
   double width = ShareImageSize.logicalWidth,
   double maxHeight = ShareImageSize.maxLogicalHeight,
   double pixelRatio = ShareImageSize.pixelRatio,
+  List<double> heights = ShareImageSize.heights,
 }) async {
+  final natural = _layoutAndMeasure(context, widget, width: width);
+  if (natural > maxHeight + 0.5) return null;
+  final target = heights.firstWhere(
+    (h) => h + 0.5 >= natural,
+    orElse: () => natural,
+  );
+  return await _renderPng(
+    context,
+    ConstrainedBox(
+      constraints: BoxConstraints(minHeight: target),
+      child: widget,
+    ),
+    width: width,
+    pixelRatio: pixelRatio,
+  );
+}
+
+double _layoutAndMeasure(
+  BuildContext context,
+  Widget widget, {
+  required double width,
+}) {
+  var height = 0.0;
+  _withOffscreen(context, widget, width, (boundary) {
+    height = boundary.size.height;
+  });
+  return height;
+}
+
+Future<Uint8List?> _renderPng(
+  BuildContext context,
+  Widget widget, {
+  required double width,
+  required double pixelRatio,
+}) async {
+  ui.Image? image;
+  _withOffscreen(context, widget, width, (boundary) {
+    image = boundary.toImageSync(pixelRatio: pixelRatio);
+  });
+  final img = image!;
+  try {
+    final bytes = await img.toByteData(format: ui.ImageByteFormat.png);
+    return bytes?.buffer.asUint8List();
+  } finally {
+    img.dispose();
+  }
+}
+
+/// Postavi a vykresli [widget] mimo obrazovky a zavola [use] s hranicou.
+void _withOffscreen(
+  BuildContext context,
+  Widget widget,
+  double width,
+  void Function(RenderRepaintBoundary boundary) use,
+) {
   final view = View.of(context);
   final wrapped = InheritedTheme.captureAll(
     context,
@@ -309,14 +345,7 @@ Future<Uint8List?> renderWidgetToPng(
       ..flushLayout()
       ..flushCompositingBits()
       ..flushPaint();
-    if (boundary.size.height > maxHeight + 0.5) return null;
-    final image = await boundary.toImage(pixelRatio: pixelRatio);
-    try {
-      final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
-      return bytes?.buffer.asUint8List();
-    } finally {
-      image.dispose();
-    }
+    use(boundary);
   } finally {
     RenderObjectToWidgetAdapter<RenderBox>(container: boundary)
         .attachToRenderTree(buildOwner, root);
