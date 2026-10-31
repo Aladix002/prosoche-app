@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
+import 'package:prosoche/features/library/reader_screen.dart';
 import 'package:prosoche/features/settings/settings_providers.dart';
 import 'package:prosoche/features/settings/settings_widgets.dart';
 
@@ -45,6 +46,8 @@ class DisplaySettingsScreen extends ConsumerWidget {
             ],
           ),
         ),
+        SettingsSection(l10n.readerTextSize, help: l10n.setReaderSizeHelp),
+        const ReaderSizePicker(showTitle: false),
         SettingsSection(l10n.setDailySet),
         SwitchListTile(
           key: const ValueKey('simple_mode'),

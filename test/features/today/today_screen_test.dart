@@ -161,6 +161,25 @@ void main() {
     expect(find.text('stub:/library'), findsOneWidget);
   });
 
+  testWidgets('completed with a reading position: one Keep reading only', (
+    tester,
+  ) async {
+    final sets = FakeDailySetRepository()
+      ..put(_state(cursor: 10, completed: true));
+    final repos = FakeRepositories(dailySets: sets);
+    await repos.library.savePosition('fake-books', 'fake-books.1.1');
+    await pumpF02(tester, repos: repos);
+    await tester.pumpAndSettle();
+    expect(find.text("Today's cards are complete"), findsOneWidget);
+    // Dlazdica s poslednou poziciou, bez druheho tlacidla (I-01).
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey('today:keepReading')),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    expect(find.text('Keep reading'), findsOneWidget);
+  });
+
   testWidgets('simple mode hides streak and grace days', (tester) async {
     final settings = InMemorySettingsRepository();
     await settings.set(SettingsKeys.simpleMode, true);

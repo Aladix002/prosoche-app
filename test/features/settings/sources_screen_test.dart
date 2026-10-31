@@ -74,7 +74,9 @@ void main() {
             .toList();
         expect(
           texts,
-          contains('Version ${r.version} · License: ${r.license}'),
+          contains(
+            'Version ${r.version} · License: ${_licenseName(r.license)}',
+          ),
           reason: r.id,
         );
         expect(texts, contains(r.attribution), reason: r.id);
@@ -206,3 +208,10 @@ void main() {
     });
   });
 }
+
+/// Citatelny nazov licencie ako v `licenseLabel` (I-01).
+String _licenseName(String id) => switch (id) {
+  'public-domain' => 'Public domain',
+  'proprietary-own' => 'Written for Prosoche',
+  _ => id,
+};

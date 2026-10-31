@@ -34,6 +34,14 @@ List<ReaderParagraph> readerParagraphs(String text, String? highlight) {
   return out;
 }
 
+/// Velkost citacky z nastavenia `reader.scale` (S-XL, docs/DESIGN.md 3.6).
+SkReaderSize readerSizeOf(String? value) => switch (value) {
+  's' => SkReaderSize.s,
+  'l' => SkReaderSize.l,
+  'xl' => SkReaderSize.xl,
+  _ => SkReaderSize.m,
+};
+
 /// Jedna sekcia v citacke: nadpis knihy (pri prvej sekcii knihy),
 /// referencia a nadpis kapitoly, odstavce (vyberatelne) a atribucia
 /// prekladu. Bez motivu pod textom (docs/DESIGN.md 5.3).
@@ -44,6 +52,7 @@ class ReaderPage extends StatelessWidget {
     this.bookTitle,
     this.highlight,
     this.targeted = false,
+    this.size = SkReaderSize.m,
     super.key,
   });
 
@@ -57,11 +66,18 @@ class ReaderPage extends StatelessWidget {
   /// Sekcia je cielom navigacie (karta, vyhladavanie).
   final bool targeted;
 
+  /// Velkost pisma citacky (nastavenie `reader.scale`).
+  final SkReaderSize size;
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final sk = context.sk;
-    final style = sk.type.reader.copyWith(color: sk.colors.lead);
+    final base = sk.type.reader;
+    final style = base.copyWith(
+      color: sk.colors.lead,
+      fontSize: base.fontSize! * size.factor,
+    );
     final marked = style.copyWith(
       backgroundColor: sk.colors.primaryContainer,
       color: sk.colors.onPrimaryContainer,
@@ -111,6 +127,7 @@ class ReaderPage extends StatelessWidget {
                       SkReaderText(
                         text: p.text,
                         sectionNumber: i == 0 ? section.number : null,
+                        size: size,
                       )
                     else
                       // Citat z karty: zvyraznena presne jeho cast

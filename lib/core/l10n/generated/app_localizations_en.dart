@@ -516,7 +516,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onbNotifBody =>
-      'Get one quiet notice in the morning when your cards are ready. Nothing else.';
+      'A quiet notice in the morning when your cards are ready, and in the evening only if you want one. Nothing else.';
 
   @override
   String onbNotifMorning(String time) {
@@ -1522,6 +1522,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get setFeedback => 'Send feedback';
+
+  @override
+  String get readerTextSize => 'Reading size';
+
+  @override
+  String readerTextSizeName(String value) {
+    String _temp0 = intl.Intl.selectLogic(value, {
+      's': 'Small',
+      'm': 'Medium',
+      'l': 'Large',
+      'xl': 'Extra large',
+      'other': 'Medium',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get setReaderSizeHelp =>
+      'Text size in the Library reader. It adds to your phone\'s text size.';
+
+  @override
+  String onbNotifEvening(String time) {
+    return 'Evening reflection at $time';
+  }
+
+  @override
+  String get onbNotifEveningHelp =>
+      'Optional. A quiet reminder to review the day.';
+
+  @override
+  String get practiceOtherExercises => 'Other exercises';
+
+  @override
+  String get setLicensePublicDomain => 'Public domain';
+
+  @override
+  String get setLicenseOwn => 'Written for Prosoche';
 
   @override
   String cardSourceLine(String attribution) {

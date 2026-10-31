@@ -539,7 +539,7 @@ class BlockerHostApi {
     return (pigeonVar_replyValue! as List<Object?>).cast<BlockedTarget>();
   }
 
-  /// Spustitelne appky okrem samotnej Mursy, zoradene podla nazvu.
+  /// Spustitelne appky okrem samotnej Prosoche, zoradene podla nazvu.
   Future<List<InstalledApp>> installedApps() async {
     final pigeonVar_channelName =
         'dev.flutter.pigeon.prosoche.BlockerHostApi.installedApps$pigeonVar_messageChannelSuffix';

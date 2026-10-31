@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/library/library_routes.dart';
 import 'package:prosoche/features/library/widgets/reader_page.dart';
 import 'package:prosoche/ui/ui.dart';
@@ -93,6 +94,32 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('reader:previous')));
     await tester.pumpAndSettle();
     expect(find.text('1 / 4'), findsOneWidget);
+  });
+
+  testWidgets('reader: reading size S-XL is saved and applied', (tester) async {
+    final repos = FakeRepositories();
+    await pumpF01(
+      tester,
+      location: '/reader/fake-books?section=fake-books.1.2',
+      repos: repos,
+    );
+    double size() => tester
+        .widget<SkReaderText>(find.byType(SkReaderText).first)
+        .size
+        .factor;
+    expect(size(), 1);
+    await tester.tap(find.byKey(const ValueKey('reader:text_size')));
+    await tester.pumpAndSettle();
+    expect(find.text('Extra large'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('reader_scale:xl')));
+    await tester.pumpAndSettle();
+    expect(await repos.settings.get(SettingsKeys.readerScale), 'xl');
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
+    expect(size(), 1.3);
+    expect(readerSizeOf('s'), SkReaderSize.s);
+    expect(readerSizeOf('l'), SkReaderSize.l);
+    expect(readerSizeOf(null), SkReaderSize.m);
   });
 
   testWidgets('reader highlights the quote from a card', (tester) async {

@@ -2,7 +2,7 @@
   "@@locale": "en",
   "cardSourceLine": "Source: {attribution}",
   "@cardSourceLine": {
-    "description": "Small line under a card with the source of the text, e.g. 'Source: Project Gutenberg'. The attribution comes from the content database and is not translated.",
+    "description": "Small line under a card with the source of the text, e.g. 'Source: English Wikisource'. The attribution comes from the content database and is not translated.",
     "placeholders": {
       "attribution": {
         "type": "String"

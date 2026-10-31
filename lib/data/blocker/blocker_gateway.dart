@@ -164,7 +164,7 @@ abstract interface class BlockerGateway {
 
   Future<Result<void>> openSystemSettings(BlockerSettings target);
 
-  /// Spustitelne appky okrem Mursy, zoradene podla nazvu.
+  /// Spustitelne appky okrem Prosoche, zoradene podla nazvu.
   Future<Result<List<LaunchableApp>>> installedApps();
 
   /// PNG ikona appky alebo null.

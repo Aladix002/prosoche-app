@@ -183,8 +183,6 @@ class SkCardSurface extends StatelessWidget {
           ],
         );
       } else {
-        // Hlavicka hore, text v optickom strede, akcia dole. Ked sa obsah
-        // nezmesti, vsetko ide pod seba a karta scrolluje (B0.5).
         // Hlavicka hore, obsah (text a akcia, pri uvode a zavere dna len
         // akcna oblast) v optickom strede zvysnej plochy. Ked sa obsah
         // nezmesti, scrolluje pod hlavickou (B0.5).
@@ -206,20 +204,27 @@ class SkCardSurface extends StatelessWidget {
                   footer!,
                 ],
               ];
+        // I-01: kratky obsah nie je v geometrickom strede (pod nim zostavala
+        // velka prazdna plocha), ale opticky vyssie, v hornej tretine
+        // zvysnej plochy. Dlhy obsah plochu vyplni a scrolluje.
+        // Vlastny uzol: typ a referencia sa necitaju dvakrat v labeli
+        // karty ("Card 5 of 12, ...").
+        final head = header == null
+            ? null
+            : Semantics(container: true, child: header);
+        // V neobmedzenej vyske (galeria) Align aj Flexible (loose) maju
+        // velkost obsahu; bez LayoutBuilder kvoli intrinsic rozmerom.
         body = Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Vlastny uzol: typ a referencia sa necitaju dvakrat v labeli
-            // karty ("Card 5 of 12, ...").
-            if (header != null)
-              Semantics(container: true, child: header)
-            else
-              const SizedBox.shrink(),
-            Flexible(child: _ScrollableContent(children: block)),
-            // Protivaha hlavicky: obsah je v strede medzi nou a spodkom.
-            const SizedBox.shrink(),
+            ?head,
+            Flexible(
+              child: Align(
+                alignment: const AlignmentDirectional(0, -0.45),
+                child: _ScrollableContent(children: block),
+              ),
+            ),
           ],
         );
       }

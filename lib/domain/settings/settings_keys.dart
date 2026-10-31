@@ -44,6 +44,17 @@ abstract final class SettingsKeys {
   /// Hodnoty [displayTheme] v poradi vyberu.
   static const displayThemes = ['system', 'light', 'dark'];
 
+  /// Velkost pisma v citacke Library (docs/DESIGN.md 3.6): `s`, `m`, `l`,
+  /// `xl` (0.9, 1.0, 1.15, 1.3 x systemovy TextScaler). I-01.
+  static final SettingKey<String> readerScale = SettingKey.string(
+    'reader.scale',
+    defaultValue: 'm',
+    allowed: readerScales.toSet(),
+  );
+
+  /// Hodnoty [readerScale] v poradi vyberu.
+  static const readerScales = ['s', 'm', 'l', 'xl'];
+
   // Umysel dna (onboarding, Journey)
   static final SettingKey<String?> intentionText = SettingKey.optionalString(
     'intention.text',
@@ -148,6 +159,7 @@ abstract final class SettingsKeys {
     installId,
     uiLocale,
     displayTheme,
+    readerScale,
     intentionText,
     intentionPreset,
     feedCardsCount,

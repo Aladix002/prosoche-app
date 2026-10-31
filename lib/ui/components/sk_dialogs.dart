@@ -142,7 +142,7 @@ class SkSheet extends StatelessWidget {
   }
 }
 
-/// Informacny sheet (zdroj hadisu, legenda tajwidu, high latitude).
+/// Informacny sheet (napr. zdroj textu alebo vysvetlenie pojmu).
 Future<T?> showSkInfoSheet<T>(
   BuildContext context, {
   required String title,
