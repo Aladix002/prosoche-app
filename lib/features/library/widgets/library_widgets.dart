@@ -168,7 +168,11 @@ class ContinueReadingTile extends StatelessWidget {
                   children: [
                     Text(l10n.todayCtaKeepReading, style: sk.text.titleMedium),
                     Text(
-                      '${work.title} · $reference',
+                      // "Meditations 4.24"; nazov z prekladu len ak sa
+                      // lisi ("Of Anger" · "On Anger 3.36").
+                      work.title == work.shortRef
+                          ? reference
+                          : '${work.title} \u00B7 $reference',
                       style: sk.text.bodyMedium!.copyWith(
                         color: sk.colors.textSecondary,
                       ),

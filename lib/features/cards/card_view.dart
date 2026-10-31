@@ -187,7 +187,9 @@ class _TypedCard extends ConsumerWidget {
   String? _semanticLabel(BuildContext context) {
     final l10n = context.l10n;
     final what = switch (content) {
-      QuoteContent(:final author) => l10n.cardQuoteA11y(author),
+      QuoteContent(isPassage: false, :final author) => l10n.cardQuoteA11y(
+        author,
+      ),
       IntroContent() => null,
       final c => cardTypeLabel(context, c).toLowerCase(),
     };

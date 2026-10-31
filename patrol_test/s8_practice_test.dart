@@ -18,15 +18,24 @@ void main() {
     await tapUntil($, key('routine:evening'), key('routine:body:evening'));
     expect(find.textContaining('On Anger 3.36'), findsWidgets);
 
+    await $.tester.scrollUntilVisible(
+      key('answer:practice:evening-review#1'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
     final field = find
         .descendant(
           of: find.byType(SkJournalField),
           matching: find.byType(TextField),
         )
         .first;
-    await $.tester.ensureVisible(field);
     await $.tester.enterText(field, 'E2E answer');
     await wait($, const Duration(seconds: 2));
+    await $.tester.scrollUntilVisible(
+      key('routine:done'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
     await tapUntil($, key('routine:done'), key('routine:undo'));
 
     await $.tester.pageBack();
