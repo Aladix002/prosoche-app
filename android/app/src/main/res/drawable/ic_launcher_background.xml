@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- DOCASNA ikona (D-05): pozadie v primarnej farbe znacky (#1F5E55). -->
+<!-- DOCASNA ikona (D-01): pozadie atramentova modra (primary #1F3A5F). -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="#1F5E55" />
+    <solid android:color="#1F3A5F" />
 </shape>

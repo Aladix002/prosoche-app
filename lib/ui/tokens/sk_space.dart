@@ -27,22 +27,22 @@ abstract final class SkSpace {
   static double gutterFor(double width) => width < 600 ? space16 : space24;
 }
 
-/// Radiusy (docs/01 2.5).
+/// Radiusy (docs/DESIGN.md 4): mensie nez v Murse, kamen nie papier.
 abstract final class SkRadius {
   /// Segment progres baru, tag.
-  static const double xs = 4;
+  static const double xs = 2;
 
   /// Chip, input, snackbar.
-  static const double sm = 8;
+  static const double sm = 4;
 
   /// Tlacidla, list karta, quest.
-  static const double md = 12;
+  static const double md = 8;
 
   /// Feed karta, dialog.
-  static const double lg = 20;
+  static const double lg = 12;
 
   /// Bottom sheet (horne rohy).
-  static const double xl = 28;
+  static const double xl = 16;
 
   /// Pill.
   static const double full = 999;

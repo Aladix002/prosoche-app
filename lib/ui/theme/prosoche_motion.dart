@@ -20,7 +20,8 @@ class SkMotionToken {
   int get hashCode => Object.hash(duration, curve);
 }
 
-/// Motion tokeny (docs/01 2.8). Pristup: `context.sk.motion`, ktory uz
+/// Motion tokeny "kamenny pohyb" (docs/DESIGN.md 8.1): kratky, tlmeny,
+/// dosadne a stoji. Pristup: `context.sk.motion`, ktory uz
 /// zohladnuje reduce motion (system aj in-app prepinac).
 ///
 /// Ziadny overshoot ani bounce.
@@ -42,9 +43,9 @@ class ProsocheMotion extends ThemeExtension<ProsocheMotion> {
   static const standard = ProsocheMotion(
     instant: SkMotionToken(Duration(milliseconds: 100), Curves.linear),
     short: SkMotionToken(Duration(milliseconds: 200), _standard),
-    medium: SkMotionToken(Duration(milliseconds: 300), _standard),
-    long: SkMotionToken(Duration(milliseconds: 450), Cubic(0.05, 0.7, 0.1, 1)),
-    calm: SkMotionToken(Duration(milliseconds: 800), Cubic(0.4, 0, 0.2, 1)),
+    medium: SkMotionToken(Duration(milliseconds: 320), _standard),
+    long: SkMotionToken(Duration(milliseconds: 480), Cubic(0.05, 0.7, 0.1, 1)),
+    calm: SkMotionToken(Duration(milliseconds: 900), Cubic(0.4, 0, 0.2, 1)),
     exit: SkMotionToken(Duration(milliseconds: 200), Cubic(0.3, 0, 1, 1)),
     crossfade: SkMotionToken(Duration(milliseconds: 200), _standard),
     reduced: false,

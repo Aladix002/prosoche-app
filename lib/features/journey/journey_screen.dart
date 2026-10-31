@@ -69,6 +69,7 @@ class _JourneyScreenState extends ConsumerState<JourneyScreen> {
           SkSpace.space32,
         ),
         children: [
+          SkScreenTitle(title: l10n.journeyTitle),
           const JourneyIntention(),
           const SizedBox(height: SkSpace.space16),
           if (!ready)
@@ -107,7 +108,10 @@ class _JourneyScreenState extends ConsumerState<JourneyScreen> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Semantics(header: true, child: Text(l10n.journeyTitle)),
+        // Nadpis je v tele (SkScreenTitle); v AppBare len pri chybe.
+        title: body is SkErrorState
+            ? Semantics(header: true, child: Text(l10n.journeyTitle))
+            : null,
         actions: const [ShellSettingsButton()],
       ),
       body: body,
@@ -124,7 +128,8 @@ class _Intro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sk = context.sk;
-    // D-05: prvy den bez historie - medailon a uvod v tonalnom paneli.
+    // D-01: prvy den bez historie - stlp (zaciatok cesty) a uvod
+    // v tonalnom paneli.
     return DecoratedBox(
       decoration: BoxDecoration(
         color: sk.colors.surface,
@@ -134,7 +139,7 @@ class _Intro extends StatelessWidget {
         padding: const EdgeInsetsDirectional.all(SkSpace.space16),
         child: Row(
           children: [
-            const SkMotifBadge(icon: Icons.route_outlined, size: 48),
+            const SkColumn(height: 64),
             const SizedBox(width: SkSpace.space16),
             Expanded(
               child: Column(

@@ -147,7 +147,7 @@ class _SavedCardsScreenState extends ConsumerState<SavedCardsScreen> {
 IconData savedTypeIcon(CardType type) => switch (type) {
   CardType.quote => Icons.format_quote_outlined,
   CardType.passage => Icons.menu_book_outlined,
-  CardType.practice => Icons.self_improvement_outlined,
+  CardType.practice => Icons.hourglass_empty_outlined,
   CardType.prompt => Icons.help_outline,
   CardType.concept => Icons.lightbulb_outline,
   CardType.author => Icons.person_outline,

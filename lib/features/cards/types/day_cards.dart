@@ -43,21 +43,21 @@ class IntroCard extends StatelessWidget {
     return SkCardSurface(
       semanticLabel: semanticLabel,
       eyebrow: context.weekdayLabel(content.date).toUpperCase(),
-      // D-05: uvod dna ako titulna strana - medailon, datum v strede, pod
-      // ornamentom velkost sady a umysel.
+      // D-01: uvod dna ako titulna strana - oblúk s bodom pozornosti,
+      // datum (Cormorant), rimsa, velkost sady a umysel.
       footer: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Center(child: SkMotifBadge(size: 80)),
+          const Center(child: SkArch(size: 64)),
           const SizedBox(height: SkSpace.space16),
           Text(
             context.longDateLabel(content.date),
             textAlign: TextAlign.center,
-            style: sk.text.headlineSmall!.copyWith(color: c.accentText),
+            style: sk.text.headlineMedium,
           ),
           const SizedBox(height: SkSpace.space24),
-          const SkOrnamentDivider(width: 96),
+          const Center(child: SkCornice(width: 96)),
           const SizedBox(height: SkSpace.space24),
           Text(
             l10n.cardIntroEstimate(cardsCount, estimatedMinutes(cardsCount)),
@@ -148,23 +148,24 @@ class DoneCard extends StatelessWidget {
     ];
     return SkCardSurface(
       semanticLabel: semanticLabel,
-      // D-05: pokojne uzavretie dna - medailon sa pomaly dokresli
-      // (`motion.calm`, pri reduce motion staticky), ziadne konfety.
+      // D-01: pokojne uzavretie dna - meander sa pomaly "vytesa"
+      // (`motion.calm`, pri reduce motion staticky). Ziadne konfety ani
+      // odznaky.
       footer: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
           const Center(
-            child: SkMotifBadge(icon: Icons.check, size: 96, animate: true),
+            child: SkMeanderBand(width: 180, framed: false, animate: true),
           ),
-          const SizedBox(height: SkSpace.space16),
+          const SizedBox(height: SkSpace.space24),
           Semantics(
             header: true,
             liveRegion: true,
             child: Text(
               l10n.doneTitle,
               textAlign: TextAlign.center,
-              style: sk.text.headlineSmall,
+              style: sk.text.headlineMedium,
             ),
           ),
           if (s.countedFor case final day?) ...[
@@ -226,7 +227,7 @@ class DoneCard extends StatelessWidget {
   }
 }
 
-/// Riadok suhrnu dna: maly ornament a text.
+/// Riadok suhrnu dna: bod pozornosti a text.
 class _DoneStat extends StatelessWidget {
   const _DoneStat(this.text);
 
@@ -240,14 +241,9 @@ class _DoneStat extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.only(top: SkSpace.space4),
-            child: SkRosette(
-              size: 16,
-              ring: false,
-              strokeWidth: 1,
-              color: sk.colors.goldDeco,
-            ),
+          const Padding(
+            padding: EdgeInsetsDirectional.only(top: SkSpace.space4),
+            child: SkAttentionMark(size: 12, ring: false),
           ),
           const SizedBox(width: SkSpace.space12),
           Expanded(child: Text(text, style: sk.text.bodyLarge)),

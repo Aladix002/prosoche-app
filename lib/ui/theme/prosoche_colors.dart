@@ -1,8 +1,9 @@
-// Generovane z tabuliek docs/01 (U-01). Hodnoty menit len spolu s
-// docs/01 a test/ui/theme/contrast_test.dart.
+// Hodnoty z docs/DESIGN.md 2 (D-01). Menit len spolu s docs/DESIGN.md,
+// docs/tools/contrast.py a test/ui/theme/contrast_test.dart.
 import 'package:flutter/material.dart';
 
-/// Farebne tokeny Prosoche (docs/01 2.1). Pristup: `context.sk.colors`.
+/// Farebne tokeny Prosoche "kamen, atrament, okra, terakota"
+/// (docs/DESIGN.md 2). Pristup: `context.sk.colors`.
 ///
 /// Obsahuje celu paletu vratane tokenov, ktore su aj v `ColorScheme`.
 /// Widgety nikdy nepouzivaju hex ani `Colors.*` priamo.
@@ -41,67 +42,67 @@ class ProsocheColors extends ThemeExtension<ProsocheColors> {
   });
 
   static const light = ProsocheColors(
-    bg: Color(0xFFF7F4EC),
-    surface: Color(0xFFFFFDF8),
-    surfaceAlt: Color(0xFFEFEADF),
-    textPrimary: Color(0xFF1F2A2E),
-    textSecondary: Color(0xFF4E5A5E),
-    textTertiary: Color(0xFF616B68),
-    textDisabled: Color(0xFF9AA09C),
-    lead: Color(0xFF14201F),
-    primary: Color(0xFF1F5E55),
+    bg: Color(0xFFF2EFE9),
+    surface: Color(0xFFFBFAF7),
+    surfaceAlt: Color(0xFFE7E2D8),
+    textPrimary: Color(0xFF1B2230),
+    textSecondary: Color(0xFF485061),
+    textTertiary: Color(0xFF5C6270),
+    textDisabled: Color(0xFFA2A5AB),
+    lead: Color(0xFF141A26),
+    primary: Color(0xFF1F3A5F),
     onPrimary: Color(0xFFFFFFFF),
-    primaryContainer: Color(0xFFD5E8E2),
-    onPrimaryContainer: Color(0xFF0E3530),
-    accentText: Color(0xFF7A5C14),
-    goldDeco: Color(0xFFB08A2E),
-    outline: Color(0xFFD8D2C4),
-    outlineStrong: Color(0xFF7E847E),
-    error: Color(0xFFA3322A),
+    primaryContainer: Color(0xFFDAE2EE),
+    onPrimaryContainer: Color(0xFF0F2440),
+    accentText: Color(0xFF97482B),
+    goldDeco: Color(0xFFB3843A),
+    outline: Color(0xFFD6D0C4),
+    outlineStrong: Color(0xFF7A7D85),
+    error: Color(0xFFA3242F),
     onError: Color(0xFFFFFFFF),
-    errorContainer: Color(0xFFF8DDD9),
-    onErrorContainer: Color(0xFF5C1510),
-    success: Color(0xFF2E6B3F),
-    warning: Color(0xFF8A5A00),
-    warningContainer: Color(0xFFF6E7C4),
-    onWarningContainer: Color(0xFF4A3000),
-    inverseSurface: Color(0xFF2A3533),
-    onInverseSurface: Color(0xFFF1EDE3),
-    inversePrimary: Color(0xFF9FD6C9),
+    errorContainer: Color(0xFFF6DCDA),
+    onErrorContainer: Color(0xFF5A1418),
+    success: Color(0xFF3B6844),
+    warning: Color(0xFF80570E),
+    warningContainer: Color(0xFFF2E5C6),
+    onWarningContainer: Color(0xFF45300A),
+    inverseSurface: Color(0xFF232A36),
+    onInverseSurface: Color(0xFFF0EDE7),
+    inversePrimary: Color(0xFFA9C0E2),
     scrim: Color(0x66000000),
-    focusRing: Color(0xFF1F5E55),
+    focusRing: Color(0xFF1F3A5F),
   );
 
   static const dark = ProsocheColors(
-    bg: Color(0xFF0F1716),
-    surface: Color(0xFF172120),
-    surfaceAlt: Color(0xFF1F2B2A),
-    textPrimary: Color(0xFFE8E4DA),
-    textSecondary: Color(0xFFB5BDB8),
-    textTertiary: Color(0xFF8E9893),
-    textDisabled: Color(0xFF55605C),
-    lead: Color(0xFFF1EDE3),
-    primary: Color(0xFF7CC4B4),
-    onPrimary: Color(0xFF08221E),
-    primaryContainer: Color(0xFF1F3F3A),
-    onPrimaryContainer: Color(0xFFCDEBE3),
-    accentText: Color(0xFFD9B866),
-    goldDeco: Color(0xFFB8963E),
-    outline: Color(0xFF2E3B39),
-    outlineStrong: Color(0xFF6E7A76),
-    error: Color(0xFFF2A49C),
-    onError: Color(0xFF3A0D09),
-    errorContainer: Color(0xFF4A1D19),
-    onErrorContainer: Color(0xFFF8DDD9),
-    success: Color(0xFF8FCB9B),
-    warning: Color(0xFFE8C170),
-    warningContainer: Color(0xFF3D2E0C),
-    onWarningContainer: Color(0xFFF6E7C4),
-    inverseSurface: Color(0xFFE8E4DA),
-    onInverseSurface: Color(0xFF1F2A2E),
-    inversePrimary: Color(0xFF1F5E55),
+    bg: Color(0xFF0E131A),
+    surface: Color(0xFF161C25),
+    surfaceAlt: Color(0xFF1F2631),
+    textPrimary: Color(0xFFECE7DF),
+    textSecondary: Color(0xFFB9BDC5),
+    textTertiary: Color(0xFF9198A3),
+    textDisabled: Color(0xFF525966),
+    lead: Color(0xFFF3EFE8),
+    primary: Color(0xFFA9C0E2),
+    onPrimary: Color(0xFF0E1A2C),
+    primaryContainer: Color(0xFF26364F),
+    onPrimaryContainer: Color(0xFFD9E3F3),
+    accentText: Color(0xFFE59E80),
+    goldDeco: Color(0xFFC6A05C),
+    outline: Color(0xFF2A3240),
+    outlineStrong: Color(0xFF6F7785),
+    error: Color(0xFFF2A3A8),
+    onError: Color(0xFF3D0B10),
+    errorContainer: Color(0xFF4B1A1F),
+    onErrorContainer: Color(0xFFF6DCDA),
+    success: Color(0xFF9CC9A2),
+    warning: Color(0xFFE3C27A),
+    warningContainer: Color(0xFF3A2D10),
+    onWarningContainer: Color(0xFFF2E5C6),
+    inverseSurface: Color(0xFFECE7DF),
+    onInverseSurface: Color(0xFF1B2230),
+    inversePrimary: Color(0xFF1F3A5F),
     scrim: Color(0x99000000),
-    focusRing: Color(0xFF7CC4B4),
+    focusRing: Color(0xFFA9C0E2),
   );
 
   /// Pozadie obrazoviek (`surface` v M3).
@@ -125,7 +126,7 @@ class ProsocheColors extends ThemeExtension<ProsocheColors> {
   /// Disabled (WCAG vynimka).
   final Color textDisabled;
 
-  /// Hlavny text karty (citat).
+  /// Text filozofa (citat, uryvok, citacka).
   final Color lead;
 
   /// Primarne akcie, aktivne stavy.
@@ -140,10 +141,10 @@ class ProsocheColors extends ThemeExtension<ProsocheColors> {
   /// Text na `primaryContainer`.
   final Color onPrimaryContainer;
 
-  /// Zlaty akcent v texte.
+  /// Terakota: typ karty, eyebrow, datum (jediny teply text).
   final Color accentText;
 
-  /// Iba dekor, nikdy text ani informacia.
+  /// Okra: iba dekor (motiv), nikdy text ani informacia.
   final Color goldDeco;
 
   /// Dekorativne oddelovace.
@@ -152,7 +153,7 @@ class ProsocheColors extends ThemeExtension<ProsocheColors> {
   /// Hranice inputov, neaktivny progres.
   final Color outlineStrong;
 
-  /// Chyby (nie vynechana modlitba).
+  /// Chyby (karminova, vzdy s ikonou a textom).
   final Color error;
 
   /// Text na `error`.
@@ -195,12 +196,12 @@ class ProsocheColors extends ThemeExtension<ProsocheColors> {
   /// `textSecondary := textPrimary`, `outlineStrong` o stupen vyraznejsi.
   static final ProsocheColors lightHighContrast = light.copyWith(
     textSecondary: light.textPrimary,
-    outlineStrong: const Color(0xFF5F665F),
+    outlineStrong: const Color(0xFF5A5E66),
   );
 
   static final ProsocheColors darkHighContrast = dark.copyWith(
     textSecondary: dark.textPrimary,
-    outlineStrong: const Color(0xFF8E9893),
+    outlineStrong: const Color(0xFF9198A3),
   );
 
   /// Farby, ktore su len dekor a nikdy nenesu text ani informaciu.

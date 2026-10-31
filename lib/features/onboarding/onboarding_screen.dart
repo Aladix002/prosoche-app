@@ -158,9 +158,7 @@ class _Header extends StatelessWidget {
                               color: i <= current
                                   ? context.sk.colors.primary
                                   : context.sk.colors.outline,
-                              borderRadius: BorderRadius.circular(
-                                SkRadius.full,
-                              ),
+                              borderRadius: BorderRadius.circular(SkRadius.xs),
                             ),
                           ),
                         ),
@@ -193,10 +191,18 @@ class OnboardingStepBody extends StatelessWidget {
     this.children = const [],
     this.busy = false,
     this.icon,
+    this.titleStyle,
+    this.subtitle,
     super.key,
   });
 
-  /// Ikona kroku v medailone motivu nad nadpisom (D-05).
+  /// Default `headlineSmall` (Cormorant 28); uvitanie ma `displaySmall`.
+  final TextStyle? titleStyle;
+
+  /// Riadok pod nadpisom (EB Garamond italic), napr. grecke slovo.
+  final String? subtitle;
+
+  /// Ikona kroku v obluku motivu nad nadpisom (D-01).
   final IconData? icon;
 
   final String title;
@@ -235,8 +241,21 @@ class OnboardingStepBody extends StatelessWidget {
                 ],
                 Semantics(
                   header: true,
-                  child: Text(title, style: text.headlineSmall),
+                  child: Text(title, style: titleStyle ?? text.headlineSmall),
                 ),
+                if (subtitle != null)
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                      bottom: SkSpace.space8,
+                    ),
+                    child: Text(
+                      subtitle!,
+                      style: context.sk.type.attribution.copyWith(
+                        fontSize: 17,
+                        height: 24 / 17,
+                      ),
+                    ),
+                  ),
                 if (body != null) ...[
                   const SizedBox(height: SkSpace.space8),
                   Text(body!, style: text.bodyLarge),

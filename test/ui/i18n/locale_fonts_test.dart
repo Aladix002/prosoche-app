@@ -71,14 +71,15 @@ void main() {
     // testovaci font), goldeny by neodhalili zly font.
     final declared = {
       for (final m in RegExp(
-        r'^\s*- family:\s*(\S+)\s*$',
+        r'^\s*- family:\s*(.+?)\s*$',
         multiLine: true,
       ).allMatches(File('pubspec.yaml').readAsStringSync()))
         m[1],
     };
     expect(declared, {
       ProsocheFontFamilies.inter,
-      ProsocheFontFamilies.literata,
+      ProsocheFontFamilies.serif,
+      ProsocheFontFamilies.display,
     });
   });
 }

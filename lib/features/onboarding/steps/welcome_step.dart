@@ -14,11 +14,14 @@ class WelcomeStep extends StatelessWidget {
     final l10n = context.l10n;
     final text = context.sk.text;
     return OnboardingStepBody(
+      // D-01: uvitanie so znackou (portal) a grecke slovo s vyznamom.
       leading: const [
-        // D-05: uvitanie s medailonom motivu (pomaly sa dokresli).
-        Center(child: SkMotifBadge(size: 112, animate: true)),
-        SizedBox(height: SkSpace.space16),
+        SizedBox(height: SkSpace.space24),
+        Center(child: SkPortalMark(size: 96)),
+        SizedBox(height: SkSpace.space24),
       ],
+      titleStyle: text.displaySmall,
+      subtitle: l10n.onbWelcomeMeaning,
       title: l10n.appTitle,
       body: l10n.onbWelcomeBody,
       primaryLabel: l10n.onbContinue,

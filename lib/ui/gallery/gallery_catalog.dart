@@ -5,9 +5,13 @@ import 'package:prosoche/ui/components/sk_card_surface.dart';
 import 'package:prosoche/ui/components/sk_daily_progress.dart';
 import 'package:prosoche/ui/components/sk_dialogs.dart';
 import 'package:prosoche/ui/components/sk_nav_bar.dart';
+import 'package:prosoche/ui/components/sk_practice.dart';
 import 'package:prosoche/ui/components/sk_quest_item.dart';
+import 'package:prosoche/ui/components/sk_quote.dart';
+import 'package:prosoche/ui/components/sk_reader.dart';
 import 'package:prosoche/ui/components/sk_states.dart';
 import 'package:prosoche/ui/gallery/gallery_samples.dart';
+import 'package:prosoche/ui/motif/sk_greek_motif.dart';
 import 'package:prosoche/ui/theme/sk_context.dart';
 import 'package:prosoche/ui/tokens/sk_space.dart';
 
@@ -43,7 +47,180 @@ abstract final class GalleryCatalog {
     dialogs,
     banners,
     states,
+    quoteCards,
+    cardHeaders,
+    reader,
+    practice,
+    motif,
   ];
+
+  // D-01: komponenty pre karty, Library a Practice (docs/DESIGN.md 6.2).
+
+  static final quoteCards = GalleryComponent('SkQuoteCard', [
+    GalleryEntry(
+      'quote',
+      (context) => const SkQuoteCard(
+        eyebrow: 'Quote',
+        text: GallerySamples.quote,
+        work: 'Meditations',
+        locus: '4.3',
+        author: 'Marcus Aurelius',
+        translator: 'George Long',
+        year: 1862,
+        headerActions: [
+          SkIconButton(
+            icon: Icons.bookmark_border,
+            tooltip: 'Save',
+            onPressed: _noop,
+          ),
+        ],
+        semanticLabel: 'Card 2 of 12, quote',
+      ),
+    ),
+    GalleryEntry(
+      'passage',
+      (context) => const SkQuoteCard(
+        eyebrow: 'Passage',
+        text: GallerySamples.passage,
+        work: 'Meditations',
+        locus: '2.1',
+        author: 'Marcus Aurelius',
+        translator: 'George Long',
+        year: 1862,
+        style: SkQuoteStyle.passage,
+      ),
+    ),
+    GalleryEntry(
+      'prompt (draft, bez referencie)',
+      (context) => const SkQuoteCard(
+        eyebrow: 'Reflect',
+        text: GallerySamples.prompt,
+        style: SkQuoteStyle.prompt,
+        footer: SkButton.secondary(label: 'Reflect tonight', onPressed: _noop),
+      ),
+    ),
+    GalleryEntry(
+      'compact',
+      (context) => const SkQuoteCard(
+        eyebrow: 'Quote',
+        text: GallerySamples.passage,
+        work: 'Meditations',
+        locus: '2.1',
+        variant: SkCardVariant.compact,
+        onTap: _noop,
+      ),
+    ),
+  ]);
+
+  static final cardHeaders = GalleryComponent('Card headers', [
+    GalleryEntry(
+      'concept',
+      (context) => const SkConceptHeader(
+        term: 'prosoche',
+        greek: 'προσοχή',
+        gloss: 'attention',
+      ),
+    ),
+    GalleryEntry(
+      'author',
+      (context) => const SkAuthorHeader(
+        name: 'Epictetus',
+        dates: 'c. 50 – c. 135',
+        role: 'Teacher, born a slave',
+      ),
+    ),
+    GalleryEntry(
+      'practice steps',
+      (context) => const SkPracticeSteps(
+        duration: '2 min',
+        steps: [
+          'Name one difficulty you expect today.',
+          'Decide how you want to meet it.',
+        ],
+      ),
+    ),
+    GalleryEntry(
+      'reference',
+      (context) => const SkReference(
+        work: 'Meditations',
+        locus: '2.1',
+        author: 'Marcus Aurelius',
+        translator: 'George Long',
+        year: 1862,
+        layout: SkReferenceLayout.full,
+      ),
+    ),
+  ]);
+
+  static final reader = GalleryComponent('SkReaderText', [
+    GalleryEntry(
+      'heading + paragraphs',
+      (context) => const Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SkReadingProgress(value: 0.4, label: 'Reading position'),
+          SkReaderHeading(title: 'Book II', subtitle: 'Among the Quadi'),
+          SkReaderText(text: GallerySamples.passage, sectionNumber: '1'),
+          SkReaderText(
+            text: GallerySamples.quote,
+            sectionNumber: '2',
+            highlighted: true,
+          ),
+        ],
+      ),
+    ),
+    GalleryEntry(
+      'size XL',
+      (context) => const SkReaderText(
+        text: GallerySamples.quote,
+        sectionNumber: '3',
+        size: SkReaderSize.xl,
+      ),
+    ),
+  ]);
+
+  static final practice = GalleryComponent('SkPracticeHeader', [
+    GalleryEntry(
+      'morning',
+      (context) => const SkPracticeHeader(
+        time: SkPracticeTime.morning,
+        eyebrow: 'Morning',
+        title: 'Morning preparation',
+        subtitle: 'Marcus Aurelius, Meditations 2.1',
+      ),
+    ),
+    GalleryEntry(
+      'evening',
+      (context) => const SkPracticeHeader(
+        time: SkPracticeTime.evening,
+        eyebrow: 'Evening',
+        title: 'Evening review',
+        subtitle: 'Seneca, On Anger 3.36',
+      ),
+    ),
+    GalleryEntry('journal field', (context) => const _JournalSample()),
+  ]);
+
+  static final motif = GalleryComponent('Motif', [
+    GalleryEntry(
+      'meander + cornice',
+      (context) => const Column(
+        children: [
+          SkMeanderBand(),
+          SizedBox(height: SkSpace.space16),
+          SkCornice(),
+        ],
+      ),
+    ),
+    GalleryEntry(
+      'arch, column, portal',
+      (context) => const Wrap(
+        spacing: SkSpace.space24,
+        crossAxisAlignment: WrapCrossAlignment.end,
+        children: [SkArch(size: 64), SkColumn(), SkPortalMark()],
+      ),
+    ),
+  ]);
 
   static Widget _lead(BuildContext context) =>
       Text(GallerySamples.lead, style: context.sk.type.reflection);
@@ -410,5 +587,29 @@ class GalleryFrame extends StatelessWidget {
       padding: const EdgeInsets.all(SkSpace.space16),
       child: child,
     ),
+  );
+}
+
+class _JournalSample extends StatefulWidget {
+  const _JournalSample();
+
+  @override
+  State<_JournalSample> createState() => _JournalSampleState();
+}
+
+class _JournalSampleState extends State<_JournalSample> {
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => SkJournalField(
+    controller: _controller,
+    label: 'What did I do well today?',
+    privacyNote: 'Your journal stays on this device.',
   );
 }

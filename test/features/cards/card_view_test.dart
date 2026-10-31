@@ -90,7 +90,8 @@ void main() {
   ) async {
     await _host(tester, _quote);
     expect(find.byType(QuoteCard), findsOneWidget);
-    expect(find.text('Quote'), findsOneWidget);
+    // Typ karty sa zobrazuje verzalkami (docs/DESIGN.md 3.3).
+    expect(find.text('QUOTE'), findsOneWidget);
     expect(find.text('[PLACEHOLDER work] 1.1'), findsOneWidget);
     expect(find.text('[PLACEHOLDER quote q_0002]'), findsOneWidget);
     expect(
@@ -317,6 +318,21 @@ via Prosoche''');
     expect(png!.sublist(0, 4), [0x89, 0x50, 0x4E, 0x47]);
     expect(ByteData.sublistView(png, 16, 20).getUint32(0), 1080);
     expect(ByteData.sublistView(png, 20, 24).getUint32(0), 1350);
+
+    // Dlhsi text sa prichyti k formatu 9:16 (1080 x 1920).
+    final story = await tester.runAsync(
+      () => renderWidgetToPng(
+        context,
+        CardShareImage(
+          data: CardShareData(
+            reference: 'x',
+            text: List.filled(10, '[PLACEHOLDER]').join(' '),
+          ),
+          appName: 'Prosoche',
+        ),
+      ),
+    );
+    expect(ByteData.sublistView(story!, 20, 24).getUint32(0), 1920);
 
     final long = await tester.runAsync(
       () => renderWidgetToPng(

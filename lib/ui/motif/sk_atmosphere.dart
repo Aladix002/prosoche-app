@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:prosoche/ui/motif/sk_motif.dart';
 import 'package:prosoche/ui/theme/prosoche_colors.dart';
 import 'package:prosoche/ui/theme/sk_context.dart';
 import 'package:prosoche/ui/tokens/sk_space.dart';
@@ -53,22 +52,24 @@ class SkAtmosphereColors {
   final Color top;
   final Color bottom;
 
+  // docs/DESIGN.md 2.3: mramor, ranne svetlo, vapenec, okra, terakota,
+  // atrament.
   static const Map<SkDayPhase, Color> _lightTints = {
-    SkDayPhase.dawn: Color(0xFFF4EAE7),
-    SkDayPhase.morning: Color(0xFFE6F0EB),
-    SkDayPhase.midday: Color(0xFFF5F0E1),
-    SkDayPhase.afternoon: Color(0xFFF6ECD5),
-    SkDayPhase.dusk: Color(0xFFF6E8DF),
-    SkDayPhase.night: Color(0xFFE4EBEC),
+    SkDayPhase.dawn: Color(0xFFF3E6E0),
+    SkDayPhase.morning: Color(0xFFE6EBF0),
+    SkDayPhase.midday: Color(0xFFF4F0E6),
+    SkDayPhase.afternoon: Color(0xFFF3E8D3),
+    SkDayPhase.dusk: Color(0xFFF2E1D8),
+    SkDayPhase.night: Color(0xFFE1E6EE),
   };
 
   static const Map<SkDayPhase, Color> _darkTints = {
-    SkDayPhase.dawn: Color(0xFF221D24),
-    SkDayPhase.morning: Color(0xFF16272A),
-    SkDayPhase.midday: Color(0xFF1E2620),
-    SkDayPhase.afternoon: Color(0xFF262316),
-    SkDayPhase.dusk: Color(0xFF281D1C),
-    SkDayPhase.night: Color(0xFF0E1A22),
+    SkDayPhase.dawn: Color(0xFF221A1E),
+    SkDayPhase.morning: Color(0xFF152030),
+    SkDayPhase.midday: Color(0xFF1C2028),
+    SkDayPhase.afternoon: Color(0xFF25211A),
+    SkDayPhase.dusk: Color(0xFF2A1C1A),
+    SkDayPhase.night: Color(0xFF0C1524),
   };
 
   /// Vsetky odtiene (pre kontrastny test a galeriu).
@@ -76,9 +77,9 @@ class SkAtmosphereColors {
       (dark ? _darkTints : _lightTints).values;
 }
 
-/// Hlavicka s atmosferou: zaobleny panel s gradientom podla casti dna
-/// a geometrickym vzorom v hornom rohu (na strane konca, v RTL zrkadleny),
-/// ktory sa strati skor, nez zacne text.
+/// Hlavicka s atmosferou: plocha s jemnym tonalnym prechodom podla casti
+/// dna ("svetlo na kameni", docs/DESIGN.md 1). Bez vzoru: motiv patri
+/// volajucemu (napr. rimsa pod nadpisom).
 class SkAtmospherePanel extends StatelessWidget {
   const SkAtmospherePanel({
     required this.phase,
@@ -102,31 +103,16 @@ class SkAtmospherePanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.sk.colors;
     final a = SkAtmosphereColors.of(phase, c);
-    final shape = BorderRadius.circular(radius);
     return DecoratedBox(
       decoration: BoxDecoration(
-        borderRadius: shape,
+        borderRadius: BorderRadius.circular(radius),
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [a.top, a.bottom],
         ),
       ),
-      child: ClipRRect(
-        borderRadius: shape,
-        child: Stack(
-          children: [
-            const PositionedDirectional(
-              top: 0,
-              end: 0,
-              width: 200,
-              height: 150,
-              child: SkPatternField(opacity: 0.28, fadeStop: 0.8),
-            ),
-            Padding(padding: padding, child: child),
-          ],
-        ),
-      ),
+      child: Padding(padding: padding, child: child),
     );
   }
 }

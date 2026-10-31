@@ -73,12 +73,18 @@ class GateHeader extends StatelessWidget {
         children: [
           Row(
             children: [
+              // D-01: brana = oblúk; prechadzas nim k appke. Pri velkom
+              // texte sa vynecha (miesto patri karte).
+              if (!sk.largeText) ...[
+                const SkArch(size: 28, keystone: false),
+                const SizedBox(width: SkSpace.space12),
+              ],
               Expanded(
                 child: Semantics(
                   header: true,
                   child: Text(
                     l10n.gateTitleFor(app),
-                    style: sk.text.titleMedium,
+                    style: sk.text.headlineSmall,
                   ),
                 ),
               ),

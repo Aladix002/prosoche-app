@@ -462,6 +462,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Text not yet available in your language';
 
   @override
+  String get onbWelcomeMeaning => 'προσοχή · attention';
+
+  @override
   String get shellSettings => 'Settings';
 
   @override

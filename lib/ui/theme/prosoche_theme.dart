@@ -130,7 +130,7 @@ abstract final class ProsocheTheme {
       visualDensity: VisualDensity.standard,
       extensions: [
         c,
-        ProsocheTypography.forColor(c.textPrimary),
+        ProsocheTypography.of(c),
         const ProsocheSpacing(),
         if (reduceMotion)
           ProsocheMotion.reducedMotion

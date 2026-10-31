@@ -37,19 +37,17 @@ class QuoteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final sk = context.sk;
     final q = content;
     return SkCardSurface(
       semanticLabel: semanticLabel,
       eyebrow: l10n.cardTypeQuote,
       eyebrowDetail: q.reference,
       headerActions: actions.build(context),
-      lead: Text(
-        q.text,
-        style: sk.type.reflection.copyWith(color: sk.colors.lead),
-      ),
-      translation: sourceLine == null ? null : CardSourceNote(sourceLine!),
+      // D-01: citat v EB Garamond 22/32 (`SkQuoteText`), autor pod nim,
+      // zdroj ako posledny riadok (docs/DESIGN.md 3.4, 3.5).
+      translation: SkQuoteText(q.text),
       attribution: l10n.cardQuoteAttribution(q.author, q.reference),
+      footer: sourceLine == null ? null : CardSourceNote(sourceLine!),
     );
   }
 }
