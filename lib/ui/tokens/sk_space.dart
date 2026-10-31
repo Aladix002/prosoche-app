@@ -44,6 +44,6 @@ abstract final class SkRadius {
   /// Bottom sheet (horne rohy).
   static const double xl = 28;
 
-  /// Pill, prayer status kruh.
+  /// Pill.
   static const double full = 999;
 }

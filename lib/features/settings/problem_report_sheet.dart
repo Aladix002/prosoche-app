@@ -12,8 +12,8 @@ import 'package:prosoche/ui/ui.dart';
 /// vidi presny text reportu a posle ho sam ako `.txt` cez systemovy share
 /// sheet (napr. e-mailom). Appka nic neodosiela.
 ///
-/// [subject] je technicka referencia, napr. karta `hadith:42` a jej
-/// zbierka a cislo. Nikdy nie text Koranu, hadisu ani modlitby.
+/// [subject] je technicka referencia, napr. karta `quote:q_0042` a jej
+/// dielo a cislo. Nikdy nie text karty.
 ///
 /// Vrati true, ked sa otvoril share sheet s reportom.
 Future<bool> showProblemReportSheet(

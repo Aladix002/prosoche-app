@@ -101,7 +101,7 @@ android {
     }
 
     // Dimenzie env (dev, prod) x edition (lite, full) -> devLite, devFull,
-    // prodLite, prodFull. `lite` = produkcia B (Ramadan edition) bez brany,
+    // prodLite, prodFull. `lite` = edicia bez brany,
     // `full` pridava zdrojovy set src/full/ (blocker, FGS, usage access,
     // overlay). PLAN_VYVOJA S-01b, docs/10 6.1. Rovnake applicationId.
     flavorDimensions += listOf("env", "edition")

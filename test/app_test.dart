@@ -99,7 +99,7 @@ void main() {
     expect(Theme.of(context).extension<ProsocheColors>(), ProsocheColors.light);
     expect(Theme.of(context).textTheme.bodyLarge!.fontFamily, SkFonts.inter);
     expect(SkUiStrings.of(context).tryAgain, 'Try again');
-    // SkTextScaling: UI clamp na 2.0, Koran dostane neclampnuty scaler.
+    // SkTextScaling: UI clamp na 2.0, citacie texty dostanu neclampnuty scaler.
     expect(MediaQuery.textScalerOf(context).scale(10), 20);
     expect(SkTextScaling.unclampedOf(context).scale(10), 30);
   });

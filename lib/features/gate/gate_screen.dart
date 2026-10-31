@@ -135,7 +135,7 @@ class _GateScreenState extends ConsumerState<GateScreen> {
     if (!mounted) return;
     final phase = _c.phase;
     if (phase == GatePhase.cards && _lastPhase != GatePhase.cards) {
-      // PageView sa znova vytvori (po prayer, emergency, keep reading).
+      // PageView sa znova vytvori (po emergency, keep reading).
       _pager?.dispose();
       _pager = PageController(initialPage: _c.page);
     }

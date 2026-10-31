@@ -20,8 +20,7 @@ final class SavedCard {
 /// nahlasenie (docs/02 0.5, B0). Zapis do `card_event` s [CardContext].
 abstract interface class CardActionsRepository {
   /// `card_event` s akciou [action] (napr. `shared`, `source_opened`).
-  /// Pre `seen` pouzi `DailySetRepository.markSeen` alebo
-  /// `QuranRepository.markRead`.
+  /// Pre `seen` pouzi `DailySetRepository.markSeen`.
   Future<void> log(
     LocalDate date,
     CardId card,

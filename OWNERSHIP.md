@@ -4,16 +4,15 @@ Kto smie menit co pocas paralelnej prace. Prefix = buduca uloha.
 
 | Adresar / subor | Uloha | Poznamka |
 |---|---|---|
-| `lib/domain/*` (feed, quests, srs, streak, calendar, blocker) | D- | cisty Dart, bez `flutter`/`drift` (strazi `test/architecture_test.dart`) |
-| `lib/domain/prayer` | PR- | casy modlitieb, adhan_dart |
-| `lib/data/notifications` | PR- | planovanie notifikacii |
+| `lib/domain/*` (feed, quests, streak, blocker) | D- | cisty Dart, bez `flutter`/`drift` (strazi `test/architecture_test.dart`) |
+| `lib/data/notifications` | N- | planovanie notifikacii |
 | `lib/data/db` | DB- | drift, migracie, testy migracii v `test/data/migrations` |
-| `lib/data/content`, `lib/data/audio` | DB- | ak nie je urcene inak |
+| `lib/data/content` | DB- | ak nie je urcene inak |
 | `lib/data/blocker` | AND- | obal nad Pigeon API |
 | `pigeons/` | AND- | definicie Pigeon |
 | `android/app/src/main/kotlin/**/blocker`, `**/boot` | AND- | nativny blocker |
 | `lib/ui/` (tokeny, temy, komponenty `Sk*`, galeria) | U-01 | design system |
-| `lib/ui/i18n/`, `packages/prosoche_lints/`, `test/helpers/golden/` | U-02 | RTL, fonty jazykov, golden harness |
+| `lib/ui/i18n/`, `packages/prosoche_lints/`, `test/helpers/golden/` | U-02 | RTL, fonty, golden harness |
 | `lib/features/*/widgets/` | UI- | komponenty obrazoviek |
 | `lib/features/<feature>/` (okrem `widgets/`) | feature uloha | obrazovky, notifiery |
 | `test/<cesta>` | rovnaka uloha ako `lib/<cesta>` | test zrkadli lib |
@@ -32,7 +31,7 @@ nova `AppFailure`, povolenie v manifeste) zapisu do handoff reportu a integracia
 Kazda uloha ma vlastny `lib/l10n/parts/<ID>_en.arb` a vlastny
 `lib/features/<f>/<f>_routes.dart`. Kontrakty `lib/domain/common`,
 `lib/domain/settings` a `lib/core/flags` meni len samostatna uloha.
-Zavazna tabulka vlastnictva je v `../PLAN_VYVOJA.md` kap. 2.
+Zavazny plan je v `../PLAN.md`.
 
 ## Pravidla
 

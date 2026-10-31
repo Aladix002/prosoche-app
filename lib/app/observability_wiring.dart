@@ -35,7 +35,7 @@ void startObservability(ProviderContainer container) {
 }
 
 /// `screen_view{screen}` (docs/02 C2) pri kazdej zmene obrazovky: `screen`
-/// je nazov GoRoute (`today`, `quran_reader`), nikdy cesta s parametrami.
+/// je nazov GoRoute (`today`, `library_reader`), nikdy cesta s parametrami.
 /// Bez suhlasu [analyticsProvider] event zahodi.
 ///
 /// Router sa po zmazani dat vytvori znova ([appRouterProvider]), preto sa

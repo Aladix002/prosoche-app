@@ -95,9 +95,9 @@ void main() {
     expect(ok('type', 'com.instagram.android'), isFalse);
     expect(ok('type', ''), isFalse);
     expect(ok('type', 'a' * 49), isFalse);
-    expect(ok('screen', 'quran_reader'), isTrue);
-    expect(ok('screen', '/quran/read/2'), isFalse);
-    expect(ok('screen', 'quran_reader_2'), isFalse);
+    expect(ok('screen', 'library_reader'), isTrue);
+    expect(ok('screen', '/library/read/2'), isFalse);
+    expect(ok('screen', 'library_reader_2'), isFalse);
     expect(ok('from_version', '2026.11.1'), isTrue);
     expect(ok('app_version', '1.2.0+10'), isTrue);
     expect(ok('app_version', 'v1'), isFalse);

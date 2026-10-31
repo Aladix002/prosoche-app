@@ -20,8 +20,8 @@ final class NoopAnalytics implements Analytics {
 
 /// Allowlist eventov a vlastnosti (TECHNICKY_PLAN 19, docs/02 D19).
 ///
-/// Ziadny event nesmie obsahovat `card_id`, `ayah_id`, nazov sury, stav
-/// modlitby, nazov appky ani polohu (docs/02 0.6). Preto je zoznam
+/// Ziadny event nesmie obsahovat `card_id`, text ani zdroj karty, umysel,
+/// nazov appky ani polohu (docs/02 0.6). Preto je zoznam
 /// vlastnosti uzavrety a hodnoty textovych vlastnosti su len kratke
 /// identifikatory (`[a-z0-9_]`, verzie s bodkami), nie volny text.
 abstract final class AnalyticsSchema {
@@ -69,8 +69,8 @@ abstract final class AnalyticsSchema {
     'to_version',
   };
 
-  /// `screen` je nazov routy z docs/02 C2 (`quran_reader`), nikdy cesta
-  /// s parametrami (`/quran/read/2`), preto bez cislic a lomiek.
+  /// `screen` je nazov routy z docs/02 C2 (`library_reader`), nikdy cesta
+  /// s parametrami (`/library/read/2`), preto bez cislic a lomiek.
   static final _screen = RegExp(r'^[a-z][a-z_]{0,47}$');
 
   static bool isKnownEvent(String event) => events.containsKey(event);

@@ -13,6 +13,5 @@ revokacie klucov a remote config (kill-switch).
 - Subory v `<app support>/content/`: `content.db`, `state.json`.
 - Pribalenie db: `tool/bundle_content.sh` (assets/content je gitignored),
   pribaluje sa `content.db.gz` + `manifest.json` (gz_sha256, sha256).
-- `hadith_extra_pack_service.dart` cita meta content.db cez sqlite3, nie
-  cez druhy `ContentDb` (drift warning "created multiple times").
-- Testovacie vektory: `test/fixtures/content_vectors/` (len testovacie kluce).
+- Testovacie vektory: `test/fixtures/content_vectors/` (len testovacie kluce;
+  S-01 zatial vektory z Mursy, F-01 ich nahradi vektormi z prosoche-content).

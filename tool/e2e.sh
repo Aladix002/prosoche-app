@@ -2,7 +2,7 @@
 # E2E testy (Patrol, patrol_test/) na pripojenom zariadeni alebo emulatore.
 #
 #   tool/e2e.sh [-c cesta k prosoche-content] [dalsie argumenty pre patrol test]
-#   tool/e2e.sh -t patrol_test/s3_quran_search_test.dart
+#   tool/e2e.sh -t patrol_test/s1_onboarding_test.dart
 #
 # Pribali realnu content.db (tool/bundle_content.sh), postavi devLite
 # a spusti vsetky scenare. Appka sa pred behom odinstaluje (cerstva

@@ -140,7 +140,7 @@ class ProsocheColors extends ThemeExtension<ProsocheColors> {
   /// Text na `primaryContainer`.
   final Color onPrimaryContainer;
 
-  /// Zlaty akcent v texte (hijri datum).
+  /// Zlaty akcent v texte.
   final Color accentText;
 
   /// Iba dekor, nikdy text ani informacia.

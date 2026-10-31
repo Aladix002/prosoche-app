@@ -24,7 +24,7 @@ void main() {
   }) => ScheduledNotification(
     id: 42,
     channel: channel,
-    channelName: 'Prayer times',
+    channelName: 'Daily',
     channelDescription: 'desc',
     at: tz.TZDateTime(ba, 2030, 1, 1, 12),
     title: 'Prosoche · 12:00',

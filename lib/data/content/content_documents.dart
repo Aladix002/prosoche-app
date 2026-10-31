@@ -100,7 +100,7 @@ class DbArchiveInfo {
 }
 
 /// Volitelny obsahovy balik z `packs` v manifeste (C-06). `ContentPackService`
-/// ho ignoruje; stahovanie balikov zatial nie je (v Murse hadith_extra).
+/// ho ignoruje; stahovanie balikov zatial nie je (F-01 rozhodne o pouziti).
 @immutable
 class ContentPackInfo {
   const ContentPackInfo({

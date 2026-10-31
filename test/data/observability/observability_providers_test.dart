@@ -96,7 +96,7 @@ void main() {
     expect(crash.starts, 1);
 
     c.read(analyticsProvider).track('screen_view', {
-      'screen': 'quran_reader',
+      'screen': 'library_reader',
       'ayah_id': 262,
     });
     await pumpEventQueue();
@@ -105,7 +105,7 @@ void main() {
       'content_version': 7,
       'locale': 'en',
       'flavor': 'dev',
-      'screen': 'quran_reader',
+      'screen': 'library_reader',
     });
 
     await settings.set(SettingsKeys.analyticsOptIn, false);

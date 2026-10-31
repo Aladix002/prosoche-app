@@ -132,7 +132,7 @@ void main() {
           routes: [
             GoRoute(
               path: 'read/:id',
-              name: 'quran_reader',
+              name: 'library_reader',
               builder: (_, _) => const SizedBox(),
             ),
           ],
@@ -161,6 +161,6 @@ void main() {
       for (final (e, p) in transport.sent)
         if (e == 'screen_view') p['screen'],
     ];
-    expect(views, ['today', 'quran_reader', 'today']);
+    expect(views, ['today', 'library_reader', 'today']);
   });
 }

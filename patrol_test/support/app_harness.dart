@@ -24,8 +24,7 @@ import 'package:prosoche/data/repositories/infra/databases.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Fixny cas E2E: streda 11. 11. 2026 09:00 (lokalny cas zariadenia).
-/// Nie je piatok (al-Kahf), Ramadan ani sviatok, Bratislava ma vsetkych
-/// 5 modlitieb. Hodiny od tohto okamihu bezia realnym tempom (dwell,
+/// Hodiny od tohto okamihu bezia realnym tempom (dwell,
 /// casovace). `--dart-define=E2E_REAL_TIME=true` = realny cas (testy su
 /// tolerantne).
 final DateTime e2eStart = DateTime(2026, 11, 11, 9);
