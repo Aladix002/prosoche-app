@@ -704,31 +704,6 @@ class BlockerHostApi {
     );
     return pigeonVar_replyValue! as String;
   }
-
-  /// Zatial len ulozi okna modlitieb (prayer lock je pripomienka v UI
-  /// brany, nie zamknutie, TECHNICKY_PLAN 9.2 bod 7).
-  Future<void> schedulePrayerLocks(
-    List<int> startEpochMs,
-    int durationMinutes,
-  ) async {
-    final pigeonVar_channelName =
-        'dev.flutter.pigeon.prosoche.BlockerHostApi.schedulePrayerLocks$pigeonVar_messageChannelSuffix';
-    final pigeonVar_channel = BasicMessageChannel<Object?>(
-      pigeonVar_channelName,
-      pigeonChannelCodec,
-      binaryMessenger: pigeonVar_binaryMessenger,
-    );
-    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(
-      <Object?>[startEpochMs, durationMinutes],
-    );
-    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
-
-    _extractReplyValueOrThrow(
-      pigeonVar_replyList,
-      pigeonVar_channelName,
-      isNullValid: true,
-    );
-  }
 }
 
 abstract class BlockerFlutterApi {

@@ -38,8 +38,6 @@ class FakeBlockerGateway implements BlockerGateway {
   bool? serviceRunning;
   bool enabled = false;
   List<BlockTarget> targets = const [];
-  List<DateTime> prayerStarts = const [];
-  int prayerMinutes = 0;
 
   /// Posledne `closeGate(openTarget)`, null ak este nebolo.
   bool? lastCloseOpenTarget;
@@ -146,15 +144,6 @@ class FakeBlockerGateway implements BlockerGateway {
   @override
   Future<Result<String>> deviceManufacturer() async =>
       _run('deviceManufacturer', () => manufacturer);
-
-  @override
-  Future<Result<void>> schedulePrayerLocks(
-    List<DateTime> starts, {
-    required int durationMinutes,
-  }) async => _run('schedulePrayerLocks', () {
-    prayerStarts = List.unmodifiable(starts);
-    prayerMinutes = durationMinutes;
-  });
 
   Result<T> _run<T>(String op, T Function() body) {
     calls.add(op);

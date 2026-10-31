@@ -48,7 +48,7 @@ class SkQuestItem extends StatelessWidget {
   /// Napr. kratky zdroj (bez nabozenskeho textu v galerii).
   final String? subtitle;
 
-  /// Event override, napr. "Jumu'ah" (accentText).
+  /// Stitok nad titulom, napr. tema dna (accentText).
   final String? eventLabel;
 
   /// Detail (bottom sheet so zdrojom).

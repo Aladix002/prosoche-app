@@ -3,124 +3,212 @@
   "gatePauseTitle": "A pause before {app}",
   "@gatePauseTitle": {
     "description": "Gate header before a blocked app. {app} is the app name, e.g. 'A pause before Instagram'. Never judge the app or the user.",
-    "placeholders": {"app": {"type": "String"}}
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
   },
   "gatePauseTitleGeneric": "A pause before this app",
-  "@gatePauseTitleGeneric": {"description": "Gate header when the app name is unknown."},
+  "@gatePauseTitleGeneric": {
+    "description": "Gate header when the app name is unknown."
+  },
   "gateSubtitle": "{count, plural, one{1 card, then {app} opens.} other{{count} cards, then {app} opens.}}",
   "@gateSubtitle": {
     "description": "Gate subtitle: how many cards before the app opens.",
-    "placeholders": {"count": {"type": "int"}, "app": {"type": "String"}}
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "app": {
+        "type": "String"
+      }
+    }
   },
   "gateSubtitleGeneric": "{count, plural, one{1 card, then the app opens.} other{{count} cards, then the app opens.}}",
   "@gateSubtitleGeneric": {
     "description": "Gate subtitle when the app name is unknown.",
-    "placeholders": {"count": {"type": "int"}}
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "gateProgress": "{done} of {total}",
   "@gateProgress": {
     "description": "Screen reader progress of the gate cards, e.g. '1 of 3'.",
-    "placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
   },
   "gateNext": "Next",
-  "@gateNext": {"description": "Button that moves to the next card in the gate."},
+  "@gateNext": {
+    "description": "Button that moves to the next card in the gate."
+  },
   "gateDwellLeft": "{seconds} s",
   "@gateDwellLeft": {
     "description": "Short countdown under the current gate card, e.g. '3 s'.",
-    "placeholders": {"seconds": {"type": "int"}}
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
   },
   "gateDwellA11y": "{seconds, plural, one{Next card in 1 second} other{Next card in {seconds} seconds}}",
   "@gateDwellA11y": {
     "description": "Screen reader text of the card countdown.",
-    "placeholders": {"seconds": {"type": "int"}}
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
   },
   "gateBack": "Go back",
-  "@gateBack": {"description": "Closes the gate and goes to the home screen. The blocked app does not open. No guilt."},
+  "@gateBack": {
+    "description": "Closes the gate and goes to the home screen. The blocked app does not open. No guilt."
+  },
   "gateEmergency": "Emergency",
-  "@gateEmergency": {"description": "Hold-to-confirm button that opens the app without cards after a 10 second countdown."},
+  "@gateEmergency": {
+    "description": "Hold-to-confirm button that opens the app without cards after a 10 second countdown."
+  },
   "gateEmergencyTitle": "Opening {app}",
   "@gateEmergencyTitle": {
     "description": "Title of the emergency countdown.",
-    "placeholders": {"app": {"type": "String"}}
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
   },
   "gateEmergencyTitleGeneric": "Opening the app",
-  "@gateEmergencyTitleGeneric": {"description": "Title of the emergency countdown when the app name is unknown."},
+  "@gateEmergencyTitleGeneric": {
+    "description": "Title of the emergency countdown when the app name is unknown."
+  },
   "gateEmergencyBody": "Opening in {seconds, plural, one{1 second} other{{seconds} seconds}}.",
   "@gateEmergencyBody": {
     "description": "Emergency countdown text.",
-    "placeholders": {"seconds": {"type": "int"}}
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
   },
   "gateEmergencyCancel": "Cancel",
-  "@gateEmergencyCancel": {"description": "Cancels the emergency countdown; nothing is unlocked."},
+  "@gateEmergencyCancel": {
+    "description": "Cancels the emergency countdown; nothing is unlocked."
+  },
   "gateEmergencyA11yDialog": "Open {app} without cards? It opens in 10 seconds for {minutes} minutes.",
   "@gateEmergencyA11yDialog": {
     "description": "Dialog shown instead of hold-to-confirm when a screen reader is on.",
-    "placeholders": {"app": {"type": "String"}, "minutes": {"type": "int"}}
+    "placeholders": {
+      "app": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
   },
   "gateEmergencyA11yDialogGeneric": "Open the app without cards? It opens in 10 seconds for {minutes} minutes.",
   "@gateEmergencyA11yDialogGeneric": {
     "description": "Screen reader emergency dialog when the app name is unknown.",
-    "placeholders": {"minutes": {"type": "int"}}
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
   },
   "gateUnlockedTitle": "{minutes, plural, one{{app} is open for 1 minute} other{{app} is open for {minutes} minutes}}",
   "@gateUnlockedTitle": {
     "description": "Shown after the required cards.",
-    "placeholders": {"app": {"type": "String"}, "minutes": {"type": "int"}}
+    "placeholders": {
+      "app": {
+        "type": "String"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
   },
   "gateUnlockedTitleGeneric": "{minutes, plural, one{The app is open for 1 minute} other{The app is open for {minutes} minutes}}",
   "@gateUnlockedTitleGeneric": {
     "description": "Unlocked title when the app name is unknown.",
-    "placeholders": {"minutes": {"type": "int"}}
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
   },
   "gateUnlockedBody": "Use them well.",
-  "@gateUnlockedBody": {"description": "Short line under the unlocked title."},
+  "@gateUnlockedBody": {
+    "description": "Short line under the unlocked title."
+  },
   "gateSetFinished": "You finished today's set.",
-  "@gateSetFinished": {"description": "Extra line on the unlocked screen when the gate cards completed the daily set."},
+  "@gateSetFinished": {
+    "description": "Extra line on the unlocked screen when the gate cards completed the daily set."
+  },
   "gateContinueTo": "Continue to {app}",
   "@gateContinueTo": {
     "description": "Opens the blocked app (after cards, or after an error).",
-    "placeholders": {"app": {"type": "String"}}
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
   },
   "gateContinue": "Continue",
-  "@gateContinue": {"description": "Opens the blocked app when its name is unknown."},
+  "@gateContinue": {
+    "description": "Opens the blocked app when its name is unknown."
+  },
   "gateUnlockedClose": "Close {app} instead",
   "@gateUnlockedClose": {
     "description": "Goes to the home screen instead of the app. Equal option, no guilt.",
-    "placeholders": {"app": {"type": "String"}}
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
   },
   "gateUnlockedCloseGeneric": "Go to home screen",
-  "@gateUnlockedCloseGeneric": {"description": "Goes to the home screen when the app name is unknown."},
+  "@gateUnlockedCloseGeneric": {
+    "description": "Goes to the home screen when the app name is unknown."
+  },
   "gateKeepReading": "Keep reading",
-  "@gateKeepReading": {"description": "Continues with more cards after the app is unlocked."},
-  "gateFreeReadingNote": "Today's cards are done. Here are a few verses from where you left off.",
-  "@gateFreeReadingNote": {"description": "Shown above free reading verses in the gate."},
-  "gatePrayerTitle": "It's time for {prayer}",
-  "@gatePrayerTitle": {
-    "description": "Prayer reminder in the gate. {prayer} is the prayer name, e.g. 'Asr'.",
-    "placeholders": {"prayer": {"type": "String"}}
+  "@gateKeepReading": {
+    "description": "Continues with more cards after the app is unlocked."
   },
-  "gatePrayerBody": "{app} will still be here after you pray.",
-  "@gatePrayerBody": {
-    "description": "Prayer reminder text.",
-    "placeholders": {"app": {"type": "String"}}
+  "gateFreeReadingNote": "Today's cards are done. Here are a few more to read.",
+  "@gateFreeReadingNote": {
+    "description": "Shown above extra cards in the gate after today's set is done."
   },
-  "gatePrayerBodyGeneric": "The app will still be here after you pray.",
-  "@gatePrayerBodyGeneric": {"description": "Prayer reminder text when the app name is unknown."},
-  "gatePrayerPray": "I'll pray first",
-  "@gatePrayerPray": {"description": "Goes to the home screen."},
-  "gatePrayerContinue": "Show cards anyway",
-  "@gatePrayerContinue": {"description": "Continues to the normal gate with cards."},
   "gateErrorTitle": "We couldn't load your cards",
-  "@gateErrorTitle": {"description": "Gate error state (database or timeout)."},
+  "@gateErrorTitle": {
+    "description": "Gate error state (database or timeout)."
+  },
   "gateErrorBody": "This is our mistake, not yours. You can continue.",
-  "@gateErrorBody": {"description": "Gate error body."},
+  "@gateErrorBody": {
+    "description": "Gate error body."
+  },
   "gateLoadingSlow": "Still loading…",
-  "@gateLoadingSlow": {"description": "Shown when the gate takes long to load."},
+  "@gateLoadingSlow": {
+    "description": "Shown when the gate takes long to load."
+  },
   "gateEmpty": "Nothing to show right now. {app} is open.",
   "@gateEmpty": {
     "description": "Gate empty state; the app will open.",
-    "placeholders": {"app": {"type": "String"}}
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
   },
   "gateEmptyGeneric": "Nothing to show right now. The app is open.",
-  "@gateEmptyGeneric": {"description": "Gate empty state when the app name is unknown."}
+  "@gateEmptyGeneric": {
+    "description": "Gate empty state when the app name is unknown."
+  }
 }

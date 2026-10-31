@@ -7,15 +7,7 @@ import 'package:prosoche/domain/feed/day_phase.dart';
 /// Jedna polozka `cards_json.cards` (docs/02 0.3).
 @immutable
 final class DailySetCard {
-  DailySetCard({
-    required this.pos,
-    required this.cardId,
-    required this.slot,
-    this.ctxAyahId,
-    List<int> distractors = const [],
-    this.khatm = false,
-    this.eventId,
-  }) : distractors = List.unmodifiable(distractors) {
+  DailySetCard({required this.pos, required this.cardId, required this.slot}) {
     if (pos < 1) throw RangeError.value(pos, 'pos', 'must be >= 1');
     if (cardId is DoneCardId) {
       throw ArgumentError.value(cardId, 'cardId', 'done is not in cards');
@@ -24,23 +16,12 @@ final class DailySetCard {
 
   factory DailySetCard.fromJson(Map<String, Object?> json) {
     final slotWire = _req<String>(json, 'slot');
-    final ctx = _opt<int>(json, 'ctx_ayah_id');
     return DailySetCard(
       pos: _req<int>(json, 'pos'),
       cardId: CardId.parse(_req<String>(json, 'card_id')),
       slot:
           Slot.fromWire(slotWire) ??
           (throw FormatException('Unknown slot', slotWire)),
-      ctxAyahId: ctx == null
-          ? null
-          : AyahId.tryFromValue(ctx) ??
-                (throw FormatException('ctx_ayah_id out of range', '$ctx')),
-      distractors: [
-        for (final d in _opt<List<Object?>>(json, 'distractors') ?? <Object?>[])
-          if (d is int) d else throw const FormatException('distractors: int'),
-      ],
-      khatm: _opt<bool>(json, 'khatm') ?? false,
-      eventId: _opt<String>(json, 'event_id'),
     );
   }
 
@@ -51,27 +32,10 @@ final class DailySetCard {
   /// Rola karty v sade po vyhodnoteni fallbackov.
   final Slot slot;
 
-  /// Vers, z ktoreho je slovo (len `word`).
-  final AyahId? ctxAyahId;
-
-  /// `lemma_id` distraktorov kvizu (len `quiz`).
-  final List<int> distractors;
-
-  /// Vers je pokracovanim khatmu a jeho `seen` posuva `reading_position`
-  /// (docs/02 B2). Eventove versy maju false.
-  final bool khatm;
-
-  /// Event zobrazeny na uvodnej karte (len `intro`); null = len hijri datum.
-  final String? eventId;
-
   Map<String, Object?> toJson() => {
     'pos': pos,
     'card_id': cardId.format(),
     'slot': slot.wire,
-    if (ctxAyahId != null) 'ctx_ayah_id': ctxAyahId!.value,
-    if (distractors.isNotEmpty) 'distractors': distractors,
-    if (khatm) 'khatm': true,
-    'event_id': ?eventId,
   };
 
   @override
@@ -79,22 +43,10 @@ final class DailySetCard {
       other is DailySetCard &&
       other.pos == pos &&
       other.cardId == cardId &&
-      other.slot == slot &&
-      other.ctxAyahId == ctxAyahId &&
-      other.khatm == khatm &&
-      other.eventId == eventId &&
-      _listEq(other.distractors, distractors);
+      other.slot == slot;
 
   @override
-  int get hashCode => Object.hash(
-    pos,
-    cardId,
-    slot,
-    ctxAyahId,
-    khatm,
-    eventId,
-    Object.hashAll(distractors),
-  );
+  int get hashCode => Object.hash(pos, cardId, slot);
 
   @override
   String toString() => 'DailySetCard(${toJson()})';
@@ -102,9 +54,8 @@ final class DailySetCard {
 
 /// Denna sada ulozena v `daily_set` (plan 7.1, docs/02 0.3, D13).
 ///
-/// `cards` obsahuje N obsahovych kariet a pripadne kartu khatm, ktora sa do N
-/// nepocita. Karta "Dnes si hotovy" v `cards` nie je, UI ju zobrazi ako N+1
-/// ([doneCardId]).
+/// `cards` obsahuje uvodnu kartu a obsahove karty. Karta "Dnes si hotovy"
+/// v `cards` nie je, UI ju zobrazi ako N+1 ([doneCardId]).
 @immutable
 final class DailySet {
   DailySet({
@@ -172,11 +123,10 @@ final class DailySet {
   final String? contentVersion;
   final String? tz;
 
-  /// Obsahove karty (bez khatm).
-  List<DailySetCard> get contentCards =>
-      cards.where((c) => c.cardId is! KhatmCardId).toList();
+  /// Karty sady (vratane uvodnej), bez karty done.
+  List<DailySetCard> get contentCards => cards;
 
-  /// N = pocet obsahovych kariet (nepocita khatm ani done).
+  /// N = pocet kariet v sade (nepocita done).
   int get n => contentCards.length;
 
   /// Karta N+1, mimo `cards`.

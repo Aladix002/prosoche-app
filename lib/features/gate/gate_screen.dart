@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
@@ -12,7 +13,8 @@ import 'package:prosoche/data/blocker/gate_repository.dart';
 import 'package:prosoche/data/content/content_providers.dart';
 import 'package:prosoche/data/content/remote_config_policy.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
-import 'package:prosoche/domain/prayer/prayer.dart';
+import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/domain/feed/feed.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/cards/cards.dart';
 import 'package:prosoche/features/gate/gate_controller.dart';
@@ -32,20 +34,23 @@ final Provider<bool> gateOverlayEnabledProvider = Provider<bool>((ref) {
   }
 }, name: 'gateOverlayEnabledProvider');
 
-/// Aktualna modlitba a jej zaciatok pre prayer lock; null bez polohy.
-typedef GatePrayerNow = ({Prayer prayer, DateTime start});
-
-/// Zisti aktualnu modlitbu (pri kazdom otvoreni brany znova).
-final Provider<Future<GatePrayerNow?> Function()> gateCurrentPrayerProvider =
-    Provider<Future<GatePrayerNow?> Function()>((ref) {
-      final clock = ref.watch(appClockProvider);
+/// Karty volneho citania v brane po konci sady: schvalene citaty z obsahu
+/// v poradi podla dna (B11). Chyba obsahu = ziadne.
+final Provider<Future<List<CardId>> Function()> gateFreeReadingProvider =
+    Provider<Future<List<CardId>> Function()>((ref) {
+      final catalog = ref.watch(contentCatalogProvider);
+      final today = ref.read(localDateProvider);
       return () async {
-        final config = await ref.read(prayerConfigProvider.future);
-        if (config == null) return null;
-        final m = config.schedule.current(clock.now());
-        return (prayer: m.prayer, start: m.time as DateTime);
+        try {
+          final pool = (await catalog.feedPools()).of(CardType.quote);
+          final ids = [for (final c in pool) c.id]
+            ..shuffle(Random(feedSeed(today, 'gate')));
+          return ids;
+        } on Object {
+          return const [];
+        }
       };
-    }, name: 'gateCurrentPrayerProvider');
+    }, name: 'gateFreeReadingProvider');
 
 /// Zavislosti [GateController] z providerov appky (aj engine `gateMain`).
 final Provider<GateDeps> gateDepsProvider = Provider<GateDeps>(
@@ -58,10 +63,7 @@ final Provider<GateDeps> gateDepsProvider = Provider<GateDeps>(
     log: ref.watch(appLoggerProvider),
     dwellMs: () =>
         ref.read(settingsRepositoryProvider).get(SettingsKeys.cardSeenDwellMs),
-    prayerLockMinutes: () => ref
-        .read(settingsRepositoryProvider)
-        .get(SettingsKeys.blockerPrayerLockMinutes),
-    currentPrayer: ref.watch(gateCurrentPrayerProvider),
+    freeReading: ref.watch(gateFreeReadingProvider),
     overlayEnabled: () => ref.read(gateOverlayEnabledProvider),
     syncQuests: (date) => ref.read(questRepositoryProvider).syncAuto(date),
   ),
@@ -179,19 +181,10 @@ class _GateScreenState extends ConsumerState<GateScreen> {
   );
 
   Widget _body(BuildContext context) {
-    final l10n = context.l10n;
     switch (_c.phase) {
       case GatePhase.loading:
       case GatePhase.closed:
         return GateLoadingView(slow: _slow && _c.phase == GatePhase.loading);
-      case GatePhase.prayer:
-        final prayer = _c.prayer;
-        return GatePrayerView(
-          app: _label,
-          prayer: prayer == null ? '' : l10n.notifPrayerName(prayer.name),
-          onPray: () => unawaited(_c.prayFirst()),
-          onShowCards: _c.showCardsAnyway,
-        );
       case GatePhase.emergency:
         return GateEmergencyView(
           app: _label,

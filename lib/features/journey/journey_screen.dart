@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:prosoche/core/flags/feature_flags.dart';
 import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
-import 'package:prosoche/features/feed/feed_rules.dart' show nextReadingAyah;
+import 'package:prosoche/features/journey/intention_dialog.dart';
 import 'package:prosoche/features/journey/journey_calendar.dart';
 import 'package:prosoche/features/journey/journey_providers.dart';
 import 'package:prosoche/features/journey/journey_routes.dart';
-import 'package:prosoche/features/journey/niyyah_dialog.dart';
-import 'package:prosoche/features/journey/surah_map.dart';
-import 'package:prosoche/features/quran/quran_routes.dart';
 import 'package:prosoche/features/shell/settings_button.dart';
-import 'package:prosoche/features/words/words_routes.dart';
 import 'package:prosoche/ui/i18n/i18n.dart';
 import 'package:prosoche/ui/ui.dart';
 
 /// Moja cesta (docs/02 A8.1): umysel, kalendar dni, streak a grace days
-/// (skryte v `simple_mode`), mapa sur, khatm, ulozene karty. Vsetko je
+/// (skryte v `simple_mode`), ulozene karty. Vsetko je
 /// sukromne, bez bodov a porovnani (docs/01 1.4).
 class JourneyScreen extends ConsumerStatefulWidget {
   const JourneyScreen({super.key});
@@ -74,7 +69,7 @@ class _JourneyScreenState extends ConsumerState<JourneyScreen> {
           SkSpace.space32,
         ),
         children: [
-          const JourneyNiyyah(),
+          const JourneyIntention(),
           const SizedBox(height: SkSpace.space16),
           if (!ready)
             const SkLoadingView(skeleton: SkSkeleton.list(lines: 6))
@@ -105,16 +100,6 @@ class _JourneyScreenState extends ConsumerState<JourneyScreen> {
               JourneyStreakSummary(summary: summary),
             ],
           ],
-          const SizedBox(height: SkSpace.space24),
-          const _QuranSection(),
-          if (ref.watch(featureFlagsProvider).words)
-            ListTile(
-              contentPadding: EdgeInsetsDirectional.zero,
-              leading: const Icon(Icons.translate),
-              title: Text(l10n.journeyWords),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => context.push(WordsRoutes.root),
-            ),
           const SizedBox(height: SkSpace.space24),
           const _SavedButton(),
         ],
@@ -220,87 +205,6 @@ class JourneyStreakSummary extends StatelessWidget {
             ),
         ],
       ),
-    );
-  }
-}
-
-/// Mapa sur, podiel precitaneho, khatm a dalsi vers (A8.1).
-class _QuranSection extends ConsumerWidget {
-  const _QuranSection();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = context.l10n;
-    final sk = context.sk;
-    final formats = ProsocheFormats(Localizations.localeOf(context));
-    final counts = ref.watch(readCountsProvider);
-    final surahs = ref.watch(surahsProvider).value ?? const [];
-    final position = ref.watch(readingPositionProvider);
-    final khatms = ref.watch(completedKhatmsProvider).value ?? 0;
-    final names = {for (final s in surahs) s.id: s.nameTranslit};
-    final map = counts.value;
-    final next = nextReadingAyah(position.value);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Semantics(
-                header: true,
-                child: Text(l10n.journeyQuranTitle, style: sk.text.titleMedium),
-              ),
-            ),
-            if (map != null)
-              Text(
-                l10n.journeyQuranPercent(formats.number(quranReadPercent(map))),
-                style: sk.text.bodyMedium,
-              ),
-          ],
-        ),
-        const SizedBox(height: SkSpace.space8),
-        if (map == null)
-          const SkLoadingView(skeleton: SkSkeleton.list(lines: 2))
-        else ...[
-          Text(
-            map.values.every((v) => v == 0)
-                ? l10n.journeyQuranMapEmpty
-                : l10n.journeyQuranMapLegend,
-            style: sk.text.bodySmall!.copyWith(color: sk.colors.textSecondary),
-          ),
-          const SizedBox(height: SkSpace.space8),
-          SurahMap(
-            counts: map,
-            names: names,
-            onOpen: (s) => context.push(QuranRoutes.read(s, mode: 'browse')),
-          ),
-        ],
-        const SizedBox(height: SkSpace.space8),
-        Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          spacing: SkSpace.space8,
-          children: [
-            Text(
-              l10n.journeyKhatm(formats.number(khatms)),
-              style: sk.text.bodyMedium,
-            ),
-            if (position.hasValue)
-              TextButton(
-                onPressed: () => context.push(
-                  QuranRoutes.read(
-                    next.surah,
-                    ayahId: next.value,
-                    mode: 'khatm',
-                  ),
-                ),
-                child: Text(
-                  l10n.journeyNextVerse(formats.ayahRef(next.surah, next.ayah)),
-                ),
-              ),
-          ],
-        ),
-      ],
     );
   }
 }

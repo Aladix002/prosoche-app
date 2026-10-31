@@ -1,163 +1,356 @@
 {
   "@@locale": "en",
   "blkAppsTitle": "Which apps should wait?",
-  "@blkAppsTitle": {"description": "O5 title: choose apps for the gate."},
+  "@blkAppsTitle": {
+    "description": "O5 title: choose apps for the gate."
+  },
   "blkAppsBody": "When you open an app you choose, Prosoche shows you a few cards first. After that, the app opens for a while. There's always an emergency way through, and you can turn it off anytime.",
-  "@blkAppsBody": {"description": "O5 body: explains the gate before choosing apps."},
+  "@blkAppsBody": {
+    "description": "O5 body: explains the gate before choosing apps."
+  },
   "blkAppsSearch": "Search apps",
-  "@blkAppsSearch": {"description": "Hint of the app search field."},
+  "@blkAppsSearch": {
+    "description": "Hint of the app search field."
+  },
   "blkAppsSuggested": "Often chosen",
-  "@blkAppsSuggested": {"description": "Section header: social apps that are installed."},
+  "@blkAppsSuggested": {
+    "description": "Section header: social apps that are installed."
+  },
   "blkAppsAll": "All apps",
-  "@blkAppsAll": {"description": "Section header: all other launchable apps."},
+  "@blkAppsAll": {
+    "description": "Section header: all other launchable apps."
+  },
   "blkAppsEmpty": "No apps found",
-  "@blkAppsEmpty": {"description": "Empty app list or no search result."},
+  "@blkAppsEmpty": {
+    "description": "Empty app list or no search result."
+  },
   "blkAppsError": "Couldn't load your apps.",
-  "@blkAppsError": {"description": "Error loading the list of installed apps."},
+  "@blkAppsError": {
+    "description": "Error loading the list of installed apps."
+  },
   "blkAppsCta": "{count, plural, =0{Continue without the gate} one{Continue with 1 app} other{Continue with {count} apps}}",
-  "@blkAppsCta": {"description": "O5 primary button.", "placeholders": {"count": {"type": "int"}}},
+  "@blkAppsCta": {
+    "description": "O5 primary button.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "blkAddCta": "{count, plural, =0{Add apps} one{Add 1 app} other{Add {count} apps}}",
-  "@blkAddCta": {"description": "Primary button of the 'Add apps' picker in settings.", "placeholders": {"count": {"type": "int"}}},
+  "@blkAddCta": {
+    "description": "Primary button of the 'Add apps' picker in settings.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "blkCardsLabel": "Cards to unlock",
-  "@blkCardsLabel": {"description": "Label of the number of cards before an app opens."},
+  "@blkCardsLabel": {
+    "description": "Label of the number of cards before an app opens."
+  },
   "blkMinutesLabel": "Unlock for",
-  "@blkMinutesLabel": {"description": "Label of how long the app stays open after the cards."},
+  "@blkMinutesLabel": {
+    "description": "Label of how long the app stays open after the cards."
+  },
   "blkMinutes": "{minutes} min",
-  "@blkMinutes": {"description": "Duration in minutes.", "placeholders": {"minutes": {"type": "String"}}},
+  "@blkMinutes": {
+    "description": "Duration in minutes.",
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
   "blkDecrease": "Decrease {what}",
-  "@blkDecrease": {"description": "Screen reader label of the minus button.", "placeholders": {"what": {"type": "String"}}},
+  "@blkDecrease": {
+    "description": "Screen reader label of the minus button.",
+    "placeholders": {
+      "what": {
+        "type": "String"
+      }
+    }
+  },
   "blkIncrease": "Increase {what}",
-  "@blkIncrease": {"description": "Screen reader label of the plus button.", "placeholders": {"what": {"type": "String"}}},
-
+  "@blkIncrease": {
+    "description": "Screen reader label of the plus button.",
+    "placeholders": {
+      "what": {
+        "type": "String"
+      }
+    }
+  },
   "blkPermTitle": "Permissions for the gate",
-  "@blkPermTitle": {"description": "O6 title and title of the permissions screen in settings."},
+  "@blkPermTitle": {
+    "description": "O6 title and title of the permissions screen in settings."
+  },
   "blkPermIntro": "Prosoche checks which app is open, only to show the gate. This never leaves your phone.",
-  "@blkPermIntro": {"description": "O6 intro, part of the prominent disclosure."},
+  "@blkPermIntro": {
+    "description": "O6 intro, part of the prominent disclosure."
+  },
   "permUsageTitle": "Usage access",
-  "@permUsageTitle": {"description": "Name of the Android usage access permission."},
+  "@permUsageTitle": {
+    "description": "Name of the Android usage access permission."
+  },
   "permUsageBody": "Prosoche uses Usage Access to notice when you open one of the apps you chose for the gate, so it can show your cards first.",
-  "@permUsageBody": {"description": "Prominent disclosure for usage access (Google Play)."},
+  "@permUsageBody": {
+    "description": "Prominent disclosure for usage access (Google Play)."
+  },
   "permUsageDoes": "What Prosoche does: checks which app is on screen, only while your screen is on.",
-  "@permUsageDoes": {"description": "Prominent disclosure: what is done with usage access."},
+  "@permUsageDoes": {
+    "description": "Prominent disclosure: what is done with usage access."
+  },
   "permUsageNever": "What Prosoche never does: it doesn't store or send your app history, time spent, or anything you do inside other apps.",
-  "@permUsageNever": {"description": "Prominent disclosure: what is never done."},
+  "@permUsageNever": {
+    "description": "Prominent disclosure: what is never done."
+  },
   "permUsageSteps": "On the next screen, find Prosoche and turn on \"Permit usage access\". Then come back.",
-  "@permUsageSteps": {"description": "Steps in system settings for usage access."},
+  "@permUsageSteps": {
+    "description": "Steps in system settings for usage access."
+  },
   "permOverlayTitle": "Display over other apps",
-  "@permOverlayTitle": {"description": "Name of the Android overlay permission."},
+  "@permOverlayTitle": {
+    "description": "Name of the Android overlay permission."
+  },
   "permOverlayBody": "This lets Prosoche open its gate screen on top of the app you just opened.",
-  "@permOverlayBody": {"description": "Prominent disclosure for the overlay permission."},
+  "@permOverlayBody": {
+    "description": "Prominent disclosure for the overlay permission."
+  },
   "permOverlayNever": "What Prosoche never does: read, record or change what's on your screen.",
-  "@permOverlayNever": {"description": "Prominent disclosure: what is never done with overlay."},
+  "@permOverlayNever": {
+    "description": "Prominent disclosure: what is never done with overlay."
+  },
   "permNotifTitle": "Notifications",
-  "@permNotifTitle": {"description": "Name of the notification permission."},
+  "@permNotifTitle": {
+    "description": "Name of the notification permission."
+  },
   "permNotifBody": "While the gate is on, Android shows a small, silent notification. It means Prosoche is ready to pause the apps you chose.",
-  "@permNotifBody": {"description": "Why notifications matter for the gate (foreground service)."},
+  "@permNotifBody": {
+    "description": "Why notifications matter for the gate (foreground service)."
+  },
   "permLocal": "This stays on your phone and is not shared with anyone.",
-  "@permLocal": {"description": "Prominent disclosure: data is not shared."},
+  "@permLocal": {
+    "description": "Prominent disclosure: data is not shared."
+  },
   "permAllow": "Allow in settings",
-  "@permAllow": {"description": "Button that opens the system settings for a permission."},
+  "@permAllow": {
+    "description": "Button that opens the system settings for a permission."
+  },
   "permGranted": "On",
-  "@permGranted": {"description": "Permission state: granted."},
+  "@permGranted": {
+    "description": "Permission state: granted."
+  },
   "permNotYet": "Not allowed yet",
-  "@permNotYet": {"description": "Permission state after coming back without granting it."},
+  "@permNotYet": {
+    "description": "Permission state after coming back without granting it."
+  },
   "permStateLabel": "{name}: {state, select, true{on} other{off}}",
-  "@permStateLabel": {"description": "Screen reader label of a permission row.", "placeholders": {"name": {"type": "String"}, "state": {"type": "String"}}},
+  "@permStateLabel": {
+    "description": "Screen reader label of a permission row.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "state": {
+        "type": "String"
+      }
+    }
+  },
   "blkTurnOn": "Turn on the gate",
-  "@blkTurnOn": {"description": "O6 primary button; enabled when usage access and overlay are on."},
+  "@blkTurnOn": {
+    "description": "O6 primary button; enabled when usage access and overlay are on."
+  },
   "blkTurnOnFailed": "The gate couldn't start. Please try again.",
-  "@blkTurnOnFailed": {"description": "Error when the gate service couldn't start."},
-
+  "@blkTurnOnFailed": {
+    "description": "Error when the gate service couldn't start."
+  },
   "batteryTitle": "Battery",
-  "@batteryTitle": {"description": "Battery row in the permissions list."},
+  "@batteryTitle": {
+    "description": "Battery row in the permissions list."
+  },
   "batteryVendorTitle": "Battery ({manufacturer})",
-  "@batteryVendorTitle": {"description": "Battery row with the phone maker.", "placeholders": {"manufacturer": {"type": "String"}}},
+  "@batteryVendorTitle": {
+    "description": "Battery row with the phone maker.",
+    "placeholders": {
+      "manufacturer": {
+        "type": "String"
+      }
+    }
+  },
   "batteryGuide": "Guide",
-  "@batteryGuide": {"description": "Button that opens the battery guide."},
+  "@batteryGuide": {
+    "description": "Button that opens the battery guide."
+  },
   "batteryBodyGeneric": "Some phones stop apps running in the background to save battery. If the gate stops appearing, allow Prosoche to run in the background.",
-  "@batteryBodyGeneric": {"description": "Generic battery guide."},
+  "@batteryBodyGeneric": {
+    "description": "Generic battery guide."
+  },
   "batteryBodyVendor": "{manufacturer} phones often stop background apps. These steps keep the gate working:",
-  "@batteryBodyVendor": {"description": "Intro of the vendor battery guide.", "placeholders": {"manufacturer": {"type": "String"}}},
+  "@batteryBodyVendor": {
+    "description": "Intro of the vendor battery guide.",
+    "placeholders": {
+      "manufacturer": {
+        "type": "String"
+      }
+    }
+  },
   "batteryStepsSamsung": "1. Open battery settings below.\n2. Find Prosoche and choose \"Unrestricted\".\n3. In Settings > Battery > Background usage limits, make sure Prosoche is not in \"Sleeping apps\".",
-  "@batteryStepsSamsung": {"description": "Battery guide steps for Samsung (One UI). Check the paths on current devices."},
+  "@batteryStepsSamsung": {
+    "description": "Battery guide steps for Samsung (One UI). Check the paths on current devices."
+  },
   "batteryStepsXiaomi": "1. Open battery settings below.\n2. Find Prosoche and choose \"No restrictions\".\n3. In the app info of Prosoche, turn on \"Autostart\".",
-  "@batteryStepsXiaomi": {"description": "Battery guide steps for Xiaomi, Redmi, POCO (HyperOS/MIUI). Check the paths on current devices."},
+  "@batteryStepsXiaomi": {
+    "description": "Battery guide steps for Xiaomi, Redmi, POCO (HyperOS/MIUI). Check the paths on current devices."
+  },
   "batteryStepsHuawei": "1. Open battery settings below.\n2. Find Prosoche in App launch and turn off \"Manage automatically\".\n3. Allow auto-launch and running in background.",
-  "@batteryStepsHuawei": {"description": "Battery guide steps for Huawei and Honor. Check the paths on current devices."},
+  "@batteryStepsHuawei": {
+    "description": "Battery guide steps for Huawei and Honor. Check the paths on current devices."
+  },
   "batteryStepsOppo": "1. Open battery settings below.\n2. Find Prosoche and allow background activity.\n3. In the app info of Prosoche, turn on \"Allow auto launch\".",
-  "@batteryStepsOppo": {"description": "Battery guide steps for Oppo, Realme, OnePlus (ColorOS). Check the paths on current devices."},
+  "@batteryStepsOppo": {
+    "description": "Battery guide steps for Oppo, Realme, OnePlus (ColorOS). Check the paths on current devices."
+  },
   "batteryOpen": "Open battery settings",
-  "@batteryOpen": {"description": "Button that opens the battery optimization list."},
+  "@batteryOpen": {
+    "description": "Button that opens the battery optimization list."
+  },
   "batteryDone": "I've done this",
-  "@batteryDone": {"description": "Checkbox: user confirms the battery steps (can't be verified)."},
+  "@batteryDone": {
+    "description": "Checkbox: user confirms the battery steps (can't be verified)."
+  },
   "batteryNote": "Prosoche uses very little battery.",
-  "@batteryNote": {"description": "Short reassurance under the battery guide."},
-
+  "@batteryNote": {
+    "description": "Short reassurance under the battery guide."
+  },
   "blkTitle": "The gate",
-  "@blkTitle": {"description": "Title of the gate settings screen."},
+  "@blkTitle": {
+    "description": "Title of the gate settings screen."
+  },
   "blkSwitch": "Pause before chosen apps",
-  "@blkSwitch": {"description": "Main switch of the gate."},
+  "@blkSwitch": {
+    "description": "Main switch of the gate."
+  },
   "blkStatusRunning": "Running",
-  "@blkStatusRunning": {"description": "Gate status: service running."},
+  "@blkStatusRunning": {
+    "description": "Gate status: service running."
+  },
   "blkStatusOff": "Off",
-  "@blkStatusOff": {"description": "Gate status: turned off."},
+  "@blkStatusOff": {
+    "description": "Gate status: turned off."
+  },
   "blkStatusNoUsage": "Paused - usage access missing",
-  "@blkStatusNoUsage": {"description": "Gate status: usage access was removed."},
+  "@blkStatusNoUsage": {
+    "description": "Gate status: usage access was removed."
+  },
   "blkStatusNoOverlay": "Paused - \"Display over other apps\" missing",
-  "@blkStatusNoOverlay": {"description": "Gate status: overlay permission was removed."},
+  "@blkStatusNoOverlay": {
+    "description": "Gate status: overlay permission was removed."
+  },
   "blkStatusStopped": "Paused - Android stopped the service",
-  "@blkStatusStopped": {"description": "Gate status: the background service is not running."},
+  "@blkStatusStopped": {
+    "description": "Gate status: the background service is not running."
+  },
   "blkFix": "Fix",
-  "@blkFix": {"description": "Button that fixes the paused gate."},
+  "@blkFix": {
+    "description": "Button that fixes the paused gate."
+  },
   "blkPermissions": "Permissions",
-  "@blkPermissions": {"description": "Row that opens the permissions screen."},
+  "@blkPermissions": {
+    "description": "Row that opens the permissions screen."
+  },
   "blkPermissionsMissing": "Some are off",
-  "@blkPermissionsMissing": {"description": "Value of the permissions row when something is missing."},
+  "@blkPermissionsMissing": {
+    "description": "Value of the permissions row when something is missing."
+  },
   "blkPermissionsOk": "All on",
-  "@blkPermissionsOk": {"description": "Value of the permissions row when all needed permissions are on."},
+  "@blkPermissionsOk": {
+    "description": "Value of the permissions row when all needed permissions are on."
+  },
   "blkApps": "Apps",
-  "@blkApps": {"description": "Section header: blocked apps."},
+  "@blkApps": {
+    "description": "Section header: blocked apps."
+  },
   "blkAppsNone": "No apps yet. Add the apps that should wait.",
-  "@blkAppsNone": {"description": "Empty list of blocked apps."},
+  "@blkAppsNone": {
+    "description": "Empty list of blocked apps."
+  },
   "blkAddApps": "Add apps",
-  "@blkAddApps": {"description": "Button that opens the app picker."},
-  "blkAppSummary": "{cards, plural, one{1 card} other{{cards} cards}} · {minutes} min{prayer, select, true{ · prayer reminder} other{}}",
-  "@blkAppSummary": {"description": "Summary of one blocked app.", "placeholders": {"cards": {"type": "int"}, "minutes": {"type": "String"}, "prayer": {"type": "String"}}},
-  "blkPrayerSection": "Prayer reminder",
-  "@blkPrayerSection": {"description": "Section header: prayer reminder in the gate."},
-  "blkPrayerHelp": "For apps with prayer reminder on, the gate first reminds you of the prayer for this many minutes after its time begins. You can always continue.",
-  "@blkPrayerHelp": {"description": "Explains the prayer reminder (not a lock)."},
-  "blkPrayerMinutes": "Remind for",
-  "@blkPrayerMinutes": {"description": "Label of the prayer reminder window."},
+  "@blkAddApps": {
+    "description": "Button that opens the app picker."
+  },
+  "blkAppSummary": "{cards, plural, one{1 card} other{{cards} cards}} · {minutes} min",
+  "@blkAppSummary": {
+    "description": "Summary of a blocked app: cards to unlock and unlock minutes.",
+    "placeholders": {
+      "cards": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
   "blkStatsSection": "Last 7 days",
-  "@blkStatsSection": {"description": "Section header: local gate statistics."},
+  "@blkStatsSection": {
+    "description": "Section header: local gate statistics."
+  },
   "blkStatsHelp": "Only on this phone.",
-  "@blkStatsHelp": {"description": "Statistics are local and never sent."},
+  "@blkStatsHelp": {
+    "description": "Statistics are local and never sent."
+  },
   "blkStatsGates": "Pauses",
-  "@blkStatsGates": {"description": "Number of times the gate was shown."},
+  "@blkStatsGates": {
+    "description": "Number of times the gate was shown."
+  },
   "blkStatsCards": "Opened after cards",
-  "@blkStatsCards": {"description": "Unlocks after reading the cards."},
+  "@blkStatsCards": {
+    "description": "Unlocks after reading the cards."
+  },
   "blkStatsEmergency": "Emergency",
-  "@blkStatsEmergency": {"description": "Emergency unlocks."},
+  "@blkStatsEmergency": {
+    "description": "Emergency unlocks."
+  },
   "blkStatsError": "Opened after an error",
-  "@blkStatsError": {"description": "Unlocks because the gate failed."},
+  "@blkStatsError": {
+    "description": "Unlocks because the gate failed."
+  },
   "blkStatsEmpty": "No pauses yet.",
-  "@blkStatsEmpty": {"description": "No gate statistics yet."},
+  "@blkStatsEmpty": {
+    "description": "No gate statistics yet."
+  },
   "blkStatsPerApp": "{count, plural, one{1 unlock} other{{count} unlocks}}",
-  "@blkStatsPerApp": {"description": "Unlocks of one app in the last 7 days.", "placeholders": {"count": {"type": "int"}}},
+  "@blkStatsPerApp": {
+    "description": "Unlocks of one app in the last 7 days.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "blkLoadError": "Couldn't load the gate settings.",
-  "@blkLoadError": {"description": "Error state of the gate settings."},
-
-  "blkAppPrayerLock": "Prayer reminder",
-  "@blkAppPrayerLock": {"description": "Switch: remind of the prayer before this app."},
-  "blkAppPrayerLockHelp": "Around prayer times, the gate asks if you'd like to pray first.",
-  "@blkAppPrayerLockHelp": {"description": "Explains the per-app prayer reminder."},
+  "@blkLoadError": {
+    "description": "Error state of the gate settings."
+  },
   "blkAppRemove": "Remove from the gate",
-  "@blkAppRemove": {"description": "Button: remove the app from the gate."},
+  "@blkAppRemove": {
+    "description": "Button: remove the app from the gate."
+  },
   "blkAppRemoveTitle": "Remove {app}?",
-  "@blkAppRemoveTitle": {"description": "Confirm dialog title.", "placeholders": {"app": {"type": "String"}}},
+  "@blkAppRemoveTitle": {
+    "description": "Confirm dialog title.",
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
   "blkAppRemoveConfirm": "Remove",
-  "@blkAppRemoveConfirm": {"description": "Confirm remove."},
+  "@blkAppRemoveConfirm": {
+    "description": "Confirm remove."
+  },
   "blkAppNotFound": "This app is no longer in the gate.",
-  "@blkAppNotFound": {"description": "Detail of an app that was removed."}
+  "@blkAppNotFound": {
+    "description": "Detail of an app that was removed."
+  }
 }

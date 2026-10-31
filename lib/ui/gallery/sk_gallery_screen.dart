@@ -3,14 +3,13 @@ import 'package:prosoche/ui/components/sk_dialogs.dart';
 import 'package:prosoche/ui/foundation/sk_text_scaling.dart';
 import 'package:prosoche/ui/gallery/gallery_catalog.dart';
 import 'package:prosoche/ui/theme/prosoche_theme.dart';
-import 'package:prosoche/ui/theme/prosoche_typography.dart';
 import 'package:prosoche/ui/theme/sk_context.dart';
 import 'package:prosoche/ui/tokens/sk_space.dart';
 
 /// Dev obrazovka so vsetkymi komponentmi a stavmi (PLAN U-01 Vystupy).
 ///
-/// Ma vlastnu temu (svetla/tmava, high contrast), textScale a velkost
-/// arabciny. Nie je urcena pre release (texty su EN placeholdery);
+/// Ma vlastnu temu (svetla/tmava, high contrast) a textScale. Nie je
+/// urcena pre release (texty su EN placeholdery);
 /// integracia ju pripoji len v dev flavore alebo debug route.
 class SkGalleryScreen extends StatefulWidget {
   const SkGalleryScreen({super.key});
@@ -23,19 +22,12 @@ class _SkGalleryScreenState extends State<SkGalleryScreen> {
   bool _dark = false;
   bool _highContrast = false;
   double _textScale = 1;
-  SkArabicScale _arabicScale = SkArabicScale.m;
 
   @override
   Widget build(BuildContext context) {
     final theme = _dark
-        ? ProsocheTheme.dark(
-            highContrast: _highContrast,
-            arabicScale: _arabicScale,
-          )
-        : ProsocheTheme.light(
-            highContrast: _highContrast,
-            arabicScale: _arabicScale,
-          );
+        ? ProsocheTheme.dark(highContrast: _highContrast)
+        : ProsocheTheme.light(highContrast: _highContrast);
     return Theme(
       data: theme,
       child: MediaQuery(
@@ -103,15 +95,6 @@ class _SkGalleryScreenState extends State<SkGalleryScreen> {
               ],
               selected: {_textScale},
               onSelectionChanged: (s) => update(() => _textScale = s.first),
-            ),
-            const SizedBox(height: SkSpace.space8),
-            SegmentedButton<SkArabicScale>(
-              segments: [
-                for (final s in SkArabicScale.values)
-                  ButtonSegment(value: s, label: Text(s.name.toUpperCase())),
-              ],
-              selected: {_arabicScale},
-              onSelectionChanged: (s) => update(() => _arabicScale = s.first),
             ),
           ],
         );

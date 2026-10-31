@@ -7,8 +7,8 @@ const deepLinkScheme = 'prosoche';
 /// (docs/01 kap. 4.3). Vrati null, ak [uri] nie je deep link appky.
 ///
 /// Mapovanie podla docs/02 C4. Nezname ciele vedu na `/today`. Deep link
-/// je vzdy len navigacia, nikdy nezapisuje data. Vypnute funkcie (gate,
-/// words) presmeruje az redirect routera.
+/// je vzdy len navigacia, nikdy nezapisuje data. Vypnute funkcie (gate)
+/// presmeruje az redirect routera.
 String? mapDeepLink(Uri uri) {
   if (uri.scheme != deepLinkScheme) return null;
   final segments = [
@@ -30,31 +30,12 @@ String? mapDeepLink(Uri uri) {
       ).toString();
     case 'feed':
       return AppRoutes.feed;
-    case 'quran':
-      // prosoche://quran/2/255 -> /quran/read/2?ayah=2255&mode=browse
-      final surah = segments.length > 1 ? int.tryParse(segments[1]) : null;
-      if (surah == null || surah < 1 || surah > 114) return AppRoutes.quran;
-      final ayah = segments.length > 2 ? int.tryParse(segments[2]) : null;
-      return Uri(
-        path: '${AppRoutes.quran}/read/$surah',
-        queryParameters: {
-          if (ayah != null && ayah >= 1 && ayah <= 286)
-            'ayah': '${surah * 1000 + ayah}',
-          'mode': 'browse',
-        },
-      ).toString();
-    case 'prayer':
-      return segments.length > 1 && segments[1] == 'qibla'
-          ? '${AppRoutes.prayer}/qibla'
-          : AppRoutes.prayer;
+    case 'library':
+      return AppRoutes.library;
+    case 'practice':
+      return AppRoutes.practice;
     case 'journey':
       return AppRoutes.journey;
-    case 'words':
-      return segments.length > 1 && segments[1] == 'quiz'
-          ? '/words/quiz'
-          : '/words';
-    case 'calendar':
-      return '/calendar';
     case 'settings':
       final sub = segments.length > 1 ? segments[1] : null;
       return switch (sub) {

@@ -1,80 +1,24 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:meta/meta.dart';
 import 'package:prosoche/data/notifications/notifications.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-// Tenke rozhrania nad platformou pre onboarding (O3 poloha, O4 notifikacie).
-// Widget testy ich prepisu fake implementaciou.
+// Tenke rozhrania nad platformou pre onboarding (notifikacie). Widget testy
+// ich prepisu fake implementaciou.
 
-/// Vysledok jednorazoveho zistenia polohy (O3).
-sealed class LocationResult {
-  const LocationResult();
-}
-
-@immutable
-final class LocationFound extends LocationResult {
-  const LocationFound(this.lat, this.lng);
-
-  final double lat;
-  final double lng;
-}
-
-/// Povolenie zamietnute (aj "don't ask again") alebo poloha vypnuta.
-final class LocationDenied extends LocationResult {
-  const LocationDenied();
-}
-
-/// GPS timeout (10 s) alebo chyba pluginu.
-final class LocationFailed extends LocationResult {
-  const LocationFailed();
-}
-
-abstract interface class DeviceLocation {
-  /// Poziada o povolenie (ak treba) a raz zisti polohu s nizkou presnostou.
-  Future<LocationResult> locateOnce();
-}
-
-/// [DeviceLocation] nad `geolocator` (`LocationAccuracy.low`, timeout 10 s).
-/// Systemove nastavenia sa automaticky neotvaraju (docs/02 O3).
-final class GeolocatorDeviceLocation implements DeviceLocation {
-  const GeolocatorDeviceLocation({this.timeout = const Duration(seconds: 10)});
-
-  final Duration timeout;
-
-  @override
-  Future<LocationResult> locateOnce() async {
-    try {
-      if (!await Geolocator.isLocationServiceEnabled()) {
-        return const LocationDenied();
-      }
-      var permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-      }
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
-        return const LocationDenied();
-      }
-      final p = await Geolocator.getCurrentPosition(
-        locationSettings: LocationSettings(
-          accuracy: LocationAccuracy.low,
-          timeLimit: timeout,
-        ),
-      );
-      return LocationFound(p.latitude, p.longitude);
-    } on Object {
-      return const LocationFailed();
-    }
+/// Otvori systemove nastavenia appky: Android kanal v `MainActivity`,
+/// iOS `app-settings:`.
+Future<void> openSystemAppSettings() async {
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    await const MethodChannel('app.prosoche/system')
+        .invokeMethod<bool>('openAppSettings');
+  } else {
+    await launchUrl(Uri.parse('app-settings:'));
   }
 }
-
-final Provider<DeviceLocation> deviceLocationProvider =
-    Provider<DeviceLocation>(
-      (ref) => const GeolocatorDeviceLocation(),
-      name: 'deviceLocationProvider',
-    );
 
 /// Stav povoleni notifikacii (O4).
 @immutable
@@ -153,7 +97,7 @@ final class PlatformOnboardingNotifications implements OnboardingNotifications {
   @override
   Future<void> openAppSettings() async {
     try {
-      await Geolocator.openAppSettings();
+      await openSystemAppSettings();
     } on Object {
       // Bez nastaveni pokracuje onboarding normalne.
     }

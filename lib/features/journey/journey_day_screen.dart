@@ -5,19 +5,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
 import 'package:prosoche/domain/common/common.dart';
-import 'package:prosoche/domain/prayer/prayer.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/domain/streak/streak.dart';
+import 'package:prosoche/features/cards/card_parts.dart';
 import 'package:prosoche/features/journey/card_pager.dart';
 import 'package:prosoche/features/journey/journey_calendar.dart';
 import 'package:prosoche/features/journey/journey_providers.dart';
-import 'package:prosoche/features/prayer/prayer_texts.dart';
-import 'package:prosoche/features/prayer/prayer_view.dart' show skStatus;
 import 'package:prosoche/ui/ui.dart';
 
-/// Detail dna (docs/02 A8.2): datum a hijri, stav dna, denna sada (x/N,
-/// cas dokoncenia, prehlad kariet bez zapisu `seen`) a modlitby dna. Len
-/// citanie, nic sa negeneruje ani nezapisuje.
+/// Detail dna (docs/02 A8.2): datum, stav dna a denna sada (x/N, cas
+/// dokoncenia, prehlad kariet bez zapisu `seen`). Len citanie, nic sa
+/// negeneruje ani nezapisuje.
 class JourneyDayScreen extends ConsumerWidget {
   const JourneyDayScreen({required this.date, super.key});
 
@@ -70,7 +68,6 @@ class _DayDetail extends ConsumerWidget {
     final today = ref.watch(localDateProvider);
     final todayDone = ref.watch(streakProvider).value?.todayDone ?? false;
     final simple = ref.watch(settingOf(SettingsKeys.simpleMode)).value != false;
-    final hijri = ref.watch(hijriDateProvider(date)).value;
     final mark = journeyDayMark(
       date: date,
       today: today,
@@ -95,11 +92,6 @@ class _DayDetail extends ConsumerWidget {
             style: sk.text.headlineSmall,
           ),
         ),
-        if (hijri != null)
-          Text(
-            context.hijriDateLabel(hijri),
-            style: sk.text.bodyMedium!.copyWith(color: sk.colors.textSecondary),
-          ),
         const SizedBox(height: SkSpace.space16),
         if (mark != JourneyDayMark.none || date == today)
           MergeSemantics(
@@ -155,64 +147,7 @@ class _DayDetail extends ConsumerWidget {
             ),
           ),
         ],
-        const SizedBox(height: SkSpace.space24),
-        _Prayers(date: date),
       ],
     );
   }
-}
-
-class _Prayers extends ConsumerWidget {
-  const _Prayers({required this.date});
-
-  final LocalDate date;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = context.l10n;
-    final sk = context.sk;
-    final log = ref.watch(prayerLogProvider(date)).value ?? const {};
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Semantics(
-          header: true,
-          child: Text(l10n.journeyDayPrayers, style: sk.text.titleMedium),
-        ),
-        for (final p in Prayer.values)
-          if (p.isSalah)
-            MergeSemantics(
-              child: Row(
-                children: [
-                  ExcludeSemantics(
-                    child: SkPrayerTracker(status: skStatus(log[p])),
-                  ),
-                  const SizedBox(width: SkSpace.space8),
-                  Expanded(
-                    child: Text(
-                      context.prayerName(p),
-                      style: sk.text.bodyLarge,
-                    ),
-                  ),
-                  Flexible(
-                    child: Text(
-                      l10n.journeyPrayerStatus(_wire(log[p])),
-                      textAlign: TextAlign.end,
-                      style: sk.text.bodyMedium!.copyWith(
-                        color: sk.colors.textSecondary,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-      ],
-    );
-  }
-
-  /// `excused` sa ukazuje ako nezalogovane (ako tracker, A7.1).
-  static String _wire(PrayerStatus? s) => switch (s) {
-    null || PrayerStatus.excused => 'none',
-    _ => s.wire,
-  };
 }

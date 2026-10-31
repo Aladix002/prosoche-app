@@ -1,10 +1,9 @@
 import 'package:flutter/widgets.dart';
 
-/// Clamp systemoveho textScale pre UI na 2.0, ale arabsky text Koranu sa
-/// neclampuje (docs/01 8.3, D12).
+/// Clamp systemoveho textScale pre UI na 2.0 (docs/01 8.3, D12).
 ///
 /// Vlozit raz pod `MaterialApp` (napr. v `builder`). Povodny (neclampnuty)
-/// scaler si drzi pre `SkArabicText.quran`.
+/// scaler si drzi pre texty, ktore sa clampovat nemaju ([unclampedOf]).
 class SkTextScaling extends StatelessWidget {
   const SkTextScaling({
     required this.child,

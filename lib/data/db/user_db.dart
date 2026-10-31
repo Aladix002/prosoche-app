@@ -6,12 +6,9 @@ import 'package:prosoche/data/db/converters.dart';
 import 'package:prosoche/data/db/daos/blocker_dao.dart';
 import 'package:prosoche/data/db/daos/card_event_dao.dart';
 import 'package:prosoche/data/db/daos/daily_set_dao.dart';
-import 'package:prosoche/data/db/daos/prayer_log_dao.dart';
 import 'package:prosoche/data/db/daos/quest_log_dao.dart';
-import 'package:prosoche/data/db/daos/reading_dao.dart';
 import 'package:prosoche/data/db/daos/saved_card_dao.dart';
 import 'package:prosoche/data/db/daos/settings_dao.dart';
-import 'package:prosoche/data/db/daos/srs_dao.dart';
 import 'package:prosoche/data/db/daos/streak_dao.dart';
 import 'package:prosoche/data/db/migrations/user_migrations.dart';
 import 'package:prosoche/data/db/user_enums.dart';
@@ -41,16 +38,9 @@ void configureUserDbConnection(Database db) {
 @DriftDatabase(
   tables: [
     Settings,
-    ReadingPositions,
     DailySets,
     CardEvents,
-    AyahReads,
-    KhatmLogs,
     QuestLogs,
-    SrsItems,
-    SrsReviews,
-    PrayerLogs,
-    FastLogs,
     DayLogs,
     StreakStates,
     BlockedApps,
@@ -62,10 +52,7 @@ void configureUserDbConnection(Database db) {
     SettingsDao,
     DailySetDao,
     CardEventDao,
-    ReadingDao,
     QuestLogDao,
-    SrsDao,
-    PrayerLogDao,
     StreakDao,
     BlockerDao,
     SavedCardDao,

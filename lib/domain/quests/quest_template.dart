@@ -17,10 +17,8 @@ final class QuestTemplate {
     this.weight = 1,
     this.cooldownDays,
     this.excusedOk = false,
-    Set<String> season = const {},
     Map<String, List<int>> params = const {},
   }) : langs = Set.unmodifiable(langs),
-       season = Set.unmodifiable(season),
        params = Map.unmodifiable({
          for (final e in params.entries) e.key: List<int>.unmodifiable(e.value),
        }) {
@@ -44,7 +42,7 @@ final class QuestTemplate {
     }
   }
 
-  /// Stabilne ID, napr. `read.quran.verses_n`.
+  /// Stabilne ID, napr. `read.quotes_n`.
   final String id;
 
   final QuestSlot slot;
@@ -63,9 +61,6 @@ final class QuestTemplate {
 
   /// Faseta `excused_ok` (docs/03 3.2, 6.5).
   final bool excusedOk;
-
-  /// ID eventov, pocas ktorych sa sablona smie pouzit; prazdne = vzdy.
-  final Set<String> season;
 
   /// Volby parametrov, napr. `{n: [10, 15, 20]}`.
   final Map<String, List<int>> params;

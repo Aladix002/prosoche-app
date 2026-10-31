@@ -39,30 +39,27 @@ final class QuestLogEntry {
 
 /// Odkial sa quest dna vzal.
 enum QuestOrigin {
-  /// Override z aktivneho eventu (docs/03 4.4, `quests`).
-  eventOverride,
-
   /// Vazeny nahodny vyber z poolu (docs/03 3.3).
   weighted,
 
   /// Prazdny pool po filtroch: najdavnejsie pouzita sablona.
   leastRecentlyUsed,
 
-  /// Genericky quest s UI textom z ARB (ziadna sablona nema text v jazyku).
+  /// Genericky quest s UI textom z ARB (ziadna vhodna sablona).
   generic,
 }
 
-/// Vstavane genericke questy bez nabozenskeho obsahu. Texty su v ARB
+/// Vstavane genericke questy (bez sablony z obsahu). Texty su v ARB
 /// (`lib/l10n/parts/E-03_en.arb`), kluc je [arbKey], parameter `{count}`.
 enum GenericQuest {
-  /// "Read {count} verses".
-  readVerses('generic.read.verses', QuestSlot.read, 'questGenericReadVerses'),
+  /// "Read {count} cards": citaty a uryvky.
+  readCards('generic.read.cards', QuestSlot.read, 'questGenericReadCards'),
 
-  /// "Learn {count} new words" (len pri zapnutych slovickach).
-  learnWords('generic.learn.words', QuestSlot.learn, 'questGenericLearnWords'),
+  /// "Learn one idea": karta pojmu alebo autora.
+  learnIdea('generic.learn.idea', QuestSlot.learn, 'questGenericLearnIdea'),
 
-  /// "Read {count} hadith or dua card(s)" (slovicka vypnute).
-  learnCards('generic.learn.cards', QuestSlot.learn, 'questGenericLearnCards');
+  /// "Try one practice": self report (ako kazdy `act`).
+  actPractice('generic.act.practice', QuestSlot.act, 'questGenericActPractice');
 
   GenericQuest(this.id, this.slot, this.arbKey);
 
@@ -78,29 +75,30 @@ enum GenericQuest {
     return null;
   }
 
-  /// Podmienka splnenia s cielom [count].
-  QuestRule rule(int count) => QuestRule(
-    types: switch (this) {
-      readVerses => const {CardType.ayah},
-      learnWords => const {CardType.word},
-      learnCards => const {CardType.hadith, CardType.dua},
-    },
-    min: QuestTarget.fixed(count),
-  );
+  /// Typy kariet, ktore quest pocita (prazdne pre self report).
+  Set<CardType> get types => switch (this) {
+    readCards => const {CardType.quote, CardType.passage},
+    learnIdea => const {CardType.concept, CardType.author},
+    actPractice => const {},
+  };
+
+  /// Podmienka splnenia s cielom [count]; null pre self report (`act`).
+  QuestRule? rule(int count) => slot == QuestSlot.act
+      ? null
+      : QuestRule(types: types, min: QuestTarget.fixed(count));
 
   /// Predvoleny ciel.
   int get defaultCount => switch (this) {
-    readVerses => 10,
-    learnWords => 3,
-    learnCards => 1,
+    readCards => 5,
+    learnIdea || actPractice => 1,
   };
 
-  /// Ciel dna: [readVerses] najviac [setVerses] (pocet versov v dennej
-  /// sade, ak je aspon 1), aby ho splnila samotna sada; volne citanie ho
-  /// moze dorovnat. Ostatne [defaultCount].
-  int countFor({int? setVerses}) => switch (this) {
-    readVerses when setVerses != null && setVerses > 0 =>
-      setVerses < defaultCount ? setVerses : defaultCount,
+  /// Ciel dna: [readCards] najviac [setCards] (pocet citatov a uryvkov
+  /// v dennej sade, ak je aspon 1), aby ho splnila samotna sada. Ostatne
+  /// [defaultCount].
+  int countFor({int? setCards}) => switch (this) {
+    readCards when setCards != null && setCards > 0 =>
+      setCards < defaultCount ? setCards : defaultCount,
     _ => defaultCount,
   };
 }
@@ -115,7 +113,6 @@ final class DailyQuest {
     required this.origin,
     this.rule,
     Map<String, int> params = const {},
-    this.eventId,
   }) : params = Map.unmodifiable(params);
 
   final LocalDate date;
@@ -131,9 +128,6 @@ final class DailyQuest {
 
   /// Zvolene parametre sablony, napr. `{n: 10}`.
   final Map<String, int> params;
-
-  /// Event, ktory quest urcil ([QuestOrigin.eventOverride]).
-  final String? eventId;
 
   bool get isSelfReport => rule == null;
 
@@ -151,7 +145,6 @@ final class DailyQuest {
       other.questId == questId &&
       other.origin == origin &&
       other.rule == rule &&
-      other.eventId == eventId &&
       other.params.length == params.length &&
       params.entries.every((e) => other.params[e.key] == e.value);
 
@@ -162,7 +155,6 @@ final class DailyQuest {
     questId,
     origin,
     rule,
-    eventId,
     Object.hashAllUnordered(params.entries.map((e) => (e.key, e.value))),
   );
 

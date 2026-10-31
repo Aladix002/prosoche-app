@@ -11,7 +11,6 @@ import 'package:prosoche/app/background.dart';
 import 'package:prosoche/app/content_wiring.dart';
 import 'package:prosoche/app/data_deletion_wiring.dart';
 import 'package:prosoche/app/gate_wiring.dart';
-import 'package:prosoche/app/location_wiring.dart';
 import 'package:prosoche/app/notification_wiring.dart';
 import 'package:prosoche/app/observability_wiring.dart';
 import 'package:prosoche/core/flavor/flavor.dart';
@@ -51,7 +50,6 @@ Future<void> bootstrap(Flavor flavor, {Edition edition = Edition.lite}) async {
       appLoggerProvider.overrideWithValue(logger),
       ...contentOverrides(supportDir: await getApplicationSupportDirectory()),
       ...notificationOverrides(),
-      ...locationOverrides(),
       ...observabilityOverrides(ring: ring, crashSink: crashSink),
       ...dataDeletionOverrides(),
     ],

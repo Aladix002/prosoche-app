@@ -216,13 +216,6 @@ class BlockingAppScreen extends ConsumerWidget {
                 ],
               ),
             ),
-            SwitchListTile(
-              key: const ValueKey('app:prayer'),
-              title: Text(l10n.blkAppPrayerLock),
-              subtitle: Text(l10n.blkAppPrayerLockHelp),
-              value: app.prayerLock,
-              onChanged: (v) => update(BlockedAppPatch(prayerLock: v)),
-            ),
             const SizedBox(height: SkSpace.space16),
             Padding(
               padding: const EdgeInsetsDirectional.symmetric(

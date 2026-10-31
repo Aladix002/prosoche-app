@@ -5,10 +5,8 @@ import 'package:drift/drift.dart' show ComparableExpr;
 import 'package:meta/meta.dart';
 import 'package:prosoche/core/logging/app_logger.dart';
 import 'package:prosoche/data/db/user_db.dart' as db;
-import 'package:prosoche/data/repositories/calendar/calendar_repository.dart';
 import 'package:prosoche/data/repositories/catalog/content_catalog.dart';
 import 'package:prosoche/data/repositories/infra/card_events.dart';
-import 'package:prosoche/data/repositories/infra/reading_progress.dart';
 import 'package:prosoche/data/repositories/today/quest_repository.dart';
 import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/feed/feed.dart';
@@ -39,7 +37,7 @@ final class DailySetState {
 
   LocalDate get date => set.date;
 
-  /// N obsahovych kariet (10 pri `words_enabled=false`).
+  /// N kariet sady.
   int get n => set.n;
 
   /// Prejdene obsahove karty (CTA "Continue (x/N)").
@@ -61,7 +59,6 @@ final class SeenResult {
     required this.newlySeen,
     required this.cursor,
     this.completedNow = false,
-    this.khatmCompleted,
   });
 
   /// `seen` sa zapisal prvy raz (docs/02 0.4).
@@ -70,9 +67,6 @@ final class SeenResult {
 
   /// Tymto zapisom sa sada dokoncila (zobrazit B10).
   final bool completedNow;
-
-  /// Cislo dokonceneho khatmu po 114:6 (zobrazit B12).
-  final int? khatmCompleted;
 }
 
 /// Denna sada: vyber `activeSetDate`, generovanie raz za den, `seen`,
@@ -82,8 +76,8 @@ abstract interface class DailySetRepository {
   /// (localDate < najvyssia ulozena sada) je to najvyssia ulozena sada.
   Future<LocalDate> activeSetDate(LocalDate localDate);
 
-  /// Sada dna [date]; ak este nie je, vygeneruje ju (FeedGenerator +
-  /// EventResolver), ulozi a posunie `names.cursor`/`event_cursor.*`. Pre
+  /// Sada dna [date]; ak este nie je, vygeneruje ju (FeedGenerator) a ulozi.
+  /// Pre
   /// datum nizsi ako najvyssia ulozena sada sa nikdy negeneruje
   /// ([StateError]). [shorterSet] plati len pri generovani (docs/01 D6).
   Future<DailySetState> ensure(LocalDate date, {bool shorterSet = false});
@@ -98,8 +92,8 @@ abstract interface class DailySetRepository {
   Future<int> inactiveDays(LocalDate date);
 
   /// Karta [card] je videna (dwell splneny). Zapise `card_event{seen}`
-  /// najviac raz, posunie cursor, pri khatm verse `reading_position`, po
-  /// poslednej obsahovej karte `completed_at`, a vyhodnoti auto questy.
+  /// najviac raz, posunie cursor, po poslednej karte `completed_at`
+  /// a vyhodnoti auto questy.
   Future<SeenResult> markSeen(
     LocalDate date,
     DailySetCard card, {
@@ -118,43 +112,37 @@ abstract interface class DailySetRepository {
   Future<void> markDoneShown(LocalDate date);
 }
 
-/// Odkial sa berie hranica faz dna (casy modlitieb) pre generovanie.
+/// Odkial sa beru hranice faz dna pre generovanie (null = pevne hodiny).
 typedef DayBoundariesSource = Future<DayBoundaries?> Function(LocalDate date);
 
 class DriftDailySetRepository implements DailySetRepository {
   DriftDailySetRepository({
     required db.UserDb userDb,
     required this._catalog,
-    required this._calendar,
     required this._quests,
     required this._settings,
     required this._clock,
     required this._installId,
-    required this._language,
     required this._timeZone,
     this._dayBoundaries,
     this._disabledIds,
-    this.wordsEnabled = false,
     this._logger,
     this._generator = const FeedGenerator(),
   }) : _db = userDb;
 
   final db.UserDb _db;
   final ContentCatalog _catalog;
-  final CalendarRepository _calendar;
   final QuestRepository _quests;
   final SettingsRepository _settings;
   final Clock _clock;
   final Future<String> Function() _installId;
-  final Future<String> Function() _language;
   final Future<String> Function() _timeZone;
   final DayBoundariesSource? _dayBoundaries;
   final Set<CardId> Function()? _disabledIds;
   final AppLogger? _logger;
   final FeedGenerator _generator;
-  final bool wordsEnabled;
 
-  /// Cooldown hadisov, dua, zamysleni a mien (docs/03 P7).
+  /// Cooldown obsahu (docs/03 P7).
   static const historyDays = 365;
 
   final _inFlight = <LocalDate, Future<DailySetState>>{};
@@ -211,25 +199,15 @@ class DriftDailySetRepository implements DailySetRepository {
     final installId = await _installId();
     final inputs = await _inputs(date, installId, shorterSet);
     final result = _generator.generate(inputs);
-    await _db.transaction(() async {
-      final inserted = await _db.dailySetDao.insertIfAbsent(
-        date: date,
-        seed: inputs.seed,
-        cardsJson: result.set.encode(),
-        generatorVersion: result.set.generatorVersion,
-        contentVersion: inputs.contentVersion ?? 'unknown',
-        tz: inputs.tz ?? 'UTC',
-        phase: db.DayPhase.values.byName(result.set.phase.wire),
-      );
-      if (!inserted) return;
-      await _settings.set(SettingsKeys.namesCursor, result.namesCursor);
-      for (final MapEntry(:key, :value) in result.eventCursors.entries) {
-        await _settings.set(
-          SettingsKeys.eventCursor(key.replaceFirst('event_cursor.', '')),
-          value,
-        );
-      }
-    });
+    await _db.dailySetDao.insertIfAbsent(
+      date: date,
+      seed: inputs.seed,
+      cardsJson: result.set.encode(),
+      generatorVersion: result.set.generatorVersion,
+      contentVersion: inputs.contentVersion ?? 'unknown',
+      tz: inputs.tz ?? 'UTC',
+      phase: db.DayPhase.values.byName(result.set.phase.wire),
+    );
     _logger?.info('daily_set', 'generated', {'ms': watch.elapsedMilliseconds});
     return (await get(date))!;
   }
@@ -239,43 +217,18 @@ class DriftDailySetRepository implements DailySetRepository {
     String installId,
     bool shorterSet,
   ) async {
-    final lang = await _language();
-    final resolution = await _calendar.resolve(date);
-    final events = resolution.active;
     final cardsCount = await _settings.get(SettingsKeys.feedCardsCount);
-    final namesCursor = await _settings.get(SettingsKeys.namesCursor);
-    final eventCursors = <String, int>{};
-    for (final e in events) {
-      final cursor = e.effect.cursor;
-      if (cursor == null) continue;
-      final id = cursor.substring('event_cursor.'.length);
-      final value = await _settings.get(SettingsKeys.eventCursor(id));
-      // Kluc v FeedHistory/FeedResult je cely nazov `event_cursor.{id}`.
-      if (value != null) eventCursors[cursor] = value;
-    }
     return FeedInputs(
       date: date,
       seed: feedSeed(date, installId),
       generatedAtLocalTime: _clock.now(),
       dayBoundaries: await _dayBoundaries?.call(date),
-      readingPosition: readingPositionOf(
-        await _db.readingDao.readingPosition(),
-      ),
-      activeEvents: events,
-      prefs: FeedPrefs(
-        lang: lang,
-        cardsCount: cardsCount,
-        shorterSet: shorterSet,
-      ),
-      wordsEnabled: wordsEnabled,
+      prefs: FeedPrefs(cardsCount: cardsCount, shorterSet: shorterSet),
       inactiveDays: await inactiveDays(date),
       pools: await _catalog.feedPools(),
       history: FeedHistory(
         lastShown: await _lastShown(date),
         disabledIds: _disabledIds?.call() ?? const {},
-        namesCursor: namesCursor,
-        eventCursors: eventCursors,
-        completedKhatms: await _db.readingDao.completedKhatmCount(),
       ),
       contentVersion: await _catalog.contentVersion(),
       tz: await _timeZone(),
@@ -334,16 +287,6 @@ class DriftDailySetRepository implements DailySetRepository {
         now: now,
         pos: card.pos,
       );
-      int? khatm;
-      final id = card.cardId;
-      if (action == CardAction.seen && card.khatm && id is AyahCardId) {
-        khatm = (await advanceReadingPosition(
-          _db,
-          id.ayahId,
-          now,
-          strict: false,
-        )).khatmCompleted;
-      }
       final cursor = await _contiguous(state);
       if (cursor > state.cursor) {
         await _db.dailySetDao.advanceCursor(date, cursor, now.toUtc());
@@ -356,7 +299,6 @@ class DriftDailySetRepository implements DailySetRepository {
         newlySeen: newly,
         cursor: cursor > state.cursor ? cursor : state.cursor,
         completedNow: completedNow,
-        khatmCompleted: khatm,
       );
     });
     await _quests.syncAuto(date);
@@ -384,24 +326,11 @@ class DriftDailySetRepository implements DailySetRepository {
     }
     var cursor = 0;
     for (final c in state.set.cards) {
-      final isQuiz = c.cardId is QuizCardId;
       if (!passed.contains(c.cardId.format())) break;
-      // Kviz je prejdeny az po `answered` (docs/02 0.4); seen nestaci.
-      if (isQuiz && !await _answered(state.date, c.cardId)) break;
       cursor = c.pos;
     }
     return cursor;
   }
-
-  Future<bool> _answered(LocalDate date, CardId id) async =>
-      (await _db.cardEventDao.cardIds(
-        date,
-        action: db.CardAction.answered,
-      )).contains(id.format()) ||
-      (await _db.cardEventDao.cardIds(
-        date,
-        action: db.CardAction.skipped,
-      )).contains(id.format());
 
   @override
   Future<void> markDoneShown(LocalDate date) async {

@@ -33,8 +33,8 @@ final FutureProvider<String> installIdProvider = FutureProvider<String>(
   name: 'installIdProvider',
 );
 
-/// Jazyky obsahu a UI v MVP (docs/02 O1).
-const supportedContentLanguages = ['en', 'ar', 'id', 'ur', 'bn', 'tr'];
+/// Jazyky obsahu a UI (PLAN.md: v1 len EN, dalsie podla zaujmu).
+const supportedContentLanguages = ['en'];
 
 /// Jazyk obsahu = `ui.locale`, inak jazyk systemu, inak `en`.
 String resolveContentLanguage(String? stored, String device) {

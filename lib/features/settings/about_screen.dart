@@ -5,14 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/data/content/content_providers.dart';
-import 'package:prosoche/data/content/hadith_extra_pack_providers.dart';
 import 'package:prosoche/features/settings/problem_report_sheet.dart';
 import 'package:prosoche/features/settings/settings_paths.dart';
 import 'package:prosoche/features/settings/settings_providers.dart';
 import 'package:prosoche/features/settings/settings_widgets.dart';
 import 'package:prosoche/features/settings/sources_screen.dart';
 import 'package:prosoche/ui/i18n/i18n.dart';
-import 'package:prosoche/ui/ui.dart';
 
 /// `X.Y.Z+BUILD` (docs/02 A10.10); bez cisla buildu len `X.Y.Z`.
 String appVersionLabel(String version, String? build) =>
@@ -59,11 +57,9 @@ class AboutScreen extends ConsumerWidget {
             textDirection: textDirectionForLanguage('en'),
           ),
         ),
-        const _HadithExtraPackTile(),
         SettingsSection(l10n.setDisclaimers),
-        SettingsNote(l10n.setDisclaimerPrayer),
-        SettingsNote(l10n.setDisclaimerQuran),
-        SettingsNote(l10n.setDisclaimerRulings),
+        SettingsNote(l10n.setDisclaimerTexts),
+        SettingsNote(l10n.setDisclaimerAdvice),
         SettingsSection(l10n.setMore),
         ListTile(
           key: const ValueKey('about:report'),
@@ -98,38 +94,6 @@ class AboutScreen extends ConsumerWidget {
           onTap: () => showOpenSourceLicenses(context, version: version),
         ),
       ],
-    );
-  }
-}
-
-/// Stiahnuty balik vysvetliviek hadisov (D-05) s moznostou zmazania.
-/// Inak (nestiahnuty, nedostupny, chyba) sa riadok neukaze.
-class _HadithExtraPackTile extends ConsumerWidget {
-  const _HadithExtraPackTile();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = context.l10n;
-    final status = ref.watch(hadithExtraPackStatusProvider).value;
-    if (status is! HadithExtraReady) return const SizedBox.shrink();
-    final mb = (status.sizeBytes / (1024 * 1024)).toStringAsFixed(1);
-    return ListTile(
-      key: const ValueKey('about:hadith_extra'),
-      title: Text(l10n.setHadithExtra),
-      subtitle: Text(l10n.setSizeMb(mb)),
-      trailing: TextButton(
-        onPressed: () async {
-          final ok = await showSkConfirmDialog(
-            context,
-            title: l10n.setHadithExtraDeleteTitle,
-            body: l10n.setHadithExtraDeleteBody,
-            confirmLabel: l10n.setDeleteConfirm,
-            variant: SkConfirmVariant.destructive,
-          );
-          if (ok) await ref.read(hadithExtraPackServiceProvider).delete();
-        },
-        child: Text(l10n.setDeleteConfirm),
-      ),
     );
   }
 }

@@ -4,28 +4,28 @@ import 'package:prosoche/ui/theme/prosoche_colors.dart';
 import 'package:prosoche/ui/theme/sk_context.dart';
 import 'package:prosoche/ui/tokens/sk_space.dart';
 
-/// Cast dna pre atmosferu hlavicky (D-05). Urci ju volajuci podla
-/// najblizsej modlitby, bez polohy podla hodiny ([SkDayPhase.fromHour]).
+/// Cast dna pre atmosferu hlavicky (D-05). Urci ju volajuci podla hodiny
+/// ([SkDayPhase.fromHour]).
 enum SkDayPhase {
-  /// Pred vychodom slnka (dalsia je sunrise).
+  /// Svitanie.
   dawn,
 
-  /// Doobeda (dalsi je Dhuhr).
+  /// Doobeda.
   morning,
 
-  /// Napoludnie (dalsi je Asr).
+  /// Napoludnie.
   midday,
 
-  /// Popoludnie (dalsi je Maghrib).
+  /// Popoludnie.
   afternoon,
 
-  /// Po zapade (dalsia je Isha).
+  /// Sumrak.
   dusk,
 
-  /// Noc (dalsi je Fajr).
+  /// Noc.
   night;
 
-  /// Odhad bez casov modlitieb (bez polohy).
+  /// Cast dna podla hodiny.
   static SkDayPhase fromHour(int hour) => switch (hour) {
     >= 4 && < 6 => dawn,
     >= 6 && < 11 => morning,

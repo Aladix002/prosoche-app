@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' hide Bidi;
 import 'package:prosoche/core/l10n/l10n.dart';
-import 'package:prosoche/domain/calendar/calendar.dart';
 import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/quests/quests.dart';
 import 'package:prosoche/ui/i18n/i18n.dart';
@@ -13,7 +12,7 @@ enum CardSurface {
   /// Denna sada (A3): zapisuje `seen`, plna akcna lista.
   feed(CardContext.feed),
 
-  /// Brana (A4): bez "Read in context".
+  /// Brana (A4): bez odkazov mimo branu.
   gate(CardContext.gate),
 
   /// Ulozene a prehlad dna (A8.2, A8.3): bez posunu progresu.
@@ -72,17 +71,14 @@ class CardActions {
   }
 }
 
-/// Preklad karty (docs/02 B0.6, docs/03 7.3): text v jazyku obsahu; pri
-/// `en` fallbacku versa so stitkom "EN"; bez prekladu nenapadna poznamka.
-/// Pri [arabicOnly] (jazyk obsahu `ar`) je arabsky original sam textom,
-/// takze sa nezobrazi nic. Smer textu podla jazyka prekladu, nie UI.
-/// [textSpan] nahradi obycajny text (napr. znacky poznamok prekladatela).
+/// Text karty (docs/02 B0.6, docs/03 7.3): text v jazyku obsahu; pri
+/// fallbacku na iny jazyk so stitkom; bez textu nenapadna poznamka. Smer
+/// textu podla jazyka textu, nie UI. [textSpan] nahradi obycajny text.
 class CardTranslation extends StatelessWidget {
   const CardTranslation({
     required this.text,
     this.lang,
     this.isFallback = false,
-    this.arabicOnly = false,
     this.style,
     this.textSpan,
     super.key,
@@ -91,7 +87,6 @@ class CardTranslation extends StatelessWidget {
   final String? text;
   final String? lang;
   final bool isFallback;
-  final bool arabicOnly;
   final TextStyle? style;
   final InlineSpan? textSpan;
 
@@ -101,7 +96,6 @@ class CardTranslation extends StatelessWidget {
     final sk = context.sk;
     final value = text;
     if (value == null || value.isEmpty) {
-      if (arabicOnly) return const SizedBox.shrink();
       return Text(
         l10n.cardTranslationNotYetAvailable,
         style: sk.text.bodySmall!.copyWith(color: sk.colors.textSecondary),
@@ -173,20 +167,6 @@ class CardSourceNote extends StatelessWidget {
 extension CardFormatsX on BuildContext {
   ProsocheFormats get formats => ProsocheFormats(Localizations.localeOf(this));
 
-  /// "17 Jumada al-Ula 1448", izolovane podla prveho silneho znaku
-  /// (BF-01): v RTL UI s latinkovym nazvom mesiaca (EN fallback UI textu)
-  /// ostane poradie den - mesiac - rok, s arabskym nazvom sa cita RTL.
-  String hijriLabel(HijriDate hijri) {
-    final f = formats;
-    return Bidi.isolate(
-      l10n.todayHijriDate(
-        localizeDigits('${hijri.day}', f.digits),
-        l10n.todayHijriMonth('m${hijri.month}'),
-        localizeDigits('${hijri.year}', f.digits),
-      ),
-    );
-  }
-
   /// Den v tyzdni, napr. "Thursday".
   String weekdayLabel(LocalDate date) => localizeDigits(
     DateFormat.EEEE(Localizations.localeOf(this).toString())
@@ -200,25 +180,7 @@ extension CardFormatsX on BuildContext {
         .format(date.toLocalDateTime()),
     formats.digits,
   );
-
-  /// "Al-Baqarah 2:255" (nazov sury z content.db) s izolovanym nazvom
-  /// (BF-01, ako F-04): v RTL UI ostane nazov pred referenciou.
-  String ayahReference(String surahName, AyahId id) => l10n.cardAyahReference(
-    Bidi.isolate(surahName),
-    formats.ayahRef(id.surah, id.ayah),
-  );
 }
-
-/// Arabsky text versa s koncovym znakom a cislom v arabsko-indickych
-/// cisliciach; NBSP drzi znak pri poslednom slove (docs/01 1.3 bod 7).
-String ayahTextWithEnd(String textUthmani, int number) {
-  final digits = localizeDigits('$number', DigitStyle.arabicIndic);
-  return '$textUthmani$_nbsp$_endOfAyah$digits';
-}
-
-/// NBSP a U+06DD (koncovy znak versa) ako kody, nie literaly (lint D13).
-final _nbsp = String.fromCharCode(0x00A0);
-final _endOfAyah = String.fromCharCode(0x06DD);
 
 /// Double tap na karte bez ucasti v gesture arene: tlacidla na karte
 /// reaguju hned (bez cakania na double-tap timeout, docs/02 B0.3 pozn.).

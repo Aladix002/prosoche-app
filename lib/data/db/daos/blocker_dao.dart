@@ -46,7 +46,6 @@ class BlockerDao extends DatabaseAccessor<UserDb> with _$BlockerDaoMixin {
     int id, {
     int? cardsRequired,
     int? unlockMinutes,
-    bool? prayerLock,
     bool? enabled,
     String? label,
   }) async {
@@ -54,7 +53,6 @@ class BlockerDao extends DatabaseAccessor<UserDb> with _$BlockerDaoMixin {
       BlockedAppsCompanion(
         cardsRequired: Value.absentIfNull(cardsRequired),
         unlockMinutes: Value.absentIfNull(unlockMinutes),
-        prayerLock: Value.absentIfNull(prayerLock),
         enabled: Value.absentIfNull(enabled),
         label: Value.absentIfNull(label),
       ),

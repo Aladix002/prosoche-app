@@ -1,20 +1,20 @@
 import 'package:meta/meta.dart';
 
-/// Cast dna pri prvom otvoreni dna (plan 7.1, docs/03 3.4, docs/02 D13).
+/// Cast dna pri prvom otvoreni dna (plan 7.1, docs/02 D13).
 ///
-/// Urcuje typ karty v slote 9 (rano a vecer dua, inak hadis). Uklada sa do
+/// Ovplyvnuje vahu kariet s fasetou `time_of_day`. Uklada sa do
 /// `cards_json`, takze sa sada pocas dna nemeni.
 enum DayPhase {
-  /// Od fajr do dhuhr.
+  /// Od 05:00 do 12:00.
   morning('morning'),
 
-  /// Od dhuhr do asr.
+  /// Od 12:00 do 17:00.
   day('day'),
 
-  /// Od asr do isha.
+  /// Od 17:00 do 21:00.
   evening('evening'),
 
-  /// Od isha do fajr.
+  /// Od 21:00 do 05:00.
   night('night');
 
   DayPhase(this.wire);
@@ -28,40 +28,47 @@ enum DayPhase {
     return null;
   }
 
-  /// Faza pre lokalny cas [localTime]. Bez [boundaries] (napr. pred
-  /// nastavenim polohy) sa pouziju pevne hodiny [DayBoundaries.fallback].
+  /// Faza pre lokalny cas [localTime]. Bez [boundaries] plati
+  /// [DayBoundaries.fallback].
   static DayPhase resolve(DateTime localTime, {DayBoundaries? boundaries}) {
     final b = boundaries ?? DayBoundaries.fallback(localTime);
-    if (localTime.isBefore(b.fajr)) return night;
-    if (localTime.isBefore(b.dhuhr)) return morning;
-    if (localTime.isBefore(b.asr)) return day;
-    if (localTime.isBefore(b.isha)) return evening;
+    if (localTime.isBefore(b.morning)) return night;
+    if (localTime.isBefore(b.day)) return morning;
+    if (localTime.isBefore(b.evening)) return day;
+    if (localTime.isBefore(b.night)) return evening;
     return night;
   }
 }
 
-/// Hranice faz dna z casov modlitieb (PrayerSchedule, P-01) v lokalnom case.
+/// Zaciatky faz dna v lokalnom case.
 @immutable
 final class DayBoundaries {
   DayBoundaries({
-    required this.fajr,
-    required this.dhuhr,
-    required this.asr,
-    required this.isha,
+    required this.morning,
+    required this.day,
+    required this.evening,
+    required this.night,
   }) {
-    if (!(fajr.isBefore(dhuhr) && dhuhr.isBefore(asr) && asr.isBefore(isha))) {
-      throw ArgumentError('Expected fajr < dhuhr < asr < isha');
+    if (!(morning.isBefore(day) &&
+        day.isBefore(evening) &&
+        evening.isBefore(night))) {
+      throw ArgumentError('Expected morning < day < evening < night');
     }
   }
 
-  /// Pevne hodiny 05:00, 12:00, 15:00, 20:00 v dni [day].
-  factory DayBoundaries.fallback(DateTime day) {
-    DateTime at(int hour) => DateTime(day.year, day.month, day.day, hour);
-    return DayBoundaries(fajr: at(5), dhuhr: at(12), asr: at(15), isha: at(20));
+  /// Pevne hodiny 05:00, 12:00, 17:00, 21:00 v dni [date].
+  factory DayBoundaries.fallback(DateTime date) {
+    DateTime at(int hour) => DateTime(date.year, date.month, date.day, hour);
+    return DayBoundaries(
+      morning: at(5),
+      day: at(12),
+      evening: at(17),
+      night: at(21),
+    );
   }
 
-  final DateTime fajr;
-  final DateTime dhuhr;
-  final DateTime asr;
-  final DateTime isha;
+  final DateTime morning;
+  final DateTime day;
+  final DateTime evening;
+  final DateTime night;
 }

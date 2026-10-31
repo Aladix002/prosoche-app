@@ -16,7 +16,7 @@ void main() {
     expect(SkContrast.ratio(l.outlineStrong, l.bg), closeTo(3.48, 0.01));
     expect(SkContrast.ratio(l.onPrimary, l.primary), closeTo(7.53, 0.01));
     expect(SkContrast.ratio(d.textTertiary, d.surfaceAlt), closeTo(4.91, 0.01));
-    expect(SkContrast.ratio(d.arabic, d.bg), closeTo(15.56, 0.01));
+    expect(SkContrast.ratio(d.lead, d.bg), closeTo(15.56, 0.01));
     // Symetria.
     expect(
       SkContrast.ratio(l.bg, l.textPrimary),
@@ -46,7 +46,7 @@ void main() {
         'textPrimary': c.textPrimary,
         'textSecondary': c.textSecondary,
         'textTertiary': c.textTertiary,
-        'arabic': c.arabic,
+        'lead': c.lead,
         'primary': c.primary,
         'accentText': c.accentText,
         'error': c.error,

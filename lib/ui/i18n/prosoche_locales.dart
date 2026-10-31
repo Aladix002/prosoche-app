@@ -1,16 +1,11 @@
 import 'package:flutter/widgets.dart';
 
-/// Jazyky UI v MVP (TECHNICKY_PLAN 1, PLAN_VYVOJA U-02). Poradie = poradie
-/// vo vybere jazyka; `en` je sablona a fallback pre chybajuce kluce.
+/// Jazyky UI (PLAN.md: v1 len EN). `en` je sablona a fallback pre
+/// chybajuce kluce. Kod pre RTL ostava pre buduce jazyky.
 abstract final class ProsocheLocales {
   static const en = Locale('en');
-  static const ar = Locale('ar');
-  static const id = Locale('id');
-  static const ur = Locale('ur');
-  static const bn = Locale('bn');
-  static const tr = Locale('tr');
 
-  static const List<Locale> all = [en, ar, id, ur, bn, tr];
+  static const List<Locale> all = [en];
 
   /// Jazyky pisane sprava dolava.
   static const Set<String> rtlLanguages = {'ar', 'ur', 'fa', 'he', 'ps'};
@@ -18,11 +13,11 @@ abstract final class ProsocheLocales {
   static bool isRtl(Locale locale) =>
       rtlLanguages.contains(locale.languageCode);
 
-  /// Ci je jazyk v MVP podporovany (podla `languageCode`).
+  /// Ci je jazyk podporovany (podla `languageCode`).
   static bool isSupported(Locale locale) =>
       all.any((l) => l.languageCode == locale.languageCode);
 
-  /// Vyber jazyka UI: ulozena volba (`ui.locale`, napr. `ar`), inak prvy
+  /// Vyber jazyka UI: ulozena volba (`ui.locale`), inak prvy
   /// podporovany zo systemovych jazykov, inak `en`.
   static Locale resolve({
     String? stored,
@@ -39,8 +34,8 @@ abstract final class ProsocheLocales {
   }
 }
 
-/// Smer textu pre jazyk obsahu (nie UI). Preklad versa sa zobrazuje
-/// v smere svojho jazyka bez ohladu na UI (docs/04 5.2 bod 2).
+/// Smer textu pre jazyk obsahu (nie UI). Text sa zobrazuje v smere
+/// svojho jazyka bez ohladu na UI (docs/04 5.2 bod 2).
 TextDirection textDirectionForLanguage(String languageCode) =>
     ProsocheLocales.rtlLanguages.contains(languageCode)
     ? TextDirection.rtl

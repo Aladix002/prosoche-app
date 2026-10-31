@@ -6,10 +6,6 @@ import 'package:drift/native.dart';
 import 'package:prosoche/data/db/content_tables.dart';
 import 'package:prosoche/data/db/daos/content_meta_dao.dart';
 import 'package:prosoche/data/db/daos/curated_dao.dart';
-import 'package:prosoche/data/db/daos/hadith_dao.dart';
-import 'package:prosoche/data/db/daos/places_dao.dart';
-import 'package:prosoche/data/db/daos/quran_dao.dart';
-import 'package:prosoche/data/db/daos/words_dao.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 export 'package:prosoche/data/db/content_tables.dart';
@@ -20,10 +16,7 @@ part 'content_db.g.dart';
 ///
 /// Subor vytvara pipeline `prosoche-content`; appka ho nikdy nevytvara ani
 /// nemigruje. Verzia schemy = `PRAGMA user_version` kontraktu.
-@DriftDatabase(
-  tables: contentTables,
-  daos: [ContentMetaDao, QuranDao, HadithDao, CuratedDao, WordsDao, PlacesDao],
-)
+@DriftDatabase(tables: contentTables, daos: [ContentMetaDao, CuratedDao])
 class ContentDb extends _$ContentDb {
   ContentDb(super.e);
 
@@ -61,7 +54,7 @@ class ContentDb extends _$ContentDb {
         ..execute('PRAGMA query_only = ON');
 
   /// Verzia kontraktu `content_schema.sql` (`schema_version` v `meta`).
-  static const contractVersion = 3;
+  static const contractVersion = 1;
 
   @override
   int get schemaVersion => contractVersion;

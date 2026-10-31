@@ -4,7 +4,6 @@ import 'package:clock/clock.dart';
 import 'package:drift/drift.dart' show ComparableExpr;
 import 'package:meta/meta.dart';
 import 'package:prosoche/data/db/user_db.dart' as db;
-import 'package:prosoche/data/repositories/calendar/calendar_repository.dart';
 import 'package:prosoche/data/repositories/catalog/content_catalog.dart';
 import 'package:prosoche/data/repositories/infra/card_events.dart';
 import 'package:prosoche/domain/common/common.dart';
@@ -66,28 +65,24 @@ class DriftQuestRepository implements QuestRepository {
   DriftQuestRepository({
     required db.UserDb userDb,
     required this._catalog,
-    required this._calendar,
     required this._installId,
     required this._language,
     required this._clock,
-    this.wordsEnabled = false,
     this._engine = const QuestEngine(),
     this._ensureSet,
   }) : _db = userDb;
 
   final db.UserDb _db;
   final ContentCatalog _catalog;
-  final CalendarRepository _calendar;
   final Future<String> Function() _installId;
   final Future<String> Function() _language;
   final Clock _clock;
   final QuestEngine _engine;
-  final bool wordsEnabled;
 
   /// Vytvori dennu sadu dna, ak este nie je (`DailySetRepository.ensure`).
-  /// Vola sa pred prvym vyberom, aby ciel generickeho "Read {count} verses"
+  /// Vola sa pred prvym vyberom, aby ciel generickeho "Read {count} cards"
   /// ([GenericQuest.countFor]) vznikol uz zo sady a pocas dna sa nemenil
-  /// (P-01). Chyba sa ignoruje (ciel potom 10, kym sada nie je).
+  /// (P-01). Chyba sa ignoruje (ciel potom default, kym sada nie je).
   final Future<void> Function(LocalDate date)? _ensureSet;
 
   final _inFlight = <LocalDate, Future<void>>{};
@@ -102,7 +97,6 @@ class DriftQuestRepository implements QuestRepository {
         seed: QuestEngine.daySeed(await _installId(), date),
         lang: lang,
         templates: await _catalog.questTemplates(),
-        activeEvents: (await _calendar.resolve(date)).active,
         history: [
           for (final r in history)
             QuestLogEntry(
@@ -112,21 +106,19 @@ class DriftQuestRepository implements QuestRepository {
               status: _status(r.status),
             ),
         ],
-        wordsEnabled: wordsEnabled,
-        setVerses: await _setVerses(date),
+        setCards: await _setCards(date),
       ),
     );
   }
 
-  /// Versy v ulozenej dennej sade [date]; null, kym sada nie je.
-  Future<int?> _setVerses(LocalDate date) async {
+  /// Citaty a uryvky v ulozenej dennej sade [date]; null, kym sada nie je.
+  Future<int?> _setCards(LocalDate date) async {
     final row = await _db.dailySetDao.byDate(date);
     if (row == null) return null;
     try {
-      return DailySet.decode(
-        row.cardsJson,
-        date: row.date,
-      ).cards.where((c) => c.cardId is AyahCardId).length;
+      return DailySet.decode(row.cardsJson, date: row.date).cards
+          .where((c) => GenericQuest.readCards.types.contains(c.cardId.type))
+          .length;
     } on FormatException {
       return null;
     }
@@ -192,7 +184,7 @@ class DriftQuestRepository implements QuestRepository {
       await for (final (l, e) in controller.stream) {
         final views = await _views(date, l, e);
         yield views;
-        // Ciel sa moze znizit az po vygenerovani sady (setVerses), bez
+        // Ciel sa moze znizit az po vygenerovani sady (setCards), bez
         // noveho card_event: splneny quest sa zapise aj tu.
         await _markDone(date, views);
       }
@@ -212,7 +204,7 @@ class DriftQuestRepository implements QuestRepository {
     if (rows.isEmpty) return const [];
     final lang = await _language();
     final selected = {for (final q in await _select(date, lang)) q.slot: q};
-    final setVerses = await _setVerses(date);
+    final setCards = await _setCards(date);
     final templates = {
       for (final t in await _catalog.questTemplates()) t.id: t,
     };
@@ -228,7 +220,7 @@ class DriftQuestRepository implements QuestRepository {
           ? r.doneAt?.toLocal()
           : null;
       final quest = _engine.settled(
-        _quest(date, slot, r.questId, selected[slot], templates, setVerses),
+        _quest(date, slot, r.questId, selected[slot], templates, setCards),
         doneAt: doneAt,
         events: activities,
       );
@@ -256,7 +248,7 @@ class DriftQuestRepository implements QuestRepository {
     String questId,
     DailyQuest? selected,
     Map<String, QuestTemplate> templates,
-    int? setVerses,
+    int? setCards,
   ) {
     if (selected != null && selected.questId == questId) return selected;
     final generic = GenericQuest.fromId(questId);
@@ -266,7 +258,7 @@ class DriftQuestRepository implements QuestRepository {
         slot: slot,
         questId: questId,
         origin: QuestOrigin.generic,
-        rule: generic.rule(generic.countFor(setVerses: setVerses)),
+        rule: generic.rule(generic.countFor(setCards: setCards)),
       );
     }
     final t = templates[questId];

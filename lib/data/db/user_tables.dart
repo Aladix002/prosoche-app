@@ -1,12 +1,12 @@
 // Deklaracie tabuliek cita len drift_dev pri generovani, za behu sa
 // nevykonavaju.
 // coverage:ignore-file
-// Drift tabulky user.db, schema v1 (plan 5.2 + docs/02 D1, D6, D7, D8, D10,
-// D12, D13 + 07 ADR-06 Z2).
+// Drift tabulky user.db, schema v1 (plan 5.2 + docs/02 D1, D7, D8, D12, D13
+// + 07 ADR-06 Z2).
 //
 // Konvencie:
 //  * datum dna (`date`) = TEXT `YYYY-MM-DD` ([LocalDateConverter]),
-//  * okamih (`*_at`, `ts`, `due`) = INTEGER ms od epochy UTC
+//  * okamih (`*_at`, `ts`) = INTEGER ms od epochy UTC
 //    ([UtcMillisConverter]),
 //  * enumy = TEXT s CHECK (`wire` hodnoty z user_enums.dart),
 //  * booleany = INTEGER 0/1 s CHECK.
@@ -30,20 +30,6 @@ class Settings extends Table {
 
   @override
   Set<Column<Object>> get primaryKey => {key};
-}
-
-/// Jediny riadok `id = 1`; `ayah_id = 0` = pred 1:1 (docs/02 D7).
-@DataClassName('ReadingPositionRow')
-class ReadingPositions extends Table {
-  @override
-  String get tableName => 'reading_position';
-
-  IntColumn get id => integer().check(id.equals(1))();
-  IntColumn get ayahId => integer().withDefault(const Constant(0))();
-  IntColumn get updatedAt => integer().map(const UtcMillisConverter())();
-
-  @override
-  Set<Column<Object>> get primaryKey => {id};
 }
 
 /// Denna sada (docs/02 0.3, D13, docs/03 3.4).
@@ -91,16 +77,13 @@ class CardEvents extends Table {
       .check(
         type.isIn(const [
           'intro',
-          'ayah',
-          'word',
-          'quiz',
-          'hadith',
-          'dua',
-          'name',
-          'reflection',
-          'event',
+          'quote',
+          'passage',
+          'practice',
+          'prompt',
+          'concept',
+          'author',
           'done',
-          'khatm',
         ]),
       )
       .map(const CardTypeConverter())();
@@ -114,35 +97,6 @@ class CardEvents extends Table {
   IntColumn get value => integer().nullable()();
   BoolColumn get correct => boolean().nullable()();
   IntColumn get ts => integer().map(const UtcMillisConverter())();
-}
-
-/// Precitane versy (docs/02 D6), udrziava `CardEventDao` pri `seen`.
-@DataClassName('AyahReadRow')
-class AyahReads extends Table {
-  @override
-  String get tableName => 'ayah_read';
-
-  IntColumn get ayahId => integer()();
-  IntColumn get firstReadAt => integer().map(const UtcMillisConverter())();
-  IntColumn get readCount => integer().withDefault(const Constant(1))();
-
-  @override
-  Set<Column<Object>> get primaryKey => {ayahId};
-}
-
-/// Dokoncenia Koranu (docs/02 D7). `n` od 1.
-@DataClassName('KhatmLogRow')
-class KhatmLogs extends Table {
-  @override
-  String get tableName => 'khatm_log';
-
-  IntColumn get n => integer()();
-  IntColumn get startedAt => integer().map(const UtcMillisConverter())();
-  IntColumn get completedAt =>
-      integer().map(const UtcMillisConverter()).nullable()();
-
-  @override
-  Set<Column<Object>> get primaryKey => {n};
 }
 
 @DataClassName('QuestLogRow')
@@ -164,87 +118,6 @@ class QuestLogs extends Table {
 
   @override
   Set<Column<Object>> get primaryKey => {date, slot};
-}
-
-/// SM-2 stav lemy; `stability`/`difficulty` pre FSRS vo v2 (07 ADR-06).
-@DataClassName('SrsItemRow')
-@TableIndex(name: 'srs_item_due', columns: {#due})
-class SrsItems extends Table {
-  @override
-  String get tableName => 'srs_item';
-
-  IntColumn get lemmaId => integer()();
-  TextColumn get state => text()
-      .check(state.isIn(SrsState.values.map((e) => e.wire)))
-      .map(const WireEnumConverter(SrsState.values))();
-  RealColumn get easeFactor => real().withDefault(const Constant(2.5))();
-  IntColumn get intervalDays => integer().withDefault(const Constant(0))();
-  IntColumn get due => integer().map(const UtcMillisConverter())();
-  IntColumn get reps => integer().withDefault(const Constant(0))();
-  IntColumn get lapses => integer().withDefault(const Constant(0))();
-  IntColumn get lastReview =>
-      integer().map(const UtcMillisConverter()).nullable()();
-  IntColumn get addedAt => integer().map(const UtcMillisConverter())();
-  TextColumn get source => text()
-      .check(source.isIn(SrsSource.values.map((e) => e.wire)))
-      .map(const WireEnumConverter(SrsSource.values))();
-  RealColumn get stability => real().nullable()();
-  RealColumn get difficulty => real().nullable()();
-
-  @override
-  Set<Column<Object>> get primaryKey => {lemmaId};
-}
-
-/// Historia opakovani (07 ADR-06 Z2), podklad pre FSRS.
-@DataClassName('SrsReviewRow')
-@TableIndex(name: 'srs_review_lemma', columns: {#lemmaId})
-class SrsReviews extends Table {
-  @override
-  String get tableName => 'srs_review';
-
-  IntColumn get id => integer().autoIncrement()();
-  IntColumn get lemmaId => integer()();
-  IntColumn get ts => integer().map(const UtcMillisConverter())();
-  IntColumn get grade => integer()();
-  IntColumn get elapsedDays => integer()();
-  IntColumn get scheduledDays => integer()();
-  TextColumn get stateBefore => text()
-      .check(stateBefore.isIn(SrsState.values.map((e) => e.wire)))
-      .map(const WireEnumConverter(SrsState.values))();
-}
-
-@DataClassName('PrayerLogRow')
-class PrayerLogs extends Table {
-  @override
-  String get tableName => 'prayer_log';
-
-  TextColumn get date => text().map(const LocalDateConverter())();
-  TextColumn get prayer => text()
-      .check(prayer.isIn(PrayerKind.values.map((e) => e.wire)))
-      .map(const WireEnumConverter(PrayerKind.values))();
-  TextColumn get status => text()
-      .check(status.isIn(PrayerStatus.values.map((e) => e.wire)))
-      .map(const WireEnumConverter(PrayerStatus.values))();
-  IntColumn get ts => integer().map(const UtcMillisConverter())();
-
-  @override
-  Set<Column<Object>> get primaryKey => {date, prayer};
-}
-
-/// v1 len zapis z act questu (docs/02 D18).
-@DataClassName('FastLogRow')
-class FastLogs extends Table {
-  @override
-  String get tableName => 'fast_log';
-
-  TextColumn get date => text().map(const LocalDateConverter())();
-  TextColumn get type => text()
-      .check(type.isIn(FastType.values.map((e) => e.wire)))
-      .map(const WireEnumConverter(FastType.values))();
-  TextColumn get status => text()();
-
-  @override
-  Set<Column<Object>> get primaryKey => {date};
 }
 
 /// Historia dni pre streak a kalendar (docs/02 D8). `sources` = JSON pole.
@@ -293,7 +166,6 @@ class BlockedApps extends Table {
   TextColumn get label => text().nullable()();
   IntColumn get cardsRequired => integer().withDefault(const Constant(3))();
   IntColumn get unlockMinutes => integer().withDefault(const Constant(10))();
-  BoolColumn get prayerLock => boolean().withDefault(const Constant(false))();
   BoolColumn get enabled => boolean().withDefault(const Constant(true))();
   IntColumn get createdAt => integer().map(const UtcMillisConverter())();
 }

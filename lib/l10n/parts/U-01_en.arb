@@ -1,54 +1,75 @@
 {
   "@@locale": "en",
   "skLoading": "Loading",
-  "@skLoading": {"description": "Screen reader label of a loading indicator (SkLoadingState)."},
+  "@skLoading": {
+    "description": "Screen reader label of a loading indicator (SkLoadingState)."
+  },
   "skStillLoading": "Still loading…",
-  "@skStillLoading": {"description": "Shown when loading takes longer than expected."},
+  "@skStillLoading": {
+    "description": "Shown when loading takes longer than expected."
+  },
   "skTryAgain": "Try again",
-  "@skTryAgain": {"description": "Retry button in error states."},
+  "@skTryAgain": {
+    "description": "Retry button in error states."
+  },
   "skDismiss": "Dismiss",
-  "@skDismiss": {"description": "Closes a banner or hint."},
+  "@skDismiss": {
+    "description": "Closes a banner or hint."
+  },
   "skUndo": "Undo",
-  "@skUndo": {"description": "Snackbar action that reverts the last action."},
+  "@skUndo": {
+    "description": "Snackbar action that reverts the last action."
+  },
   "skCancel": "Cancel",
-  "@skCancel": {"description": "Cancels a dialog or sheet."},
+  "@skCancel": {
+    "description": "Cancels a dialog or sheet."
+  },
   "skDone": "Done",
-  "@skDone": {"description": "Status of a completed quest or item."},
+  "@skDone": {
+    "description": "Status of a completed quest or item."
+  },
   "skSkippedForToday": "Skipped for today",
-  "@skSkippedForToday": {"description": "Status of a quest the user skipped today."},
+  "@skSkippedForToday": {
+    "description": "Status of a quest the user skipped today."
+  },
   "skIDidIt": "I did it",
-  "@skIDidIt": {"description": "Button that marks a quest as completed."},
-  "skNow": "Now",
-  "@skNow": {"description": "Label of the current prayer time row."},
+  "@skIDidIt": {
+    "description": "Button that marks a quest as completed."
+  },
   "skFreeReading": "Free reading",
-  "@skFreeReading": {"description": "Label of reading outside the daily plan."},
+  "@skFreeReading": {
+    "description": "Label of reading outside the daily plan."
+  },
   "skDailyCards": "Daily cards",
-  "@skDailyCards": {"description": "Name of the daily card set in progress components."},
+  "@skDailyCards": {
+    "description": "Name of the daily card set in progress components."
+  },
   "skScrollForMore": "Scroll for more",
-  "@skScrollForMore": {"description": "Hint that more content is below."},
-  "skNotificationsOff": "Notifications off",
-  "@skNotificationsOff": {"description": "Indicator that notifications for a prayer are turned off."},
-  "skEstimated": "Estimated",
-  "@skEstimated": {"description": "Marks a time that is calculated, not confirmed."},
+  "@skScrollForMore": {
+    "description": "Hint that more content is below."
+  },
   "skHoldToConfirm": "Press and hold to confirm",
-  "@skHoldToConfirm": {"description": "Hint of a press-and-hold confirmation button."},
+  "@skHoldToConfirm": {
+    "description": "Hint of a press-and-hold confirmation button."
+  },
   "skContentUnavailableTitle": "This text can’t be shown",
-  "@skContentUnavailableTitle": {"description": "Title shown when content failed its integrity check."},
+  "@skContentUnavailableTitle": {
+    "description": "Title shown when content failed its integrity check."
+  },
   "skContentUnavailableBody": "Prosoche couldn’t verify this content. Please try again later.",
-  "@skContentUnavailableBody": {"description": "Body shown when content failed its integrity check."},
+  "@skContentUnavailableBody": {
+    "description": "Body shown when content failed its integrity check."
+  },
   "skProgressOf": "{n} of {total}",
   "@skProgressOf": {
     "description": "Progress such as '5 of 12'.",
-    "placeholders": {"n": {"type": "int"}, "total": {"type": "int"}}
-  },
-  "skPrayerStatusUnlogged": "Not logged",
-  "@skPrayerStatusUnlogged": {"description": "Prayer log status: nothing recorded yet."},
-  "skPrayerStatusOnTime": "On time",
-  "@skPrayerStatusOnTime": {"description": "Prayer log status: on time."},
-  "skPrayerStatusLate": "Late",
-  "@skPrayerStatusLate": {"description": "Prayer log status: late."},
-  "skPrayerStatusMissed": "Missed",
-  "@skPrayerStatusMissed": {"description": "Prayer log status: missed."},
-  "skPrayerStatusQada": "Made up",
-  "@skPrayerStatusQada": {"description": "Prayer log status: made up later."}
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

@@ -14,8 +14,8 @@ class ScaffoldWithNavBar extends StatelessWidget {
     final l10n = context.l10n;
     final labels = [
       l10n.tabToday,
-      l10n.tabQuran,
-      l10n.tabPrayer,
+      l10n.tabLibrary,
+      l10n.tabPractice,
       l10n.tabJourney,
     ];
     return Scaffold(

@@ -16,7 +16,7 @@ class ProsocheColors extends ThemeExtension<ProsocheColors> {
     required this.textSecondary,
     required this.textTertiary,
     required this.textDisabled,
-    required this.arabic,
+    required this.lead,
     required this.primary,
     required this.onPrimary,
     required this.primaryContainer,
@@ -48,7 +48,7 @@ class ProsocheColors extends ThemeExtension<ProsocheColors> {
     textSecondary: Color(0xFF4E5A5E),
     textTertiary: Color(0xFF616B68),
     textDisabled: Color(0xFF9AA09C),
-    arabic: Color(0xFF14201F),
+    lead: Color(0xFF14201F),
     primary: Color(0xFF1F5E55),
     onPrimary: Color(0xFFFFFFFF),
     primaryContainer: Color(0xFFD5E8E2),
@@ -80,7 +80,7 @@ class ProsocheColors extends ThemeExtension<ProsocheColors> {
     textSecondary: Color(0xFFB5BDB8),
     textTertiary: Color(0xFF8E9893),
     textDisabled: Color(0xFF55605C),
-    arabic: Color(0xFFF1EDE3),
+    lead: Color(0xFFF1EDE3),
     primary: Color(0xFF7CC4B4),
     onPrimary: Color(0xFF08221E),
     primaryContainer: Color(0xFF1F3F3A),
@@ -125,8 +125,8 @@ class ProsocheColors extends ThemeExtension<ProsocheColors> {
   /// Disabled (WCAG vynimka).
   final Color textDisabled;
 
-  /// Arabsky text Koranu.
-  final Color arabic;
+  /// Hlavny text karty (citat).
+  final Color lead;
 
   /// Primarne akcie, aktivne stavy.
   final Color primary;
@@ -215,7 +215,7 @@ class ProsocheColors extends ThemeExtension<ProsocheColors> {
     'textSecondary': textSecondary,
     'textTertiary': textTertiary,
     'textDisabled': textDisabled,
-    'arabic': arabic,
+    'lead': lead,
     'primary': primary,
     'onPrimary': onPrimary,
     'primaryContainer': primaryContainer,
@@ -249,7 +249,7 @@ class ProsocheColors extends ThemeExtension<ProsocheColors> {
       other.textSecondary == textSecondary &&
       other.textTertiary == textTertiary &&
       other.textDisabled == textDisabled &&
-      other.arabic == arabic &&
+      other.lead == lead &&
       other.primary == primary &&
       other.onPrimary == onPrimary &&
       other.primaryContainer == primaryContainer &&
@@ -281,7 +281,7 @@ class ProsocheColors extends ThemeExtension<ProsocheColors> {
     textSecondary,
     textTertiary,
     textDisabled,
-    arabic,
+    lead,
     primary,
     onPrimary,
     primaryContainer,
@@ -314,7 +314,7 @@ class ProsocheColors extends ThemeExtension<ProsocheColors> {
     Color? textSecondary,
     Color? textTertiary,
     Color? textDisabled,
-    Color? arabic,
+    Color? lead,
     Color? primary,
     Color? onPrimary,
     Color? primaryContainer,
@@ -344,7 +344,7 @@ class ProsocheColors extends ThemeExtension<ProsocheColors> {
     textSecondary: textSecondary ?? this.textSecondary,
     textTertiary: textTertiary ?? this.textTertiary,
     textDisabled: textDisabled ?? this.textDisabled,
-    arabic: arabic ?? this.arabic,
+    lead: lead ?? this.lead,
     primary: primary ?? this.primary,
     onPrimary: onPrimary ?? this.onPrimary,
     primaryContainer: primaryContainer ?? this.primaryContainer,
@@ -382,7 +382,7 @@ class ProsocheColors extends ThemeExtension<ProsocheColors> {
       textSecondary: Color.lerp(textSecondary, other.textSecondary, t)!,
       textTertiary: Color.lerp(textTertiary, other.textTertiary, t)!,
       textDisabled: Color.lerp(textDisabled, other.textDisabled, t)!,
-      arabic: Color.lerp(arabic, other.arabic, t)!,
+      lead: Color.lerp(lead, other.lead, t)!,
       primary: Color.lerp(primary, other.primary, t)!,
       onPrimary: Color.lerp(onPrimary, other.onPrimary, t)!,
       primaryContainer: Color.lerp(

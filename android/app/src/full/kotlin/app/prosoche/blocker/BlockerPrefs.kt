@@ -60,28 +60,11 @@ class BlockerPrefs(private val prefs: SharedPreferences) {
             .apply()
     }
 
-    /** Okna modlitieb (epoch ms zaciatkov, trvanie v minutach). */
-    fun prayerLocks(): Pair<List<Long>, Int> {
-        val starts = prefs.getString(KEY_PRAYER_STARTS, "")!!
-            .split(',')
-            .mapNotNull { it.toLongOrNull() }
-        return starts to prefs.getInt(KEY_PRAYER_MINUTES, 0)
-    }
-
-    fun setPrayerLocks(startEpochMs: List<Long>, durationMinutes: Int) {
-        prefs.edit()
-            .putString(KEY_PRAYER_STARTS, startEpochMs.joinToString(","))
-            .putInt(KEY_PRAYER_MINUTES, durationMinutes)
-            .apply()
-    }
-
     companion object {
         const val PREFS = "prosoche_blocker"
         private const val KEY_ENABLED = "enabled"
         private const val KEY_REFS = "blocked_refs"
         private const val KEY_TARGETS = "targets_json"
-        private const val KEY_PRAYER_STARTS = "prayer_starts"
-        private const val KEY_PRAYER_MINUTES = "prayer_minutes"
     }
 }
 

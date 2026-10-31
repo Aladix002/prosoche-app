@@ -7,7 +7,6 @@ import 'package:prosoche/data/blocker/blocker_gateway_provider.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/onboarding/onboarding_guard.dart';
-import 'package:prosoche/features/quran/quran_providers.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // Providery obrazoviek nastaveni (docs/02 A10, A11). Vlastnik: F-07.
@@ -121,21 +120,7 @@ final class ContentSource {
 
 /// Poradie skupin na obrazovke Zdroje (docs/02 A11). Nezname druhy idu na
 /// koniec v abecednom poradi.
-const sourceKindOrder = [
-  'quran_text',
-  'quran_text_search',
-  'quran_metadata',
-  'translation',
-  'word',
-  'hadith',
-  'dua',
-  'name',
-  'reflection',
-  'curated',
-  'audio',
-  'city',
-  'font',
-];
+const sourceKindOrder = ['text', 'translation', 'curated', 'font'];
 
 /// Zdroje zoskupene podla `kind` (preklady aj podla jazyka).
 List<({String kind, List<ContentSource> sources})> groupSources(
@@ -216,14 +201,6 @@ class SettingsActions {
   SettingsActions(this.ref);
 
   final Ref ref;
-
-  /// Zvoli preklad Koranu pre [lang] (A10.5). Karty uz nacitane vo feede
-  /// (`cardContentProvider`) a zvoleny zdroj sleduju `translation.{lang}`
-  /// a nacitaju sa znova samy (sada uklada `card_id`, nie text).
-  Future<void> selectTranslation(String lang, TranslationSource source) async {
-    await ref.read(quranRepositoryProvider).selectTranslation(lang, source);
-    ref.invalidate(translationSourcesProvider);
-  }
 
   /// "Delete all my data" (A10.9): zmaze user.db (vratane `settings`, teda
   /// aj `onboarding.completed`), vypne branu, zavola

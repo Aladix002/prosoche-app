@@ -549,11 +549,6 @@ interface BlockerHostApi {
   fun clearUnlocks()
   /** `Build.MANUFACTURER` malymi pismenami (navod k baterii v O6). */
   fun deviceManufacturer(): String
-  /**
-   * Zatial len ulozi okna modlitieb (prayer lock je pripomienka v UI
-   * brany, nie zamknutie, TECHNICKY_PLAN 9.2 bod 7).
-   */
-  fun schedulePrayerLocks(startEpochMs: List<Long>, durationMinutes: Long)
 
   companion object {
     /** The codec used by BlockerHostApi. */
@@ -777,25 +772,6 @@ interface BlockerHostApi {
           channel.setMessageHandler { _, reply ->
             val wrapped: List<Any?> = try {
               listOf(api.deviceManufacturer())
-            } catch (exception: Throwable) {
-              BlockerApiPigeonUtils.wrapError(exception)
-            }
-            reply.reply(wrapped)
-          }
-        } else {
-          channel.setMessageHandler(null)
-        }
-      }
-      run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.prosoche.BlockerHostApi.schedulePrayerLocks$separatedMessageChannelSuffix", codec)
-        if (api != null) {
-          channel.setMessageHandler { message, reply ->
-            val args = message as List<Any?>
-            val startEpochMsArg = args[0] as List<Long>
-            val durationMinutesArg = args[1] as Long
-            val wrapped: List<Any?> = try {
-              api.schedulePrayerLocks(startEpochMsArg, durationMinutesArg)
-              listOf(null)
             } catch (exception: Throwable) {
               BlockerApiPigeonUtils.wrapError(exception)
             }

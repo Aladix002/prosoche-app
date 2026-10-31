@@ -6,8 +6,8 @@
   "created_at": "2026-01-01T00:00:00Z",
   "kid": "test-content-a",
   "db": {
-    "url": "https://cdn.jsdelivr.net/gh/example/prosoche-content@cdn-v2026010101/content.db.gz",
-    "fallback_url": "https://github.com/example/prosoche-content/releases/download/content-v2026010101/content.db.gz",
+    "url": "https://cdn.jsdelivr.net/gh/example/sakina-content@cdn-v2026010101/content.db.gz",
+    "fallback_url": "https://github.com/example/sakina-content/releases/download/content-v2026010101/content.db.gz",
     "compression": "gzip",
     "sha256": "c3954c45345fa62e3b18ab1ebd1e252f52b3e5779d50d0e3e55f737071aaf27b",
     "size": 416,

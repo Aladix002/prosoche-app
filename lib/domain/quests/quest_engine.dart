@@ -12,13 +12,10 @@ final class QuestSelectionInput {
     required this.seed,
     required this.lang,
     required List<QuestTemplate> templates,
-    List<ActiveEvent> activeEvents = const [],
     List<QuestLogEntry> history = const [],
     this.excused = false,
-    this.wordsEnabled = true,
-    this.setVerses,
+    this.setCards,
   }) : templates = List.unmodifiable(templates),
-       activeEvents = List.unmodifiable(activeEvents),
        history = List.unmodifiable(history);
 
   /// `activeSetDate` (docs/02 0.1).
@@ -33,9 +30,6 @@ final class QuestSelectionInput {
   /// Schvalene sablony zo vsetkych slotov.
   final List<QuestTemplate> templates;
 
-  /// Aktivne eventy dna (E-01 EventResolver).
-  final List<ActiveEvent> activeEvents;
-
   /// `quest_log`; zaznamy s datumom >= [date] sa ignoruju, aby bol vyber
   /// pre den vzdy rovnaky.
   final List<QuestLogEntry> history;
@@ -43,14 +37,10 @@ final class QuestSelectionInput {
   /// Zapnute "ospravedlnene dni" (docs/03 6.5): len `excused_ok` sablony.
   final bool excused;
 
-  /// `words_enabled`; ked je false, nevyberu sa sablony nad kartami
-  /// `word`/`quiz`.
-  final bool wordsEnabled;
-
-  /// Pocet versov (ayah kariet) v dennej sade dna; null = sada este nie
-  /// je. Genericky "Read {count} verses" ma ciel najviac tolko, aby sa dal
+  /// Pocet citatov a uryvkov v dennej sade dna; null = sada este nie je.
+  /// Genericky "Read {count} cards" ma ciel najviac tolko, aby sa dal
   /// splnit samotnou sadou ([GenericQuest.countFor]).
-  final int? setVerses;
+  final int? setCards;
 }
 
 /// Vyber dennych questov a ich progres (plan 7.2, docs/03 3.3, 4.2).
@@ -65,11 +55,10 @@ final class QuestEngine {
 
   /// Questy dna v poradi `read`, `learn`, `act`.
   ///
-  /// `act` chyba, ked ziadna vhodna sablona nema text v jazyku
-  /// [QuestSelectionInput.lang] (den je splneny aj s 2 questami). `read`
-  /// a `learn` vtedy dostanu [GenericQuest].
+  /// Slot bez vhodnej sablony s textom v jazyku [QuestSelectionInput.lang]
+  /// dostane [GenericQuest].
   List<DailyQuest> select(QuestSelectionInput input) => [
-    for (final slot in QuestSlot.values) ?_selectSlot(input, slot),
+    for (final slot in QuestSlot.values) _selectSlot(input, slot),
   ];
 
   /// Progres auto questu z [events]; null pre `act` (self report, stav je
@@ -82,7 +71,7 @@ final class QuestEngine {
 
   /// Splneny [GenericQuest] drzi ciel z casu splnenia (P-01).
   ///
-  /// Ciel generickeho questu sa odvodzuje zo stavu dna (napr. `setVerses`),
+  /// Ciel generickeho questu sa odvodzuje zo stavu dna (napr. `setCards`),
   /// ktory sa moze zmenit aj po splneni (sada vznikla az neskor). Po
   /// splneni ([doneAt]) plati pocet roznych kariet splnajucich podmienku do
   /// [doneAt] vratane - presne ten, pri ktorom quest dosiahol ciel. Bez
@@ -110,44 +99,20 @@ final class QuestEngine {
         reached < generic.defaultCount ? reached : generic.defaultCount,
       ),
       params: quest.params,
-      eventId: quest.eventId,
     );
   }
 
-  DailyQuest? _selectSlot(QuestSelectionInput input, QuestSlot slot) {
+  DailyQuest _selectSlot(QuestSelectionInput input, QuestSlot slot) {
     final byId = {
       for (final t in input.templates)
         if (t.slot == slot) t.id: t,
     };
     final prng = _Prng(_fnv([input.seed, slot.index + 1]));
 
-    // 1. Override z eventu: najvyssia priorita, pri zhode id abecedne.
-    final events = [...input.activeEvents]
-      ..sort((a, b) {
-        final p = b.priority.compareTo(a.priority);
-        return p != 0 ? p : a.id.compareTo(b.id);
-      });
-    for (final event in events) {
-      final templateId = event.effect.quests[slot];
-      if (templateId == null) continue;
-      final template = byId[templateId];
-      // Neznama sablona alebo nevhodna pocas ospravedlnenych dni:
-      // pokracuje sa beznym vyberom (docs/03 5.2, posledny riadok).
-      if (template == null || !_allowed(input, template)) break;
-      if (!template.hasText(input.lang)) return _generic(input, slot);
-      return _build(input, template, prng, QuestOrigin.eventOverride, event.id);
-    }
-
-    // 2. Pool: tvrde filtre (jazyk, season, excused, slovicka).
-    final active = {for (final e in input.activeEvents) e.id};
+    // 1. Pool: tvrde filtre (jazyk, excused).
     final candidates =
         byId.values
-            .where(
-              (t) =>
-                  t.hasText(input.lang) &&
-                  _allowed(input, t) &&
-                  (t.season.isEmpty || t.season.any(active.contains)),
-            )
+            .where((t) => t.hasText(input.lang) && _allowed(input, t))
             .toList()
           ..sort((a, b) => a.id.compareTo(b.id));
     if (candidates.isEmpty) return _generic(input, slot);
@@ -158,14 +123,14 @@ final class QuestEngine {
         if (_cooldownOver(t, lastUsed[t.id], input.date)) t,
     ];
     if (eligible.isEmpty) {
-      // 3. Fallback: najdavnejsie pouzita sablona (docs/03 3.3 bod 5).
+      // 2. Fallback: najdavnejsie pouzita sablona (docs/03 3.3 bod 5).
       final oldest = candidates.reduce(
         (a, b) => lastUsed[b.id]!.isBefore(lastUsed[a.id]!) ? b : a,
       );
-      return _build(input, oldest, prng, QuestOrigin.leastRecentlyUsed, null);
+      return _build(input, oldest, prng, QuestOrigin.leastRecentlyUsed);
     }
 
-    // 4. Vazeny nahodny vyber, dlhsie nepouzite ma vyssiu vahu (LRU).
+    // 3. Vazeny nahodny vyber, dlhsie nepouzite ma vyssiu vahu (LRU).
     final weights = [
       for (final t in eligible) t.weight * _lruFactor(t, lastUsed[t.id], input),
     ];
@@ -179,19 +144,11 @@ final class QuestEngine {
         break;
       }
     }
-    return _build(input, picked, prng, QuestOrigin.weighted, null);
+    return _build(input, picked, prng, QuestOrigin.weighted);
   }
 
-  bool _allowed(QuestSelectionInput input, QuestTemplate t) {
-    if (input.excused && !t.excusedOk) return false;
-    if (!input.wordsEnabled) {
-      final types = t.rule?.types ?? const <CardType>{};
-      if (types.contains(CardType.word) || types.contains(CardType.quiz)) {
-        return false;
-      }
-    }
-    return true;
-  }
+  bool _allowed(QuestSelectionInput input, QuestTemplate t) =>
+      !input.excused || t.excusedOk;
 
   Map<String, LocalDate> _lastUsed(QuestSelectionInput input) {
     final last = <String, LocalDate>{};
@@ -224,7 +181,6 @@ final class QuestEngine {
     QuestTemplate t,
     _Prng prng,
     QuestOrigin origin,
-    String? eventId,
   ) {
     final keys = t.params.keys.toList()..sort();
     return DailyQuest(
@@ -237,24 +193,21 @@ final class QuestEngine {
         for (final k in keys)
           k: t.params[k]![prng.nextInt(t.params[k]!.length)],
       },
-      eventId: eventId,
     );
   }
 
-  DailyQuest? _generic(QuestSelectionInput input, QuestSlot slot) {
+  DailyQuest _generic(QuestSelectionInput input, QuestSlot slot) {
     final generic = switch (slot) {
-      QuestSlot.read => GenericQuest.readVerses,
-      QuestSlot.learn =>
-        input.wordsEnabled ? GenericQuest.learnWords : GenericQuest.learnCards,
-      QuestSlot.act => null,
+      QuestSlot.read => GenericQuest.readCards,
+      QuestSlot.learn => GenericQuest.learnIdea,
+      QuestSlot.act => GenericQuest.actPractice,
     };
-    if (generic == null) return null;
     return DailyQuest(
       date: input.date,
       slot: slot,
       questId: generic.id,
       origin: QuestOrigin.generic,
-      rule: generic.rule(generic.countFor(setVerses: input.setVerses)),
+      rule: generic.rule(generic.countFor(setCards: input.setCards)),
     );
   }
 }

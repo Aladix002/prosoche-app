@@ -13,18 +13,10 @@ part 'feature_flags.g.dart';
 /// ([forEdition]), lebo `lite` nema nativny blocker ani povolenia.
 @immutable
 final class FeatureFlags {
-  const FeatureFlags({
-    this.gate = false,
-    this.words = false,
-    this.audio = false,
-    this.ramadanLight = false,
-  });
+  const FeatureFlags({this.gate = false});
 
   const FeatureFlags._environment()
-    : gate = const bool.fromEnvironment('FEATURE_GATE'),
-      words = const bool.fromEnvironment('FEATURE_WORDS'),
-      audio = const bool.fromEnvironment('FEATURE_AUDIO'),
-      ramadanLight = const bool.fromEnvironment('FEATURE_RAMADAN_LIGHT');
+    : gate = const bool.fromEnvironment('FEATURE_GATE');
 
   /// Hodnoty z `--dart-define`.
   static const fromEnvironment = FeatureFlags._environment();
@@ -33,56 +25,25 @@ final class FeatureFlags {
   static const none = FeatureFlags();
 
   /// Vsetko zapnute (testy, galeria).
-  static const all = FeatureFlags(
-    gate: true,
-    words: true,
-    audio: true,
-    ramadanLight: true,
-  );
+  static const all = FeatureFlags(gate: true);
 
   /// `FEATURE_GATE`: brana pred appkami (`/gate`, nastavenia blokovania).
   final bool gate;
-
-  /// `FEATURE_WORDS`: slovicka a SRS (`/words/**`, sloty 5 a 8).
-  final bool words;
-
-  /// `FEATURE_AUDIO`: prehravanie recitacie.
-  final bool audio;
-
-  /// `FEATURE_RAMADAN_LIGHT`: Ramadan light (F-08).
-  final bool ramadanLight;
 
   /// Flagy upravene pre ediciu: v `lite` je brana vzdy vypnuta.
   FeatureFlags forEdition(Edition edition) =>
       edition.isFull ? this : copyWith(gate: false);
 
-  FeatureFlags copyWith({
-    bool? gate,
-    bool? words,
-    bool? audio,
-    bool? ramadanLight,
-  }) => FeatureFlags(
-    gate: gate ?? this.gate,
-    words: words ?? this.words,
-    audio: audio ?? this.audio,
-    ramadanLight: ramadanLight ?? this.ramadanLight,
-  );
+  FeatureFlags copyWith({bool? gate}) => FeatureFlags(gate: gate ?? this.gate);
 
   @override
-  bool operator ==(Object other) =>
-      other is FeatureFlags &&
-      other.gate == gate &&
-      other.words == words &&
-      other.audio == audio &&
-      other.ramadanLight == ramadanLight;
+  bool operator ==(Object other) => other is FeatureFlags && other.gate == gate;
 
   @override
-  int get hashCode => Object.hash(gate, words, audio, ramadanLight);
+  int get hashCode => gate.hashCode;
 
   @override
-  String toString() =>
-      'FeatureFlags(gate: $gate, words: $words, audio: $audio, '
-      'ramadanLight: $ramadanLight)';
+  String toString() => 'FeatureFlags(gate: $gate)';
 }
 
 /// Flagy platne pre beziacu appku. V testoch prepisat cez

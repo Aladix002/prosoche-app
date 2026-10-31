@@ -8,47 +8,42 @@ import 'package:prosoche/ui/i18n/i18n.dart';
 import 'package:prosoche/ui/ui.dart';
 import 'package:share_plus/share_plus.dart';
 
-/// Co sa zdiela z karty (docs/02 B0.7): plny arabsky text, preklad,
-/// referencia (B0.4) a atribucia zdroja. Ziadne osobne udaje.
+/// Co sa zdiela z karty (docs/02 B0.7): cely text, referencia (B0.4)
+/// a atribucia zdroja. Ziadne osobne udaje.
 @immutable
 final class CardShareData {
   const CardShareData({
     required this.reference,
-    this.arabic,
-    this.arabicIsQuran = false,
-    this.translation,
-    this.translationLang,
+    this.text,
+    this.textLang,
     this.attribution,
     this.source,
   });
 
-  /// Arabsky text (Uthmani pri verse); null = karta bez arabciny.
-  final String? arabic;
-  final bool arabicIsQuran;
-  final String? translation;
+  /// Text karty (citat, uryvok).
+  final String? text;
 
-  /// Jazyk prekladu (smer textu na obrazku).
-  final String? translationLang;
+  /// Jazyk textu (smer textu na obrazku).
+  final String? textLang;
 
-  /// Napr. "Al-Baqarah 2:255" alebo "Sahih al-Bukhari 1 · Grade: Sahih".
+  /// Napr. "Meditations 2.1".
   final String reference;
 
-  /// Zdroj prekladu, napr. "Translation: Saheeh International".
+  /// Autor alebo prekladatel, napr. "Marcus Aurelius".
   final String? attribution;
 
-  /// Atribucia zdroja s verziou (hadis: "Source: HadeethEnc.com ...,
-  /// version ..."), docs/09.
+  /// Atribucia zdroja s verziou (docs/09).
   final String? source;
 }
 
 /// "Share as text" (docs/02 B0.7):
-/// `{arabsky}\n\n{preklad}\n\n- {referencia} ({atribucia})\n{zdroj}\nvia Prosoche`.
+/// `{text}\n\n- {referencia} ({atribucia})\n{zdroj}\nvia Prosoche`.
 String buildShareText(CardShareData data, {required String via}) {
   final ref = data.attribution == null
       ? '- ${data.reference}'
       : '- ${data.reference} (${data.attribution})';
   final footer = [ref, ?data.source, via].join('\n');
-  return [?data.arabic, ?data.translation, footer].join('\n\n');
+  return [?data.text, footer].join('\n\n');
 }
 
 /// Zdielanie cez systemovy share sheet. V testoch sa prepise fake
@@ -111,10 +106,10 @@ abstract final class ShareImageSize {
   static const pixelRatio = 3.0;
 }
 
-/// Obsah obrazka: cely arabsky text (nikdy neorezany), preklad,
-/// referencia, atribucia a znacka v paticke mimo textu.
+/// Obsah obrazka: cely text (nikdy neorezany), referencia, atribucia
+/// a znacka v paticke mimo textu.
 ///
-/// D-05: list papiera (`surface`) s ramcekom na pozadi s geometrickym
+/// D-05: list papiera (`surface`) s ramcekom na pozadi s neutralnym
 /// vzorom. Vzor je len v okraji okolo listu, nikdy pod textom; atribucia
 /// zdroja ostava citatelna (`textSecondary`).
 class CardShareImage extends StatelessWidget {
@@ -127,8 +122,7 @@ class CardShareImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final sk = context.sk;
     final c = sk.colors;
-    final arabic = data.arabic;
-    final translation = data.translation;
+    final text = data.text;
     final meta = sk.text.bodySmall!.copyWith(color: c.textSecondary);
     return ColoredBox(
       color: c.bg,
@@ -195,13 +189,7 @@ class CardShareImage extends StatelessWidget {
                                   color: c.accentText,
                                 ),
                               ),
-                              if (arabic != null && data.arabicIsQuran)
-                                SkArabicText.quran([
-                                  SkArabicSegment(arabic),
-                                ], textSimple: arabic)
-                              else if (arabic != null)
-                                SkArabicText.text(arabic),
-                              if (translation != null) ...[
+                              if (text != null) ...[
                                 const Padding(
                                   padding: EdgeInsetsDirectional.symmetric(
                                     vertical: SkSpace.space4,
@@ -209,15 +197,12 @@ class CardShareImage extends StatelessWidget {
                                   child: SkOrnamentDivider(width: 80),
                                 ),
                                 Directionality(
-                                  textDirection: data.translationLang == null
+                                  textDirection: data.textLang == null
                                       ? Directionality.of(context)
                                       : textDirectionForLanguage(
-                                          data.translationLang!,
+                                          data.textLang!,
                                         ),
-                                  child: Text(
-                                    translation,
-                                    style: sk.type.translation,
-                                  ),
+                                  child: Text(text, style: sk.type.reflection),
                                 ),
                               ],
                               if (data.attribution != null ||

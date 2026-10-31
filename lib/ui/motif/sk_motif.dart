@@ -3,48 +3,32 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:prosoche/ui/theme/sk_context.dart';
 
-/// Vizualny motiv znacky (D-05): jemny islamsky geometricky vzor kresleny
-/// v kode. Osemcipa hviezda (dva prekryte stvorce) v osemuholniku na
-/// mriezke 4.8.8 (osemuholniky a stvorce).
+/// Vizualny motiv znacky: zatial neutralny geometricky dekor (koso stvorce
+/// a kruhy) kresleny v kode. Vlastnu identitu (meander, stlp, oblúk,
+/// PLAN.md kap. 4) dodá D-01.
 ///
 /// Pravidla (docs/01 1.3, 2.7): len dekor (`ExcludeSemantics`), striedmo
 /// (hlavicky, onboarding, zaverecna karta, zdielany obrazok, prazdne
-/// stavy), nikdy pod arabskym textom ani prekladom, ziadne pismo ani
-/// kaligrafia, ziadne zobrazenia ludi ani zvierat.
+/// stavy), nikdy pod textom karty, ziadne pismo, ziadne zobrazenia ludi
+/// ani zvierat.
 
-/// Body osemcipej hviezdy (16 vrcholov) so stredom [c] a vonkajsim
-/// polomerom [r]; [rotation] v radianoch (0 = hrot hore).
-List<Offset> skStarPoints(Offset c, double r, {double rotation = 0}) {
-  // Dva stvorce s rovnakym opisanym polomerom: vnutorne vrcholy lezia na
-  // r * cos(45) / cos(22.5).
-  final inner = r * math.cos(math.pi / 4) / math.cos(math.pi / 8);
-  return [
-    for (var i = 0; i < 16; i++)
-      () {
-        final a = rotation - math.pi / 2 + i * math.pi / 8;
-        final rr = i.isEven ? r : inner;
-        return c + Offset(math.cos(a) * rr, math.sin(a) * rr);
-      }(),
-  ];
-}
+/// Vrcholy kosostvorca (stvorec otoceny o 45 stupnov) so stredom [c]
+/// a polomerom [r]; [rotation] v radianoch (0 = hrot hore).
+List<Offset> skDiamondPoints(Offset c, double r, {double rotation = 0}) => [
+  for (var i = 0; i < 4; i++)
+    c +
+        Offset(
+          math.cos(rotation - math.pi / 2 + i * math.pi / 2) * r,
+          math.sin(rotation - math.pi / 2 + i * math.pi / 2) * r,
+        ),
+];
 
-/// Uzavrety obrys osemcipej hviezdy.
-Path skStarPath(Offset c, double r, {double rotation = 0}) =>
-    Path()..addPolygon(skStarPoints(c, r, rotation: rotation), true);
+/// Uzavrety obrys kosostvorca.
+Path skDiamondPath(Offset c, double r, {double rotation = 0}) =>
+    Path()..addPolygon(skDiamondPoints(c, r, rotation: rotation), true);
 
-/// Pravidelny n-uholnik (osemuholnik pre mriezku 4.8.8).
-Path _polygon(Offset c, double r, int n, double rotation) =>
-    Path()..addPolygon([
-      for (var i = 0; i < n; i++)
-        c +
-            Offset(
-              math.cos(rotation + i * 2 * math.pi / n) * r,
-              math.sin(rotation + i * 2 * math.pi / n) * r,
-            ),
-    ], true);
-
-/// Opakujuci sa geometricky vzor: v kazdej bunke osemuholnik s vpisanou
-/// osemcipou hviezdou, medzi nimi stvorce otocene o 45 stupnov.
+/// Opakujuci sa neutralny vzor: v kazdej bunke maly kosostvorec, medzi
+/// nimi bodky.
 class SkPatternPainter extends CustomPainter {
   const SkPatternPainter({
     required this.color,
@@ -67,8 +51,7 @@ class SkPatternPainter extends CustomPainter {
       ..strokeWidth = strokeWidth
       ..strokeJoin = StrokeJoin.miter
       ..isAntiAlias = true;
-    // Osemuholnik vpisany do bunky: apotema = tile / 2.
-    final octR = tile / 2 / math.cos(math.pi / 8);
+    final dot = Paint()..color = color;
     final cols = (size.width / tile).ceil() + 1;
     final rows = (size.height / tile).ceil() + 1;
     canvas
@@ -78,8 +61,8 @@ class SkPatternPainter extends CustomPainter {
       for (var x = 0; x <= cols; x++) {
         final c = Offset(x * tile, y * tile);
         canvas
-          ..drawPath(_polygon(c, octR, 8, math.pi / 8), paint)
-          ..drawPath(skStarPath(c, octR * 0.78, rotation: math.pi / 8), paint);
+          ..drawPath(skDiamondPath(c, tile * 0.18), paint)
+          ..drawCircle(c + Offset(tile / 2, tile / 2), strokeWidth, dot);
       }
     }
     canvas.restore();
@@ -150,7 +133,7 @@ class SkPatternField extends StatelessWidget {
   }
 }
 
-/// Medailon: kruh, osemcipa hviezda a vnutorny kruh. [progress] 0..1
+/// Medailon: kruh, kosostvorec a vnutorny kruh. [progress] 0..1
 /// postupne vykresli tahy (zaverecna karta, docs/01 2.8 `calm`).
 class SkRosettePainter extends CustomPainter {
   const SkRosettePainter({
@@ -168,7 +151,7 @@ class SkRosettePainter extends CustomPainter {
   final double progress;
   final double strokeWidth;
 
-  /// Vonkajsi kruh okolo hviezdy.
+  /// Vonkajsi kruh okolo kosostvorca.
   final bool ring;
 
   @override
@@ -184,8 +167,8 @@ class SkRosettePainter extends CustomPainter {
       ..strokeCap = StrokeCap.round;
     final paths = <Path>[
       if (ring) Path()..addOval(Rect.fromCircle(center: c, radius: r)),
-      skStarPath(c, ring ? r * 0.86 : r),
-      skStarPath(c, (ring ? r * 0.86 : r) * 0.62, rotation: math.pi / 8),
+      skDiamondPath(c, ring ? r * 0.86 : r),
+      Path()..addOval(Rect.fromCircle(center: c, radius: r * 0.42)),
     ];
     final t = progress.clamp(0.0, 1.0);
     for (final path in paths) {
@@ -316,7 +299,7 @@ class SkMotifBadge extends StatelessWidget {
   }
 }
 
-/// Oddelovac: linka - mala hviezda - linka (`goldDeco`, dekor).
+/// Oddelovac: linka - maly kosostvorec - linka (`goldDeco`, dekor).
 class SkOrnamentDivider extends StatelessWidget {
   const SkOrnamentDivider({this.width = 120, super.key});
 
@@ -357,7 +340,7 @@ class _DividerPainter extends CustomPainter {
     canvas
       ..drawLine(Offset(0, c.dy), Offset(c.dx - gap, c.dy), line)
       ..drawLine(Offset(c.dx + gap, c.dy), Offset(size.width, c.dy), line)
-      ..drawPath(skStarPath(c, r), fill)
+      ..drawPath(skDiamondPath(c, r), fill)
       ..drawCircle(Offset(c.dx - gap + 2, c.dy), 1.5, fill)
       ..drawCircle(Offset(c.dx + gap - 2, c.dy), 1.5, fill);
   }
@@ -366,7 +349,7 @@ class _DividerPainter extends CustomPainter {
   bool shouldRepaint(_DividerPainter old) => old.color != color;
 }
 
-/// Jemny ramcek plnej karty: tenka linka vnutri okraja a mala hviezda
+/// Jemny ramcek plnej karty: tenka linka vnutri okraja a maly kosostvorec
 /// uprostred hornej hrany. Kresli sa za obsahom, v odsadeni karty (nikdy
 /// nezasahuje do textu, docs/01 1.3 bod 3).
 class SkCardFramePainter extends CustomPainter {
@@ -390,7 +373,7 @@ class SkCardFramePainter extends CustomPainter {
       ..strokeWidth = 1;
     final top = Offset(rect.center.dx, rect.top);
     const r = 5.0;
-    // Linka sa pod hviezdou prerusi.
+    // Linka sa pod kosostvorcom prerusi.
     canvas
       ..save()
       ..clipPath(
@@ -404,7 +387,7 @@ class SkCardFramePainter extends CustomPainter {
         stroke,
       )
       ..restore()
-      ..drawPath(skStarPath(top, r), Paint()..color = color);
+      ..drawPath(skDiamondPath(top, r), Paint()..color = color);
   }
 
   @override

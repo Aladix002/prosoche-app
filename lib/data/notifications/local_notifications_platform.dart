@@ -114,24 +114,23 @@ final class LocalNotificationsPlatform implements NotificationPlatform {
     return ios?.isEnabled ?? false;
   }
 
-  /// Nastavenie kanala a viditelnosti (docs/01 7.5).
-  static NotificationDetails details(ScheduledNotification n) {
-    final prayer = n.channel == NotificationChannel.prayer;
-    return NotificationDetails(
-      android: AndroidNotificationDetails(
-        n.channel.name,
-        n.channelName,
-        channelDescription: n.channelDescription,
-        importance: prayer ? Importance.defaultImportance : Importance.low,
-        priority: prayer ? Priority.defaultPriority : Priority.low,
-        playSound: prayer,
-        enableVibration: prayer,
-        category: AndroidNotificationCategory.reminder,
-        visibility: n.private
-            ? NotificationVisibility.private
-            : NotificationVisibility.public,
-      ),
-      iOS: DarwinNotificationDetails(presentSound: prayer),
-    );
-  }
+  /// Nastavenie kanala a viditelnosti (docs/01 7.5). Pripomienky su
+  /// tiche (nizka dolezitost, bez zvuku a vibracie).
+  static NotificationDetails details(ScheduledNotification n) =>
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          n.channel.name,
+          n.channelName,
+          channelDescription: n.channelDescription,
+          importance: Importance.low,
+          priority: Priority.low,
+          playSound: false,
+          enableVibration: false,
+          category: AndroidNotificationCategory.reminder,
+          visibility: n.private
+              ? NotificationVisibility.private
+              : NotificationVisibility.public,
+        ),
+        iOS: const DarwinNotificationDetails(presentSound: false),
+      );
 }

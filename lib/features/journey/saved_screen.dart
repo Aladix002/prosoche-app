@@ -7,21 +7,19 @@ import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
 import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/quests/quests.dart' show CardContext;
-import 'package:prosoche/features/cards/translator_notes.dart'
-    show translationWithNotes;
 import 'package:prosoche/features/journey/card_pager.dart';
 import 'package:prosoche/features/journey/journey_providers.dart';
-import 'package:prosoche/ui/i18n/i18n.dart';
 import 'package:prosoche/ui/ui.dart';
 
 /// Filtre ulozenych kariet (A8.3); null = All.
 const List<CardType?> savedFilters = [
   null,
-  CardType.ayah,
-  CardType.hadith,
-  CardType.dua,
-  CardType.name,
-  CardType.reflection,
+  CardType.quote,
+  CardType.passage,
+  CardType.practice,
+  CardType.prompt,
+  CardType.concept,
+  CardType.author,
 ];
 
 /// Typ z `?type=` (docs/02 C2); neplatny = bez filtra.
@@ -31,7 +29,7 @@ CardType? parseSavedType(String? raw) {
 }
 
 /// Ulozene karty (docs/02 A8.3): najnovsie prve, filtre, nahlad 1-2
-/// riadky (arabcina sa v nahlade neukazuje, docs/01 3.2 `compact`), tap
+/// riadky (docs/01 3.2 `compact`), tap
 /// otvori kartu, swipe na riadku ju odoberie s Undo.
 class SavedCardsScreen extends ConsumerStatefulWidget {
   const SavedCardsScreen({this.initialType, super.key});
@@ -147,62 +145,23 @@ class _SavedCardsScreenState extends ConsumerState<SavedCardsScreen> {
 
 /// Ikona typu karty v zozname.
 IconData savedTypeIcon(CardType type) => switch (type) {
-  CardType.ayah => Icons.menu_book_outlined,
-  CardType.hadith => Icons.format_quote_outlined,
-  CardType.dua => Icons.volunteer_activism_outlined,
-  CardType.name => Icons.auto_awesome_outlined,
-  CardType.reflection => Icons.lightbulb_outline,
+  CardType.quote => Icons.format_quote_outlined,
+  CardType.passage => Icons.menu_book_outlined,
+  CardType.practice => Icons.self_improvement_outlined,
+  CardType.prompt => Icons.help_outline,
+  CardType.concept => Icons.lightbulb_outline,
+  CardType.author => Icons.person_outline,
   _ => Icons.bookmark_outline,
 };
 
-/// Titulok a nahlad ulozenej karty; texty su doslovne z content.db,
-/// arabcina sa nepouziva.
+/// Titulok a nahlad ulozenej karty; texty su doslovne z content.db.
 (String, String?) savedPreview(BuildContext context, CardContent? content) {
   final l10n = context.l10n;
-  final formats = ProsocheFormats(Localizations.localeOf(context));
   String type(CardType t) => l10n.journeyCardType(t.wire);
   return switch (content) {
-    AyahContent(:final ayah, :final surah) => (
-      l10n.cardAyahReference(
-        surah.nameTranslit,
-        formats.ayahRef(ayah.id.surah, ayah.id.ayah),
-      ),
-      ayah.translation?.text,
-    ),
-    HadithContent(:final title, :final text) => (
-      type(CardType.hadith),
-      title ?? text,
-    ),
-    DuaContent(:final title, :final text, :final translit) => (
-      title ?? type(CardType.dua),
-      text ?? translit,
-    ),
-    NameContent(:final translit, :final meaning) => (
-      translit ?? type(CardType.name),
-      meaning,
-    ),
-    ReflectionContent(:final question, :final text) => (
-      type(CardType.reflection),
-      question ?? text,
-    ),
-    _ => (type(content?.id.type ?? CardType.ayah), null),
+    QuoteContent(:final reference, :final text) => (reference, text),
+    _ => (type(content?.id.type ?? CardType.quote), null),
   };
-}
-
-/// Nahlad versa so znackami poznamok prekladatela ako horny index bez tapu
-/// (rovnaky renderer ako karta, BF-02); text prekladu sa nemeni. Null =
-/// obycajny text.
-InlineSpan? savedPreviewSpan(BuildContext context, CardContent? content) {
-  if (content is! AyahContent) return null;
-  final t = content.ayah.translation;
-  if (t == null) return null;
-  return translationWithNotes(
-    context,
-    text: t.text,
-    footnotes: t.footnotes,
-    lang: t.lang,
-    interactive: false,
-  );
 }
 
 class _SavedTile extends ConsumerWidget {
@@ -256,12 +215,7 @@ class _SavedTile extends ConsumerWidget {
           title: Text(title),
           subtitle: preview == null
               ? null
-              : Text.rich(
-                  savedPreviewSpan(context, content.value) ??
-                      TextSpan(text: preview),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
+              : Text(preview, maxLines: 2, overflow: TextOverflow.ellipsis),
           onTap: onOpen,
         ),
       ),

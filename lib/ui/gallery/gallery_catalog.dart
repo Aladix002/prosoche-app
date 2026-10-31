@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
-import 'package:prosoche/ui/components/sk_arabic_text.dart';
 import 'package:prosoche/ui/components/sk_banners.dart';
 import 'package:prosoche/ui/components/sk_button.dart';
 import 'package:prosoche/ui/components/sk_card_surface.dart';
-import 'package:prosoche/ui/components/sk_chips.dart';
 import 'package:prosoche/ui/components/sk_daily_progress.dart';
 import 'package:prosoche/ui/components/sk_dialogs.dart';
 import 'package:prosoche/ui/components/sk_nav_bar.dart';
-import 'package:prosoche/ui/components/sk_prayer_row.dart';
 import 'package:prosoche/ui/components/sk_quest_item.dart';
 import 'package:prosoche/ui/components/sk_states.dart';
 import 'package:prosoche/ui/gallery/gallery_samples.dart';
-import 'package:prosoche/ui/theme/prosoche_typography.dart';
 import 'package:prosoche/ui/theme/sk_context.dart';
 import 'package:prosoche/ui/tokens/sk_space.dart';
 
@@ -40,12 +35,9 @@ void _noop() {}
 /// testy (`test/ui/goldens/`). Texty su dev-only EN placeholdery.
 abstract final class GalleryCatalog {
   static final List<GalleryComponent> components = [
-    arabicText,
     cardSurface,
     dailyProgress,
     questItem,
-    prayerRow,
-    chips,
     buttons,
     navBar,
     dialogs,
@@ -53,117 +45,14 @@ abstract final class GalleryCatalog {
     states,
   ];
 
-  static final arabicText = GalleryComponent('SkArabicText', [
-    GalleryEntry(
-      'quran card',
-      (_) => const SkArabicText.quran([
-        SkArabicSegment(GallerySamples.sentence),
-      ], textSimple: GallerySamples.sentenceSimple),
-    ),
-    GalleryEntry(
-      'quran tajwid',
-      (_) => const SkArabicText.quran(
-        GallerySamples.segments,
-        textSimple: GallerySamples.sentenceSimple,
-        tajwid: true,
-      ),
-    ),
-    GalleryEntry(
-      'highlight',
-      (_) => const SkArabicText.quran(
-        [SkArabicSegment(GallerySamples.sentence)],
-        textSimple: GallerySamples.sentenceSimple,
-        highlight: true,
-      ),
-    ),
-    GalleryEntry(
-      'highlight + tajwid',
-      (_) => const SkArabicText.quran(
-        GallerySamples.segments,
-        textSimple: GallerySamples.sentenceSimple,
-        tajwid: true,
-        highlight: true,
-      ),
-    ),
-    GalleryEntry(
-      'selected word',
-      (_) => const SkArabicText.quran(
-        GallerySamples.wordSegments,
-        textSimple: GallerySamples.wordSegmentsSimple,
-        style: SkQuranStyle.word,
-        selectedSegment: 2,
-      ),
-    ),
-    GalleryEntry(
-      'reader, long, start',
-      (_) => const SkArabicText.quran(
-        [SkArabicSegment(GallerySamples.long)],
-        textSimple: GallerySamples.longSimple,
-        style: SkQuranStyle.reader,
-        textAlign: TextAlign.start,
-      ),
-    ),
-    GalleryEntry(
-      'bismillah token',
-      (_) => const SkArabicText.quran(
-        [SkArabicSegment(GallerySamples.words)],
-        textSimple: GallerySamples.wordsSimple,
-        style: SkQuranStyle.bismillah,
-      ),
-    ),
-    GalleryEntry(
-      'XL scale',
-      (_) => const ArabicScaleOverride(
-        scale: SkArabicScale.xl,
-        child: SkArabicText.quran([
-          SkArabicSegment(GallerySamples.words),
-        ], textSimple: GallerySamples.wordsSimple),
-      ),
-    ),
-    GalleryEntry(
-      'text body',
-      (_) => SkArabicText.text(
-        GallerySamples.long,
-        semanticsText: GallerySamples.longSimple,
-      ),
-    ),
-    GalleryEntry(
-      'text lemma',
-      (_) => SkArabicText.text(
-        GallerySamples.lemma,
-        style: SkArabicTextStyle.lemma,
-      ),
-    ),
-    GalleryEntry(
-      'text name',
-      (_) => SkArabicText.text(
-        GallerySamples.lemma,
-        style: SkArabicTextStyle.name,
-      ),
-    ),
-    GalleryEntry(
-      'integrity failed',
-      (_) => const SkArabicText.quran(
-        [SkArabicSegment(GallerySamples.words)],
-        textSimple: GallerySamples.wordsSimple,
-        integrityFailed: true,
-      ),
-    ),
-  ]);
-
-  static Widget _arabicCard({bool tajwid = false}) => SkArabicText.quran(
-    tajwid
-        ? GallerySamples.segments
-        : const [SkArabicSegment(GallerySamples.sentence)],
-    textSimple: GallerySamples.sentenceSimple,
-    tajwid: tajwid,
-  );
+  static Widget _lead(BuildContext context) =>
+      Text(GallerySamples.lead, style: context.sk.type.reflection);
 
   static final cardSurface = GalleryComponent('SkCardSurface', [
     GalleryEntry(
       'full',
-      (_) => SkCardSurface(
-        eyebrow: 'SAMPLE 1:12',
+      (context) => SkCardSurface(
+        eyebrow: 'SAMPLE 2.1',
         headerActions: const [
           SkIconButton(
             icon: Icons.bookmark_border,
@@ -171,7 +60,7 @@ abstract final class GalleryCatalog {
             onPressed: _noop,
           ),
         ],
-        arabic: _arabicCard(),
+        lead: _lead(context),
         translation: const Text(GallerySamples.translation),
         attribution: GallerySamples.attribution,
         semanticLabel: 'Card 5 of 12',
@@ -179,8 +68,8 @@ abstract final class GalleryCatalog {
     ),
     GalleryEntry(
       'saved + footer',
-      (_) => SkCardSurface(
-        eyebrow: 'SAMPLE 1:12',
+      (context) => SkCardSurface(
+        eyebrow: 'SAMPLE 2.1',
         headerActions: const [
           SkIconButton(
             icon: Icons.bookmark_border,
@@ -190,17 +79,17 @@ abstract final class GalleryCatalog {
             onPressed: _noop,
           ),
         ],
-        arabic: _arabicCard(tajwid: true),
+        lead: _lead(context),
         translation: const Text(GallerySamples.translation),
         footer: const SkButton.secondary(label: 'Next card', onPressed: _noop),
       ),
     ),
     GalleryEntry(
       'gate',
-      (_) => SkCardSurface(
+      (context) => SkCardSurface(
         variant: SkCardVariant.gate,
-        eyebrow: 'SAMPLE 1:12',
-        arabic: _arabicCard(),
+        eyebrow: 'SAMPLE 2.1',
+        lead: _lead(context),
         translation: const Text(GallerySamples.translation),
       ),
     ),
@@ -208,8 +97,8 @@ abstract final class GalleryCatalog {
       'compact',
       (_) => const SkCardSurface(
         variant: SkCardVariant.compact,
-        eyebrow: 'SAMPLE 1:12',
-        translation: Text('[PLACEHOLDER] Welcome to the library…'),
+        eyebrow: 'SAMPLE 2.1',
+        translation: Text('[PLACEHOLDER] The sample line…'),
         onTap: _noop,
       ),
     ),
@@ -267,18 +156,18 @@ abstract final class GalleryCatalog {
     GalleryEntry(
       'read in progress',
       (_) => const SkQuestItem(
-        title: 'Read 10 verses',
+        title: 'Read 5 cards',
         slot: SkQuestSlot.read,
         state: SkQuestState.inProgress,
-        progress: 6,
-        target: 10,
+        progress: 3,
+        target: 5,
         onTap: _noop,
       ),
     ),
     GalleryEntry(
       'learn done',
       (_) => const SkQuestItem(
-        title: 'Learn 1 new word',
+        title: 'Learn one idea',
         slot: SkQuestSlot.learn,
         state: SkQuestState.done,
         progress: 1,
@@ -304,120 +193,12 @@ abstract final class GalleryCatalog {
       ),
     ),
     GalleryEntry(
-      'event override',
+      'with label',
       (_) => const SkQuestItem(
-        title: '[PLACEHOLDER event quest]',
+        title: '[PLACEHOLDER quest]',
         slot: SkQuestSlot.act,
-        eventLabel: 'Jumu’ah',
+        eventLabel: 'Theme',
         onAction: _noop,
-      ),
-    ),
-  ]);
-
-  static final prayerRow = GalleryComponent('SkPrayerRow', [
-    GalleryEntry(
-      'passed on time',
-      (_) => const SkPrayerRow(
-        name: 'Dhuhr',
-        time: '11:58',
-        state: SkPrayerRowState.passed,
-        status: SkPrayerStatus.onTime,
-      ),
-    ),
-    GalleryEntry(
-      'next',
-      (_) => SkPrayerRow(
-        name: 'Asr',
-        time: '14:21',
-        state: SkPrayerRowState.next,
-        relative: 'in 1 h 12 min',
-        onTrackerTap: _noop,
-        customActions: {
-          const CustomSemanticsAction(label: 'Mark on time'): _noop,
-        },
-      ),
-    ),
-    GalleryEntry(
-      'current',
-      (_) => const SkPrayerRow(
-        name: 'Maghrib',
-        time: '16:43',
-        state: SkPrayerRowState.current,
-      ),
-    ),
-    GalleryEntry(
-      'late',
-      (_) => const SkPrayerRow(
-        name: 'Fajr',
-        time: '05:12',
-        state: SkPrayerRowState.passed,
-        status: SkPrayerStatus.late,
-      ),
-    ),
-    GalleryEntry(
-      'missed',
-      (_) => const SkPrayerRow(
-        name: 'Fajr',
-        time: '05:12',
-        state: SkPrayerRowState.passed,
-        status: SkPrayerStatus.missed,
-      ),
-    ),
-    GalleryEntry(
-      'qada',
-      (_) => const SkPrayerRow(
-        name: 'Fajr',
-        time: '05:12',
-        state: SkPrayerRowState.passed,
-        status: SkPrayerStatus.qada,
-      ),
-    ),
-    GalleryEntry(
-      'estimated, notif off, adjusted',
-      (_) => const SkPrayerRow(
-        name: 'Isha',
-        time: '18:15',
-        estimated: true,
-        notificationOff: true,
-        adjustedLabel: '+2 min',
-      ),
-    ),
-  ]);
-
-  static final chips = GalleryComponent('SkNextPrayerChip + SkHijriHeader', [
-    GalleryEntry(
-      'next prayer',
-      (_) => const SkNextPrayerChip(label: 'Asr in 1 h 12 min', onTap: _noop),
-    ),
-    GalleryEntry(
-      'next prayer now',
-      (_) => const SkNextPrayerChip(
-        label: 'Asr now',
-        state: SkNextPrayerState.now,
-      ),
-    ),
-    GalleryEntry(
-      'next prayer unavailable',
-      (_) => const SkNextPrayerChip(
-        label: 'Set location for prayer times',
-        state: SkNextPrayerState.unavailable,
-        onTap: _noop,
-      ),
-    ),
-    GalleryEntry(
-      'hijri',
-      (_) => const SkHijriHeader(
-        date: '14 Jumada al-Ula 1448 · Friday',
-        onTap: _noop,
-      ),
-    ),
-    GalleryEntry(
-      'hijri event + offset',
-      (_) => const SkHijriHeader(
-        date: '14 Jumada al-Ula 1448 · Friday',
-        eventLabel: 'Jumu’ah',
-        offsetLabel: '+1 day',
-        onTap: _noop,
       ),
     ),
   ]);
@@ -438,8 +219,8 @@ abstract final class GalleryCatalog {
     GalleryEntry(
       'outlined + icon',
       (_) => const SkButton.outlined(
-        label: 'Choose city',
-        icon: Icons.location_city,
+        label: 'Choose apps',
+        icon: Icons.apps,
         onPressed: _noop,
       ),
     ),
@@ -505,8 +286,8 @@ abstract final class GalleryCatalog {
         destinations: [
           for (final (i, label) in const [
             'Today',
-            'Quran',
-            'Prayer',
+            'Library',
+            'Practice',
             'Journey',
           ].indexed)
             SkNavDestination(
@@ -523,8 +304,8 @@ abstract final class GalleryCatalog {
     GalleryEntry(
       'confirm neutral',
       (_) => const SkConfirmDialog(
-        title: 'Change city?',
-        body: 'Prayer times will be recalculated.',
+        title: 'Change cards per day?',
+        body: 'This applies from tomorrow.',
         confirmLabel: 'Change',
       ),
     ),
@@ -540,10 +321,10 @@ abstract final class GalleryCatalog {
     GalleryEntry(
       'sheet',
       (_) => const SkSheet(
-        title: 'Estimated times',
+        title: 'About this card',
         closeLabel: 'Close',
         actions: [SkButton.secondary(label: 'Got it', onPressed: _noop)],
-        child: Text('[PLACEHOLDER] How high latitude times are estimated.'),
+        child: Text('[PLACEHOLDER] Where this text comes from.'),
       ),
     ),
   ]);
@@ -580,7 +361,7 @@ abstract final class GalleryCatalog {
     ),
     GalleryEntry(
       'offline note',
-      (_) => const SkOfflineNote(message: 'Audio needs internet'),
+      (_) => const SkOfflineNote(message: 'Updates need internet'),
     ),
   ]);
 
@@ -614,28 +395,6 @@ abstract final class GalleryCatalog {
       ),
     ),
   ]);
-}
-
-/// Prepise pouzivatelsku velkost arabciny v podstrome (galeria, testy).
-class ArabicScaleOverride extends StatelessWidget {
-  const ArabicScaleOverride({
-    required this.scale,
-    required this.child,
-    super.key,
-  });
-
-  final SkArabicScale scale;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final type = context.sk.type.copyWith(arabicScale: scale);
-    return Theme(
-      data: theme.copyWith(extensions: [...theme.extensions.values, type]),
-      child: child,
-    );
-  }
 }
 
 /// Spolocny obal pre zobrazenie jedneho stavu (galeria aj goldeny).

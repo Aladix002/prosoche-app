@@ -151,10 +151,6 @@ abstract class BlockerHostApi {
 
   /// `Build.MANUFACTURER` malymi pismenami (navod k baterii v O6).
   String deviceManufacturer();
-
-  /// Zatial len ulozi okna modlitieb (prayer lock je pripomienka v UI
-  /// brany, nie zamknutie, TECHNICKY_PLAN 9.2 bod 7).
-  void schedulePrayerLocks(List<int> startEpochMs, int durationMinutes);
 }
 
 @FlutterApi()

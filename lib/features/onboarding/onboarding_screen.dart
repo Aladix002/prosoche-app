@@ -6,11 +6,10 @@ import 'package:prosoche/features/onboarding/onboarding_controller.dart';
 import 'package:prosoche/features/onboarding/onboarding_routes.dart';
 import 'package:prosoche/features/onboarding/onboarding_steps.dart';
 import 'package:prosoche/features/onboarding/steps/gate_steps.dart';
-import 'package:prosoche/features/onboarding/steps/language_step.dart';
-import 'package:prosoche/features/onboarding/steps/location_step.dart';
-import 'package:prosoche/features/onboarding/steps/niyyah_step.dart';
+import 'package:prosoche/features/onboarding/steps/intention_step.dart';
 import 'package:prosoche/features/onboarding/steps/notifications_step.dart';
 import 'package:prosoche/features/onboarding/steps/privacy_step.dart';
+import 'package:prosoche/features/onboarding/steps/welcome_step.dart';
 import 'package:prosoche/ui/i18n/i18n.dart';
 import 'package:prosoche/ui/ui.dart';
 
@@ -75,9 +74,8 @@ class OnboardingScreen extends ConsumerWidget {
                     child: KeyedSubtree(
                       key: ValueKey(step),
                       child: switch (step) {
-                        OnboardingStep.language => LanguageStep(onNext: next),
-                        OnboardingStep.niyyah => NiyyahStep(onNext: next),
-                        OnboardingStep.location => LocationStep(onNext: next),
+                        OnboardingStep.welcome => WelcomeStep(onNext: next),
+                        OnboardingStep.intention => IntentionStep(onNext: next),
                         OnboardingStep.notifications => NotificationsStep(
                           onNext: next,
                         ),
@@ -204,7 +202,7 @@ class OnboardingStepBody extends StatelessWidget {
   final String title;
   final String? body;
 
-  /// Obsah nad nadpisom (uvitanie v O1).
+  /// Obsah nad nadpisom (medailon v uvitani).
   final List<Widget> leading;
   final List<Widget> children;
   final String primaryLabel;

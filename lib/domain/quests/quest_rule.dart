@@ -8,11 +8,10 @@ import 'package:prosoche/domain/quests/card_activity.dart';
 /// Gramatika (v1 pozna len `count`):
 /// ```json
 /// {"count": {
-///   "type": "ayah" | ["hadith", "dua"],      // povinne, typ karty (0.2)
-///   "action": "seen" | ["seen", "answered"], // default "seen"
+///   "type": "quote" | ["concept", "author"], // povinne, typ karty (0.2)
+///   "action": "seen" | ["seen", "saved"],    // default "seen"
 ///   "context": ["feed", "reader"],           // volitelne, default vsetky
-///   "surah": 18,                             // volitelne, len pre ayah
-///   "min": 10 | {"param": "n"}               // povinne, >= 1
+///   "min": 5 | {"param": "n"}                // povinne, >= 1
 /// }}
 /// ```
 /// Pocitaju sa **rozne** `card_id` v dany den (opakovany `seen` tej istej
@@ -24,11 +23,10 @@ final class QuestRule {
     required this.min,
     Set<CardAction> actions = const {CardAction.seen},
     Set<CardContext>? contexts,
-    this.surah,
   }) : types = Set.unmodifiable(types),
        actions = Set.unmodifiable(actions),
        contexts = contexts == null ? null : Set.unmodifiable(contexts) {
-    final problem = _problem(types, actions, contexts, surah, min);
+    final problem = _problem(types, actions, contexts, min);
     if (problem != null) throw ArgumentError(problem);
   }
 
@@ -40,13 +38,7 @@ final class QuestRule {
       final Map<String, Object?> m => m,
       _ => throw const FormatException('rule.count: expected object'),
     };
-    _onlyKeys(count, const {
-      'type',
-      'action',
-      'context',
-      'surah',
-      'min',
-    }, 'rule.count');
+    _onlyKeys(count, const {'type', 'action', 'context', 'min'}, 'rule.count');
     final types = _enumSet(count['type'], 'type', CardType.fromWire);
     if (types == null) throw const FormatException('rule.count.type: missing');
     final actions = _enumSet(count['action'], 'action', CardAction.fromWire);
@@ -55,11 +47,6 @@ final class QuestRule {
       'context',
       CardContext.fromWire,
     );
-    final surah = switch (count['surah']) {
-      null => null,
-      final int s => s,
-      _ => throw const FormatException('rule.count.surah: expected int'),
-    };
     final min = switch (count['min']) {
       final int n => QuestTarget.fixed(n),
       {'param': final String p} => QuestTarget.param(p),
@@ -68,13 +55,12 @@ final class QuestRule {
       ),
     };
     final resolvedActions = actions ?? const {CardAction.seen};
-    final problem = _problem(types, resolvedActions, contexts, surah, min);
+    final problem = _problem(types, resolvedActions, contexts, min);
     if (problem != null) throw FormatException('rule.count: $problem');
     return QuestRule(
       types: types,
       actions: resolvedActions,
       contexts: contexts,
-      surah: surah,
       min: min,
     );
   }
@@ -84,9 +70,6 @@ final class QuestRule {
 
   /// null = vsetky kontexty.
   final Set<CardContext>? contexts;
-
-  /// Len versy tejto sury (napr. 18 pre al-Kahf).
-  final int? surah;
 
   final QuestTarget min;
 
@@ -111,10 +94,6 @@ final class QuestRule {
     if (contexts != null && !contexts!.contains(activity.context)) {
       return false;
     }
-    if (surah != null) {
-      final id = activity.cardId;
-      if (id is! AyahCardId || id.ayahId.surah != surah) return false;
-    }
     return true;
   }
 
@@ -124,7 +103,6 @@ final class QuestRule {
       if (!(actions.length == 1 && actions.contains(CardAction.seen)))
         'action': _wires(actions.map((a) => a.wire)),
       if (contexts != null) 'context': _wires(contexts!.map((c) => c.wire)),
-      'surah': ?surah,
       'min': min.toJson(),
     },
   };
@@ -136,7 +114,6 @@ final class QuestRule {
       _setEq(other.actions, actions) &&
       (other.contexts == null) == (contexts == null) &&
       (contexts == null || _setEq(other.contexts!, contexts!)) &&
-      other.surah == surah &&
       other.min == min;
 
   @override
@@ -144,7 +121,6 @@ final class QuestRule {
     Object.hashAllUnordered(types),
     Object.hashAllUnordered(actions),
     contexts == null ? null : Object.hashAllUnordered(contexts!),
-    surah,
     min,
   );
 
@@ -155,7 +131,6 @@ final class QuestRule {
     Set<CardType> types,
     Set<CardAction> actions,
     Set<CardContext>? contexts,
-    int? surah,
     QuestTarget min,
   ) {
     if (types.isEmpty) return 'types must not be empty';
@@ -165,14 +140,6 @@ final class QuestRule {
     }
     if (min case QuestTarget(fixed: final n?) when n < 1) {
       return 'min must be >= 1';
-    }
-    if (surah != null) {
-      if (surah < 1 || surah > AyahId.surahCount) {
-        return 'surah must be 1..114';
-      }
-      if (!types.every((t) => t == CardType.ayah)) {
-        return 'surah filter needs type ayah';
-      }
     }
     return null;
   }

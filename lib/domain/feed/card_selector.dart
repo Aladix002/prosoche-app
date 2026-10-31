@@ -3,52 +3,29 @@ import 'dart:math';
 import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/feed/feed_inputs.dart';
 
-/// Cooldowny opakovania obsahu v dnoch (docs/03 P7).
+/// Cooldown opakovania obsahu v dnoch (docs/03 P7).
 abstract final class FeedCooldowns {
   static const general = 365;
-  static const jumuahPool = 35;
-  static const jumuahEventId = 'jumuah';
-
-  static int of(FeedCandidate c) =>
-      c.seasons.contains(jumuahEventId) ? jumuahPool : general;
 }
 
 /// Deterministicky vyber jednej karty z poolu (docs/03 3.3).
 ///
-/// 1. Tvrde filtre: `langs_ready` pre jazyk, `disabled_ids`, uz pouzite
-///    karty, `season` musi sediet s aktivnym eventom alebo byt prazdny.
-/// 2. Override eventu: polozky so `season` aktivneho eventu (podla priority)
-///    maju prednost pred vseobecnym poolom.
-/// 3. Vazeny nahodny vyber cez `Random(seed + salt)` z poloziek po cooldowne.
+/// 1. Tvrde filtre: `disabled_ids` a uz pouzite karty.
+/// 2. Vazeny nahodny vyber cez `Random(seed + salt)` z poloziek po cooldowne.
 ///    Vaha = `weight` x 3 (tema dna) x 2 (`time_of_day`) x LRU.
-/// 4. Ked je vsetko v cooldowne, vyberie sa najdavnejsie pouzita polozka.
+/// 3. Ked je vsetko v cooldowne, vyberie sa najdavnejsie pouzita polozka.
 final class CardSelector {
   CardSelector({
     required this.date,
     required this.seed,
-    required this.lang,
-    required List<ActiveEvent> activeEvents,
     this.lastShown = const {},
     this.disabled = const {},
-  }) : _eventOrder = sortEvents(activeEvents).map((e) => e.id).toList();
+  });
 
   final LocalDate date;
   final int seed;
-  final String lang;
   final Map<CardId, LocalDate> lastShown;
   final Set<CardId> disabled;
-  final List<String> _eventOrder;
-
-  /// Eventy podla `priority` zostupne, pri zhode podla `id` (docs/03 4.4).
-  static List<ActiveEvent> sortEvents(Iterable<ActiveEvent> events) =>
-      events.toList()..sort((a, b) {
-        final p = b.priority.compareTo(a.priority);
-        return p != 0 ? p : a.id.compareTo(b.id);
-      });
-
-  /// Ci karta s textom v [langs] smie byt v sade.
-  bool isReady(CardId id, Set<String> langs) =>
-      langs.contains(lang) && !disabled.contains(id);
 
   /// Kandidati po tvrdych filtroch, zoradeni podla `card_id`.
   List<FeedCandidate> eligible(
@@ -56,20 +33,9 @@ final class CardSelector {
     Set<CardId> exclude = const {},
   }) =>
       pool
-          .where(
-            (c) =>
-                isReady(c.id, c.langs) &&
-                !exclude.contains(c.id) &&
-                (c.seasons.isEmpty || c.seasons.any(_eventOrder.contains)),
-          )
+          .where((c) => !disabled.contains(c.id) && !exclude.contains(c.id))
           .toList()
         ..sort((a, b) => a.id.format().compareTo(b.id.format()));
-
-  /// Ci ma pool polozku pre aktivny event (override slotu).
-  bool hasOverride(
-    Iterable<FeedCandidate> pool, {
-    Set<CardId> exclude = const {},
-  }) => eligible(pool, exclude: exclude).any((c) => c.seasons.isNotEmpty);
 
   /// Vyberie kartu alebo null, ak po tvrdych filtroch nic neostalo.
   FeedCandidate? pick(
@@ -81,23 +47,15 @@ final class CardSelector {
   }) {
     final all = eligible(pool, exclude: exclude);
     if (all.isEmpty) return null;
-    final tiers = [
-      for (final event in _eventOrder)
-        all.where((c) => c.seasons.contains(event)).toList(),
-      all.where((c) => c.seasons.isEmpty).toList(),
-    ];
+    final fresh = all.where(_cooledDown).toList();
+    if (fresh.isEmpty) return _leastRecent(all);
     final rng = Random(mixSeed(seed, salt));
-    for (final tier in tiers) {
-      final fresh = tier.where(_cooledDown).toList();
-      if (fresh.isEmpty) continue;
-      return _weighted(fresh, rng, themeTag, timeOfDay);
-    }
-    return _leastRecent(all);
+    return _weighted(fresh, rng, themeTag, timeOfDay);
   }
 
   bool _cooledDown(FeedCandidate c) {
     final last = lastShown[c.id];
-    return last == null || date.daysSince(last) >= FeedCooldowns.of(c);
+    return last == null || date.daysSince(last) >= FeedCooldowns.general;
   }
 
   FeedCandidate _weighted(

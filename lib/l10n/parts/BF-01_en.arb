@@ -1,14 +1,7 @@
 {
   "@@locale": "en",
-  "cardTranslationNotYetAvailable": "Translation not yet available in your language",
-  "@cardTranslationNotYetAvailable": {"description": "Small note under the Arabic original of a card (hadith, dua, name of Allah, verse) when there is no translation in the user's language yet. Religious text is never shown in English instead."},
-  "cardTranslatorNoteTitle": "Translator's note",
-  "@cardTranslatorNoteTitle": {"description": "Title of the sheet opened by tapping a footnote marker like [2] in a verse translation."},
-  "cardTranslatorNoteA11y": "Translator's note {number}",
-  "@cardTranslatorNoteA11y": {
-    "description": "Screen reader label of a tappable footnote marker in a verse translation.",
-    "placeholders": {"number": {"type": "String"}}
-  },
-  "cardHadithDownloadExplanations": "Download explanations",
-  "@cardHadithDownloadExplanations": {"description": "Button on a hadith card when the optional hadith explanations pack is not downloaded yet."}
+  "cardTranslationNotYetAvailable": "Text not yet available in your language",
+  "@cardTranslationNotYetAvailable": {
+    "description": "Small note on a card when its text is not available in the user's language yet."
+  }
 }

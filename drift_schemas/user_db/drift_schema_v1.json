@@ -49,71 +49,6 @@
       "references": [],
       "type": "table",
       "data": {
-        "name": "reading_position",
-        "was_declared_in_moor": false,
-        "columns": [
-          {
-            "name": "id",
-            "getter_name": "id",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [
-              {
-                "check": {
-                  "dart_expression": {
-                    "elements": [
-                      {
-                        "lexeme": "id",
-                        "tag": "id"
-                      },
-                      ".equals(1)"
-                    ]
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "ayah_id",
-            "getter_name": "ayahId",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": "const CustomExpression('0')",
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "updated_at",
-            "getter_name": "updatedAt",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [],
-            "type_converter": {
-              "dart_expr": "_ts",
-              "dart_type_name": "DateTime"
-            }
-          }
-        ],
-        "is_virtual": false,
-        "without_rowid": false,
-        "constraints": [],
-        "explicit_pk": [
-          "id"
-        ]
-      }
-    },
-    {
-      "id": 2,
-      "references": [],
-      "type": "table",
-      "data": {
         "name": "daily_set",
         "was_declared_in_moor": false,
         "columns": [
@@ -127,7 +62,7 @@
             "default_client_dart": null,
             "dsl_features": [],
             "type_converter": {
-              "dart_expr": "_date",
+              "dart_expr": "const LocalDateConverter()",
               "dart_type_name": "LocalDate"
             }
           },
@@ -171,7 +106,7 @@
             "default_client_dart": null,
             "dsl_features": [],
             "type_converter": {
-              "dart_expr": "_ts",
+              "dart_expr": "const UtcMillisConverter()",
               "dart_type_name": "DateTime"
             }
           },
@@ -185,7 +120,7 @@
             "default_client_dart": null,
             "dsl_features": [],
             "type_converter": {
-              "dart_expr": "_ts",
+              "dart_expr": "const UtcMillisConverter()",
               "dart_type_name": "DateTime"
             }
           },
@@ -262,7 +197,7 @@
       }
     },
     {
-      "id": 3,
+      "id": 2,
       "references": [],
       "type": "table",
       "data": {
@@ -295,7 +230,7 @@
             "default_client_dart": null,
             "dsl_features": [],
             "type_converter": {
-              "dart_expr": "_date",
+              "dart_expr": "const LocalDateConverter()",
               "dart_type_name": "LocalDate"
             }
           },
@@ -326,7 +261,7 @@
                         "lexeme": "type",
                         "tag": "type"
                       },
-                      ".isIn(const ['intro','ayah','word','quiz','hadith','dua','name','reflection','event','done','khatm'])"
+                      ".isIn(const ['intro','quote','passage','practice','prompt','concept','author','done'])"
                     ]
                   }
                 }
@@ -447,7 +382,7 @@
             "default_client_dart": null,
             "dsl_features": [],
             "type_converter": {
-              "dart_expr": "_ts",
+              "dart_expr": "const UtcMillisConverter()",
               "dart_type_name": "DateTime"
             }
           }
@@ -458,113 +393,7 @@
       }
     },
     {
-      "id": 4,
-      "references": [],
-      "type": "table",
-      "data": {
-        "name": "ayah_read",
-        "was_declared_in_moor": false,
-        "columns": [
-          {
-            "name": "ayah_id",
-            "getter_name": "ayahId",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "first_read_at",
-            "getter_name": "firstReadAt",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [],
-            "type_converter": {
-              "dart_expr": "_ts",
-              "dart_type_name": "DateTime"
-            }
-          },
-          {
-            "name": "read_count",
-            "getter_name": "readCount",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": "const CustomExpression('1')",
-            "default_client_dart": null,
-            "dsl_features": []
-          }
-        ],
-        "is_virtual": false,
-        "without_rowid": false,
-        "constraints": [],
-        "explicit_pk": [
-          "ayah_id"
-        ]
-      }
-    },
-    {
-      "id": 5,
-      "references": [],
-      "type": "table",
-      "data": {
-        "name": "khatm_log",
-        "was_declared_in_moor": false,
-        "columns": [
-          {
-            "name": "n",
-            "getter_name": "n",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "started_at",
-            "getter_name": "startedAt",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [],
-            "type_converter": {
-              "dart_expr": "_ts",
-              "dart_type_name": "DateTime"
-            }
-          },
-          {
-            "name": "completed_at",
-            "getter_name": "completedAt",
-            "moor_type": "int",
-            "nullable": true,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [],
-            "type_converter": {
-              "dart_expr": "_ts",
-              "dart_type_name": "DateTime"
-            }
-          }
-        ],
-        "is_virtual": false,
-        "without_rowid": false,
-        "constraints": [],
-        "explicit_pk": [
-          "n"
-        ]
-      }
-    },
-    {
-      "id": 6,
+      "id": 3,
       "references": [],
       "type": "table",
       "data": {
@@ -581,7 +410,7 @@
             "default_client_dart": null,
             "dsl_features": [],
             "type_converter": {
-              "dart_expr": "_date",
+              "dart_expr": "const LocalDateConverter()",
               "dart_type_name": "LocalDate"
             }
           },
@@ -671,7 +500,7 @@
             "default_client_dart": null,
             "dsl_features": [],
             "type_converter": {
-              "dart_expr": "_ts",
+              "dart_expr": "const UtcMillisConverter()",
               "dart_type_name": "DateTime"
             }
           }
@@ -686,505 +515,7 @@
       }
     },
     {
-      "id": 7,
-      "references": [],
-      "type": "table",
-      "data": {
-        "name": "srs_item",
-        "was_declared_in_moor": false,
-        "columns": [
-          {
-            "name": "lemma_id",
-            "getter_name": "lemmaId",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "state",
-            "getter_name": "state",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [
-              {
-                "check": {
-                  "dart_expression": {
-                    "elements": [
-                      {
-                        "lexeme": "state",
-                        "tag": "state"
-                      },
-                      ".isIn(",
-                      {
-                        "lexeme": "SrsState",
-                        "import_uri": "package:prosoche/data/db/user_enums.dart"
-                      },
-                      ".values.map((e) => e.wire))"
-                    ]
-                  }
-                }
-              }
-            ],
-            "type_converter": {
-              "dart_expr": "const WireEnumConverter(SrsState.values)",
-              "dart_type_name": "SrsState"
-            }
-          },
-          {
-            "name": "ease_factor",
-            "getter_name": "easeFactor",
-            "moor_type": "double",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": "const CustomExpression('2.5')",
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "interval_days",
-            "getter_name": "intervalDays",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": "const CustomExpression('0')",
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "due",
-            "getter_name": "due",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [],
-            "type_converter": {
-              "dart_expr": "_ts",
-              "dart_type_name": "DateTime"
-            }
-          },
-          {
-            "name": "reps",
-            "getter_name": "reps",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": "const CustomExpression('0')",
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "lapses",
-            "getter_name": "lapses",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": "const CustomExpression('0')",
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "last_review",
-            "getter_name": "lastReview",
-            "moor_type": "int",
-            "nullable": true,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [],
-            "type_converter": {
-              "dart_expr": "_ts",
-              "dart_type_name": "DateTime"
-            }
-          },
-          {
-            "name": "added_at",
-            "getter_name": "addedAt",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [],
-            "type_converter": {
-              "dart_expr": "_ts",
-              "dart_type_name": "DateTime"
-            }
-          },
-          {
-            "name": "source",
-            "getter_name": "source",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [
-              {
-                "check": {
-                  "dart_expression": {
-                    "elements": [
-                      {
-                        "lexeme": "source",
-                        "tag": "source"
-                      },
-                      ".isIn(",
-                      {
-                        "lexeme": "SrsSource",
-                        "import_uri": "package:prosoche/data/db/user_enums.dart"
-                      },
-                      ".values.map((e) => e.wire))"
-                    ]
-                  }
-                }
-              }
-            ],
-            "type_converter": {
-              "dart_expr": "const WireEnumConverter(SrsSource.values)",
-              "dart_type_name": "SrsSource"
-            }
-          },
-          {
-            "name": "stability",
-            "getter_name": "stability",
-            "moor_type": "double",
-            "nullable": true,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "difficulty",
-            "getter_name": "difficulty",
-            "moor_type": "double",
-            "nullable": true,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          }
-        ],
-        "is_virtual": false,
-        "without_rowid": false,
-        "constraints": [],
-        "explicit_pk": [
-          "lemma_id"
-        ]
-      }
-    },
-    {
-      "id": 8,
-      "references": [],
-      "type": "table",
-      "data": {
-        "name": "srs_review",
-        "was_declared_in_moor": false,
-        "columns": [
-          {
-            "name": "id",
-            "getter_name": "id",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "defaultConstraints": "PRIMARY KEY AUTOINCREMENT",
-            "dialectAwareDefaultConstraints": {
-              "sqlite": "PRIMARY KEY AUTOINCREMENT"
-            },
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [
-              "auto-increment"
-            ]
-          },
-          {
-            "name": "lemma_id",
-            "getter_name": "lemmaId",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "ts",
-            "getter_name": "ts",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [],
-            "type_converter": {
-              "dart_expr": "_ts",
-              "dart_type_name": "DateTime"
-            }
-          },
-          {
-            "name": "grade",
-            "getter_name": "grade",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "elapsed_days",
-            "getter_name": "elapsedDays",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "scheduled_days",
-            "getter_name": "scheduledDays",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
-            "name": "state_before",
-            "getter_name": "stateBefore",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [
-              {
-                "check": {
-                  "dart_expression": {
-                    "elements": [
-                      {
-                        "lexeme": "stateBefore",
-                        "tag": "stateBefore"
-                      },
-                      ".isIn(",
-                      {
-                        "lexeme": "SrsState",
-                        "import_uri": "package:prosoche/data/db/user_enums.dart"
-                      },
-                      ".values.map((e) => e.wire))"
-                    ]
-                  }
-                }
-              }
-            ],
-            "type_converter": {
-              "dart_expr": "const WireEnumConverter(SrsState.values)",
-              "dart_type_name": "SrsState"
-            }
-          }
-        ],
-        "is_virtual": false,
-        "without_rowid": false,
-        "constraints": []
-      }
-    },
-    {
-      "id": 9,
-      "references": [],
-      "type": "table",
-      "data": {
-        "name": "prayer_log",
-        "was_declared_in_moor": false,
-        "columns": [
-          {
-            "name": "date",
-            "getter_name": "date",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [],
-            "type_converter": {
-              "dart_expr": "_date",
-              "dart_type_name": "LocalDate"
-            }
-          },
-          {
-            "name": "prayer",
-            "getter_name": "prayer",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [
-              {
-                "check": {
-                  "dart_expression": {
-                    "elements": [
-                      {
-                        "lexeme": "prayer",
-                        "tag": "prayer"
-                      },
-                      ".isIn(",
-                      {
-                        "lexeme": "PrayerKind",
-                        "import_uri": "package:prosoche/data/db/user_enums.dart"
-                      },
-                      ".values.map((e) => e.wire))"
-                    ]
-                  }
-                }
-              }
-            ],
-            "type_converter": {
-              "dart_expr": "const WireEnumConverter(PrayerKind.values)",
-              "dart_type_name": "PrayerKind"
-            }
-          },
-          {
-            "name": "status",
-            "getter_name": "status",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [
-              {
-                "check": {
-                  "dart_expression": {
-                    "elements": [
-                      {
-                        "lexeme": "status",
-                        "tag": "status"
-                      },
-                      ".isIn(",
-                      {
-                        "lexeme": "PrayerStatus",
-                        "import_uri": "package:prosoche/data/db/user_enums.dart"
-                      },
-                      ".values.map((e) => e.wire))"
-                    ]
-                  }
-                }
-              }
-            ],
-            "type_converter": {
-              "dart_expr": "const WireEnumConverter(PrayerStatus.values)",
-              "dart_type_name": "PrayerStatus"
-            }
-          },
-          {
-            "name": "ts",
-            "getter_name": "ts",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [],
-            "type_converter": {
-              "dart_expr": "_ts",
-              "dart_type_name": "DateTime"
-            }
-          }
-        ],
-        "is_virtual": false,
-        "without_rowid": false,
-        "constraints": [],
-        "explicit_pk": [
-          "date",
-          "prayer"
-        ]
-      }
-    },
-    {
-      "id": 10,
-      "references": [],
-      "type": "table",
-      "data": {
-        "name": "fast_log",
-        "was_declared_in_moor": false,
-        "columns": [
-          {
-            "name": "date",
-            "getter_name": "date",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [],
-            "type_converter": {
-              "dart_expr": "_date",
-              "dart_type_name": "LocalDate"
-            }
-          },
-          {
-            "name": "type",
-            "getter_name": "type",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": [
-              {
-                "check": {
-                  "dart_expression": {
-                    "elements": [
-                      {
-                        "lexeme": "type",
-                        "tag": "type"
-                      },
-                      ".isIn(",
-                      {
-                        "lexeme": "FastType",
-                        "import_uri": "package:prosoche/data/db/user_enums.dart"
-                      },
-                      ".values.map((e) => e.wire))"
-                    ]
-                  }
-                }
-              }
-            ],
-            "type_converter": {
-              "dart_expr": "const WireEnumConverter(FastType.values)",
-              "dart_type_name": "FastType"
-            }
-          },
-          {
-            "name": "status",
-            "getter_name": "status",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          }
-        ],
-        "is_virtual": false,
-        "without_rowid": false,
-        "constraints": [],
-        "explicit_pk": [
-          "date"
-        ]
-      }
-    },
-    {
-      "id": 11,
+      "id": 4,
       "references": [],
       "type": "table",
       "data": {
@@ -1201,7 +532,7 @@
             "default_client_dart": null,
             "dsl_features": [],
             "type_converter": {
-              "dart_expr": "_date",
+              "dart_expr": "const LocalDateConverter()",
               "dart_type_name": "LocalDate"
             }
           },
@@ -1258,7 +589,7 @@
       }
     },
     {
-      "id": 12,
+      "id": 5,
       "references": [],
       "type": "table",
       "data": {
@@ -1329,7 +660,7 @@
             "default_client_dart": null,
             "dsl_features": [],
             "type_converter": {
-              "dart_expr": "_date",
+              "dart_expr": "const LocalDateConverter()",
               "dart_type_name": "LocalDate"
             }
           },
@@ -1343,7 +674,7 @@
             "default_client_dart": null,
             "dsl_features": [],
             "type_converter": {
-              "dart_expr": "_date",
+              "dart_expr": "const LocalDateConverter()",
               "dart_type_name": "LocalDate"
             }
           }
@@ -1357,7 +688,7 @@
       }
     },
     {
-      "id": 13,
+      "id": 6,
       "references": [],
       "type": "table",
       "data": {
@@ -1427,20 +758,6 @@
             "dsl_features": []
           },
           {
-            "name": "prayer_lock",
-            "getter_name": "prayerLock",
-            "moor_type": "bool",
-            "nullable": false,
-            "customConstraints": null,
-            "defaultConstraints": "CHECK (\"prayer_lock\" IN (0, 1))",
-            "dialectAwareDefaultConstraints": {
-              "sqlite": "CHECK (\"prayer_lock\" IN (0, 1))"
-            },
-            "default_dart": "const CustomExpression('0')",
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
             "name": "enabled",
             "getter_name": "enabled",
             "moor_type": "bool",
@@ -1464,7 +781,7 @@
             "default_client_dart": null,
             "dsl_features": [],
             "type_converter": {
-              "dart_expr": "_ts",
+              "dart_expr": "const UtcMillisConverter()",
               "dart_type_name": "DateTime"
             }
           }
@@ -1475,9 +792,9 @@
       }
     },
     {
-      "id": 14,
+      "id": 7,
       "references": [
-        13
+        6
       ],
       "type": "table",
       "data": {
@@ -1536,7 +853,7 @@
             "default_client_dart": null,
             "dsl_features": [],
             "type_converter": {
-              "dart_expr": "_ts",
+              "dart_expr": "const UtcMillisConverter()",
               "dart_type_name": "DateTime"
             }
           },
@@ -1550,7 +867,7 @@
             "default_client_dart": null,
             "dsl_features": [],
             "type_converter": {
-              "dart_expr": "_ts",
+              "dart_expr": "const UtcMillisConverter()",
               "dart_type_name": "DateTime"
             }
           },
@@ -1604,9 +921,9 @@
       }
     },
     {
-      "id": 15,
+      "id": 8,
       "references": [
-        13
+        6
       ],
       "type": "table",
       "data": {
@@ -1665,7 +982,7 @@
             "default_client_dart": null,
             "dsl_features": [],
             "type_converter": {
-              "dart_expr": "_ts",
+              "dart_expr": "const UtcMillisConverter()",
               "dart_type_name": "DateTime"
             }
           },
@@ -1719,7 +1036,7 @@
       }
     },
     {
-      "id": 16,
+      "id": 9,
       "references": [],
       "type": "table",
       "data": {
@@ -1746,7 +1063,7 @@
             "default_client_dart": null,
             "dsl_features": [],
             "type_converter": {
-              "dart_expr": "_ts",
+              "dart_expr": "const UtcMillisConverter()",
               "dart_type_name": "DateTime"
             }
           }
@@ -1760,13 +1077,13 @@
       }
     },
     {
-      "id": 17,
+      "id": 10,
       "references": [
-        3
+        2
       ],
       "type": "index",
       "data": {
-        "on": 3,
+        "on": 2,
         "name": "card_event_date",
         "sql": null,
         "unique": false,
@@ -1779,13 +1096,13 @@
       }
     },
     {
-      "id": 18,
+      "id": 11,
       "references": [
-        3
+        2
       ],
       "type": "index",
       "data": {
-        "on": 3,
+        "on": 2,
         "name": "card_event_card_id",
         "sql": null,
         "unique": false,
@@ -1798,13 +1115,13 @@
       }
     },
     {
-      "id": 19,
+      "id": 12,
       "references": [
-        3
+        2
       ],
       "type": "index",
       "data": {
-        "on": 3,
+        "on": 2,
         "name": "card_event_type_action",
         "sql": null,
         "unique": false,
@@ -1825,13 +1142,13 @@
       }
     },
     {
-      "id": 20,
+      "id": 13,
       "references": [
-        3
+        2
       ],
       "type": "index",
       "data": {
-        "on": 3,
+        "on": 2,
         "name": "card_event_seen_unique",
         "sql": "CREATE UNIQUE INDEX card_event_seen_unique ON card_event (date, card_id, context) WHERE \"action\" = 'seen'",
         "unique": true,
@@ -1839,51 +1156,13 @@
       }
     },
     {
-      "id": 21,
-      "references": [
-        7
-      ],
-      "type": "index",
-      "data": {
-        "on": 7,
-        "name": "srs_item_due",
-        "sql": null,
-        "unique": false,
-        "columns": [
-          {
-            "column": "due",
-            "order_by": null
-          }
-        ]
-      }
-    },
-    {
-      "id": 22,
+      "id": 14,
       "references": [
         8
       ],
       "type": "index",
       "data": {
         "on": 8,
-        "name": "srs_review_lemma",
-        "sql": null,
-        "unique": false,
-        "columns": [
-          {
-            "column": "lemma_id",
-            "order_by": null
-          }
-        ]
-      }
-    },
-    {
-      "id": 23,
-      "references": [
-        15
-      ],
-      "type": "index",
-      "data": {
-        "on": 15,
         "name": "unlock_event_ts",
         "sql": null,
         "unique": false,
@@ -1896,13 +1175,13 @@
       }
     },
     {
-      "id": 24,
+      "id": 15,
       "references": [
-        16
+        9
       ],
       "type": "index",
       "data": {
-        "on": 16,
+        "on": 9,
         "name": "saved_card_saved_at",
         "sql": null,
         "unique": false,
@@ -1926,15 +1205,6 @@
       ]
     },
     {
-      "name": "reading_position",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"reading_position\" (\"id\" INTEGER NOT NULL CHECK(\"id\" = 1), \"ayah_id\" INTEGER NOT NULL DEFAULT 0, \"updated_at\" INTEGER NOT NULL, PRIMARY KEY (\"id\"));"
-        }
-      ]
-    },
-    {
       "name": "daily_set",
       "sql": [
         {
@@ -1948,25 +1218,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"card_event\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"date\" TEXT NOT NULL, \"card_id\" TEXT NOT NULL, \"type\" TEXT NOT NULL CHECK(\"type\" IN ('intro', 'ayah', 'word', 'quiz', 'hadith', 'dua', 'name', 'reflection', 'event', 'done', 'khatm')), \"context\" TEXT NOT NULL CHECK(\"context\" IN ('feed', 'gate', 'reader', 'quiz', 'saved', 'review')), \"action\" TEXT NOT NULL CHECK(\"action\" IN ('seen', 'answered', 'saved', 'unsaved', 'skipped', 'shared', 'audio_played', 'source_opened', 'tafsir_opened', 'word_opened', 'reported')), \"pos\" INTEGER NULL, \"value\" INTEGER NULL, \"correct\" INTEGER NULL CHECK (\"correct\" IN (0, 1)), \"ts\" INTEGER NOT NULL);"
-        }
-      ]
-    },
-    {
-      "name": "ayah_read",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"ayah_read\" (\"ayah_id\" INTEGER NOT NULL, \"first_read_at\" INTEGER NOT NULL, \"read_count\" INTEGER NOT NULL DEFAULT 1, PRIMARY KEY (\"ayah_id\"));"
-        }
-      ]
-    },
-    {
-      "name": "khatm_log",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"khatm_log\" (\"n\" INTEGER NOT NULL, \"started_at\" INTEGER NOT NULL, \"completed_at\" INTEGER NULL, PRIMARY KEY (\"n\"));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"card_event\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"date\" TEXT NOT NULL, \"card_id\" TEXT NOT NULL, \"type\" TEXT NOT NULL CHECK(\"type\" IN ('intro', 'quote', 'passage', 'practice', 'prompt', 'concept', 'author', 'done')), \"context\" TEXT NOT NULL CHECK(\"context\" IN ('feed', 'gate', 'reader', 'saved')), \"action\" TEXT NOT NULL CHECK(\"action\" IN ('seen', 'answered', 'saved', 'unsaved', 'skipped', 'shared', 'source_opened', 'reported')), \"pos\" INTEGER NULL, \"value\" INTEGER NULL, \"correct\" INTEGER NULL CHECK (\"correct\" IN (0, 1)), \"ts\" INTEGER NOT NULL);"
         }
       ]
     },
@@ -1976,42 +1228,6 @@
         {
           "dialect": "sqlite",
           "sql": "CREATE TABLE IF NOT EXISTS \"quest_log\" (\"date\" TEXT NOT NULL, \"slot\" TEXT NOT NULL CHECK(\"slot\" IN ('read', 'learn', 'act')), \"quest_id\" TEXT NOT NULL, \"status\" TEXT NOT NULL DEFAULT 'open' CHECK(\"status\" IN ('open', 'done', 'skipped')), \"done_at\" INTEGER NULL, PRIMARY KEY (\"date\", \"slot\"));"
-        }
-      ]
-    },
-    {
-      "name": "srs_item",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"srs_item\" (\"lemma_id\" INTEGER NOT NULL, \"state\" TEXT NOT NULL CHECK(\"state\" IN ('new', 'learning', 'review', 'relearning')), \"ease_factor\" REAL NOT NULL DEFAULT 2.5, \"interval_days\" INTEGER NOT NULL DEFAULT 0, \"due\" INTEGER NOT NULL, \"reps\" INTEGER NOT NULL DEFAULT 0, \"lapses\" INTEGER NOT NULL DEFAULT 0, \"last_review\" INTEGER NULL, \"added_at\" INTEGER NOT NULL, \"source\" TEXT NOT NULL CHECK(\"source\" IN ('word_card', 'manual')), \"stability\" REAL NULL, \"difficulty\" REAL NULL, PRIMARY KEY (\"lemma_id\"));"
-        }
-      ]
-    },
-    {
-      "name": "srs_review",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"srs_review\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"lemma_id\" INTEGER NOT NULL, \"ts\" INTEGER NOT NULL, \"grade\" INTEGER NOT NULL, \"elapsed_days\" INTEGER NOT NULL, \"scheduled_days\" INTEGER NOT NULL, \"state_before\" TEXT NOT NULL CHECK(\"state_before\" IN ('new', 'learning', 'review', 'relearning')));"
-        }
-      ]
-    },
-    {
-      "name": "prayer_log",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"prayer_log\" (\"date\" TEXT NOT NULL, \"prayer\" TEXT NOT NULL CHECK(\"prayer\" IN ('fajr', 'dhuhr', 'asr', 'maghrib', 'isha')), \"status\" TEXT NOT NULL CHECK(\"status\" IN ('on_time', 'late', 'missed', 'qada', 'excused')), \"ts\" INTEGER NOT NULL, PRIMARY KEY (\"date\", \"prayer\"));"
-        }
-      ]
-    },
-    {
-      "name": "fast_log",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"fast_log\" (\"date\" TEXT NOT NULL, \"type\" TEXT NOT NULL CHECK(\"type\" IN ('ramadan', 'sunnah', 'qada', 'nafl')), \"status\" TEXT NOT NULL, PRIMARY KEY (\"date\"));"
         }
       ]
     },
@@ -2038,7 +1254,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"blocked_app\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"platform_ref\" TEXT NOT NULL UNIQUE, \"label\" TEXT NULL, \"cards_required\" INTEGER NOT NULL DEFAULT 3, \"unlock_minutes\" INTEGER NOT NULL DEFAULT 10, \"prayer_lock\" INTEGER NOT NULL DEFAULT 0 CHECK (\"prayer_lock\" IN (0, 1)), \"enabled\" INTEGER NOT NULL DEFAULT 1 CHECK (\"enabled\" IN (0, 1)), \"created_at\" INTEGER NOT NULL);"
+          "sql": "CREATE TABLE IF NOT EXISTS \"blocked_app\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"platform_ref\" TEXT NOT NULL UNIQUE, \"label\" TEXT NULL, \"cards_required\" INTEGER NOT NULL DEFAULT 3, \"unlock_minutes\" INTEGER NOT NULL DEFAULT 10, \"enabled\" INTEGER NOT NULL DEFAULT 1 CHECK (\"enabled\" IN (0, 1)), \"created_at\" INTEGER NOT NULL);"
         }
       ]
     },
@@ -2047,7 +1263,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"gate_session\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"blocked_app_id\" INTEGER NULL REFERENCES blocked_app (id) ON DELETE SET NULL, \"opened_at\" INTEGER NOT NULL, \"closed_at\" INTEGER NULL, \"cards_seen\" INTEGER NOT NULL DEFAULT 0, \"result\" TEXT NULL CHECK(\"result\" IN ('passed', 'emergency', 'dismissed', 'prayer_locked', 'error')));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"gate_session\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"blocked_app_id\" INTEGER NULL REFERENCES blocked_app (id) ON DELETE SET NULL, \"opened_at\" INTEGER NOT NULL, \"closed_at\" INTEGER NULL, \"cards_seen\" INTEGER NOT NULL DEFAULT 0, \"result\" TEXT NULL CHECK(\"result\" IN ('passed', 'emergency', 'dismissed', 'error')));"
         }
       ]
     },
@@ -2102,24 +1318,6 @@
         {
           "dialect": "sqlite",
           "sql": "CREATE UNIQUE INDEX card_event_seen_unique ON card_event (date, card_id, context) WHERE \"action\" = 'seen'"
-        }
-      ]
-    },
-    {
-      "name": "srs_item_due",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE INDEX srs_item_due ON srs_item (due)"
-        }
-      ]
-    },
-    {
-      "name": "srs_review_lemma",
-      "sql": [
-        {
-          "dialect": "sqlite",
-          "sql": "CREATE INDEX srs_review_lemma ON srs_review (lemma_id)"
         }
       ]
     },

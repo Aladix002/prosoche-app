@@ -5,8 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/data/blocker/blocked_apps_repository.dart';
-import 'package:prosoche/data/repositories/settings/settings_providers.dart';
-import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/settings/blocking/blocking_providers.dart';
 import 'package:prosoche/features/settings/blocking/blocking_widgets.dart';
 import 'package:prosoche/features/settings/settings_paths.dart';
@@ -111,9 +109,6 @@ class _BlockingScreenState extends ConsumerState<BlockingScreen> {
     final health = overview.health;
     final apps = ref.watch(blockedAppsProvider);
     final stats = ref.watch(gateStatsProvider).value;
-    final prayerMinutes = ref
-        .watch(settingOf(SettingsKeys.blockerPrayerLockMinutes))
-        .value;
     final statusText = switch (health) {
       GateHealth.off => l10n.blkStatusOff,
       GateHealth.running => l10n.blkStatusRunning,
@@ -188,31 +183,6 @@ class _BlockingScreenState extends ConsumerState<BlockingScreen> {
             icon: Icons.add,
             expand: true,
             onPressed: () => unawaited(context.push(BlockingPaths.add)),
-          ),
-        ),
-        SettingsSection(l10n.blkPrayerSection, help: l10n.blkPrayerHelp),
-        Padding(
-          padding: const EdgeInsetsDirectional.symmetric(
-            horizontal: SkSpace.space16,
-          ),
-          child: CountStepper(
-            key: const ValueKey('blocking:prayer'),
-            label: l10n.blkPrayerMinutes,
-            value: (prayerMinutes ?? 15).clamp(
-              BlockedAppLimits.minPrayerLock,
-              BlockedAppLimits.maxPrayerLock,
-            ),
-            min: BlockedAppLimits.minPrayerLock,
-            max: BlockedAppLimits.maxPrayerLock,
-            step: 5,
-            format: (v) => formatMinutes(context, v),
-            onChanged: prayerMinutes == null
-                ? null
-                : (v) => unawaited(
-                    ref
-                        .read(settingsRepositoryProvider)
-                        .set(SettingsKeys.blockerPrayerLockMinutes, v),
-                  ),
           ),
         ),
         SettingsSection(l10n.blkStatsSection, help: l10n.blkStatsHelp),

@@ -108,13 +108,6 @@ class BlockerHostApiImpl(
 
     override fun deviceManufacturer(): String = Build.MANUFACTURER.orEmpty().lowercase(Locale.ROOT)
 
-    override fun schedulePrayerLocks(startEpochMs: List<Long>, durationMinutes: Long) {
-        if (durationMinutes !in 0..UnlockStore.MAX_MINUTES) {
-            throw FlutterError("invalid_target", "duration out of range", null)
-        }
-        prefs.setPrayerLocks(startEpochMs, durationMinutes.toInt())
-    }
-
     private fun requireRef(ref: String) {
         if (!isValidPackageName(ref)) throw FlutterError("invalid_target", "invalid ref", null)
     }

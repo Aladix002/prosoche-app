@@ -3,9 +3,8 @@ import 'package:prosoche/ui/theme/prosoche_colors.dart';
 import 'package:prosoche/ui/theme/prosoche_motion.dart';
 import 'package:prosoche/ui/theme/prosoche_spacing.dart';
 import 'package:prosoche/ui/theme/prosoche_typography.dart';
-import 'package:prosoche/ui/theme/tajwid_colors.dart';
 
-/// Pristup k tokenom: `context.sk.colors`, `.tajwid`, `.type`, `.space`,
+/// Pristup k tokenom: `context.sk.colors`, `.type`, `.space`,
 /// `.motion` (docs/01 3.1).
 extension SkContextX on BuildContext {
   SkTokens get sk => SkTokens._(this);
@@ -26,10 +25,6 @@ class SkTokens {
   ProsocheColors get colors =>
       _theme.extension<ProsocheColors>() ??
       (_isDark ? ProsocheColors.dark : ProsocheColors.light);
-
-  TajwidColors get tajwid =>
-      _theme.extension<TajwidColors>() ??
-      (_isDark ? TajwidColors.dark : TajwidColors.light);
 
   ProsocheTypography get type =>
       _theme.extension<ProsocheTypography>() ??

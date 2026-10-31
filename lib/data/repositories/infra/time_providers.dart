@@ -9,7 +9,7 @@ import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
 /// Inicializuje databazu casovych zon balika `timezone` (raz za proces).
-/// Potrebuje ju `PrayerSchedule` a prepocet casov medzi zonami.
+/// Potrebuje ju planovanie notifikacii a prepocet casov medzi zonami.
 void ensureTimeZoneData() {
   if (_tzReady) return;
   tzdata.initializeTimeZones();
@@ -42,7 +42,7 @@ final FutureProvider<String> deviceTimeZoneProvider = FutureProvider<String>((
 }, name: 'deviceTimeZoneProvider');
 
 /// Jazyk systemu (ISO 639-1), z ktoreho sa berie predvolba `ui.locale`.
-/// V testoch `deviceLanguageProvider.overrideWithValue('ur')`.
+/// V testoch `deviceLanguageProvider.overrideWithValue('de')`.
 final Provider<String> deviceLanguageProvider = Provider<String>(
   (ref) => PlatformDispatcher.instance.locale.languageCode,
   name: 'deviceLanguageProvider',
@@ -87,8 +87,8 @@ class LocalDateNotifier extends Notifier<LocalDate> {
   }
 }
 
-/// Tik raz za minutu (zarovnany na celu minutu) pre odpocet do dalsej
-/// modlitby (docs/02 A2). Prvy tik hned.
+/// Tik raz za minutu (zarovnany na celu minutu) pre odpocty v UI.
+/// Prvy tik hned.
 final StreamProvider<DateTime> minuteTickProvider = StreamProvider<DateTime>((
   ref,
 ) {

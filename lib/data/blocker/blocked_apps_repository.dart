@@ -19,10 +19,6 @@ abstract final class BlockedAppLimits {
   static const maxMinutes = 60;
   static const minutesStep = 5;
   static const defaultMinutes = 10;
-
-  /// `blocker.prayer_lock_minutes` v A10.1.
-  static const minPrayerLock = 5;
-  static const maxPrayerLock = 30;
 }
 
 /// Riadok `blocked_app` pre nastavenia brany (O5, A10.1, A10.2).
@@ -34,7 +30,6 @@ final class BlockedApp {
     required this.cardsRequired,
     required this.unlockMinutes,
     this.label,
-    this.prayerLock = false,
     this.enabled = true,
   });
 
@@ -45,7 +40,6 @@ final class BlockedApp {
   final String? label;
   final int cardsRequired;
   final int unlockMinutes;
-  final bool prayerLock;
   final bool enabled;
 
   String get displayName => label ?? ref;
@@ -58,19 +52,11 @@ final class BlockedApp {
       other.label == label &&
       other.cardsRequired == cardsRequired &&
       other.unlockMinutes == unlockMinutes &&
-      other.prayerLock == prayerLock &&
       other.enabled == enabled;
 
   @override
-  int get hashCode => Object.hash(
-    id,
-    ref,
-    label,
-    cardsRequired,
-    unlockMinutes,
-    prayerLock,
-    enabled,
-  );
+  int get hashCode =>
+      Object.hash(id, ref, label, cardsRequired, unlockMinutes, enabled);
 }
 
 /// Lokalna statistika brany (A10.1). Nikdy neodchadza z telefonu.
@@ -113,15 +99,10 @@ final class GateStats {
 /// Zmena nastaveni appky (A10.2); null pole sa nemeni.
 @immutable
 final class BlockedAppPatch {
-  const BlockedAppPatch({
-    this.cardsRequired,
-    this.unlockMinutes,
-    this.prayerLock,
-  });
+  const BlockedAppPatch({this.cardsRequired, this.unlockMinutes});
 
   final int? cardsRequired;
   final int? unlockMinutes;
-  final bool? prayerLock;
 }
 
 /// Blokovane appky v user.db (zdroj pravdy) a ich zrkadlo v nativnej
@@ -173,7 +154,6 @@ class DriftBlockedAppsRepository implements BlockedAppsRepository {
     label: r.label,
     cardsRequired: r.cardsRequired,
     unlockMinutes: r.unlockMinutes,
-    prayerLock: r.prayerLock,
     enabled: r.enabled,
   );
 
@@ -242,7 +222,6 @@ class DriftBlockedAppsRepository implements BlockedAppsRepository {
         BlockedAppLimits.minMinutes,
         BlockedAppLimits.maxMinutes,
       ),
-      prayerLock: patch.prayerLock,
     );
     await sync();
   }

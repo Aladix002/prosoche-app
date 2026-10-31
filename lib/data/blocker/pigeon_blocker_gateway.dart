@@ -115,17 +115,6 @@ class PigeonBlockerGateway implements BlockerGateway {
   Future<Result<String>> deviceManufacturer() =>
       _guard('deviceManufacturer', _api.deviceManufacturer);
 
-  @override
-  Future<Result<void>> schedulePrayerLocks(
-    List<DateTime> starts, {
-    required int durationMinutes,
-  }) => _guard(
-    'schedulePrayerLocks',
-    () => _api.schedulePrayerLocks([
-      for (final s in starts) s.millisecondsSinceEpoch,
-    ], durationMinutes),
-  );
-
   static BlockerPermissionState _permission(api.BlockerPermission p) =>
       BlockerPermissionState.values[p.index];
 

@@ -12,7 +12,7 @@ abstract final class SkSpace {
   /// Padding feed karty, medzi sekciami.
   static const double space24 = 24;
 
-  /// Medzi arabskym blokom a prekladom.
+  /// Medzi hlavnym blokom a textom karty.
   static const double space32 = 32;
   static const double space48 = 48;
   static const double space64 = 64;

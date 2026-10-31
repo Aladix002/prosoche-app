@@ -5,18 +5,16 @@ import 'package:prosoche/core/router/deep_link.dart';
 import 'package:prosoche/core/router/dev_routes.dart';
 import 'package:prosoche/core/router/navigator_keys.dart';
 import 'package:prosoche/core/router/routes.dart';
-import 'package:prosoche/features/calendar/calendar_routes.dart';
 import 'package:prosoche/features/feed/feed_routes.dart';
 import 'package:prosoche/features/gate/gate_routes.dart';
 import 'package:prosoche/features/journey/journey_routes.dart';
+import 'package:prosoche/features/library/library_routes.dart';
 import 'package:prosoche/features/onboarding/onboarding_guard.dart';
 import 'package:prosoche/features/onboarding/onboarding_routes.dart';
-import 'package:prosoche/features/prayer/prayer_routes.dart';
-import 'package:prosoche/features/quran/quran_routes.dart';
+import 'package:prosoche/features/practice/practice_routes.dart';
 import 'package:prosoche/features/settings/settings_routes.dart';
 import 'package:prosoche/features/shell/app_shell.dart';
 import 'package:prosoche/features/today/today_routes.dart';
-import 'package:prosoche/features/words/words_routes.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 export 'package:prosoche/core/router/navigator_keys.dart';
@@ -38,7 +36,7 @@ GoRouter appRouter(Ref ref) {
 /// featury v `lib/features/<f>/<f>_routes.dart`, tento subor ich len sklada.
 ///
 /// Routy vypnutych funkcii ([FeatureFlags]) sa neregistruju a ich cesty
-/// presmeruje [redirect] (gate -> Today, words -> Journey).
+/// presmeruje [redirect] (gate -> Today).
 ///
 /// [devTools] (flavor `dev`) prida vyvojarske routy ([devRoutes]); v `prod`
 /// sa neregistruju a `/dev/...` presmeruje na Today.
@@ -63,16 +61,14 @@ GoRouter buildAppRouter({
       builder: (context, state, shell) => AppShell(navigationShell: shell),
       branches: [
         StatefulShellBranch(routes: todayRoutes()),
-        StatefulShellBranch(routes: quranRoutes()),
-        StatefulShellBranch(routes: prayerRoutes()),
+        StatefulShellBranch(routes: libraryRoutes()),
+        StatefulShellBranch(routes: practiceRoutes()),
         StatefulShellBranch(routes: journeyRoutes()),
       ],
     ),
     // Fullscreen a push routy nad shellom (bez bottom nav).
     ...feedRoutes(),
     if (flags.gate) ...gateRoutes(),
-    if (flags.words) ...wordsRoutes(),
-    ...calendarRoutes(),
     ...settingsRoutes(gate: flags.gate),
     ...onboardingRoutes(gate: flags.gate),
     if (devTools) ...devRoutes(),
@@ -92,9 +88,6 @@ String? redirect(Uri uri, FeatureFlags flags, {bool devTools = false}) {
     return AppRoutes.today;
   }
   if (!devTools && _under(path, AppRoutes.dev)) return AppRoutes.today;
-  if (!flags.words && _under(path, WordsRoutes.root)) {
-    return AppRoutes.journey;
-  }
   return deepLink;
 }
 

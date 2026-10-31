@@ -18,7 +18,6 @@ import 'package:prosoche/domain/quests/quests.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/cards/cards.dart';
 import 'package:prosoche/features/feed/feed_rules.dart';
-import 'package:prosoche/features/quran/quran_routes.dart';
 import 'package:prosoche/ui/ui.dart';
 
 /// Fullscreen denna sada (docs/02 A3): vertikalny `PageView`, karta je
@@ -498,29 +497,18 @@ class _FeedBodyState extends ConsumerState<_FeedBody> {
     final quests = ref.watch(questsProvider(widget.date)).value ?? const [];
     final simple = ref.watch(settingOf(SettingsKeys.simpleMode)).value ?? false;
     final streak = simple ? null : ref.watch(streakProvider).value?.current;
-    final next = ref.watch(nextPrayerProvider).value;
     final act = quests
         .where(
           (q) => q.slot == QuestSlot.act && q.status == QuestStatus.pending,
         )
         .firstOrNull;
     final completedAt = _state.completedAt;
-    final l10n = context.l10n;
     return DoneSummary(
       cards: _state.n,
-      verses: _state.set.contentCards
-          .where((c) => c.cardId is AyahCardId)
-          .length,
       questsDone: quests.where((q) => q.isDone).length,
       questsTotal: quests.length,
       openDeed: act?.title,
       streak: streak,
-      nextPrayer: next == null
-          ? null
-          : (
-              prayer: l10n.notifPrayerName(next.prayer.name),
-              time: context.formats.time(next.time),
-            ),
       countedFor:
           completedAt != null &&
               LocalDate.fromDateTime(completedAt) != widget.date
@@ -529,19 +517,13 @@ class _FeedBodyState extends ConsumerState<_FeedBody> {
     );
   }
 
-  void _keepReading() {
-    final next = nextReadingAyah(ref.read(readingPositionProvider).value);
-    context.pushReplacement(
-      QuranRoutes.read(next.surah, ayahId: next.value, mode: 'khatm'),
-    );
-  }
+  /// "Keep reading": tab Library (citanie celych diel dodá F-01).
+  void _keepReading() => context.go(AppRoutes.library);
 
   Widget _page(BuildContext context, int i) {
     final l10n = context.l10n;
     final Widget child;
     if (i == _donePage) {
-      // Pozicia citania pre "Keep reading" (stream musi mat posluchaca).
-      ref.watch(readingPositionProvider);
       final act = ref
           .watch(questsProvider(widget.date))
           .value

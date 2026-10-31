@@ -1,8 +1,8 @@
 /// Cesty a nazvy rout (docs/01 kap. 4.2). Meni ich len integracia.
 abstract final class AppRoutes {
   static const today = '/today';
-  static const quran = '/quran';
-  static const prayer = '/prayer';
+  static const library = '/library';
+  static const practice = '/practice';
   static const journey = '/journey';
   static const feed = '/feed';
   static const gate = '/gate';
@@ -14,8 +14,8 @@ abstract final class AppRoutes {
 
 abstract final class AppRouteNames {
   static const today = 'today';
-  static const quran = 'quran';
-  static const prayer = 'prayer';
+  static const library = 'library';
+  static const practice = 'practice';
   static const journey = 'journey';
   static const feed = 'feed';
   static const gate = 'gate';

@@ -6,6 +6,5 @@ part of 'content_meta_dao.dart';
 mixin _$ContentMetaDaoMixin on DatabaseAccessor<ContentDb> {
   $ContentMetaTable get contentMeta => attachedDatabase.contentMeta;
   $SourcesTable get sources => attachedDatabase.sources;
-  $SurahsTable get surahs => attachedDatabase.surahs;
-  $AyahsTable get ayahs => attachedDatabase.ayahs;
+  $QuotesTable get quotes => attachedDatabase.quotes;
 }

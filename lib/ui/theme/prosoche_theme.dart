@@ -3,7 +3,6 @@ import 'package:prosoche/ui/theme/prosoche_colors.dart';
 import 'package:prosoche/ui/theme/prosoche_motion.dart';
 import 'package:prosoche/ui/theme/prosoche_spacing.dart';
 import 'package:prosoche/ui/theme/prosoche_typography.dart';
-import 'package:prosoche/ui/theme/tajwid_colors.dart';
 import 'package:prosoche/ui/tokens/sk_fonts.dart';
 import 'package:prosoche/ui/tokens/sk_space.dart';
 
@@ -14,7 +13,6 @@ import 'package:prosoche/ui/tokens/sk_space.dart';
 abstract final class ProsocheTheme {
   static ThemeData light({
     bool highContrast = false,
-    SkArabicScale arabicScale = SkArabicScale.m,
     bool reduceMotion = false,
     String uiFontFamily = SkFonts.inter,
     double uiHeightFactor = 1,
@@ -22,9 +20,7 @@ abstract final class ProsocheTheme {
     colors: highContrast
         ? ProsocheColors.lightHighContrast
         : ProsocheColors.light,
-    tajwid: TajwidColors.light,
     brightness: Brightness.light,
-    arabicScale: arabicScale,
     reduceMotion: reduceMotion,
     uiFontFamily: uiFontFamily,
     uiHeightFactor: uiHeightFactor,
@@ -32,7 +28,6 @@ abstract final class ProsocheTheme {
 
   static ThemeData dark({
     bool highContrast = false,
-    SkArabicScale arabicScale = SkArabicScale.m,
     bool reduceMotion = false,
     String uiFontFamily = SkFonts.inter,
     double uiHeightFactor = 1,
@@ -40,9 +35,7 @@ abstract final class ProsocheTheme {
     colors: highContrast
         ? ProsocheColors.darkHighContrast
         : ProsocheColors.dark,
-    tajwid: TajwidColors.dark,
     brightness: Brightness.dark,
-    arabicScale: arabicScale,
     reduceMotion: reduceMotion,
     uiFontFamily: uiFontFamily,
     uiHeightFactor: uiHeightFactor,
@@ -89,9 +82,7 @@ abstract final class ProsocheTheme {
 
   static ThemeData build({
     required ProsocheColors colors,
-    required TajwidColors tajwid,
     required Brightness brightness,
-    SkArabicScale arabicScale = SkArabicScale.m,
     bool reduceMotion = false,
     String uiFontFamily = SkFonts.inter,
     double uiHeightFactor = 1,
@@ -139,8 +130,7 @@ abstract final class ProsocheTheme {
       visualDensity: VisualDensity.standard,
       extensions: [
         c,
-        tajwid,
-        ProsocheTypography.forColor(c.textPrimary, arabicScale: arabicScale),
+        ProsocheTypography.forColor(c.textPrimary),
         const ProsocheSpacing(),
         if (reduceMotion)
           ProsocheMotion.reducedMotion

@@ -58,7 +58,6 @@ class FakeBlockedAppsRepository implements BlockedAppsRepository {
               label: a.label,
               cardsRequired: cardsRequired,
               unlockMinutes: unlockMinutes,
-              prayerLock: o.prayerLock,
               enabled: o.enabled,
             )
           else
@@ -89,7 +88,6 @@ class FakeBlockedAppsRepository implements BlockedAppsRepository {
       label: o.label,
       cardsRequired: patch.cardsRequired ?? o.cardsRequired,
       unlockMinutes: patch.unlockMinutes ?? o.unlockMinutes,
-      prayerLock: patch.prayerLock ?? o.prayerLock,
       enabled: o.enabled,
     );
     await sync();

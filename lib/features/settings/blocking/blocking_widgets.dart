@@ -639,7 +639,6 @@ class BlockedAppTile extends StatelessWidget {
       app.cardsRequired,
       ProsocheFormats(Localizations.localeOf(context))
           .number(app.unlockMinutes),
-      app.prayerLock.toString(),
     );
     final n = unlocks;
     return ListTile(

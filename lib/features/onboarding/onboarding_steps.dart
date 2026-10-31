@@ -1,9 +1,8 @@
-/// Kroky onboardingu O1-O7 (docs/02 A1). [key] je segment routy
+/// Kroky onboardingu (docs/02 A1, bez polohy a modlitieb). [key] je segment routy
 /// `/onboarding/:step` a hodnota `settings.onboarding.step`.
 enum OnboardingStep {
-  language('language'),
-  niyyah('niyyah'),
-  location('location'),
+  welcome('welcome'),
+  intention('intention'),
   notifications('notifications'),
   gateApps('gate_apps', gateOnly: true),
   permissions('permissions', gateOnly: true),
@@ -13,11 +12,12 @@ enum OnboardingStep {
 
   final String key;
 
-  /// Len pri `FEATURE_GATE` (O5, O6); v `lite` ma onboarding 5 krokov.
+  /// Len pri `FEATURE_GATE` (O5, O6); v `lite` ma onboarding 4 kroky.
   final bool gateOnly;
 
-  /// O1 a O7 sa nedaju preskocit (O7 je povinne rozhodnutie).
-  bool get skippable => this != language && this != privacy;
+  /// Uvitanie a sukromie sa nedaju preskocit (sukromie je povinne
+  /// rozhodnutie).
+  bool get skippable => this != welcome && this != privacy;
 
   static OnboardingStep? tryParse(String? key) {
     for (final s in values) {

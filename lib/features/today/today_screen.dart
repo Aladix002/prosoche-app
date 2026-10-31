@@ -4,27 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:prosoche/core/clock/clock_provider.dart';
 import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/core/router/routes.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
 import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/quests/quests.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
-import 'package:prosoche/features/calendar/calendar_routes.dart';
 import 'package:prosoche/features/cards/cards.dart';
-import 'package:prosoche/features/feed/feed_rules.dart';
-import 'package:prosoche/features/quran/quran_routes.dart';
-import 'package:prosoche/features/ramadan/ramadan_today_card.dart';
 import 'package:prosoche/features/settings/blocking/blocking_providers.dart';
 import 'package:prosoche/features/settings/settings_routes.dart';
 import 'package:prosoche/features/shell/day_phase.dart';
-import 'package:prosoche/features/today/today_providers.dart';
 import 'package:prosoche/ui/i18n/i18n.dart';
 import 'package:prosoche/ui/ui.dart';
 
-/// Dnes (docs/02 A2): datumy, dalsia modlitba, questy dna, vstup do sady,
-/// streak a umysel. Ziadny nekonecny obsah ani badge (docs/01 1.2).
+/// Dnes (docs/02 A2): datum, questy dna, vstup do sady, streak a umysel. Ziadny nekonecny obsah ani badge (docs/01 1.2).
 ///
 /// Polnoc prekresli obrazovku cez `localDateProvider` (casovac) a navrat
 /// do popredia ho prepocita (zmena zony, dlhe spanie).
@@ -68,15 +61,13 @@ class _TodayScreenState extends ConsumerState<TodayScreen>
           children: [
             _Header(date: localDate),
             const _GatePausedBanner(),
-            // F-08, len pri FEATURE_RAMADAN_LIGHT a v sezone.
-            const RamadanTodayCard(),
             const SizedBox(height: SkSpace.space24),
             _Quests(date: setDate),
             const SizedBox(height: SkSpace.space24),
             const _SetPanel(child: TodaySetCta()),
             const SizedBox(height: SkSpace.space24),
             const _StreakLine(),
-            const _NiyyahLine(),
+            const _IntentionLine(),
             const SizedBox(height: SkSpace.space16),
           ],
         ),
@@ -94,8 +85,6 @@ class _Header extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final sk = context.sk;
-    final hijri = ref.watch(hijriDateProvider(date)).value;
-    final event = ref.watch(todayEventTitleProvider(date)).value;
     // D-05: hlavicka s atmosferou podla casti dna (jemny gradient a vzor).
     return SkAtmospherePanel(
       phase: watchDayPhase(ref),
@@ -143,17 +132,11 @@ class _Header extends ConsumerWidget {
               ),
             ],
           ),
-          if (hijri != null)
-            Semantics(
-              hint: l10n.todayCalendarHint,
-              child: SkHijriHeader(
-                date: context.hijriLabel(hijri),
-                eventLabel: event,
-                onTap: () => context.push(CalendarRoutes.root),
-              ),
-            ),
-          const SizedBox(height: SkSpace.space12),
-          const _PrayerChip(),
+          const SizedBox(height: SkSpace.space8),
+          Text(
+            context.longDateLabel(date),
+            style: sk.text.titleMedium!.copyWith(color: sk.colors.accentText),
+          ),
         ],
       ),
     );
@@ -208,42 +191,6 @@ class _GatePausedBanner extends ConsumerWidget {
   }
 }
 
-/// "Asr in 1 h 12 min" alebo vyzva na nastavenie polohy.
-class _PrayerChip extends ConsumerWidget {
-  const _PrayerChip();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = context.l10n;
-    final next = ref.watch(nextPrayerProvider);
-    final now =
-        ref.watch(minuteTickProvider).value ?? ref.read(appClockProvider).now();
-    if (!next.hasValue) return const SizedBox(height: SkSpace.minTouchTarget);
-    final p = next.value;
-    final Widget chip;
-    if (p == null) {
-      chip = SkNextPrayerChip(
-        label: l10n.todaySetLocation,
-        state: SkNextPrayerState.unavailable,
-        onTap: () => context.push('${SettingsRoutes.prayer}/location'),
-      );
-    } else {
-      final name = l10n.notifPrayerName(p.prayer.name);
-      final left = p.time.difference(now);
-      chip = SkNextPrayerChip(
-        label: left.inMinutes < 1
-            ? l10n.todayPrayerNow(name)
-            : l10n.todayNextPrayer(name, durationLabel(context, left)),
-        state: left.inMinutes < 1
-            ? SkNextPrayerState.now
-            : SkNextPrayerState.normal,
-        onTap: () => context.go(AppRoutes.prayer),
-      );
-    }
-    return Align(alignment: AlignmentDirectional.centerStart, child: chip);
-  }
-}
-
 /// "1 h 12 min" / "45 min" (cislice podla jazyka UI).
 String durationLabel(BuildContext context, Duration d) {
   final l10n = context.l10n;
@@ -260,9 +207,9 @@ String questTitle(BuildContext context, QuestView q) {
   if (q.title case final t? when t.isNotEmpty) return t;
   final count = q.genericCount ?? 1;
   return switch (q.generic) {
-    GenericQuest.readVerses => l10n.questGenericReadVerses(count),
-    GenericQuest.learnWords => l10n.questGenericLearnWords(count),
-    GenericQuest.learnCards => l10n.questGenericLearnCards(count),
+    GenericQuest.readCards => l10n.questGenericReadCards(count),
+    GenericQuest.learnIdea => l10n.questGenericLearnIdea,
+    GenericQuest.actPractice => l10n.questGenericActPractice,
     null => questSlotLabel(context, q.slot),
   };
 }
@@ -321,12 +268,8 @@ class _Quests extends ConsumerWidget {
   void _open(BuildContext context, WidgetRef ref) {
     final set = ref.read(dailySetProvider(date)).value;
     if (set?.isCompleted ?? false) {
-      final next = nextReadingAyah(ref.read(readingPositionProvider).value);
-      unawaited(
-        context.push(
-          QuranRoutes.read(next.surah, ayahId: next.value, mode: 'khatm'),
-        ),
-      );
+      // Po dokonceni sady volne citanie v Library (F-01).
+      context.go(AppRoutes.library);
     } else {
       unawaited(context.push(AppRoutes.feed));
     }
@@ -337,9 +280,7 @@ class _Quests extends ConsumerWidget {
     final l10n = context.l10n;
     final sk = context.sk;
     final quests = ref.watch(questsProvider(date));
-    ref
-      ..watch(dailySetProvider(date))
-      ..watch(readingPositionProvider);
+    ref.watch(dailySetProvider(date));
     final Widget body;
     if (quests.hasError && !quests.isLoading && !quests.hasValue) {
       body = SkErrorState(
@@ -449,7 +390,6 @@ class _TodaySetCtaState extends ConsumerState<TodaySetCta> {
     final dateAsync = ref.watch(activeSetDateProvider);
     final date = dateAsync.value;
     final set = date == null ? null : ref.watch(dailySetProvider(date));
-    ref.watch(readingPositionProvider);
     final value = set?.value;
     if (value != null) _timeout?.cancel();
     final failed =
@@ -490,22 +430,9 @@ class _TodaySetCtaState extends ConsumerState<TodaySetCta> {
           ),
           const SizedBox(height: SkSpace.space12),
           SkButton.secondary(
-            label: l10n.todayCtaReadQuran,
+            label: l10n.todayCtaKeepReading,
             expand: true,
-            onPressed: () {
-              final next = nextReadingAyah(
-                ref.read(readingPositionProvider).value,
-              );
-              unawaited(
-                context.push(
-                  QuranRoutes.read(
-                    next.surah,
-                    ayahId: next.value,
-                    mode: 'khatm',
-                  ),
-                ),
-              );
-            },
+            onPressed: () => context.go(AppRoutes.library),
           ),
         ],
       );
@@ -593,20 +520,20 @@ class _StreakLine extends ConsumerWidget {
   }
 }
 
-/// Umysel pouzivatela (`niyyah.text`); ak nie je, riadok sa nezobrazi.
-class _NiyyahLine extends ConsumerWidget {
-  const _NiyyahLine();
+/// Umysel pouzivatela (`intention.text`); ak nie je, riadok sa nezobrazi.
+class _IntentionLine extends ConsumerWidget {
+  const _IntentionLine();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final text = ref.watch(settingOf(SettingsKeys.niyyahText)).value;
+    final text = ref.watch(settingOf(SettingsKeys.intentionText)).value;
     if (text == null || text.isEmpty) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsetsDirectional.only(top: SkSpace.space16),
       child: Text(
-        context.l10n.todayNiyyah(text),
+        context.l10n.todayIntention(text),
         textAlign: TextAlign.center,
-        // Umysel ako tichy citat (Literata), bez kurzivy (aj arabsky vstup).
+        // Umysel ako tichy citat (Literata), bez kurzivy.
         style: context.sk.type.reflection.copyWith(
           fontSize: 16,
           height: 1.5,

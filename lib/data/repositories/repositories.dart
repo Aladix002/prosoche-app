@@ -2,16 +2,11 @@
 /// importuju len tento subor; fake implementacie su v `test/fakes/`.
 library;
 
-export 'package:prosoche/data/repositories/calendar/calendar_repository.dart';
 export 'package:prosoche/data/repositories/cards/card_actions_repository.dart';
 export 'package:prosoche/data/repositories/cards/card_content_repository.dart';
-export 'package:prosoche/data/repositories/cards/hadith_extra_repository.dart';
 export 'package:prosoche/data/repositories/infra/databases.dart';
 export 'package:prosoche/data/repositories/infra/time_providers.dart';
-export 'package:prosoche/data/repositories/prayer/city_repository.dart';
-export 'package:prosoche/data/repositories/prayer/prayer_repository.dart';
 export 'package:prosoche/data/repositories/providers.dart';
-export 'package:prosoche/data/repositories/quran/quran_repository.dart';
 export 'package:prosoche/data/repositories/settings/drift_settings_repository.dart';
 export 'package:prosoche/data/repositories/settings/settings_providers.dart';
 export 'package:prosoche/data/repositories/today/daily_set_repository.dart';

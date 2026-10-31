@@ -8,7 +8,7 @@ import 'package:prosoche/features/onboarding/onboarding_steps.dart';
 /// Vlastnik: F-01.
 abstract final class OnboardingRoutes {
   static const root = '/onboarding';
-  static const firstStep = 'language';
+  static const firstStep = 'welcome';
 
   static String step(String step) => '$root/$step';
 }

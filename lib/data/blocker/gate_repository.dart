@@ -4,7 +4,6 @@ import 'package:prosoche/core/clock/clock_provider.dart';
 import 'package:prosoche/data/db/user_db.dart';
 import 'package:prosoche/data/repositories/infra/card_events.dart';
 import 'package:prosoche/data/repositories/infra/databases.dart';
-import 'package:prosoche/data/repositories/infra/reading_progress.dart';
 import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/quests/quests.dart' as q;
 
@@ -19,7 +18,6 @@ final class GateTarget {
     required this.cardsRequired,
     required this.unlockMinutes,
     this.label,
-    this.prayerLock = false,
     this.enabled = true,
   });
 
@@ -30,7 +28,6 @@ final class GateTarget {
   final String? label;
   final int cardsRequired;
   final int unlockMinutes;
-  final bool prayerLock;
   final bool enabled;
 
   @override
@@ -41,19 +38,11 @@ final class GateTarget {
       other.label == label &&
       other.cardsRequired == cardsRequired &&
       other.unlockMinutes == unlockMinutes &&
-      other.prayerLock == prayerLock &&
       other.enabled == enabled;
 
   @override
-  int get hashCode => Object.hash(
-    id,
-    ref,
-    label,
-    cardsRequired,
-    unlockMinutes,
-    prayerLock,
-    enabled,
-  );
+  int get hashCode =>
+      Object.hash(id, ref, label, cardsRequired, unlockMinutes, enabled);
 }
 
 /// Zapisy brany do user.db: `gate_session`, `unlock_event` a volne citanie
@@ -79,12 +68,9 @@ abstract interface class GateRepository {
     required int minutes,
   });
 
-  /// `reading_position`; null = pred 1:1.
-  Future<AyahId?> readingPosition();
-
-  /// Vers volneho citania v brane (B11): `card_event{seen, context=gate,
-  /// pos=null}` a posun `reading_position` (ak je vers za poziciou).
-  Future<void> markFreeReading(LocalDate date, AyahId ayah);
+  /// Karta volneho citania v brane (B11): `card_event{seen, context=gate,
+  /// pos=null}`.
+  Future<void> markFreeReading(LocalDate date, CardId card);
 }
 
 class DriftGateRepository implements GateRepository {
@@ -104,7 +90,6 @@ class DriftGateRepository implements GateRepository {
       label: row.label,
       cardsRequired: row.cardsRequired,
       unlockMinutes: row.unlockMinutes,
-      prayerLock: row.prayerLock,
       enabled: row.enabled,
     );
   }
@@ -138,22 +123,15 @@ class DriftGateRepository implements GateRepository {
   );
 
   @override
-  Future<AyahId?> readingPosition() async =>
-      readingPositionOf(await _db.readingDao.readingPosition());
-
-  @override
-  Future<void> markFreeReading(LocalDate date, AyahId ayah) async {
-    final now = _clock.now();
-    final first = await logCardEvent(
+  Future<void> markFreeReading(LocalDate date, CardId card) async {
+    await logCardEvent(
       _db,
       date: date,
-      card: AyahCardId(ayah),
+      card: card,
       action: q.CardAction.seen,
       context: q.CardContext.gate,
-      now: now,
+      now: _clock.now(),
     );
-    if (!first) return;
-    await advanceReadingPosition(_db, ayah, now, strict: false);
   }
 }
 

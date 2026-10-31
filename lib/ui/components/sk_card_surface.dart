@@ -14,14 +14,14 @@ enum SkCardVariant {
   /// Brana: ako full, bez bookmark/share (akcie doda volajuci).
   gate,
 
-  /// V liste: `radiusMd`, bez arabciny (len referencia a nahlad prekladu).
+  /// V liste: `radiusMd`, bez hlavneho bloku (len referencia a nahlad).
   compact,
 }
 
-/// Kontajner kariet: eyebrow (referencia), akcie v hlavicke, arabsky blok,
-/// preklad, atribucia a volitelna akcna oblast.
+/// Kontajner kariet: eyebrow (referencia), akcie v hlavicke, hlavny blok,
+/// text, atribucia a volitelna akcna oblast.
 ///
-/// Arabsky blok nikdy nie je prekryty (ziadny gradient ani badge nad nim).
+/// Hlavny blok nikdy nie je prekryty (ziadny gradient ani badge nad nim).
 /// Pri preteceni obsah scrolluje vnutri karty a screen reader dostane
 /// "Scroll for more".
 class SkCardSurface extends StatelessWidget {
@@ -30,7 +30,7 @@ class SkCardSurface extends StatelessWidget {
     this.eyebrow,
     this.eyebrowDetail,
     this.headerActions = const [],
-    this.arabic,
+    this.lead,
     this.translation,
     this.attribution,
     this.footer,
@@ -40,29 +40,29 @@ class SkCardSurface extends StatelessWidget {
     this.onTap,
     super.key,
   }) : assert(
-         variant != SkCardVariant.compact || arabic == null,
-         'Compact karta arabcinu nezobrazuje (docs/01 3.2).',
+         variant != SkCardVariant.compact || lead == null,
+         'Compact karta hlavny blok nezobrazuje (docs/01 3.2).',
        );
 
   final SkCardVariant variant;
 
-  /// Napr. "AL-BAQARAH 2:255" (caption, textSecondary).
+  /// Napr. "QUOTE" (caption, textSecondary).
   final String? eyebrow;
 
-  /// Referencia pod typom (napr. "Al-Baqarah 2:255"): plna karta ju ukaze
+  /// Referencia pod typom (napr. "Meditations 2.1"): plna karta ju ukaze
   /// vyraznejsie na druhom riadku hlavicky (D-05).
   final String? eyebrowDetail;
 
   /// Bookmark, share, audio (48x48 targety).
   final List<Widget> headerActions;
 
-  /// `SkArabicText` (nie v compact).
-  final Widget? arabic;
+  /// Hlavny blok karty (nie v compact).
+  final Widget? lead;
 
-  /// Preklad (Text so stylom `context.sk.type.translation`).
+  /// Text karty (Text so stylom `context.sk.type.translation`).
   final Widget? translation;
 
-  /// "Translation: ..." (caption, textTertiary).
+  /// Atribucia, napr. "Marcus Aurelius, tr. George Long" (caption).
   final String? attribution;
 
   /// Akcia alebo oblast odpovede.
@@ -74,7 +74,7 @@ class SkCardSurface extends StatelessWidget {
   /// `SkErrorState` vnutri karty (napr. so "Skip this card").
   final Widget? error;
 
-  /// Napr. "Card 5 of 12, Al-Baqarah verse 255" (docs/01 8.1).
+  /// Napr. "Card 5 of 12, quote" (docs/01 8.1).
   final String? semanticLabel;
 
   /// Len pre compact (navigacia na detail). Plna karta nema ripple.
@@ -88,7 +88,7 @@ class SkCardSurface extends StatelessWidget {
     final c = sk.colors;
     final radius = BorderRadius.circular(_compact ? SkRadius.md : SkRadius.lg);
     final padding = _compact ? SkSpace.space16 : SkSpace.space24;
-    // Rozostup pismen len mimo RTL jazykov (arabske pismo by sa rozpadlo).
+    // Rozostup pismen len mimo RTL jazykov (spojite pismo by sa rozpadlo).
     final locale = Localizations.maybeLocaleOf(context);
     final ltr = locale == null || !ProsocheLocales.isRtl(locale);
 
@@ -157,9 +157,9 @@ class SkCardSurface extends StatelessWidget {
                   ))
           : null;
       final text = <Widget>[
-        ?arabic,
+        ?lead,
         if (translation != null) ...[
-          if (arabic != null)
+          if (lead != null)
             const Padding(
               // Spolu space32+ medzi arabcinou a prekladom (docs/01 2.4).
               padding: EdgeInsetsDirectional.symmetric(

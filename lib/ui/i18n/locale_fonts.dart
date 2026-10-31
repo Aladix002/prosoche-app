@@ -7,13 +7,9 @@ import 'package:prosoche/ui/tokens/sk_fonts.dart';
 abstract final class ProsocheFontFamilies {
   static const String inter = SkFonts.inter;
   static const String literata = SkFonts.literata;
-  static const String notoNaskhArabic = SkFonts.notoNaskhArabic;
-  static const String notoNastaliqUrdu = SkFonts.notoNastaliqUrdu;
-  static const String notoSansBengali = SkFonts.notoSansBengali;
 }
 
-/// Font a riadkovanie UI pre jeden jazyk. Koranovy text sem nepatri
-/// (Amiri Quran, len cez `SkArabicText`).
+/// Font a riadkovanie UI pre jeden jazyk.
 @immutable
 final class LocaleFontSpec {
   const LocaleFontSpec({
@@ -25,14 +21,14 @@ final class LocaleFontSpec {
 
   final String family;
 
-  /// Fallback pre znaky mimo [family] (latinka v arabskom UI, `ﷺ`, ...).
+  /// Fallback pre znaky mimo [family].
   final List<String> fallback;
 
   /// Nasobok `height` z typovej skaly (Inter 24/16 = 1.5).
   final double lineHeightScale;
 
-  /// Minimalna `height`; pisma s vysokymi tvarmi (Nastaliq) by sa pri
-  /// male `height` orezali.
+  /// Minimalna `height`; pisma s vysokymi tvarmi by sa pri malej
+  /// `height` orezali.
   final double minLineHeight;
 
   /// Vyska riadku pre styl s povodnou [height] (null = metriky fontu).
@@ -43,53 +39,18 @@ final class LocaleFontSpec {
   }
 }
 
-/// Vyber fontu UI podla jazyka (PLAN_VYVOJA U-02). Hodnoty riadkovania su
-/// vychodiskove, overia ich goldeny s realnymi fontami (Q-03).
+/// Vyber fontu UI podla jazyka (PLAN_VYVOJA U-02). v1 ma len latinku (EN);
+/// dalsie pisma sa pridaju s dalsimi jazykmi.
 abstract final class LocaleFonts {
   static const latin = LocaleFontSpec(
     family: ProsocheFontFamilies.inter,
-    fallback: [ProsocheFontFamilies.notoNaskhArabic],
-  );
-
-  static const arabic = LocaleFontSpec(
-    family: ProsocheFontFamilies.notoNaskhArabic,
-    fallback: [ProsocheFontFamilies.inter],
-    lineHeightScale: 1.15,
-    minLineHeight: 1.6,
-  );
-
-  /// Nastaliq ma velky vertikalny rozsah (sikme spojenia), preto vyrazne
-  /// vacsia vyska riadku.
-  static const urdu = LocaleFontSpec(
-    family: ProsocheFontFamilies.notoNastaliqUrdu,
-    fallback: [
-      ProsocheFontFamilies.notoNaskhArabic,
-      ProsocheFontFamilies.inter,
-    ],
-    lineHeightScale: 1.5,
-    minLineHeight: 2.2,
-  );
-
-  static const bengali = LocaleFontSpec(
-    family: ProsocheFontFamilies.notoSansBengali,
-    fallback: [
-      ProsocheFontFamilies.inter,
-      ProsocheFontFamilies.notoNaskhArabic,
-    ],
-    lineHeightScale: 1.15,
-    minLineHeight: 1.6,
+    fallback: SkFonts.uiFallback,
   );
 
   static LocaleFontSpec forLocale(Locale locale) =>
       forLanguage(locale.languageCode);
 
-  static LocaleFontSpec forLanguage(String languageCode) =>
-      switch (languageCode) {
-        'ar' => arabic,
-        'ur' => urdu,
-        'bn' => bengali,
-        _ => latin,
-      };
+  static LocaleFontSpec forLanguage(String languageCode) => latin;
 }
 
 /// Aplikuje font jazyka na [style]: rodina, fallback a riadkovanie

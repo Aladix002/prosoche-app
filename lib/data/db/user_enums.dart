@@ -1,4 +1,4 @@
-// Hodnoty ENUM stlpcov user.db (plan 5.2, docs/02 D1, D8, D10, D12).
+// Hodnoty ENUM stlpcov user.db (plan 5.2, docs/02 D1, D8, D12).
 // `wire` je text v DB; nazov v Darte je lowerCamelCase.
 import 'package:prosoche/data/db/converters.dart';
 
@@ -7,9 +7,7 @@ enum CardContext implements WireEnum {
   feed,
   gate,
   reader,
-  quiz,
-  saved,
-  review;
+  saved;
 
   @override
   String get wire => name;
@@ -23,10 +21,7 @@ enum CardAction implements WireEnum {
   unsaved('unsaved'),
   skipped('skipped'),
   shared('shared'),
-  audioPlayed('audio_played'),
   sourceOpened('source_opened'),
-  tafsirOpened('tafsir_opened'),
-  wordOpened('word_opened'),
   reported('reported');
 
   CardAction(this.wire);
@@ -66,67 +61,6 @@ enum QuestStatus implements WireEnum {
   String get wire => name;
 }
 
-/// `srs_item.state` (docs/02 D10).
-enum SrsState implements WireEnum {
-  fresh('new'),
-  learning('learning'),
-  review('review'),
-  relearning('relearning');
-
-  SrsState(this.wire);
-
-  @override
-  final String wire;
-}
-
-/// `srs_item.source` (docs/02 D10).
-enum SrsSource implements WireEnum {
-  wordCard('word_card'),
-  manual('manual');
-
-  SrsSource(this.wire);
-
-  @override
-  final String wire;
-}
-
-/// `prayer_log.prayer`.
-enum PrayerKind implements WireEnum {
-  fajr,
-  dhuhr,
-  asr,
-  maghrib,
-  isha;
-
-  @override
-  String get wire => name;
-}
-
-/// `prayer_log.status` (excused: docs/03 6.5).
-enum PrayerStatus implements WireEnum {
-  onTime('on_time'),
-  late('late'),
-  missed('missed'),
-  qada('qada'),
-  excused('excused');
-
-  PrayerStatus(this.wire);
-
-  @override
-  final String wire;
-}
-
-/// `fast_log.type`.
-enum FastType implements WireEnum {
-  ramadan,
-  sunnah,
-  qada,
-  nafl;
-
-  @override
-  String get wire => name;
-}
-
 /// `day_log.status` (docs/02 D8, docs/03 6.5).
 enum DayStatus implements WireEnum {
   done,
@@ -143,7 +77,6 @@ enum GateResult implements WireEnum {
   passed('passed'),
   emergency('emergency'),
   dismissed('dismissed'),
-  prayerLocked('prayer_locked'),
   error('error');
 
   GateResult(this.wire);

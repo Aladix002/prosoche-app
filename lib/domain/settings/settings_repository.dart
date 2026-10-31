@@ -1,6 +1,5 @@
 import 'package:prosoche/domain/settings/setting_key.dart';
 
-export 'package:prosoche/domain/settings/prayer_location.dart';
 export 'package:prosoche/domain/settings/setting_key.dart';
 export 'package:prosoche/domain/settings/settings_keys.dart';
 

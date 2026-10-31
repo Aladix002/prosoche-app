@@ -1,21 +1,89 @@
 {
   "@@locale": "en",
   "appTitle": "Prosoche",
-  "@appTitle": {"description": "Application name."},
+  "@appTitle": {
+    "description": "Application name."
+  },
   "tabToday": "Today",
-  "@tabToday": {"description": "Bottom navigation label for the Today tab."},
-  "tabQuran": "Quran",
-  "@tabQuran": {"description": "Bottom navigation label for the Quran tab."},
-  "tabPrayer": "Prayer",
-  "@tabPrayer": {"description": "Bottom navigation label for the Prayer tab."},
+  "@tabToday": {
+    "description": "Bottom navigation label for the Today tab."
+  },
   "tabJourney": "Journey",
-  "@tabJourney": {"description": "Bottom navigation label for the Journey tab."},
-  "feedTitle": "Daily cards",
-  "@feedTitle": {"description": "Title of the fullscreen daily card feed."},
-  "gateTitle": "Pause",
-  "@gateTitle": {"description": "Title of the gate screen shown before a blocked app."},
-  "beginTodaysCards": "Begin today's cards",
-  "@beginTodaysCards": {"description": "Call to action on Today that opens the feed."},
+  "@tabJourney": {
+    "description": "Bottom navigation label for the Journey tab."
+  },
   "errorGeneric": "This part could not be loaded.",
-  "@errorGeneric": {"description": "Neutral fallback shown instead of a broken widget."}
+  "@errorGeneric": {
+    "description": "Neutral fallback shown instead of a broken widget."
+  },
+  "tabLibrary": "Library",
+  "@tabLibrary": {
+    "description": "Bottom navigation label for the Library tab (reading whole works)."
+  },
+  "tabPractice": "Practice",
+  "@tabPractice": {
+    "description": "Bottom navigation label for the Practice tab (exercises)."
+  },
+  "libraryPlaceholderBody": "Whole works to read, book by book. Coming soon.",
+  "@libraryPlaceholderBody": {
+    "description": "Placeholder body of the Library tab until it is built."
+  },
+  "practicePlaceholderBody": "Morning preparation and evening review. Coming soon.",
+  "@practicePlaceholderBody": {
+    "description": "Placeholder body of the Practice tab until it is built."
+  },
+  "cardTypeQuote": "Quote",
+  "@cardTypeQuote": {
+    "description": "Eyebrow label of a quote card."
+  },
+  "cardQuoteAttribution": "{author}, {reference}",
+  "@cardQuoteAttribution": {
+    "description": "Attribution line under a quote, e.g. 'Marcus Aurelius, Meditations 2.1'. Values come from the content database.",
+    "placeholders": {
+      "author": {
+        "type": "String"
+      },
+      "reference": {
+        "type": "String"
+      }
+    }
+  },
+  "cardQuoteA11y": "Quote by {author}",
+  "@cardQuoteA11y": {
+    "description": "Screen reader label of a quote card.",
+    "placeholders": {
+      "author": {
+        "type": "String"
+      }
+    }
+  },
+  "questGenericReadCards": "{count, plural, one{Read 1 card} other{Read {count} cards}}",
+  "@questGenericReadCards": {
+    "description": "Built-in daily quest (read slot): read quotes or passages.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "questGenericLearnIdea": "Learn one idea",
+  "@questGenericLearnIdea": {
+    "description": "Built-in daily quest (learn slot): see one idea or author card."
+  },
+  "questGenericActPractice": "Try one practice",
+  "@questGenericActPractice": {
+    "description": "Built-in daily quest (act slot), marked as done by the user."
+  },
+  "todayCtaKeepReading": "Keep reading",
+  "@todayCtaKeepReading": {
+    "description": "Secondary button on Today after the daily cards are complete; opens the Library."
+  },
+  "setDisclaimerTexts": "Texts are public domain translations, shown as published. Short notes and questions are written for this app.",
+  "@setDisclaimerTexts": {
+    "description": "Note on the About screen about where texts come from."
+  },
+  "setDisclaimerAdvice": "Prosoche is not medical or psychological advice.",
+  "@setDisclaimerAdvice": {
+    "description": "Note on the About screen."
+  }
 }

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
 import 'package:prosoche/domain/common/common.dart';
@@ -13,13 +12,9 @@ import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/cards/card_parts.dart';
 import 'package:prosoche/features/cards/card_providers.dart';
 import 'package:prosoche/features/cards/card_share.dart';
-import 'package:prosoche/features/cards/hadith_explanations_pack.dart';
-import 'package:prosoche/features/cards/types/ayah_card.dart';
 import 'package:prosoche/features/cards/types/day_cards.dart';
 import 'package:prosoche/features/cards/types/text_cards.dart';
-import 'package:prosoche/features/quran/quran_routes.dart';
 import 'package:prosoche/features/settings/problem_report_sheet.dart';
-import 'package:prosoche/ui/i18n/i18n.dart';
 import 'package:prosoche/ui/ui.dart';
 
 /// Karta podla `card_id` (docs/02 B): nacita obsah, vyberie typ karty,
@@ -109,21 +104,9 @@ class _TypedCard extends ConsumerWidget {
     final type = id.type;
     final saved =
         type.canSave && (ref.watch(isSavedProvider(id)).value ?? false);
-    final source = switch (content) {
-      AyahContent(:final ayah) when ayah.translation != null =>
-        ref
-            .watch(
-              translationSourceProvider((
-                ayah.translation!.lang,
-                ayah.translation!.sourceId,
-              )),
-            )
-            .value,
-      _ => null,
-    };
-    // Atribucia zdroja hadisu s verziou (docs/09, HadeethEnc).
+    // Atribucia zdroja textu s verziou (docs/09).
     final contentSource = switch (content) {
-      HadithContent(:final sourceId) =>
+      QuoteContent(:final sourceId) =>
         ref.watch(cardSourceProvider(sourceId)).value,
       _ => null,
     };
@@ -137,14 +120,8 @@ class _TypedCard extends ConsumerWidget {
       date: date,
       surface: surface,
       pos: pos,
-      share: shareDataFor(
-        context,
-        content,
-        // Zdielanie je re-publish: QuranEnc vyzaduje zdroj a verziu (docs/09).
-        translationSource: source?.attribution,
-        sourceLine: sourceLine,
-      ),
-      source: source,
+      share: shareDataFor(context, content, sourceLine: sourceLine),
+      source: contentSource,
     );
     final actions = CardActions(
       saved: saved,
@@ -161,64 +138,11 @@ class _TypedCard extends ConsumerWidget {
         cardsCount: cardsCount ?? total ?? 0,
         semanticLabel: label,
       ),
-      final AyahContent c => AyahCard(
-        content: c,
-        translationSource: source?.name,
-        actions: actions,
-        semanticLabel: label,
-        onReadInContext: surface.showReadInContext
-            ? () => context.push(
-                QuranRoutes.read(
-                  c.ayah.id.surah,
-                  ayahId: c.ayah.id.value,
-                  mode: 'browse',
-                ),
-              )
-            : null,
-      ),
-      final HadithContent c => _HadithCardView(
+      final QuoteContent c => QuoteCard(
         content: c,
         actions: actions,
         sourceLine: sourceLine,
         semanticLabel: label,
-      ),
-      final DuaContent c => DuaCard(
-        content: c,
-        actions: actions,
-        semanticLabel: label,
-      ),
-      final NameContent c => NameCard(
-        content: c,
-        actions: actions,
-        semanticLabel: label,
-        onOpenAyah: c.refAyah == null || !surface.showReadInContext
-            ? null
-            : () => context.push(
-                QuranRoutes.read(
-                  c.refAyah!.surah,
-                  ayahId: c.refAyah!.value,
-                  mode: 'browse',
-                ),
-              ),
-      ),
-      final ReflectionContent c => ReflectionCard(
-        content: c,
-        actions: actions,
-        semanticLabel: label,
-      ),
-      final EventContent c => _EventCardView(
-        content: c,
-        surface: surface,
-        semanticLabel: label,
-      ),
-      final KhatmContent c => KhatmCard(
-        content: c,
-        semanticLabel: label,
-        onStartAgain: surface.showReadInContext
-            ? () => context.push(
-                QuranRoutes.read(1, ayahId: AyahId.first.value, mode: 'khatm'),
-              )
-            : null,
       ),
     };
 
@@ -240,16 +164,8 @@ class _TypedCard extends ConsumerWidget {
   String? _semanticLabel(BuildContext context) {
     final l10n = context.l10n;
     final what = switch (content) {
-      AyahContent(:final ayah, :final surah) => l10n.cardAyahA11y(
-        surah.nameTranslit,
-        localizeDigits('${ayah.number}', context.formats.digits),
-      ),
-      HadithContent() => l10n.cardTypeHadith,
-      DuaContent() => l10n.cardTypeDua,
-      NameContent() => l10n.cardTypeName,
-      ReflectionContent() => l10n.cardTypeReflection,
-      EventContent(:final text) => text?.title ?? l10n.cardTypeEvent,
-      IntroContent() || KhatmContent() => null,
+      QuoteContent(:final author) => l10n.cardQuoteA11y(author),
+      IntroContent() => null,
     };
     final p = pos;
     final n = total;
@@ -264,60 +180,20 @@ class _TypedCard extends ConsumerWidget {
 CardShareData? shareDataFor(
   BuildContext context,
   CardContent content, {
-  String? translationSource,
   String? sourceLine,
-}) {
-  final l10n = context.l10n;
-  return switch (content) {
-    AyahContent(:final ayah, :final surah) => CardShareData(
-      arabic: ayah.textUthmani,
-      arabicIsQuran: true,
-      translation: ayah.translation?.text,
-      translationLang: ayah.translation?.lang,
-      reference: context.ayahReference(surah.nameTranslit, ayah.id),
-      attribution: ayah.translation == null || translationSource == null
-          ? null
-          : l10n.cardTranslationLabel(translationSource),
-    ),
-    final HadithContent h => CardShareData(
-      arabic: h.textAr,
-      translation: h.text,
-      translationLang: h.lang,
-      // Hadis vzdy so zbierkou, cislom a stupnom (plan 17.11).
-      reference:
-          '${hadithReference(context, h)} · '
-          '${l10n.cardHadithGrade(hadithGrade(context, h))}',
-      attribution: h.attribution,
-      source: sourceLine,
-    ),
-    final DuaContent d => CardShareData(
-      arabic: d.textAr,
-      translation: d.text,
-      translationLang: d.lang,
-      reference: d.sourceRef,
-    ),
-    final NameContent n => CardShareData(
-      arabic: n.textAr,
-      translation: [?n.translit, ?n.meaning].join(' · '),
-      translationLang: n.lang,
-      reference: l10n.cardNameIndex(
-        localizeDigits(
-          '${(n.id as NameCardId).nameId}',
-          context.formats.digits,
-        ),
-      ),
-    ),
-    final ReflectionContent r => CardShareData(
-      translation: [r.text, ?r.question].join('\n\n'),
-      translationLang: r.lang,
-      reference: l10n.cardReflectionAttribution,
-    ),
-    IntroContent() || EventContent() || KhatmContent() => null,
-  };
-}
+}) => switch (content) {
+  final QuoteContent q => CardShareData(
+    text: q.text,
+    textLang: 'en',
+    reference: q.reference,
+    attribution: q.author,
+    source: sourceLine,
+  ),
+  IntroContent() => null,
+};
 
-/// Riadok `card:` reportu problemu: `card_id` a referencia (zbierka
-/// a cislo, sura a vers), bez textu karty.
+/// Riadok `card:` reportu problemu: `card_id` a referencia (dielo
+/// a sekcia), bez textu karty.
 String cardReportSubject(CardContent content, {String? reference}) =>
     reference == null
     ? 'card: ${content.id}'
@@ -343,7 +219,7 @@ class _CardOps {
   final CardSurface surface;
   final int? pos;
   final CardShareData? share;
-  final TranslationSource? source;
+  final CardSourceInfo? source;
 
   CardId get id => content.id;
   CardActionsRepository get _repo => ref.read(cardActionsRepositoryProvider);
@@ -433,19 +309,16 @@ class _CardOps {
           if (data != null) Text(data.reference),
           if (data?.attribution case final a?) CardMeta(a),
           if (data?.source case final s?) CardMeta(s),
-          if (source case final s?) ...[
+          if (source case final s? when data?.source == null)
             if (s.attribution.isNotEmpty) CardMeta(s.attribution),
-            if (s.license.isNotEmpty)
-              CardMeta(l10n.cardSourceLicense(s.license)),
-          ],
         ],
       ),
     );
   }
 
   /// "Report a problem" (D-04): pouzivatel posle `.txt` report sam cez
-  /// share sheet. Report nesie len referenciu karty (`card_id`, zbierka
-  /// a cislo / sura a vers), ziadny text karty.
+  /// share sheet. Report nesie len referenciu karty (`card_id`, dielo
+  /// a sekcia), ziadny text karty.
   Future<void> report() async {
     final shared = await showProblemReportSheet(
       context,
@@ -516,7 +389,7 @@ class _IntroCardView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final quests = ref.watch(questsProvider(date)).value ?? const [];
-    final niyyah = ref.watch(settingOf(SettingsKeys.niyyahText)).value;
+    final intention = ref.watch(settingOf(SettingsKeys.intentionText)).value;
     return IntroCard(
       content: content,
       cardsCount: cardsCount,
@@ -524,114 +397,8 @@ class _IntroCardView extends ConsumerWidget {
         for (final q in quests)
           if (q.status != QuestStatus.skipped) q.slot,
       ],
-      niyyah: niyyah,
+      intention: intention,
       semanticLabel: semanticLabel,
-    );
-  }
-}
-
-class _HadithCardView extends ConsumerWidget {
-  const _HadithCardView({
-    required this.content,
-    required this.actions,
-    this.sourceLine,
-    this.semanticLabel,
-  });
-
-  final HadithContent content;
-  final CardActions actions;
-  final String? sourceLine;
-  final String? semanticLabel;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final id = (content.id as HadithCardId).hadithId;
-    final lang = content.lang;
-    // Vysvetlivka (HadithExtraRepository) len v jazyku prekladu karty;
-    // bez prekladu (AR original, chybajuci jazyk) vysvetlivka nie je.
-    if (lang == null) {
-      return HadithCard(
-        content: content,
-        actions: actions,
-        sourceLine: sourceLine,
-        semanticLabel: semanticLabel,
-      );
-    }
-    final status =
-        ref.watch(hadithExplanationsPackStatusProvider).value ??
-        HadithExplanationsPackStatus.notAvailable;
-    final extra = ref.watch(hadithExtraProvider((id, lang))).value;
-    final explanation = extra?.explanation;
-    final hasExplanation = explanation != null && explanation.isNotEmpty;
-    // Balik nie je stiahnuty (D-05): ponuknut stiahnutie (BF-01).
-    final canDownload =
-        !hasExplanation &&
-        (status == HadithExplanationsPackStatus.notDownloaded ||
-            status == HadithExplanationsPackStatus.failed);
-    return HadithCard(
-      content: content,
-      actions: actions,
-      sourceLine: sourceLine,
-      semanticLabel: semanticLabel,
-      downloadingExplanations:
-          !hasExplanation && status == HadithExplanationsPackStatus.downloading,
-      explanationsFailed:
-          !hasExplanation && status == HadithExplanationsPackStatus.failed,
-      onDownloadExplanations: canDownload
-          ? () => unawaited(_download(context))
-          : null,
-      onExplanation: !hasExplanation
-          ? null
-          : () => unawaited(
-              showSkInfoSheet<void>(
-                context,
-                title: context.l10n.cardHadithExplanation,
-                closeLabel: SkUiStrings.of(context).cancel,
-                child: Directionality(
-                  textDirection: textDirectionForLanguage(extra!.lang),
-                  child: Text(explanation),
-                ),
-              ),
-            ),
-    );
-  }
-
-  /// Stiahne balik a znova nacita vysvetlivky (cache `null` z doby pred
-  /// stiahnutim).
-  static Future<void> _download(BuildContext context) async {
-    // Kontajner, nie `ref`: karta moze byt pocas stahovania uz zrusena.
-    final container = ProviderScope.containerOf(context, listen: false);
-    await container.read(hadithExplanationsPackProvider).download();
-    container.invalidate(hadithExtraProvider);
-  }
-}
-
-class _EventCardView extends ConsumerWidget {
-  const _EventCardView({
-    required this.content,
-    required this.surface,
-    this.semanticLabel,
-  });
-
-  final EventContent content;
-  final CardSurface surface;
-  final String? semanticLabel;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final id = content.id as EventCardId;
-    final surahId = ref.watch(eventSurahProvider(id)).value;
-    final surah = surahId == null
-        ? null
-        : ref.watch(surahInfoProvider(surahId)).value;
-    return EventCard(
-      content: content,
-      surah: surah,
-      semanticLabel: semanticLabel,
-      // V brane CTA skryte (docs/02 B9).
-      onReadSurah: surah == null || !surface.showReadInContext
-          ? null
-          : () => context.push(QuranRoutes.read(surah.id, mode: 'browse')),
     );
   }
 }

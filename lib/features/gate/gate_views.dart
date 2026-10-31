@@ -27,9 +27,6 @@ extension GateTexts on AppLocalizations {
   String gateUnlockedCloseFor(String? app) =>
       app == null ? gateUnlockedCloseGeneric : gateUnlockedClose(app);
 
-  String gatePrayerBodyFor(String? app) =>
-      app == null ? gatePrayerBodyGeneric : gatePrayerBody(app);
-
   String gateEmptyFor(String? app) =>
       app == null ? gateEmptyGeneric : gateEmpty(app);
 }
@@ -206,7 +203,7 @@ class GateFooter extends StatelessWidget {
   }
 }
 
-/// Spolocny layout stavovych obrazoviek brany (odomknute, prayer, chyba).
+/// Spolocny layout stavovych obrazoviek brany (odomknute, chyba).
 class _GateMessage extends StatelessWidget {
   const _GateMessage({
     required this.title,
@@ -325,46 +322,6 @@ class GateUnlockedView extends StatelessWidget {
         SkButton.tertiary(
           label: l10n.gateKeepReading,
           onPressed: onKeepReading,
-          expand: true,
-        ),
-      ],
-    );
-  }
-}
-
-/// Prayer lock: pripomienka, nie zamknutie (docs/02 A4, docs/01 D5).
-class GatePrayerView extends StatelessWidget {
-  const GatePrayerView({
-    required this.app,
-    required this.prayer,
-    required this.onPray,
-    required this.onShowCards,
-    super.key,
-  });
-
-  final String? app;
-
-  /// Lokalizovany nazov modlitby.
-  final String prayer;
-  final VoidCallback onPray;
-  final VoidCallback onShowCards;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return _GateMessage(
-      icon: Icons.access_time,
-      title: l10n.gatePrayerTitle(prayer),
-      body: l10n.gatePrayerBodyFor(app),
-      actions: [
-        SkButton.primary(
-          label: l10n.gatePrayerPray,
-          onPressed: onPray,
-          expand: true,
-        ),
-        SkButton.secondary(
-          label: l10n.gatePrayerContinue,
-          onPressed: onShowCards,
           expand: true,
         ),
       ],

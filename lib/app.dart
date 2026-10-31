@@ -5,14 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/core/router/app_router.dart';
-import 'package:prosoche/features/quran/quran_providers.dart';
 import 'package:prosoche/features/settings/settings_providers.dart';
 import 'package:prosoche/features/shell/app_locale.dart';
 import 'package:prosoche/ui/foundation/sk_text_scaling.dart';
 import 'package:prosoche/ui/foundation/sk_ui_strings.dart';
 import 'package:prosoche/ui/i18n/locale_fonts.dart';
 import 'package:prosoche/ui/theme/prosoche_theme.dart';
-import 'package:prosoche/ui/theme/prosoche_typography.dart';
 
 class ProsocheApp extends ConsumerWidget {
   const ProsocheApp({super.key});
@@ -20,9 +18,8 @@ class ProsocheApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
-    // F-07: tema (system/svetla/tmava) a velkost arabciny z nastaveni.
+    // F-07: tema (system/svetla/tmava) z nastaveni.
     final themeMode = ref.watch(appThemeModeProvider);
-    final arabicScale = ref.watch(readerArabicScaleProvider);
     return MaterialApp.router(
       onGenerateTitle: (context) => context.l10n.appTitle,
       // Temy MaterialApp su zaklad (bez routera, napr. ScaffoldMessenger);
@@ -56,7 +53,6 @@ class ProsocheApp extends ConsumerWidget {
             ),
             highContrast: MediaQuery.highContrastOf(context),
             locale: Localizations.localeOf(context),
-            arabicScale: arabicScale,
           ),
           child: SkTextScaling(
             child: SkUiStringsScope(
@@ -96,25 +92,22 @@ bool handleNavigationNotification(
 /// Tema appky pre jazyk UI: [ProsocheTheme] (U-01) s fontom a riadkovanim
 /// jazyka z [LocaleFonts] (U-02). Komponentove temy (tlacidla, nav bar)
 /// dostanu rodinu a nasobok vysky riadku, `textTheme` presne
-/// [applyLocaleFontToTextTheme] (fallback, min. vyska pre Nastaliq).
+/// [applyLocaleFontToTextTheme] (fallback, min. vyska riadku).
 ThemeData prosocheAppTheme({
   required Brightness brightness,
   required Locale locale,
   bool highContrast = false,
-  SkArabicScale arabicScale = SkArabicScale.m,
 }) {
   final spec = LocaleFonts.forLocale(locale);
   ThemeData build({String? family, double heightFactor = 1}) =>
       brightness == Brightness.dark
       ? ProsocheTheme.dark(
           highContrast: highContrast,
-          arabicScale: arabicScale,
           uiFontFamily: family ?? ProsocheFontFamilies.inter,
           uiHeightFactor: heightFactor,
         )
       : ProsocheTheme.light(
           highContrast: highContrast,
-          arabicScale: arabicScale,
           uiFontFamily: family ?? ProsocheFontFamilies.inter,
           uiHeightFactor: heightFactor,
         );
@@ -138,21 +131,13 @@ SkUiStrings skUiStringsOf(AppLocalizations l10n) => SkUiStrings(
   done: l10n.skDone,
   skippedForToday: l10n.skSkippedForToday,
   iDidIt: l10n.skIDidIt,
-  now: l10n.skNow,
   freeReading: l10n.skFreeReading,
   dailyCards: l10n.skDailyCards,
   scrollForMore: l10n.skScrollForMore,
-  notificationsOff: l10n.skNotificationsOff,
-  estimated: l10n.skEstimated,
   holdToConfirm: l10n.skHoldToConfirm,
   contentUnavailableTitle: l10n.skContentUnavailableTitle,
   contentUnavailableBody: l10n.skContentUnavailableBody,
   progressOf: l10n.skProgressOf,
-  prayerStatusUnlogged: l10n.skPrayerStatusUnlogged,
-  prayerStatusOnTime: l10n.skPrayerStatusOnTime,
-  prayerStatusLate: l10n.skPrayerStatusLate,
-  prayerStatusMissed: l10n.skPrayerStatusMissed,
-  prayerStatusQada: l10n.skPrayerStatusQada,
 );
 
 class _ErrorFallback extends StatelessWidget {

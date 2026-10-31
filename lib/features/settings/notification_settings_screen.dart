@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
-import 'package:prosoche/domain/prayer/prayer.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/onboarding/onboarding_platform.dart';
-import 'package:prosoche/features/prayer/prayer_texts.dart';
 import 'package:prosoche/features/settings/settings_widgets.dart';
 import 'package:prosoche/ui/ui.dart';
 
@@ -111,13 +109,6 @@ class _NotificationSettingsScreenState
               actionLabel: l10n.setOpenSettings,
               onAction: () => unawaited(platform.openAppSettings()),
             ),
-          ),
-        SettingsSection(l10n.setPrayerReminders),
-        for (final p in Prayer.salah)
-          toggle(
-            'notif:${p.name}',
-            SettingsKeys.notifPrayer(p.name),
-            context.prayerName(p),
           ),
         SettingsSection(l10n.setMorning),
         toggle(

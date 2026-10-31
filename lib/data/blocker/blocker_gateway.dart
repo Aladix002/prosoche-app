@@ -189,12 +189,6 @@ abstract interface class BlockerGateway {
   /// navod k baterii v O6.
   Future<Result<String>> deviceManufacturer();
 
-  /// Zatial len ulozi okna (prayer lock je pripomienka, nie zamknutie).
-  Future<Result<void>> schedulePrayerLocks(
-    List<DateTime> starts, {
-    required int durationMinutes,
-  });
-
   /// Poziadavky nativu na branu v uz beziacom engine (package name).
   Stream<String> get gateRequests;
 }

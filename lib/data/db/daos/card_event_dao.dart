@@ -4,14 +4,13 @@ import 'package:prosoche/domain/common/common.dart';
 
 part 'card_event_dao.g.dart';
 
-/// `card_event` + udrzba `ayah_read` (docs/02 0.4, 0.5, D1, D6).
-@DriftAccessor(tables: [CardEvents, AyahReads])
+/// `card_event` (docs/02 0.4, 0.5, D1).
+@DriftAccessor(tables: [CardEvents])
 class CardEventDao extends DatabaseAccessor<UserDb> with _$CardEventDaoMixin {
   CardEventDao(super.attachedDatabase);
 
   /// Zapise udalost. `seen` je najviac raz za `(date, card_id, context)`
   /// (partial unique index); opakovany `seen` sa ignoruje a vrati `false`.
-  /// Novy `seen` versa zvysi `ayah_read` v tej istej transakcii.
   Future<bool> log({
     required LocalDate date,
     required CardId card,
@@ -37,23 +36,8 @@ class CardEventDao extends DatabaseAccessor<UserDb> with _$CardEventDaoMixin {
       // Prazdny target = akykolvek unikatny index, aj partial `seen`.
       onConflict: DoNothing(target: const []),
     );
-    if (row == null) return false;
-    if (action == CardAction.seen && card is AyahCardId) {
-      await _markAyahRead(card.ayahId.value, ts);
-    }
-    return true;
+    return row != null;
   });
-
-  Future<void> _markAyahRead(int ayahId, DateTime ts) => customInsert(
-    'INSERT INTO ayah_read (ayah_id, first_read_at, read_count) '
-    'VALUES (?1, ?2, 1) ON CONFLICT (ayah_id) '
-    'DO UPDATE SET read_count = read_count + 1',
-    variables: [
-      Variable.withInt(ayahId),
-      Variable.withInt(ts.millisecondsSinceEpoch),
-    ],
-    updates: {ayahReads},
-  );
 
   /// Udalosti dna [date] v poradi zapisu (detail dna A8.2, QuestEngine).
   Future<List<CardEventRow>> forDate(LocalDate date) =>

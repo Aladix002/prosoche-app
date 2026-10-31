@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prosoche/core/l10n/l10n.dart';
-import 'package:prosoche/data/repositories/providers.dart';
 import 'package:prosoche/data/repositories/settings/settings_providers.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/onboarding/onboarding_controller.dart';
@@ -12,7 +11,7 @@ import 'package:prosoche/features/onboarding/onboarding_screen.dart';
 import 'package:prosoche/ui/i18n/i18n.dart';
 import 'package:prosoche/ui/ui.dart';
 
-/// O4 Notifikacie a presne alarmy (docs/02 A1, docs/01 5.1). Systemovy
+/// O4 Notifikacie (docs/02 A1, docs/01 5.1). Systemovy
 /// dialog sa ukaze az po tapnuti na "Allow notifications" (vysvetlenie je
 /// na obrazovke pred nim). Po navrate zo systemovych nastaveni (resumed)
 /// sa stav povoleni nacita znova.
@@ -33,7 +32,6 @@ class _NotificationsStepState extends ConsumerState<NotificationsStep> {
   bool _busy = false;
 
   // Nastavenia (zapisu sa pri Continue).
-  bool? _prayers;
   bool? _morning;
   bool? _private;
   String _morningTime = SettingsKeys.notifMorningTime.defaultValue;
@@ -62,16 +60,11 @@ class _NotificationsStepState extends ConsumerState<NotificationsStep> {
 
   Future<void> _loadSettings() async {
     final s = ref.read(settingsRepositoryProvider);
-    var prayers = false;
-    for (final p in SettingsKeys.prayers) {
-      prayers = prayers || await s.get(SettingsKeys.notifPrayer(p));
-    }
     final morning = await s.get(SettingsKeys.notifMorningEnabled);
     final private = await s.get(SettingsKeys.notifPrivateLockscreen);
     final time = await s.get(SettingsKeys.notifMorningTime);
     if (!mounted) return;
     setState(() {
-      _prayers ??= prayers;
       _morning ??= morning;
       _private ??= private;
       _morningTime = time;
@@ -94,24 +87,10 @@ class _NotificationsStepState extends ConsumerState<NotificationsStep> {
     }
   }
 
-  Future<void> _requestExact() async {
-    await _platform.requestExactAlarms();
-    await _refresh();
-    ref.read(onboardingControllerProvider).track('permission_result', {
-      'permission': 'exact_alarm',
-      'granted': _access?.exact ?? false,
-    });
-  }
-
-  Future<void> _continue({required bool hasLocation}) async {
+  Future<void> _continue() async {
     setState(() => _busy = true);
     try {
       final s = ref.read(settingsRepositoryProvider);
-      if (hasLocation && _prayers != null) {
-        for (final p in SettingsKeys.prayers) {
-          await s.set(SettingsKeys.notifPrayer(p), _prayers!);
-        }
-      }
       if (_morning != null) {
         await s.set(SettingsKeys.notifMorningEnabled, _morning!);
       }
@@ -136,10 +115,8 @@ class _NotificationsStepState extends ConsumerState<NotificationsStep> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final text = context.sk.text;
-    final config = ref.watch(prayerConfigProvider);
-    final hasLocation = config.value != null;
     final access = _access;
-    final loaded = access != null && _prayers != null && config.hasValue;
+    final loaded = access != null && _morning != null;
 
     final Widget permission;
     if (access == null) {
@@ -175,16 +152,8 @@ class _NotificationsStepState extends ConsumerState<NotificationsStep> {
       body: l10n.onbNotifBody,
       primaryLabel: l10n.onbContinue,
       busy: _busy,
-      onPrimary: loaded ? () => _continue(hasLocation: hasLocation) : null,
+      onPrimary: loaded ? _continue : null,
       children: [
-        SwitchListTile(
-          key: const ValueKey('notif:prayers'),
-          contentPadding: EdgeInsetsDirectional.zero,
-          title: Text(l10n.onbNotifPrayers),
-          subtitle: hasLocation ? null : Text(l10n.onbNotifPrayersNoLocation),
-          value: hasLocation && (_prayers ?? true),
-          onChanged: hasLocation ? (v) => setState(() => _prayers = v) : null,
-        ),
         SwitchListTile(
           key: const ValueKey('notif:morning'),
           contentPadding: EdgeInsetsDirectional.zero,
@@ -201,22 +170,6 @@ class _NotificationsStepState extends ConsumerState<NotificationsStep> {
         ),
         const SizedBox(height: SkSpace.space16),
         permission,
-        if (access != null && !access.exact) ...[
-          const SizedBox(height: SkSpace.space24),
-          Semantics(
-            header: true,
-            child: Text(l10n.onbExactTitle, style: text.titleMedium),
-          ),
-          const SizedBox(height: SkSpace.space4),
-          Text(l10n.onbExactBody, style: text.bodyMedium),
-          const SizedBox(height: SkSpace.space8),
-          SkButton.outlined(
-            label: l10n.onbExactCta,
-            icon: Icons.alarm,
-            expand: true,
-            onPressed: _requestExact,
-          ),
-        ],
       ],
     );
   }

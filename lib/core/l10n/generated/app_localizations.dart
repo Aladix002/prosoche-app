@@ -5,12 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
-import 'app_localizations_ar.dart';
-import 'app_localizations_bn.dart';
 import 'app_localizations_en.dart';
-import 'app_localizations_id.dart';
-import 'app_localizations_tr.dart';
-import 'app_localizations_ur.dart';
 
 // ignore_for_file: type=lint
 
@@ -97,14 +92,7 @@ abstract class AppLocalizations {
       ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[
-    Locale('ar'),
-    Locale('bn'),
-    Locale('en'),
-    Locale('id'),
-    Locale('tr'),
-    Locale('ur'),
-  ];
+  static const List<Locale> supportedLocales = <Locale>[Locale('en')];
 
   /// Gate header before a blocked app. {app} is the app name, e.g. 'A pause before Instagram'. Never judge the app or the user.
   ///
@@ -256,41 +244,11 @@ abstract class AppLocalizations {
   /// **'Keep reading'**
   String get gateKeepReading;
 
-  /// Shown above free reading verses in the gate.
+  /// Shown above extra cards in the gate after today's set is done.
   ///
   /// In en, this message translates to:
-  /// **'Today\'s cards are done. Here are a few verses from where you left off.'**
+  /// **'Today\'s cards are done. Here are a few more to read.'**
   String get gateFreeReadingNote;
-
-  /// Prayer reminder in the gate. {prayer} is the prayer name, e.g. 'Asr'.
-  ///
-  /// In en, this message translates to:
-  /// **'It\'s time for {prayer}'**
-  String gatePrayerTitle(String prayer);
-
-  /// Prayer reminder text.
-  ///
-  /// In en, this message translates to:
-  /// **'{app} will still be here after you pray.'**
-  String gatePrayerBody(String app);
-
-  /// Prayer reminder text when the app name is unknown.
-  ///
-  /// In en, this message translates to:
-  /// **'The app will still be here after you pray.'**
-  String get gatePrayerBodyGeneric;
-
-  /// Goes to the home screen.
-  ///
-  /// In en, this message translates to:
-  /// **'I\'ll pray first'**
-  String get gatePrayerPray;
-
-  /// Continues to the normal gate with cards.
-  ///
-  /// In en, this message translates to:
-  /// **'Show cards anyway'**
-  String get gatePrayerContinue;
 
   /// Gate error state (database or timeout).
   ///
@@ -676,29 +634,11 @@ abstract class AppLocalizations {
   /// **'Add apps'**
   String get blkAddApps;
 
-  /// Summary of one blocked app.
+  /// Summary of a blocked app: cards to unlock and unlock minutes.
   ///
   /// In en, this message translates to:
-  /// **'{cards, plural, one{1 card} other{{cards} cards}} · {minutes} min{prayer, select, true{ · prayer reminder} other{}}'**
-  String blkAppSummary(int cards, String minutes, String prayer);
-
-  /// Section header: prayer reminder in the gate.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer reminder'**
-  String get blkPrayerSection;
-
-  /// Explains the prayer reminder (not a lock).
-  ///
-  /// In en, this message translates to:
-  /// **'For apps with prayer reminder on, the gate first reminds you of the prayer for this many minutes after its time begins. You can always continue.'**
-  String get blkPrayerHelp;
-
-  /// Label of the prayer reminder window.
-  ///
-  /// In en, this message translates to:
-  /// **'Remind for'**
-  String get blkPrayerMinutes;
+  /// **'{cards, plural, one{1 card} other{{cards} cards}} · {minutes} min'**
+  String blkAppSummary(int cards, String minutes);
 
   /// Section header: local gate statistics.
   ///
@@ -754,18 +694,6 @@ abstract class AppLocalizations {
   /// **'Couldn\'t load the gate settings.'**
   String get blkLoadError;
 
-  /// Switch: remind of the prayer before this app.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer reminder'**
-  String get blkAppPrayerLock;
-
-  /// Explains the per-app prayer reminder.
-  ///
-  /// In en, this message translates to:
-  /// **'Around prayer times, the gate asks if you\'d like to pray first.'**
-  String get blkAppPrayerLockHelp;
-
   /// Button: remove the app from the gate.
   ///
   /// In en, this message translates to:
@@ -790,71 +718,11 @@ abstract class AppLocalizations {
   /// **'This app is no longer in the gate.'**
   String get blkAppNotFound;
 
-  /// Small note under the Arabic original of a card (hadith, dua, name of Allah, verse) when there is no translation in the user's language yet. Religious text is never shown in English instead.
+  /// Small note on a card when its text is not available in the user's language yet.
   ///
   /// In en, this message translates to:
-  /// **'Translation not yet available in your language'**
+  /// **'Text not yet available in your language'**
   String get cardTranslationNotYetAvailable;
-
-  /// Title of the sheet opened by tapping a footnote marker like [2] in a verse translation.
-  ///
-  /// In en, this message translates to:
-  /// **'Translator\'s note'**
-  String get cardTranslatorNoteTitle;
-
-  /// Screen reader label of a tappable footnote marker in a verse translation.
-  ///
-  /// In en, this message translates to:
-  /// **'Translator\'s note {number}'**
-  String cardTranslatorNoteA11y(String number);
-
-  /// Button on a hadith card when the optional hadith explanations pack is not downloaded yet.
-  ///
-  /// In en, this message translates to:
-  /// **'Download explanations'**
-  String get cardHadithDownloadExplanations;
-
-  /// Authenticity grade of a hadith: the technical term and its meaning in brackets. In the Arabic UI the app shows the Arabic original from the source instead.
-  ///
-  /// In en, this message translates to:
-  /// **'{grade, select, sahih{Sahih (authentic)} hasan{Hasan (good)} daif{Da\'if (weak)} other{Other}}'**
-  String cardHadithGradeLabel(String grade);
-
-  /// Hadith reference for 'muttafaq alayh': the hadith is narrated by both al-Bukhari and Muslim. Shown in the card header.
-  ///
-  /// In en, this message translates to:
-  /// **'Agreed upon (Bukhari & Muslim)'**
-  String get cardHadithAgreedUpon;
-
-  /// Inline message on a hadith card when downloading the optional hadith explanations pack failed.
-  ///
-  /// In en, this message translates to:
-  /// **'Couldn\'t download explanations. Check your connection and try again.'**
-  String get cardHadithExplanationsFailed;
-
-  /// Button under the failed-download message that downloads the hadith explanations pack again.
-  ///
-  /// In en, this message translates to:
-  /// **'Retry'**
-  String get cardHadithExplanationsRetry;
-
-  /// Generic READ quest shown when no quest text exists in the user's language. Neutral UI text, no religious content.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{Read 1 verse} other{Read {count} verses}}'**
-  String questGenericReadVerses(int count);
-
-  /// Generic LEARN quest (word cards enabled) shown when no quest text exists in the user's language.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{Learn 1 new word} other{Learn {count} new words}}'**
-  String questGenericLearnWords(int count);
-
-  /// Generic LEARN quest (word cards disabled) shown when no quest text exists in the user's language.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{Read 1 hadith or dua card} other{Read {count} hadith or dua cards}}'**
-  String questGenericLearnCards(int count);
 
   /// Tooltip and screen reader label of the gear icon that opens Settings (app bar of Today and Journey).
   ///
@@ -889,7 +757,7 @@ abstract class AppLocalizations {
   /// Welcome text in the header of the first onboarding step (language).
   ///
   /// In en, this message translates to:
-  /// **'A few quiet minutes with the Quran each day. Then you\'re done.'**
+  /// **'A few quiet minutes with the Stoics each day. Then you\'re done.'**
   String get onbWelcomeBody;
 
   /// Short privacy note under the welcome text.
@@ -898,185 +766,29 @@ abstract class AppLocalizations {
   /// **'No account. No ads. Your data stays on this phone.'**
   String get onbWelcomeNote;
 
-  /// Title of the language step.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose your language'**
-  String get onbLanguageTitle;
-
-  /// Body of the language step.
-  ///
-  /// In en, this message translates to:
-  /// **'You can change this later in Settings.'**
-  String get onbLanguageBody;
-
-  /// Name of a language in that language (endonym). Do not translate: every language shows the same names.
-  ///
-  /// In en, this message translates to:
-  /// **'{lang, select, en{English} ar{العربية} id{Bahasa Indonesia} ur{اردو} bn{বাংলা} tr{Türkçe} other{{lang}}}'**
-  String onbLanguageName(String lang);
-
-  /// Label of the Quran translation picker on the language step.
-  ///
-  /// In en, this message translates to:
-  /// **'Quran translation'**
-  String get onbTranslationLabel;
-
-  /// Shown instead of the translation picker when the content has no translation for the chosen language.
-  ///
-  /// In en, this message translates to:
-  /// **'No translation is available for this language yet.'**
-  String get onbTranslationNone;
-
-  /// Title of the fatal state when the bundled content cannot be opened.
-  ///
-  /// In en, this message translates to:
-  /// **'Something went wrong'**
-  String get onbFatalTitle;
-
-  /// Body of the fatal state when the bundled content cannot be opened.
-  ///
-  /// In en, this message translates to:
-  /// **'Please reinstall the app.'**
-  String get onbFatalBody;
-
   /// Title of the intention step.
   ///
   /// In en, this message translates to:
   /// **'Why are you here?'**
-  String get onbNiyyahTitle;
+  String get onbIntentionTitle;
 
   /// Body of the intention step.
   ///
   /// In en, this message translates to:
   /// **'Choose what matters to you. You can pick more than one. It stays on this phone.'**
-  String get onbNiyyahBody;
+  String get onbIntentionBody;
 
   /// Options of the intention step. 'other' opens a text field for the user's own words.
   ///
   /// In en, this message translates to:
-  /// **'{option, select, khatm{Read the Quran regularly} arabic{Understand Quranic Arabic} prayer{Pray on time} less_social{Spend less time scrolling} other{Write my own}}'**
-  String onbNiyyahOption(String option);
+  /// **'{option, select, less_scrolling{Spend less time scrolling} calm{Stay calm under pressure} read_daily{Read the Stoics daily} reflect{Reflect each evening} other{Write my own}}'**
+  String onbIntentionOption(String option);
 
   /// Hint of the text field for the user's own intention (max 140 characters).
   ///
   /// In en, this message translates to:
   /// **'In your own words'**
-  String get onbNiyyahOwnHint;
-
-  /// Title of the location step.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer times for where you are'**
-  String get onbLocationTitle;
-
-  /// Body of the location step (prominent disclosure before the system location dialog).
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer times are calculated on your phone. Your location is rounded to about 1 km and never leaves your device.'**
-  String get onbLocationBody;
-
-  /// Button: get the location once from the phone.
-  ///
-  /// In en, this message translates to:
-  /// **'Use my location'**
-  String get onbLocationGps;
-
-  /// Button: open the offline city search.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose a city instead'**
-  String get onbLocationCity;
-
-  /// Shown while the phone is getting the location (max 10 s).
-  ///
-  /// In en, this message translates to:
-  /// **'Finding your location…'**
-  String get onbLocationFinding;
-
-  /// Shown when the location permission is denied or location is turned off.
-  ///
-  /// In en, this message translates to:
-  /// **'Location is off. Choose your city instead.'**
-  String get onbLocationDenied;
-
-  /// Shown when getting the location fails or times out after 10 s.
-  ///
-  /// In en, this message translates to:
-  /// **'Couldn\'t get your location. Choose your city instead.'**
-  String get onbLocationFailed;
-
-  /// Shown when the location is known but no city from the offline list is near.
-  ///
-  /// In en, this message translates to:
-  /// **'No city found nearby. Choose your city instead.'**
-  String get onbLocationNoCity;
-
-  /// Hint of the city search field.
-  ///
-  /// In en, this message translates to:
-  /// **'Search for a city'**
-  String get onbCitySearchHint;
-
-  /// City search without results.
-  ///
-  /// In en, this message translates to:
-  /// **'No city found. Try a nearby larger city.'**
-  String get onbCitySearchEmpty;
-
-  /// City search failed to read the offline city list.
-  ///
-  /// In en, this message translates to:
-  /// **'Cities could not be loaded.'**
-  String get onbCitySearchError;
-
-  /// Explains the preselected calculation method. country = country name, e.g. 'Slovakia'.
-  ///
-  /// In en, this message translates to:
-  /// **'We picked the method most often used in {country}. If your local mosque uses another, choose it here.'**
-  String onbMethodBody(String country);
-
-  /// Label of the prayer time calculation method picker.
-  ///
-  /// In en, this message translates to:
-  /// **'Calculation method'**
-  String get onbMethodLabel;
-
-  /// Names of prayer time calculation methods (official bodies, keep proper names).
-  ///
-  /// In en, this message translates to:
-  /// **'{method, select, muslimWorldLeague{Muslim World League} northAmerica{ISNA (North America)} egyptian{Egyptian General Authority} ummAlQura{Umm al-Qura, Makkah} karachi{University of Islamic Sciences, Karachi} turkiye{Diyanet, Türkiye} indonesian{Kemenag, Indonesia} singapore{MUIS, Singapore} dubai{Dubai} qatar{Qatar} kuwait{Kuwait} gulfRegion{Gulf region} algerian{Algeria} morocco{Morocco} tunisia{Tunisia} jordan{Jordan} france{UOIF, France} portugal{Portugal} russia{Spiritual Administration, Russia} tehran{Institute of Geophysics, Tehran} jafari{Shia Ithna Ashari (Jafari)} moonsightingCommittee{Moonsighting Committee} jakim{JAKIM, Malaysia} other{{method}}}'**
-  String onbMethodName(String method);
-
-  /// Label of the Asr calculation picker.
-  ///
-  /// In en, this message translates to:
-  /// **'Asr time'**
-  String get onbAsrLabel;
-
-  /// Asr calculation option: standard shadow length.
-  ///
-  /// In en, this message translates to:
-  /// **'Standard (Shafi\'i, Maliki, Hanbali)'**
-  String get onbAsrShafi;
-
-  /// Asr calculation option: Hanafi.
-  ///
-  /// In en, this message translates to:
-  /// **'Hanafi'**
-  String get onbAsrHanafi;
-
-  /// Info box on the location step for latitudes above 48 degrees.
-  ///
-  /// In en, this message translates to:
-  /// **'In summer, Isha and Fajr can be hard to calculate this far north. We use: Middle of the night. You can change this later in Settings.'**
-  String get onbHighLatNote;
-
-  /// Heading of the preview of today's prayer times on the location step.
-  ///
-  /// In en, this message translates to:
-  /// **'Today'**
-  String get onbTodayTimes;
+  String get onbIntentionOwnHint;
 
   /// Title of the notifications step.
   ///
@@ -1087,20 +799,8 @@ abstract class AppLocalizations {
   /// Body of the notifications step (shown before the system dialog).
   ///
   /// In en, this message translates to:
-  /// **'Get a quiet notice at each prayer time and one in the morning when your cards are ready. Nothing else.'**
+  /// **'Get one quiet notice in the morning when your cards are ready. Nothing else.'**
   String get onbNotifBody;
-
-  /// Switch: reminders at each prayer time.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer times (5 a day)'**
-  String get onbNotifPrayers;
-
-  /// Subtitle of the disabled prayer reminder switch when the location step was skipped.
-  ///
-  /// In en, this message translates to:
-  /// **'Set your location first'**
-  String get onbNotifPrayersNoLocation;
 
   /// Switch: one reminder in the morning. time = local time, e.g. '07:30'.
   ///
@@ -1138,24 +838,6 @@ abstract class AppLocalizations {
   /// **'Open settings'**
   String get onbOpenSettings;
 
-  /// Title of the exact alarm section on the notifications step.
-  ///
-  /// In en, this message translates to:
-  /// **'On-time prayer reminders'**
-  String get onbExactTitle;
-
-  /// Explains the exact alarm permission (Android 12+).
-  ///
-  /// In en, this message translates to:
-  /// **'To remind you at the exact minute, Android needs \"Alarms & reminders\" to be allowed. Without it, reminders may arrive up to 10 minutes late or more.'**
-  String get onbExactBody;
-
-  /// Button: opens the system 'Alarms & reminders' setting.
-  ///
-  /// In en, this message translates to:
-  /// **'Allow in settings'**
-  String get onbExactCta;
-
   /// Title of the privacy step (last step).
   ///
   /// In en, this message translates to:
@@ -1171,7 +853,7 @@ abstract class AppLocalizations {
   /// Privacy step, second point.
   ///
   /// In en, this message translates to:
-  /// **'Prayers, reading and progress never leave this phone.'**
+  /// **'Your reading, notes and progress never leave this phone.'**
   String get onbPrivacyPoint2;
 
   /// Checkbox: sharing choices are available only after confirming the age.
@@ -1195,7 +877,7 @@ abstract class AppLocalizations {
   /// Explains the anonymous usage choice.
   ///
   /// In en, this message translates to:
-  /// **'Share anonymous usage, like which screens are used. Never your prayers, your reading, your location, or which apps you use.'**
+  /// **'Share anonymous usage, like which screens are used. Never your reading, your notes, or which apps you use.'**
   String get onbAnalyticsBody;
 
   /// Choice: share anonymous usage.
@@ -1243,7 +925,7 @@ abstract class AppLocalizations {
   /// Content of the 'What we collect' sheet.
   ///
   /// In en, this message translates to:
-  /// **'Only if you choose to share: anonymous events such as \"onboarding finished\" or \"daily cards completed\", the app version and the language. Never what you read or pray, your location, or which apps you use.'**
+  /// **'Only if you choose to share: anonymous events such as \"onboarding finished\" or \"daily cards completed\", the app version and the language. Never what you read or write, or which apps you use.'**
   String get onbWhatWeCollectBody;
 
   /// Note under the sharing choices.
@@ -1264,36 +946,6 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get todaySettings;
 
-  /// Screen reader hint of the Hijri date on Today.
-  ///
-  /// In en, this message translates to:
-  /// **'Open the calendar'**
-  String get todayCalendarHint;
-
-  /// Hijri date on Today and on the intro card, e.g. '17 Jumada al-Ula 1448'. Digits are already localized.
-  ///
-  /// In en, this message translates to:
-  /// **'{day} {month} {year}'**
-  String todayHijriDate(String day, String month, String year);
-
-  /// Name of the Hijri month (calendar name, transliterated). The value is m1..m12.
-  ///
-  /// In en, this message translates to:
-  /// **'{month, select, m1{Muharram} m2{Safar} m3{Rabi al-Awwal} m4{Rabi al-Thani} m5{Jumada al-Ula} m6{Jumada al-Akhirah} m7{Rajab} m8{Shaban} m9{Ramadan} m10{Shawwal} m11{Dhul Qadah} m12{Dhul Hijjah} other{-}}'**
-  String todayHijriMonth(String month);
-
-  /// Next prayer chip on Today, e.g. 'Asr in 1 h 12 min'.
-  ///
-  /// In en, this message translates to:
-  /// **'{prayer} in {duration}'**
-  String todayNextPrayer(String prayer, String duration);
-
-  /// Next prayer chip when the prayer time is now.
-  ///
-  /// In en, this message translates to:
-  /// **'{prayer} now'**
-  String todayPrayerNow(String prayer);
-
   /// Countdown with hours and minutes.
   ///
   /// In en, this message translates to:
@@ -1305,12 +957,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{minutes} min'**
   String todayDurationMinutes(int minutes);
-
-  /// Prayer chip on Today when no location is set.
-  ///
-  /// In en, this message translates to:
-  /// **'Set your location to see prayer times'**
-  String get todaySetLocation;
 
   /// Section title of the daily quests on Today.
   ///
@@ -1333,7 +979,7 @@ abstract class AppLocalizations {
   /// Fallback title of the ACT quest when no text is available.
   ///
   /// In en, this message translates to:
-  /// **'Today\'s deed'**
+  /// **'Today\'s practice'**
   String get todayQuestSlotAct;
 
   /// Snackbar after the user marks the ACT quest as done.
@@ -1372,12 +1018,6 @@ abstract class AppLocalizations {
   /// **'Today\'s cards are complete'**
   String get todayCtaComplete;
 
-  /// Button on Today after the set is finished; opens free reading.
-  ///
-  /// In en, this message translates to:
-  /// **'Read the Quran'**
-  String get todayCtaReadQuran;
-
   /// Private streak of completed days.
   ///
   /// In en, this message translates to:
@@ -1394,7 +1034,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'“{text}”'**
-  String todayNiyyah(String text);
+  String todayIntention(String text);
 
   /// E-FEED-1 title when the daily set could not be prepared.
   ///
@@ -1486,66 +1126,6 @@ abstract class AppLocalizations {
   /// **'Start today\'s'**
   String get feedNewDayToday;
 
-  /// Type label of a verse card.
-  ///
-  /// In en, this message translates to:
-  /// **'VERSE'**
-  String get cardTypeVerse;
-
-  /// Type label of a hadith card.
-  ///
-  /// In en, this message translates to:
-  /// **'HADITH'**
-  String get cardTypeHadith;
-
-  /// Type label of a dua (supplication) card.
-  ///
-  /// In en, this message translates to:
-  /// **'DUA'**
-  String get cardTypeDua;
-
-  /// Type label of a card with one of the 99 names.
-  ///
-  /// In en, this message translates to:
-  /// **'NAME OF ALLAH'**
-  String get cardTypeName;
-
-  /// Type label of a reflection card.
-  ///
-  /// In en, this message translates to:
-  /// **'REFLECTION'**
-  String get cardTypeReflection;
-
-  /// Type label of an event card when the event has no title.
-  ///
-  /// In en, this message translates to:
-  /// **'SPECIAL DAY'**
-  String get cardTypeEvent;
-
-  /// Type label of a verse outside the daily set.
-  ///
-  /// In en, this message translates to:
-  /// **'FREE READING'**
-  String get cardTypeFreeReading;
-
-  /// Card header: type label and reference, e.g. 'VERSE · Al-Baqarah 2:255'.
-  ///
-  /// In en, this message translates to:
-  /// **'{type} · {context}'**
-  String cardEyebrow(String type, String context);
-
-  /// Verse reference, e.g. 'Al-Baqarah 2:255'. The surah name comes from the content database.
-  ///
-  /// In en, this message translates to:
-  /// **'{surah} {ref}'**
-  String cardAyahReference(String surah, String ref);
-
-  /// Screen reader label of a verse card, e.g. 'Al-Baqarah, verse 255'.
-  ///
-  /// In en, this message translates to:
-  /// **'{surah}, verse {ayah}'**
-  String cardAyahA11y(String surah, String ayah);
-
   /// Saves a card (bookmark).
   ///
   /// In en, this message translates to:
@@ -1582,12 +1162,6 @@ abstract class AppLocalizations {
   /// **'More options'**
   String get cardMore;
 
-  /// Attribution of the translation of meaning.
-  ///
-  /// In en, this message translates to:
-  /// **'Translation: {translator}'**
-  String cardTranslationLabel(String translator);
-
   /// Tag on a translation shown in English because it is missing in the user's language.
   ///
   /// In en, this message translates to:
@@ -1600,102 +1174,6 @@ abstract class AppLocalizations {
   /// **'English translation'**
   String get cardFallbackA11y;
 
-  /// Shown when a card has no translation in the user's language or English.
-  ///
-  /// In en, this message translates to:
-  /// **'Translation not available in your language'**
-  String get cardNoTranslation;
-
-  /// Opens the verse in the Quran reader.
-  ///
-  /// In en, this message translates to:
-  /// **'Read in context'**
-  String get cardReadInContext;
-
-  /// Source reference of a dua or hadith.
-  ///
-  /// In en, this message translates to:
-  /// **'Source: {source}'**
-  String cardSourceRef(String source);
-
-  /// Hadith reference, e.g. 'Sahih al-Bukhari 1'. Values come from the content database.
-  ///
-  /// In en, this message translates to:
-  /// **'{collection} {number}'**
-  String cardHadithReference(String collection, String number);
-
-  /// Authenticity grade of a hadith.
-  ///
-  /// In en, this message translates to:
-  /// **'Grade: {grade}'**
-  String cardHadithGrade(String grade);
-
-  /// Localized hadith grade label (technical term).
-  ///
-  /// In en, this message translates to:
-  /// **'{grade, select, sahih{Sahih} hasan{Hasan} other{Other}}'**
-  String cardHadithGradeName(String grade);
-
-  /// Opens the explanation of a hadith (only when available).
-  ///
-  /// In en, this message translates to:
-  /// **'Explanation'**
-  String get cardHadithExplanation;
-
-  /// How many times a dua is usually repeated.
-  ///
-  /// In en, this message translates to:
-  /// **'×{count}'**
-  String cardDuaRepeat(int count);
-
-  /// Local repetition counter of a dua.
-  ///
-  /// In en, this message translates to:
-  /// **'{n} / {total}'**
-  String cardDuaCounter(int n, int total);
-
-  /// Screen reader hint of the repetition counter.
-  ///
-  /// In en, this message translates to:
-  /// **'Count a repetition'**
-  String get cardDuaCounterHint;
-
-  /// Position of the name among the 99 names.
-  ///
-  /// In en, this message translates to:
-  /// **'{n} of 99'**
-  String cardNameIndex(String n);
-
-  /// Verse where the name is mentioned, e.g. 'Mentioned in 59:23'.
-  ///
-  /// In en, this message translates to:
-  /// **'Mentioned in {ref}'**
-  String cardNameMentionedIn(String ref);
-
-  /// Opens the referenced verse.
-  ///
-  /// In en, this message translates to:
-  /// **'Open'**
-  String get cardOpen;
-
-  /// Attribution of a reflection card (reviewed by a content reviewer).
-  ///
-  /// In en, this message translates to:
-  /// **'Prosoche reflection · reviewed'**
-  String get cardReflectionAttribution;
-
-  /// Surah info on an event card. The surah name comes from the content database.
-  ///
-  /// In en, this message translates to:
-  /// **'{surah} · {count, plural, one{1 verse} other{{count} verses}}'**
-  String cardEventSurah(String surah, int count);
-
-  /// Opens the surah of the event in the reader. The surah name comes from the content database.
-  ///
-  /// In en, this message translates to:
-  /// **'Read {surah}'**
-  String cardEventReadSurah(String surah);
-
   /// Size of the daily set on the intro card.
   ///
   /// In en, this message translates to:
@@ -1707,12 +1185,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your intentions: {slots}'**
   String cardIntroQuests(String slots);
-
-  /// More special days today.
-  ///
-  /// In en, this message translates to:
-  /// **'+{count} more'**
-  String cardIntroMoreEvents(int count);
 
   /// Card options: copy the text.
   ///
@@ -1762,12 +1234,6 @@ abstract class AppLocalizations {
   /// **'Source'**
   String get cardSourceTitle;
 
-  /// License of the content source.
-  ///
-  /// In en, this message translates to:
-  /// **'License: {license}'**
-  String cardSourceLicense(String license);
-
   /// Last line of shared text and images.
   ///
   /// In en, this message translates to:
@@ -1780,23 +1246,17 @@ abstract class AppLocalizations {
   /// **'You\'re done for today'**
   String get doneTitle;
 
-  /// Summary on the done card (word cards are off).
+  /// Summary on the done card: number of cards.
   ///
   /// In en, this message translates to:
-  /// **'{cards, plural, one{1 card} other{{cards} cards}} · {verses, plural, one{1 verse} other{{verses} verses}}'**
-  String doneSummary(int cards, int verses);
+  /// **'{cards, plural, one{1 card} other{{cards} cards}}'**
+  String doneSummary(int cards);
 
   /// Quest summary on the done card.
   ///
   /// In en, this message translates to:
   /// **'Intentions: {done} of {total}'**
   String doneQuests(int done, int total);
-
-  /// Next prayer on the done card.
-  ///
-  /// In en, this message translates to:
-  /// **'Next: {prayer} at {time}'**
-  String doneNextPrayer(String prayer, String time);
 
   /// The feed ends; nothing more to load today.
   ///
@@ -1807,7 +1267,7 @@ abstract class AppLocalizations {
   /// Opens free reading from the reading position.
   ///
   /// In en, this message translates to:
-  /// **'Keep reading the Quran'**
+  /// **'Keep reading'**
   String get doneKeepReading;
 
   /// Shown when the set was finished after midnight and counts for the previous day.
@@ -1822,1026 +1282,6 @@ abstract class AppLocalizations {
   /// **'Still open: {title}'**
   String doneOpenDeed(String title);
 
-  /// Title of the card after reading the last verse of the Quran in order.
-  ///
-  /// In en, this message translates to:
-  /// **'You completed the Quran.'**
-  String get khatmTitle;
-
-  /// Which completion this is.
-  ///
-  /// In en, this message translates to:
-  /// **'Completion #{n}'**
-  String khatmNumber(int n);
-
-  /// Opens the reader at the first verse.
-  ///
-  /// In en, this message translates to:
-  /// **'Start again from the beginning'**
-  String get khatmStartAgain;
-
-  /// Tooltip and label of the search button on the surah list.
-  ///
-  /// In en, this message translates to:
-  /// **'Search the Quran'**
-  String get quranSearchTooltip;
-
-  /// Continue reading banner on the surah list (khatm order). reference = surah name and verse, e.g. 'Al-Baqarah 2:144'.
-  ///
-  /// In en, this message translates to:
-  /// **'Continue: {reference}'**
-  String quranContinue(String reference);
-
-  /// Continue banner when nothing has been read yet (starts at 1:1).
-  ///
-  /// In en, this message translates to:
-  /// **'Start reading: {reference}'**
-  String quranStartReading(String reference);
-
-  /// Second line of the continue banner: last verse opened while browsing.
-  ///
-  /// In en, this message translates to:
-  /// **'Last opened: {reference}'**
-  String quranLastOpened(String reference);
-
-  /// Segment on the Quran list: list of the 114 surahs.
-  ///
-  /// In en, this message translates to:
-  /// **'Surahs'**
-  String get quranTabSurahs;
-
-  /// Segment on the Quran list: list of the 30 juz (parts).
-  ///
-  /// In en, this message translates to:
-  /// **'Juz'**
-  String get quranTabJuz;
-
-  /// Title of a juz row. number is already formatted in the digits of the language.
-  ///
-  /// In en, this message translates to:
-  /// **'Juz {number}'**
-  String quranJuzTitle(String number);
-
-  /// Place of revelation of a surah (Mecca).
-  ///
-  /// In en, this message translates to:
-  /// **'Meccan'**
-  String get quranRevelationMeccan;
-
-  /// Place of revelation of a surah (Medina).
-  ///
-  /// In en, this message translates to:
-  /// **'Medinan'**
-  String get quranRevelationMedinan;
-
-  /// Number of verses of a surah.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{1 verse} other{{count} verses}}'**
-  String quranAyahCount(int count);
-
-  /// Reading progress of a surah. percent is formatted, e.g. '43 %'.
-  ///
-  /// In en, this message translates to:
-  /// **'{percent} read'**
-  String quranProgressRead(String percent);
-
-  /// Screen reader prefix of a surah row. number is formatted.
-  ///
-  /// In en, this message translates to:
-  /// **'Surah {number}'**
-  String quranSurahNumber(String number);
-
-  /// Reader header subtitle: juz and mushaf page of the verse at the top. Values are formatted.
-  ///
-  /// In en, this message translates to:
-  /// **'Juz {juz} · Page {page}'**
-  String quranJuzPage(String juz, String page);
-
-  /// Tooltip of the Aa button in the reader and title of its sheet.
-  ///
-  /// In en, this message translates to:
-  /// **'Text settings'**
-  String get quranTextSettings;
-
-  /// Label of the Arabic font size selector in the reader sheet.
-  ///
-  /// In en, this message translates to:
-  /// **'Arabic text size'**
-  String get quranArabicSize;
-
-  /// Arabic text size: small (short label in a segmented control).
-  ///
-  /// In en, this message translates to:
-  /// **'S'**
-  String get quranArabicSizeS;
-
-  /// Arabic text size: medium.
-  ///
-  /// In en, this message translates to:
-  /// **'M'**
-  String get quranArabicSizeM;
-
-  /// Arabic text size: large.
-  ///
-  /// In en, this message translates to:
-  /// **'L'**
-  String get quranArabicSizeL;
-
-  /// Arabic text size: extra large.
-  ///
-  /// In en, this message translates to:
-  /// **'XL'**
-  String get quranArabicSizeXL;
-
-  /// Switch in the reader sheet that shows or hides the translation of meaning.
-  ///
-  /// In en, this message translates to:
-  /// **'Show translation'**
-  String get quranShowTranslation;
-
-  /// Header of the list of available translations in the reader sheet.
-  ///
-  /// In en, this message translates to:
-  /// **'Translation'**
-  String get quranTranslationSource;
-
-  /// Attribution of the translation under the text. name = translator or publisher from the content database. Never call it 'the Quran in English'.
-  ///
-  /// In en, this message translates to:
-  /// **'Translation of meaning: {name}'**
-  String quranTranslationOfMeaning(String name);
-
-  /// Version and source of the translation (required by the source licence). Values come from the content database.
-  ///
-  /// In en, this message translates to:
-  /// **'Version {version} · {attribution}'**
-  String quranTranslationVersion(String version, String attribution);
-
-  /// Shown under the Arabic text when no translation exists in the user's language or in English.
-  ///
-  /// In en, this message translates to:
-  /// **'Translation not available in your language'**
-  String get quranTranslationMissing;
-
-  /// Small tag on a translation shown in English because the user's language has none.
-  ///
-  /// In en, this message translates to:
-  /// **'EN'**
-  String get quranTranslationFallbackTag;
-
-  /// Screen reader label of the EN tag.
-  ///
-  /// In en, this message translates to:
-  /// **'English translation'**
-  String get quranTranslationFallbackLabel;
-
-  /// Button that shows the footnotes of the translator under a verse.
-  ///
-  /// In en, this message translates to:
-  /// **'Translator\'s notes'**
-  String get quranFootnotesShow;
-
-  /// Button that hides the footnotes of the translator.
-  ///
-  /// In en, this message translates to:
-  /// **'Hide notes'**
-  String get quranFootnotesHide;
-
-  /// Tooltip of the icon on a verse of prostration (sajda).
-  ///
-  /// In en, this message translates to:
-  /// **'Prostration verse'**
-  String get quranSajda;
-
-  /// Tooltip of the more button of a verse and title of its sheet.
-  ///
-  /// In en, this message translates to:
-  /// **'Verse actions'**
-  String get quranVerseActions;
-
-  /// Action: copy the verse with translation, reference and attribution.
-  ///
-  /// In en, this message translates to:
-  /// **'Copy'**
-  String get quranCopy;
-
-  /// Snackbar after copying a verse.
-  ///
-  /// In en, this message translates to:
-  /// **'Verse copied'**
-  String get quranCopied;
-
-  /// Action: save the verse (bookmark).
-  ///
-  /// In en, this message translates to:
-  /// **'Save'**
-  String get quranSave;
-
-  /// Action: remove the verse from saved.
-  ///
-  /// In en, this message translates to:
-  /// **'Remove from saved'**
-  String get quranRemoveSaved;
-
-  /// Last line of copied text.
-  ///
-  /// In en, this message translates to:
-  /// **'via {appName}'**
-  String quranShareVia(String appName);
-
-  /// Card at the end of a surah that opens the next surah.
-  ///
-  /// In en, this message translates to:
-  /// **'Next: {name}'**
-  String quranNextSurah(String name);
-
-  /// Button at the end of the last surah.
-  ///
-  /// In en, this message translates to:
-  /// **'Back to surahs'**
-  String get quranBackToSurahs;
-
-  /// Snackbar when a link points to a verse that does not exist (E-LINK-1).
-  ///
-  /// In en, this message translates to:
-  /// **'That verse could not be found.'**
-  String get quranVerseNotFound;
-
-  /// Shown after reading the last verse in continuous reading.
-  ///
-  /// In en, this message translates to:
-  /// **'You completed the Quran'**
-  String get quranKhatmTitle;
-
-  /// Button after completing the Quran. name = name of surah 1 from the content database.
-  ///
-  /// In en, this message translates to:
-  /// **'Start again from {name}'**
-  String quranKhatmStartAgain(String name);
-
-  /// Screen reader reference of a verse, read in words (not '2 colon 255').
-  ///
-  /// In en, this message translates to:
-  /// **'Surah {surah}, verse {ayah}'**
-  String quranAyahSemantics(String surah, String ayah);
-
-  /// Hint in the Quran search field.
-  ///
-  /// In en, this message translates to:
-  /// **'Word, surah or 2:255'**
-  String get quranSearchHint;
-
-  /// Shown before searching. Nothing is stored about past searches.
-  ///
-  /// In en, this message translates to:
-  /// **'Try a word like \'mercy\' or a surah name.'**
-  String get quranSearchTips;
-
-  /// EMPTY-SEARCH title.
-  ///
-  /// In en, this message translates to:
-  /// **'No results for \"{query}\"'**
-  String quranSearchEmptyTitle(String query);
-
-  /// EMPTY-SEARCH body.
-  ///
-  /// In en, this message translates to:
-  /// **'Try another word, a surah name or a number like 2:255.'**
-  String get quranSearchEmptyBody;
-
-  /// E-SEARCH-1 title.
-  ///
-  /// In en, this message translates to:
-  /// **'Search isn\'t working right now'**
-  String get quranSearchErrorTitle;
-
-  /// E-SEARCH-1 body.
-  ///
-  /// In en, this message translates to:
-  /// **'Please try again.'**
-  String get quranSearchErrorBody;
-
-  /// First search result when the query is a verse reference.
-  ///
-  /// In en, this message translates to:
-  /// **'Go to {reference}'**
-  String quranGoTo(String reference);
-
-  /// Header of full text search results.
-  ///
-  /// In en, this message translates to:
-  /// **'Verses'**
-  String get quranSearchVerses;
-
-  /// Tooltip of the button that clears the search field.
-  ///
-  /// In en, this message translates to:
-  /// **'Clear'**
-  String get quranClearSearch;
-
-  /// Tooltip of the back button in the reader.
-  ///
-  /// In en, this message translates to:
-  /// **'Back'**
-  String get quranBack;
-
-  /// Tooltip of the close button of sheets in the Quran screens.
-  ///
-  /// In en, this message translates to:
-  /// **'Close'**
-  String get quranClose;
-
-  /// Name of a prayer time row on the prayer screen (transliteration as in docs/01 T8). Sunrise is not a prayer, it ends Fajr.
-  ///
-  /// In en, this message translates to:
-  /// **'{prayer, select, fajr{Fajr} sunrise{Sunrise} dhuhr{Dhuhr} asr{Asr} maghrib{Maghrib} isha{Isha} other{Prayer}}'**
-  String prayerTimeName(String prayer);
-
-  /// Icon button in the prayer screen app bar that opens the qibla compass.
-  ///
-  /// In en, this message translates to:
-  /// **'Qibla direction'**
-  String get prayerQiblaTooltip;
-
-  /// Icon button in the prayer screen app bar that opens the hijri calendar.
-  ///
-  /// In en, this message translates to:
-  /// **'Islamic calendar'**
-  String get prayerCalendarTooltip;
-
-  /// Icon button that opens prayer time settings.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer settings'**
-  String get prayerSettingsTooltip;
-
-  /// Tooltip of the arrow that shows the previous day on the prayer screen.
-  ///
-  /// In en, this message translates to:
-  /// **'Previous day'**
-  String get prayerPreviousDay;
-
-  /// Tooltip of the arrow that shows the next day on the prayer screen.
-  ///
-  /// In en, this message translates to:
-  /// **'Next day'**
-  String get prayerNextDay;
-
-  /// Time until the next prayer, e.g. 'in 1 h 12 min'.
-  ///
-  /// In en, this message translates to:
-  /// **'in {hours} h {minutes} min'**
-  String prayerInHoursMinutes(int hours, int minutes);
-
-  /// Time until the next prayer under one hour, e.g. 'in 12 min'.
-  ///
-  /// In en, this message translates to:
-  /// **'in {minutes} min'**
-  String prayerInMinutes(int minutes);
-
-  /// Manual adjustment of a prayer time shown in its row, e.g. '+2 min'. value includes the sign.
-  ///
-  /// In en, this message translates to:
-  /// **'{value} min'**
-  String prayerAdjustedLabel(String value);
-
-  /// Summary of calculation settings under the prayer times, e.g. 'Muslim World League · Asr Shafi'i · no adjustments'. Tapping it opens prayer settings.
-  ///
-  /// In en, this message translates to:
-  /// **'{method} · Asr {asr} · {adjust}'**
-  String prayerInfoLine(String method, String asr, String adjust);
-
-  /// Part of the settings summary when no prayer time is manually adjusted.
-  ///
-  /// In en, this message translates to:
-  /// **'no adjustments'**
-  String get prayerInfoNoAdjust;
-
-  /// Part of the settings summary when some prayer times are manually adjusted.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =1{1 time adjusted} other{{count} times adjusted}}'**
-  String prayerInfoAdjusted(int count);
-
-  /// Tooltip/semantics of the city name in the prayer screen header that opens the city search.
-  ///
-  /// In en, this message translates to:
-  /// **'Change location'**
-  String get prayerLocationChange;
-
-  /// Empty state title on the prayer screen without a location (EMPTY-PRAYER-LOC).
-  ///
-  /// In en, this message translates to:
-  /// **'Set your location'**
-  String get prayerLocationTitle;
-
-  /// Empty state body without a location (EMPTY-PRAYER-LOC).
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer times are calculated on your phone for where you are.'**
-  String get prayerLocationBody;
-
-  /// Button that uses the phone location once to find the nearest city.
-  ///
-  /// In en, this message translates to:
-  /// **'Use my location'**
-  String get prayerUseMyLocation;
-
-  /// Button that opens the offline city search.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose a city'**
-  String get prayerChooseCity;
-
-  /// Hint above the tracker when no location is set.
-  ///
-  /// In en, this message translates to:
-  /// **'You can still log your prayers without times.'**
-  String get prayerNoTimesHint;
-
-  /// Error state title (E-PRAYER-1).
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer times couldn\'t be calculated'**
-  String get prayerErrorTitle;
-
-  /// Error state body (E-PRAYER-1).
-  ///
-  /// In en, this message translates to:
-  /// **'Check your location and calculation method.'**
-  String get prayerErrorBody;
-
-  /// Banner after midnight before Fajr: the screen shows yesterday so Isha can still be logged.
-  ///
-  /// In en, this message translates to:
-  /// **'Isha time continues until Fajr'**
-  String get prayerIshaContinues;
-
-  /// Banner when the phone time zone differs from the saved prayer location (TZ-CHANGE).
-  ///
-  /// In en, this message translates to:
-  /// **'New time zone detected'**
-  String get prayerTimeZoneTitle;
-
-  /// Banner body when the phone time zone differs from the saved location.
-  ///
-  /// In en, this message translates to:
-  /// **'Update prayer times for where you are now?'**
-  String get prayerTimeZoneBody;
-
-  /// Banner when notifications are blocked (P-NOTIF-BANNER).
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer reminders are off'**
-  String get prayerRemindersOffTitle;
-
-  /// Banner body when notifications are blocked.
-  ///
-  /// In en, this message translates to:
-  /// **'Turn on notifications to be reminded at each prayer time.'**
-  String get prayerRemindersOffBody;
-
-  /// Action of the reminders-off banner.
-  ///
-  /// In en, this message translates to:
-  /// **'Turn on'**
-  String get prayerRemindersTurnOn;
-
-  /// Info line when exact alarms are not allowed (P-EXACT-INFO).
-  ///
-  /// In en, this message translates to:
-  /// **'Reminders may arrive up to 10 minutes late or more.'**
-  String get prayerExactInfo;
-
-  /// Action of the exact alarm info line.
-  ///
-  /// In en, this message translates to:
-  /// **'Allow exact times'**
-  String get prayerExactAllow;
-
-  /// Title of the sheet explaining a high latitude estimate.
-  ///
-  /// In en, this message translates to:
-  /// **'Estimated time'**
-  String get prayerEstimatedTitle;
-
-  /// Body of the high latitude sheet.
-  ///
-  /// In en, this message translates to:
-  /// **'On some nights the sun doesn\'t go low enough here to calculate {prayer}. The time is estimated using: {rule}.'**
-  String prayerEstimatedBody(String prayer, String rule);
-
-  /// Tooltip of the info button next to estimated prayer times.
-  ///
-  /// In en, this message translates to:
-  /// **'Why is this estimated?'**
-  String get prayerEstimatedInfo;
-
-  /// Button that opens prayer settings to change the high latitude rule.
-  ///
-  /// In en, this message translates to:
-  /// **'Change rule'**
-  String get prayerChangeRule;
-
-  /// Screen reader action and sheet option: log the prayer as prayed on time.
-  ///
-  /// In en, this message translates to:
-  /// **'Mark on time'**
-  String get prayerMarkOnTime;
-
-  /// Screen reader action and sheet option: log the prayer as prayed late.
-  ///
-  /// In en, this message translates to:
-  /// **'Mark late'**
-  String get prayerMarkLate;
-
-  /// Screen reader action and sheet option: log the prayer as missed.
-  ///
-  /// In en, this message translates to:
-  /// **'Mark missed'**
-  String get prayerMarkMissed;
-
-  /// Sheet option: log a missed prayer as made up later.
-  ///
-  /// In en, this message translates to:
-  /// **'Made up (qada)'**
-  String get prayerMarkQada;
-
-  /// Screen reader action: log the prayer as made up later.
-  ///
-  /// In en, this message translates to:
-  /// **'Mark made up'**
-  String get prayerMarkQadaAction;
-
-  /// Sheet option and screen reader action: remove the log for this prayer.
-  ///
-  /// In en, this message translates to:
-  /// **'Clear'**
-  String get prayerClearLog;
-
-  /// Snackbar after clearing a prayer log, shown with Undo.
-  ///
-  /// In en, this message translates to:
-  /// **'{prayer} log cleared.'**
-  String prayerLogCleared(String prayer);
-
-  /// Shown in the status sheet of a prayer that has not started yet.
-  ///
-  /// In en, this message translates to:
-  /// **'You can log it after it begins.'**
-  String get prayerFutureHint;
-
-  /// Snackbar after choosing a new city (UPDATED-PRAYER).
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer times updated for {city}.'**
-  String prayerUpdatedFor(String city);
-
-  /// Name of a prayer time calculation method.
-  ///
-  /// In en, this message translates to:
-  /// **'{method, select, muslimWorldLeague{Muslim World League} northAmerica{ISNA (North America)} egyptian{Egyptian General Authority of Survey} ummAlQura{Umm al-Qura, Makkah} karachi{University of Islamic Sciences, Karachi} turkiye{Diyanet (Türkiye)} indonesian{Kemenag (Indonesia)} singapore{MUIS (Singapore)} dubai{Dubai} qatar{Qatar} kuwait{Kuwait} gulfRegion{Gulf region} algerian{Algeria} morocco{Morocco} tunisia{Tunisia} jordan{Jordan} france{France (UOIF)} portugal{Portugal} russia{Russia} tehran{Institute of Geophysics, Tehran} jafari{Shia Ithna Ashari (Jafari)} moonsightingCommittee{Moonsighting Committee} jakim{JAKIM (Malaysia)} other{Other}}'**
-  String prayerMethodName(String method);
-
-  /// Description of a calculation method by its sun angles.
-  ///
-  /// In en, this message translates to:
-  /// **'Fajr {fajr}°, Isha {isha}°'**
-  String prayerMethodAngles(String fajr, String isha);
-
-  /// Description of a method where Isha is a fixed time after Maghrib.
-  ///
-  /// In en, this message translates to:
-  /// **'Fajr {fajr}°, Isha {minutes} min after Maghrib'**
-  String prayerMethodInterval(String fajr, String minutes);
-
-  /// Method option: use the usual method of the country of the location.
-  ///
-  /// In en, this message translates to:
-  /// **'Automatic'**
-  String get prayerMethodAutomatic;
-
-  /// Subtitle of the automatic method option.
-  ///
-  /// In en, this message translates to:
-  /// **'Usual method for your location: {method}'**
-  String prayerMethodAutomaticFor(String method);
-
-  /// Asr calculation option: shadow length equals object length.
-  ///
-  /// In en, this message translates to:
-  /// **'Standard (Shafi\'i, Maliki, Hanbali)'**
-  String get prayerAsrShafi;
-
-  /// Asr calculation option: shadow length is twice the object length.
-  ///
-  /// In en, this message translates to:
-  /// **'Hanafi'**
-  String get prayerAsrHanafi;
-
-  /// Short Asr method name in the settings summary.
-  ///
-  /// In en, this message translates to:
-  /// **'Shafi\'i'**
-  String get prayerAsrShortShafi;
-
-  /// Short Asr method name in the settings summary.
-  ///
-  /// In en, this message translates to:
-  /// **'Hanafi'**
-  String get prayerAsrShortHanafi;
-
-  /// Name of a high latitude rule.
-  ///
-  /// In en, this message translates to:
-  /// **'{rule, select, middle_of_night{Middle of the night} seventh_of_night{One seventh of the night} twilight_angle{Twilight angle} other{Automatic}}'**
-  String prayerHighLatName(String rule);
-
-  /// Short explanation of a high latitude rule.
-  ///
-  /// In en, this message translates to:
-  /// **'{rule, select, middle_of_night{Fajr and Isha stay within the halves of the night.} seventh_of_night{Isha at most one seventh of the night after Maghrib, Fajr at most one seventh before sunrise.} twilight_angle{The night portion follows the angle of the method.} other{}}'**
-  String prayerHighLatDescription(String rule);
-
-  /// Title of the prayer settings screen.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer times'**
-  String get prayerSettingsTitle;
-
-  /// Section title: location.
-  ///
-  /// In en, this message translates to:
-  /// **'Location'**
-  String get prayerSettingsLocation;
-
-  /// Section title: calculation method.
-  ///
-  /// In en, this message translates to:
-  /// **'Calculation method'**
-  String get prayerSettingsMethod;
-
-  /// Section title: Asr calculation.
-  ///
-  /// In en, this message translates to:
-  /// **'Asr'**
-  String get prayerSettingsAsr;
-
-  /// Section title: rule for places where Fajr or Isha can't always be calculated.
-  ///
-  /// In en, this message translates to:
-  /// **'High latitude rule'**
-  String get prayerSettingsHighLat;
-
-  /// Help text of the high latitude section.
-  ///
-  /// In en, this message translates to:
-  /// **'Used when the sun doesn\'t go low enough for Fajr or Isha.'**
-  String get prayerSettingsHighLatHelp;
-
-  /// Section title: manual minute adjustments per prayer.
-  ///
-  /// In en, this message translates to:
-  /// **'Manual adjustments'**
-  String get prayerSettingsAdjust;
-
-  /// Help text of the manual adjustments section.
-  ///
-  /// In en, this message translates to:
-  /// **'Move a time if your local mosque uses a different one.'**
-  String get prayerSettingsAdjustHelp;
-
-  /// Section title: preview of today's prayer times.
-  ///
-  /// In en, this message translates to:
-  /// **'Today'**
-  String get prayerSettingsPreview;
-
-  /// Value of a manual adjustment stepper, e.g. '+2 min' or '0 min'.
-  ///
-  /// In en, this message translates to:
-  /// **'{value} min'**
-  String prayerAdjustMinutes(String value);
-
-  /// Tooltip of the minus button of an adjustment stepper.
-  ///
-  /// In en, this message translates to:
-  /// **'Earlier by 1 minute'**
-  String get prayerAdjustEarlier;
-
-  /// Tooltip of the plus button of an adjustment stepper.
-  ///
-  /// In en, this message translates to:
-  /// **'Later by 1 minute'**
-  String get prayerAdjustLater;
-
-  /// Screen reader label of an adjustment stepper.
-  ///
-  /// In en, this message translates to:
-  /// **'{prayer} adjustment, {value} minutes'**
-  String prayerAdjustSemantics(String prayer, String value);
-
-  /// Sheet after moving to another country when the method was chosen manually (METHOD-SUGGEST).
-  ///
-  /// In en, this message translates to:
-  /// **'{method} is common in {country}'**
-  String prayerMethodSuggestTitle(String method, String country);
-
-  /// Body of the method suggestion sheet.
-  ///
-  /// In en, this message translates to:
-  /// **'Switch the calculation method?'**
-  String get prayerMethodSuggestBody;
-
-  /// Accept the suggested method.
-  ///
-  /// In en, this message translates to:
-  /// **'Switch'**
-  String get prayerMethodSuggestSwitch;
-
-  /// Keep the current method.
-  ///
-  /// In en, this message translates to:
-  /// **'Keep {method}'**
-  String prayerMethodSuggestKeep(String method);
-
-  /// Title of the offline city search screen.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose a city'**
-  String get citySearchTitle;
-
-  /// Placeholder of the city search field.
-  ///
-  /// In en, this message translates to:
-  /// **'Search for a city'**
-  String get citySearchHint;
-
-  /// Shown before typing in the city search.
-  ///
-  /// In en, this message translates to:
-  /// **'Type the first letters of your city. The list works offline.'**
-  String get citySearchTips;
-
-  /// Empty result of the city search.
-  ///
-  /// In en, this message translates to:
-  /// **'No cities found for \"{query}\"'**
-  String citySearchEmptyTitle(String query);
-
-  /// Body of the empty city search result.
-  ///
-  /// In en, this message translates to:
-  /// **'Check the spelling or try a bigger city nearby.'**
-  String get citySearchEmptyBody;
-
-  /// Tooltip of the button that clears the search field.
-  ///
-  /// In en, this message translates to:
-  /// **'Clear search'**
-  String get citySearchClear;
-
-  /// Currently saved city shown above the search results.
-  ///
-  /// In en, this message translates to:
-  /// **'Current: {city}'**
-  String citySearchCurrent(String city);
-
-  /// Shown while the phone location is being read.
-  ///
-  /// In en, this message translates to:
-  /// **'Finding your location…'**
-  String get cityLocating;
-
-  /// Error after the phone location failed (E-LOC-1).
-  ///
-  /// In en, this message translates to:
-  /// **'We couldn\'t find your location'**
-  String get cityLocationErrorTitle;
-
-  /// Body of the location error (E-LOC-1).
-  ///
-  /// In en, this message translates to:
-  /// **'Choose your city instead. It works just as well.'**
-  String get cityLocationErrorBody;
-
-  /// Title of the qibla compass screen.
-  ///
-  /// In en, this message translates to:
-  /// **'Qibla'**
-  String get qiblaTitle;
-
-  /// Instruction to rotate the phone towards the qibla.
-  ///
-  /// In en, this message translates to:
-  /// **'Turn right {degrees}°'**
-  String qiblaTurnRight(String degrees);
-
-  /// Instruction to rotate the phone towards the qibla.
-  ///
-  /// In en, this message translates to:
-  /// **'Turn left {degrees}°'**
-  String qiblaTurnLeft(String degrees);
-
-  /// Shown when the phone points to the qibla (within 5 degrees).
-  ///
-  /// In en, this message translates to:
-  /// **'Facing the Qibla'**
-  String get qiblaFacing;
-
-  /// Qibla direction in degrees clockwise from north.
-  ///
-  /// In en, this message translates to:
-  /// **'Qibla {degrees}° from north'**
-  String qiblaBearing(String degrees);
-
-  /// Compass accuracy is low (Q-CALIBRATE).
-  ///
-  /// In en, this message translates to:
-  /// **'Calibrating…'**
-  String get qiblaCalibrateTitle;
-
-  /// Calibration instruction (Q-CALIBRATE).
-  ///
-  /// In en, this message translates to:
-  /// **'Move your phone in a figure 8.'**
-  String get qiblaCalibrateBody;
-
-  /// The phone has no compass sensor (Q-NOSENSOR).
-  ///
-  /// In en, this message translates to:
-  /// **'Compass not available'**
-  String get qiblaNoSensorTitle;
-
-  /// Fallback without a compass (Q-NOSENSOR).
-  ///
-  /// In en, this message translates to:
-  /// **'The Qibla is {degrees}° from north.'**
-  String qiblaNoSensorBody(String degrees);
-
-  /// Hint under the compass.
-  ///
-  /// In en, this message translates to:
-  /// **'Hold your phone flat, away from metal and magnets.'**
-  String get qiblaHint;
-
-  /// Screen reader label of the compass dial.
-  ///
-  /// In en, this message translates to:
-  /// **'Compass. Qibla is {degrees}° from north.'**
-  String qiblaDialSemantics(String degrees);
-
-  /// Location the qibla direction is calculated for.
-  ///
-  /// In en, this message translates to:
-  /// **'From {city}'**
-  String qiblaFrom(String city);
-
-  /// Letter for north on the compass dial.
-  ///
-  /// In en, this message translates to:
-  /// **'N'**
-  String get qiblaNorth;
-
-  /// Title of the hijri calendar screen.
-  ///
-  /// In en, this message translates to:
-  /// **'Islamic calendar'**
-  String get calendarTitle;
-
-  /// Tooltip of the previous month button.
-  ///
-  /// In en, this message translates to:
-  /// **'Previous month'**
-  String get calendarPreviousMonth;
-
-  /// Tooltip of the next month button.
-  ///
-  /// In en, this message translates to:
-  /// **'Next month'**
-  String get calendarNextMonth;
-
-  /// Hijri month header, e.g. 'Jumada al-Ula 1448'.
-  ///
-  /// In en, this message translates to:
-  /// **'{month} {year}'**
-  String calendarMonthTitle(String month, String year);
-
-  /// Section title above the list of events in the shown month.
-  ///
-  /// In en, this message translates to:
-  /// **'Events this month'**
-  String get calendarEventsTitle;
-
-  /// Shown when the month has no events (EMPTY-CAL-MONTH).
-  ///
-  /// In en, this message translates to:
-  /// **'No special days this month'**
-  String get calendarEmptyTitle;
-
-  /// Next event after an empty month (EMPTY-CAL-MONTH).
-  ///
-  /// In en, this message translates to:
-  /// **'Next: {event} on {date}.'**
-  String calendarEmptyNext(String event, String date);
-
-  /// Error state of the calendar (E-CAL-1).
-  ///
-  /// In en, this message translates to:
-  /// **'The calendar couldn\'t load'**
-  String get calendarErrorTitle;
-
-  /// Error state body of the calendar (E-CAL-1).
-  ///
-  /// In en, this message translates to:
-  /// **'Please try again.'**
-  String get calendarErrorBody;
-
-  /// Line under the calendar with the current hijri offset, e.g. '+1 day'.
-  ///
-  /// In en, this message translates to:
-  /// **'Hijri date offset: {offset}'**
-  String calendarOffsetLine(String offset);
-
-  /// Button that changes the hijri offset.
-  ///
-  /// In en, this message translates to:
-  /// **'Change'**
-  String get calendarOffsetChange;
-
-  /// Title of the hijri offset setting.
-  ///
-  /// In en, this message translates to:
-  /// **'Hijri date'**
-  String get calendarOffsetTitle;
-
-  /// Help text of the hijri offset setting.
-  ///
-  /// In en, this message translates to:
-  /// **'If your community began the month a day earlier or later, adjust the date here. Events move with it.'**
-  String get calendarOffsetHelp;
-
-  /// Preview of today's hijri date in the offset setting.
-  ///
-  /// In en, this message translates to:
-  /// **'Today is {date}'**
-  String calendarOffsetPreview(String date);
-
-  /// Hijri offset value. Keys: p0, p1, p2 (plus), m1, m2 (minus).
-  ///
-  /// In en, this message translates to:
-  /// **'{value, select, p0{0 days} p1{+1 day} p2{+2 days} m1{−1 day} m2{−2 days} other{}}'**
-  String calendarOffsetDays(String value);
-
-  /// Tooltip of the minus button of the hijri offset stepper.
-  ///
-  /// In en, this message translates to:
-  /// **'One day earlier'**
-  String get calendarOffsetEarlier;
-
-  /// Tooltip of the plus button of the hijri offset stepper.
-  ///
-  /// In en, this message translates to:
-  /// **'One day later'**
-  String get calendarOffsetLater;
-
-  /// Marks today in the calendar (screen reader) and the button that returns to the current month.
-  ///
-  /// In en, this message translates to:
-  /// **'Today'**
-  String get calendarToday;
-
-  /// Screen reader suffix of a calendar day with an event.
-  ///
-  /// In en, this message translates to:
-  /// **'has events'**
-  String get calendarHasEvents;
-
-  /// Day sheet without events.
-  ///
-  /// In en, this message translates to:
-  /// **'No special events on this day.'**
-  String get calendarDayEmpty;
-
-  /// Tag next to an event text shown in English because the user's language is missing.
-  ///
-  /// In en, this message translates to:
-  /// **'EN'**
-  String get calendarEnglishTag;
-
-  /// Hijri date, e.g. '17 Jumada al-Ula 1448'.
-  ///
-  /// In en, this message translates to:
-  /// **'{day} {month} {year}'**
-  String hijriDate(String day, String month, String year);
-
-  /// Hijri month name (transliteration). Key m1..m12 is the month number.
-  ///
-  /// In en, this message translates to:
-  /// **'{month, select, m1{Muharram} m2{Safar} m3{Rabi al-Awwal} m4{Rabi al-Thani} m5{Jumada al-Ula} m6{Jumada al-Akhirah} m7{Rajab} m8{Sha\'ban} m9{Ramadan} m10{Shawwal} m11{Dhu al-Qa\'dah} m12{Dhu al-Hijjah} other{}}'**
-  String hijriMonthName(String month);
-
   /// Title of the private progress tab (Journey, docs/02 A8.1).
   ///
   /// In en, this message translates to:
@@ -2852,31 +1292,31 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Add your intention'**
-  String get journeyNiyyahEmpty;
+  String get journeyIntentionEmpty;
 
   /// Tooltip of the pencil button next to the intention on Journey.
   ///
   /// In en, this message translates to:
   /// **'Edit intention'**
-  String get journeyNiyyahEdit;
+  String get journeyIntentionEdit;
 
   /// Title of the dialog that edits the intention (same choices as in onboarding). It stays on the phone.
   ///
   /// In en, this message translates to:
   /// **'Your intention'**
-  String get journeyNiyyahDialogTitle;
+  String get journeyIntentionDialogTitle;
 
   /// Saves the edited intention.
   ///
   /// In en, this message translates to:
   /// **'Save'**
-  String get journeyNiyyahSave;
+  String get journeyIntentionSave;
 
   /// Closes the intention dialog without saving.
   ///
   /// In en, this message translates to:
   /// **'Cancel'**
-  String get journeyNiyyahCancel;
+  String get journeyIntentionCancel;
 
   /// Tooltip of the arrow that shows the previous month of the personal calendar.
   ///
@@ -2962,60 +1402,6 @@ abstract class AppLocalizations {
   /// **'Your data is safe. Please try again.'**
   String get journeyErrorBody;
 
-  /// Section title of the surah map on Journey.
-  ///
-  /// In en, this message translates to:
-  /// **'Quran'**
-  String get journeyQuranTitle;
-
-  /// Share of all verses the user has read, e.g. '12% read'. percent is already formatted.
-  ///
-  /// In en, this message translates to:
-  /// **'{percent}% read'**
-  String journeyQuranPercent(String percent);
-
-  /// Shown above the empty surah map before the user reads any verse.
-  ///
-  /// In en, this message translates to:
-  /// **'Verses you read will fill this map.'**
-  String get journeyQuranMapEmpty;
-
-  /// Text legend of the surah map (not only color).
-  ///
-  /// In en, this message translates to:
-  /// **'Each square is a surah. The fuller it is, the more of it you have read.'**
-  String get journeyQuranMapLegend;
-
-  /// Screen reader label of one surah square, e.g. 'Al-Baqarah, 43% read'.
-  ///
-  /// In en, this message translates to:
-  /// **'{surah}, {percent}% read'**
-  String journeySurahProgress(String surah, String percent);
-
-  /// Surah label when its name is not available.
-  ///
-  /// In en, this message translates to:
-  /// **'Surah {number}'**
-  String journeySurahFallback(String number);
-
-  /// Number of completed readings of the whole Quran. count is already formatted.
-  ///
-  /// In en, this message translates to:
-  /// **'Khatm: {count}'**
-  String journeyKhatm(String count);
-
-  /// Button with the next verse in the user's reading of the whole Quran, e.g. 'Next verse 2:144'.
-  ///
-  /// In en, this message translates to:
-  /// **'Next verse {ref}'**
-  String journeyNextVerse(String ref);
-
-  /// Row that opens the word review (only when words are enabled).
-  ///
-  /// In en, this message translates to:
-  /// **'Words'**
-  String get journeyWords;
-
   /// Button on Journey that opens the saved cards.
   ///
   /// In en, this message translates to:
@@ -3031,13 +1417,13 @@ abstract class AppLocalizations {
   /// Filter chips on the saved cards screen.
   ///
   /// In en, this message translates to:
-  /// **'{type, select, all{All} ayah{Verses} hadith{Hadith} dua{Dua} name{Names} reflection{Reflections} other{All}}'**
+  /// **'{type, select, all{All} quote{Quotes} passage{Passages} practice{Practices} prompt{Questions} concept{Ideas} author{Authors} other{All}}'**
   String journeySavedFilter(String type);
 
   /// Type of a saved card shown in its row.
   ///
   /// In en, this message translates to:
-  /// **'{type, select, ayah{Verse} hadith{Hadith} dua{Dua} name{Name of Allah} reflection{Reflection} other{Card}}'**
+  /// **'{type, select, quote{Quote} passage{Passage} practice{Practice} prompt{Question} concept{Idea} author{Author} other{Card}}'**
   String journeyCardType(String type);
 
   /// EMPTY-SAVED title (docs/01 7.7).
@@ -3112,18 +1498,6 @@ abstract class AppLocalizations {
   /// **'{source, select, set{Daily cards completed} quest{An intention completed} other{-}}'**
   String journeyDaySources(String source);
 
-  /// Section title of the logged prayers in the day detail.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayers'**
-  String get journeyDayPrayers;
-
-  /// Logged state of a prayer in the day detail (neutral wording).
-  ///
-  /// In en, this message translates to:
-  /// **'{status, select, on_time{On time} late{Late} missed{Missed} qada{Made up} other{Not logged}}'**
-  String journeyPrayerStatus(String status);
-
   /// Title of the settings screen (docs/02 A10.0).
   ///
   /// In en, this message translates to:
@@ -3142,41 +1516,17 @@ abstract class AppLocalizations {
   /// **'{value, select, true{On} other{Off}}'**
   String setOnOff(String value);
 
-  /// Settings row that opens prayer time settings.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer times'**
-  String get setPrayerTimes;
-
   /// Settings row and screen title for notification settings.
   ///
   /// In en, this message translates to:
   /// **'Notifications'**
   String get setNotifications;
 
-  /// Settings row and screen title for app language and Quran translation.
-  ///
-  /// In en, this message translates to:
-  /// **'Language & translation'**
-  String get setLanguage;
-
-  /// Settings row and screen title for theme, Arabic text size and daily set options.
+  /// Settings row and screen title for theme and daily set options.
   ///
   /// In en, this message translates to:
   /// **'Daily set & display'**
   String get setDisplay;
-
-  /// Settings row for recitation audio settings.
-  ///
-  /// In en, this message translates to:
-  /// **'Audio'**
-  String get setAudio;
-
-  /// Settings row that opens the hijri date adjustment.
-  ///
-  /// In en, this message translates to:
-  /// **'Hijri calendar'**
-  String get setHijriCalendar;
 
   /// Settings row and screen title for privacy settings.
   ///
@@ -3196,64 +1546,16 @@ abstract class AppLocalizations {
   /// **'About'**
   String get setAbout;
 
-  /// Section header for choosing the language of the app.
-  ///
-  /// In en, this message translates to:
-  /// **'App language'**
-  String get setAppLanguage;
-
-  /// Option to follow the language of the phone.
-  ///
-  /// In en, this message translates to:
-  /// **'Phone language'**
-  String get setDeviceLanguage;
-
-  /// Section header for choosing the Quran translation in the current language.
-  ///
-  /// In en, this message translates to:
-  /// **'Quran translation'**
-  String get setTranslation;
-
-  /// Section header for text display options.
-  ///
-  /// In en, this message translates to:
-  /// **'Display'**
-  String get setDisplayOptions;
-
-  /// Switch that shows Latin transliteration of Arabic text.
-  ///
-  /// In en, this message translates to:
-  /// **'Transliteration'**
-  String get setTranslit;
-
-  /// Explanation under the transliteration switch.
-  ///
-  /// In en, this message translates to:
-  /// **'Show Arabic in Latin letters where available.'**
-  String get setTranslitHelp;
-
-  /// Shown instead of the translation choice when the app language is Arabic.
-  ///
-  /// In en, this message translates to:
-  /// **'In Arabic, the Quran is shown without a translation.'**
-  String get setTranslationArabic;
-
-  /// Shown when the content has no Quran translation in the current language.
-  ///
-  /// In en, this message translates to:
-  /// **'No translation is available in this language yet. English is shown instead.'**
-  String get setTranslationNone;
-
   /// Version and license of a content source, e.g. 'Version 1.1 · License: CC BY 3.0'.
   ///
   /// In en, this message translates to:
   /// **'Version {version} · License: {license}'**
   String setSourceVersionLicense(String version, String license);
 
-  /// Required note under Quran translations (docs/11 12.2). Legal text, translate faithfully.
+  /// Note under translations on the Sources screen.
   ///
   /// In en, this message translates to:
-  /// **'Translations convey the meanings of the Qur\'an; they are not the Qur\'an itself.'**
+  /// **'Older translations may use old-fashioned language. The text is kept as published.'**
   String get setTranslationDisclaimer;
 
   /// Error state title on settings screens that read content.
@@ -3285,12 +1587,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{value, select, light{Light} dark{Dark} other{Same as phone}}'**
   String setThemeName(String value);
-
-  /// Section header for the size of Arabic text, with a preview.
-  ///
-  /// In en, this message translates to:
-  /// **'Arabic text size'**
-  String get setArabicSize;
 
   /// Section header for daily set options.
   ///
@@ -3340,12 +1636,6 @@ abstract class AppLocalizations {
   /// **'Open settings'**
   String get setOpenSettings;
 
-  /// Section header with a switch for each of the five prayers.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer reminders'**
-  String get setPrayerReminders;
-
   /// Section header for the morning notification.
   ///
   /// In en, this message translates to:
@@ -3376,7 +1666,7 @@ abstract class AppLocalizations {
   /// **'Lock screen'**
   String get setLockScreen;
 
-  /// Switch: notifications show only 'it's time' without the prayer name.
+  /// Switch: notifications show only the app name and time.
   ///
   /// In en, this message translates to:
   /// **'Private text'**
@@ -3415,7 +1705,7 @@ abstract class AppLocalizations {
   /// Explanation of the exact alarm permission.
   ///
   /// In en, this message translates to:
-  /// **'Without exact reminders, prayer reminders may arrive up to 10 minutes late or more.'**
+  /// **'Without exact reminders, reminders may arrive up to 10 minutes late or more.'**
   String get setExactHelp;
 
   /// Button that opens the Android screen to allow exact alarms.
@@ -3433,7 +1723,7 @@ abstract class AppLocalizations {
   /// Intro on the privacy screen (docs/11 12.4).
   ///
   /// In en, this message translates to:
-  /// **'Your prayers, reading and other logs stay on this phone. We do not receive them.'**
+  /// **'Your reading, notes and other logs stay on this phone. We do not receive them.'**
   String get setPrivacyIntro;
 
   /// Section header for analytics and crash report consent.
@@ -3523,7 +1813,7 @@ abstract class AppLocalizations {
   /// Group header on the sources screen by type of content.
   ///
   /// In en, this message translates to:
-  /// **'{kind, select, quran_text{Quran text} quran_text_search{Quran text for search} quran_metadata{Quran metadata} translation{Translations of the meanings} word{Word by word} hadith{Hadith} dua{Dua} name{Names of Allah} reflection{Reflections} curated{Prosoche content} audio{Recitations} city{Places} font{Fonts} other{Other}}'**
+  /// **'{kind, select, text{Texts} translation{Translations} curated{Prosoche content} font{Fonts} other{Other}}'**
   String setSourceKind(String kind);
 
   /// Version of the bundled content, e.g. 'Content version 2026.11.1'.
@@ -3580,24 +1870,6 @@ abstract class AppLocalizations {
   /// **'Please note'**
   String get setDisclaimers;
 
-  /// Prayer times disclaimer (docs/11 12.1). Legal text, translate faithfully.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer times are calculated on your device using the method you selected. Results can differ from your local mosque by several minutes, especially at high latitudes and around daylight saving changes. Please confirm times with your local mosque or Islamic authority and adjust them in Settings if needed. Reminders may be delayed by the operating system or battery settings.'**
-  String get setDisclaimerPrayer;
-
-  /// Quran text and translation disclaimer (docs/11 12.2). Legal text, translate faithfully.
-  ///
-  /// In en, this message translates to:
-  /// **'The Arabic text of the Qur\'an is the Tanzil Uthmani text (Tanzil Project, tanzil.net), shown without any modification. Translations convey the meanings of the Qur\'an; they are not the Qur\'an itself.'**
-  String get setDisclaimerQuran;
-
-  /// Religious content disclaimer (docs/11 12.3). Legal text, translate faithfully.
-  ///
-  /// In en, this message translates to:
-  /// **'Prosoche is a reminder and habit tool. It does not issue religious rulings (fatwas). For questions of religious practice, please consult a qualified scholar.'**
-  String get setDisclaimerRulings;
-
   /// Section header with links on the About screen.
   ///
   /// In en, this message translates to:
@@ -3610,175 +1882,7 @@ abstract class AppLocalizations {
   /// **'Send feedback'**
   String get setFeedback;
 
-  /// Row on the About screen for the downloaded hadith explanations pack.
-  ///
-  /// In en, this message translates to:
-  /// **'Hadith explanations'**
-  String get setHadithExtra;
-
-  /// Size of downloaded content, e.g. '12.4 MB on this phone'.
-  ///
-  /// In en, this message translates to:
-  /// **'{size} MB on this phone'**
-  String setSizeMb(String size);
-
-  /// Confirm dialog title for deleting the downloaded explanations pack.
-  ///
-  /// In en, this message translates to:
-  /// **'Delete hadith explanations?'**
-  String get setHadithExtraDeleteTitle;
-
-  /// Confirm dialog body for deleting the downloaded explanations pack.
-  ///
-  /// In en, this message translates to:
-  /// **'You can download them again from a hadith card.'**
-  String get setHadithExtraDeleteBody;
-
-  /// Header of the Ramadan card on Today during the fasting day (fajr to maghrib), e.g. 'Ramadan · day 12'.
-  ///
-  /// In en, this message translates to:
-  /// **'Ramadan · day {day}'**
-  String ramadanDayLabel(int day);
-
-  /// Header of the Ramadan card on Today between maghrib and fajr. The Islamic day starts at maghrib, so the evening of day 26 is night 27.
-  ///
-  /// In en, this message translates to:
-  /// **'Ramadan · night {night}'**
-  String ramadanNightLabel(int night);
-
-  /// Main line of the Ramadan card before fajr: time when suhur (pre-dawn meal) ends, e.g. 'Suhur ends at 05:12'.
-  ///
-  /// In en, this message translates to:
-  /// **'Suhur ends at {time}'**
-  String ramadanSuhurEndsAt(String time);
-
-  /// Main line of the Ramadan card during the day: time of iftar (maghrib), e.g. 'Iftar at 17:02'.
-  ///
-  /// In en, this message translates to:
-  /// **'Iftar at {time}'**
-  String ramadanIftarAt(String time);
-
-  /// Countdown under the suhur/iftar time, e.g. 'in 2 h 14 min'.
-  ///
-  /// In en, this message translates to:
-  /// **'in {hours} h {minutes} min'**
-  String ramadanInHoursMinutes(int hours, int minutes);
-
-  /// Countdown under one hour, e.g. 'in 12 min'.
-  ///
-  /// In en, this message translates to:
-  /// **'in {minutes} min'**
-  String ramadanInMinutes(int minutes);
-
-  /// Shown in the Ramadan card when no location is set (no prayer times).
-  ///
-  /// In en, this message translates to:
-  /// **'Set your location to see suhur and iftar times.'**
-  String get ramadanSetLocation;
-
-  /// Button in the Ramadan card that opens location settings.
-  ///
-  /// In en, this message translates to:
-  /// **'Set location'**
-  String get ramadanSetLocationAction;
-
-  /// Info line a few days before Ramadan (calculated start date).
-  ///
-  /// In en, this message translates to:
-  /// **'Ramadan is expected to start on {date}.'**
-  String ramadanExpectedStart(String date);
-
-  /// Info line after the start date was confirmed.
-  ///
-  /// In en, this message translates to:
-  /// **'Ramadan starts on {date}.'**
-  String ramadanStartsOn(String date);
-
-  /// Question card on 29 Shaban afternoon. The user answers according to the local moon sighting.
-  ///
-  /// In en, this message translates to:
-  /// **'When does Ramadan start in your community?'**
-  String get ramadanStartQuestion;
-
-  /// Answer: Ramadan (first fast) starts tomorrow.
-  ///
-  /// In en, this message translates to:
-  /// **'Tomorrow'**
-  String get ramadanStartTomorrow;
-
-  /// Answer: Ramadan (first fast) starts the day after tomorrow.
-  ///
-  /// In en, this message translates to:
-  /// **'Day after tomorrow'**
-  String get ramadanStartDayAfter;
-
-  /// Answer: keep the calculated date (Umm al-Qura calendar with the user's offset).
-  ///
-  /// In en, this message translates to:
-  /// **'I don\'t know, use the calculation'**
-  String get ramadanUseCalculation;
-
-  /// Question card on the afternoon of day 29 of Ramadan. Eid = Eid al-Fitr.
-  ///
-  /// In en, this message translates to:
-  /// **'Is Eid tomorrow in your community?'**
-  String get ramadanEndQuestion;
-
-  /// Answer yes to the Eid question.
-  ///
-  /// In en, this message translates to:
-  /// **'Yes'**
-  String get ramadanAnswerYes;
-
-  /// Answer no to the Eid question (Ramadan has 30 days).
-  ///
-  /// In en, this message translates to:
-  /// **'No'**
-  String get ramadanAnswerNo;
-
-  /// Title of the optional fast log after iftar. Neutral, no judgement.
-  ///
-  /// In en, this message translates to:
-  /// **'Your fast on day {day}'**
-  String ramadanFastTitle(int day);
-
-  /// Fast log option: I fasted.
-  ///
-  /// In en, this message translates to:
-  /// **'Fasted'**
-  String get ramadanFastFasted;
-
-  /// Fast log option: I did not fast today. Neutral wording, no judgement.
-  ///
-  /// In en, this message translates to:
-  /// **'Not today'**
-  String get ramadanFastNotFasted;
-
-  /// Fast log option: excused from fasting (no reason is asked or stored).
-  ///
-  /// In en, this message translates to:
-  /// **'Excused'**
-  String get ramadanFastExcused;
-
-  /// Title of the suhur reminder notification (replaces the morning reminder during Ramadan), e.g. 'Suhur · 04:27'. No verses or names of Allah.
-  ///
-  /// In en, this message translates to:
-  /// **'Suhur · {time}'**
-  String ramadanNotifSuhurTitle(String time);
-
-  /// Body of the suhur reminder notification.
-  ///
-  /// In en, this message translates to:
-  /// **'{minutes, plural, =1{Suhur ends in 1 minute.} other{Suhur ends in {minutes} minutes.}}'**
-  String ramadanNotifSuhurBody(int minutes);
-
-  /// Title of the maghrib notification on a fasting day (merged with iftar), e.g. 'Iftar · 17:02'. No verses or names of Allah.
-  ///
-  /// In en, this message translates to:
-  /// **'Iftar · {time}'**
-  String ramadanNotifIftarTitle(String time);
-
-  /// Small line under a hadith with the source of the text and its version, e.g. 'Source: HadeethEnc.com - Encyclopedia of Translated Prophetic Hadiths, version snapshot-2026-10-29'. The attribution comes from the content database and is not translated.
+  /// Small line under a card with the source of the text, e.g. 'Source: Project Gutenberg'. The attribution comes from the content database and is not translated.
   ///
   /// In en, this message translates to:
   /// **'Source: {attribution}'**
@@ -3793,7 +1897,7 @@ abstract class AppLocalizations {
   /// Report a problem sheet: explains what the report contains and that the user sends it.
   ///
   /// In en, this message translates to:
-  /// **'The report is a text file that you send yourself, for example by e-mail. It contains the card reference and technical details from the app. Your prayers, reading and location are not included.'**
+  /// **'The report is a text file that you send yourself, for example by e-mail. It contains the card reference and technical details from the app. Your notes and reading are not included.'**
   String get reportBody;
 
   /// Report a problem sheet: label of the free text field.
@@ -3868,18 +1972,6 @@ abstract class AppLocalizations {
   /// **'Needs attention'**
   String get setGateNeedsAttention;
 
-  /// Android notification channel name for prayer time reminders (system settings).
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer times'**
-  String get notifChannelPrayer;
-
-  /// Android notification channel description for prayer time reminders.
-  ///
-  /// In en, this message translates to:
-  /// **'A quiet notice at each prayer time.'**
-  String get notifChannelPrayerDescription;
-
   /// Android notification channel name for the morning reminder.
   ///
   /// In en, this message translates to:
@@ -3904,36 +1996,6 @@ abstract class AppLocalizations {
   /// **'Rare messages about reminders and permissions.'**
   String get notifChannelSystemDescription;
 
-  /// Prayer name used in prayer notifications. Transliteration as in the prayer screen.
-  ///
-  /// In en, this message translates to:
-  /// **'{prayer, select, fajr{Fajr} dhuhr{Dhuhr} asr{Asr} maghrib{Maghrib} isha{Isha} jumuah{Jumu\'ah} other{Prayer}}'**
-  String notifPrayerName(String prayer);
-
-  /// Title of a prayer notification, e.g. 'Asr · 15:12'. No verses or names of Allah.
-  ///
-  /// In en, this message translates to:
-  /// **'{prayer} · {time}'**
-  String notifPrayerTitle(String prayer, String time);
-
-  /// Body of a prayer notification. No verses or names of Allah.
-  ///
-  /// In en, this message translates to:
-  /// **'It\'s time for {prayer}.'**
-  String notifPrayerBody(String prayer);
-
-  /// Neutral title of a prayer notification in private mode (lock screen), e.g. 'Prosoche · 15:12'.
-  ///
-  /// In en, this message translates to:
-  /// **'{appName} · {time}'**
-  String notifPrivateTitle(String appName, String time);
-
-  /// Neutral body of a prayer notification in private mode.
-  ///
-  /// In en, this message translates to:
-  /// **'Reminder'**
-  String get notifPrivateBody;
-
   /// Title of the morning reminder.
   ///
   /// In en, this message translates to:
@@ -3946,12 +2008,6 @@ abstract class AppLocalizations {
   /// **'Today\'s cards are ready. {minutes, plural, =1{About 1 minute.} other{About {minutes} minutes.}}'**
   String notifMorningBody(int minutes);
 
-  /// Body of the morning reminder on an event day. Title is the event name.
-  ///
-  /// In en, this message translates to:
-  /// **'Today\'s cards are ready, with something special for {eventName}.'**
-  String notifMorningEventBody(String eventName);
-
   /// Neutral body of the morning reminder in private mode. Title is the app name.
   ///
   /// In en, this message translates to:
@@ -3961,13 +2017,13 @@ abstract class AppLocalizations {
   /// Last planned notification when the app was not opened for 10 days.
   ///
   /// In en, this message translates to:
-  /// **'Prayer reminders paused soon'**
+  /// **'Reminders pause soon'**
   String get notifOpenAppTitle;
 
   /// Body of the last planned notification.
   ///
   /// In en, this message translates to:
-  /// **'Open {appName} to keep your prayer reminders coming.'**
+  /// **'Open {appName} to keep your reminders coming.'**
   String notifOpenAppBody(String appName);
 
   /// Neutral body of the last planned notification in private mode. Title is the app name.
@@ -3976,7 +2032,7 @@ abstract class AppLocalizations {
   /// **'Open the app to keep reminders on'**
   String get notifOpenAppPrivateBody;
 
-  /// Info line in Settings and Prayer screen when exact alarms are not allowed (not a notification).
+  /// Info line in Settings when exact alarms are not allowed (not a notification).
   ///
   /// In en, this message translates to:
   /// **'Reminders may arrive up to 10 minutes late or more. Allow \"Alarms & reminders\" for exact times.'**
@@ -3994,47 +2050,95 @@ abstract class AppLocalizations {
   /// **'Today'**
   String get tabToday;
 
-  /// Bottom navigation label for the Quran tab.
-  ///
-  /// In en, this message translates to:
-  /// **'Quran'**
-  String get tabQuran;
-
-  /// Bottom navigation label for the Prayer tab.
-  ///
-  /// In en, this message translates to:
-  /// **'Prayer'**
-  String get tabPrayer;
-
   /// Bottom navigation label for the Journey tab.
   ///
   /// In en, this message translates to:
   /// **'Journey'**
   String get tabJourney;
 
-  /// Title of the fullscreen daily card feed.
-  ///
-  /// In en, this message translates to:
-  /// **'Daily cards'**
-  String get feedTitle;
-
-  /// Title of the gate screen shown before a blocked app.
-  ///
-  /// In en, this message translates to:
-  /// **'Pause'**
-  String get gateTitle;
-
-  /// Call to action on Today that opens the feed.
-  ///
-  /// In en, this message translates to:
-  /// **'Begin today\'s cards'**
-  String get beginTodaysCards;
-
   /// Neutral fallback shown instead of a broken widget.
   ///
   /// In en, this message translates to:
   /// **'This part could not be loaded.'**
   String get errorGeneric;
+
+  /// Bottom navigation label for the Library tab (reading whole works).
+  ///
+  /// In en, this message translates to:
+  /// **'Library'**
+  String get tabLibrary;
+
+  /// Bottom navigation label for the Practice tab (exercises).
+  ///
+  /// In en, this message translates to:
+  /// **'Practice'**
+  String get tabPractice;
+
+  /// Placeholder body of the Library tab until it is built.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole works to read, book by book. Coming soon.'**
+  String get libraryPlaceholderBody;
+
+  /// Placeholder body of the Practice tab until it is built.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning preparation and evening review. Coming soon.'**
+  String get practicePlaceholderBody;
+
+  /// Eyebrow label of a quote card.
+  ///
+  /// In en, this message translates to:
+  /// **'Quote'**
+  String get cardTypeQuote;
+
+  /// Attribution line under a quote, e.g. 'Marcus Aurelius, Meditations 2.1'. Values come from the content database.
+  ///
+  /// In en, this message translates to:
+  /// **'{author}, {reference}'**
+  String cardQuoteAttribution(String author, String reference);
+
+  /// Screen reader label of a quote card.
+  ///
+  /// In en, this message translates to:
+  /// **'Quote by {author}'**
+  String cardQuoteA11y(String author);
+
+  /// Built-in daily quest (read slot): read quotes or passages.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{Read 1 card} other{Read {count} cards}}'**
+  String questGenericReadCards(int count);
+
+  /// Built-in daily quest (learn slot): see one idea or author card.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn one idea'**
+  String get questGenericLearnIdea;
+
+  /// Built-in daily quest (act slot), marked as done by the user.
+  ///
+  /// In en, this message translates to:
+  /// **'Try one practice'**
+  String get questGenericActPractice;
+
+  /// Secondary button on Today after the daily cards are complete; opens the Library.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep reading'**
+  String get todayCtaKeepReading;
+
+  /// Note on the About screen about where texts come from.
+  ///
+  /// In en, this message translates to:
+  /// **'Texts are public domain translations, shown as published. Short notes and questions are written for this app.'**
+  String get setDisclaimerTexts;
+
+  /// Note on the About screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Prosoche is not medical or psychological advice.'**
+  String get setDisclaimerAdvice;
 
   /// Screen reader label of a loading indicator (SkLoadingState).
   ///
@@ -4090,12 +2194,6 @@ abstract class AppLocalizations {
   /// **'I did it'**
   String get skIDidIt;
 
-  /// Label of the current prayer time row.
-  ///
-  /// In en, this message translates to:
-  /// **'Now'**
-  String get skNow;
-
   /// Label of reading outside the daily plan.
   ///
   /// In en, this message translates to:
@@ -4113,18 +2211,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Scroll for more'**
   String get skScrollForMore;
-
-  /// Indicator that notifications for a prayer are turned off.
-  ///
-  /// In en, this message translates to:
-  /// **'Notifications off'**
-  String get skNotificationsOff;
-
-  /// Marks a time that is calculated, not confirmed.
-  ///
-  /// In en, this message translates to:
-  /// **'Estimated'**
-  String get skEstimated;
 
   /// Hint of a press-and-hold confirmation button.
   ///
@@ -4149,36 +2235,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{n} of {total}'**
   String skProgressOf(int n, int total);
-
-  /// Prayer log status: nothing recorded yet.
-  ///
-  /// In en, this message translates to:
-  /// **'Not logged'**
-  String get skPrayerStatusUnlogged;
-
-  /// Prayer log status: on time.
-  ///
-  /// In en, this message translates to:
-  /// **'On time'**
-  String get skPrayerStatusOnTime;
-
-  /// Prayer log status: late.
-  ///
-  /// In en, this message translates to:
-  /// **'Late'**
-  String get skPrayerStatusLate;
-
-  /// Prayer log status: missed.
-  ///
-  /// In en, this message translates to:
-  /// **'Missed'**
-  String get skPrayerStatusMissed;
-
-  /// Prayer log status: made up later.
-  ///
-  /// In en, this message translates to:
-  /// **'Made up'**
-  String get skPrayerStatusQada;
 }
 
 class _AppLocalizationsDelegate
@@ -4191,14 +2247,8 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) => <String>[
-    'ar',
-    'bn',
-    'en',
-    'id',
-    'tr',
-    'ur',
-  ].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      <String>['en'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -4207,18 +2257,8 @@ class _AppLocalizationsDelegate
 AppLocalizations lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'ar':
-      return AppLocalizationsAr();
-    case 'bn':
-      return AppLocalizationsBn();
     case 'en':
       return AppLocalizationsEn();
-    case 'id':
-      return AppLocalizationsId();
-    case 'tr':
-      return AppLocalizationsTr();
-    case 'ur':
-      return AppLocalizationsUr();
   }
 
   throw FlutterError(

@@ -25,12 +25,6 @@ final class NotificationTriggers {
 
   /// Kluce, ktorych zmena meni plan.
   static final List<SettingKey<Object?>> watchedKeys = [
-    SettingsKeys.prayerLocation,
-    SettingsKeys.prayerMethod,
-    SettingsKeys.prayerAsr,
-    SettingsKeys.prayerHighLatRule,
-    SettingsKeys.prayerAdjust,
-    for (final p in SettingsKeys.prayers) SettingsKeys.notifPrayer(p),
     SettingsKeys.notifMorningEnabled,
     SettingsKeys.notifMorningTime,
     SettingsKeys.notifPrivateLockscreen,

@@ -40,7 +40,7 @@ class SkNavBar extends StatelessWidget {
   static const List<(IconData, IconData)> tabIcons = [
     (Icons.wb_twilight_outlined, Icons.wb_twilight),
     (Icons.menu_book_outlined, Icons.menu_book),
-    (Icons.mosque_outlined, Icons.mosque),
+    (Icons.self_improvement_outlined, Icons.self_improvement),
     (Icons.route_outlined, Icons.route),
   ];
 

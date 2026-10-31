@@ -6,20 +6,13 @@ import 'package:flutter_riverpod/misc.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:go_router/go_router.dart';
 import 'package:prosoche/core/clock/clock_provider.dart';
-import 'package:prosoche/core/flags/feature_flags.dart';
 import 'package:prosoche/core/logging/logger_provider.dart';
 import 'package:prosoche/core/router/deep_link.dart';
 import 'package:prosoche/core/router/routes.dart';
 import 'package:prosoche/data/notifications/notifications.dart';
-import 'package:prosoche/data/repositories/providers.dart';
 import 'package:prosoche/data/repositories/settings/settings_providers.dart';
-import 'package:prosoche/data/repositories/today/streak_repository.dart';
-import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
-import 'package:prosoche/domain/streak/streak.dart';
 import 'package:prosoche/features/onboarding/onboarding_platform.dart';
-import 'package:prosoche/features/prayer/prayer_providers.dart';
-import 'package:prosoche/features/ramadan/ramadan_providers.dart';
 import 'package:workmanager/workmanager.dart';
 
 /// Systemove notifikacie (`flutter_local_notifications`). Testy prepisu.
@@ -31,29 +24,16 @@ final Provider<NotificationPlatform> notificationPlatformProvider =
 
 /// Planovanie notifikacii (P-02) nad user.db nastaveniami.
 final Provider<NotificationService> notificationServiceProvider =
-    Provider<NotificationService>((ref) {
-      final settings = ref.watch(settingsRepositoryProvider);
-      final streak = ref.watch(streakRepositoryProvider);
-      final clock = ref.watch(appClockProvider);
-      final ramadan = ref.watch(featureFlagsProvider).ramadanLight;
-      return NotificationService(
-        settings: settings,
+    Provider<NotificationService>(
+      (ref) => NotificationService(
+        settings: ref.watch(settingsRepositoryProvider),
         platform: ref.watch(notificationPlatformProvider),
-        timeZones: SettingsTimeZoneStore(settings),
         deviceZone: currentDeviceZone,
-        clock: clock,
+        clock: ref.watch(appClockProvider),
         logger: ref.watch(appLoggerProvider),
-        excusedDays: () =>
-            excusedDaysAhead(streak, LocalDate.fromDateTime(clock.now())),
-        // F-08: v dni postu ina ranna notifikacia (suhur).
-        fastingDays: ramadan
-            ? () => ramadanFastingDaysAhead(
-                settings,
-                LocalDate.fromDateTime(clock.now()),
-              )
-            : null,
-      );
-    }, name: 'notificationServiceProvider');
+      ),
+      name: 'notificationServiceProvider',
+    );
 
 /// Jediny vstup na preplanovanie v hlavnom isolate: planuje len po
 /// dokonceni onboardingu, inak vsetko zrusi (napr. po "Delete all my
@@ -109,15 +89,7 @@ final Provider<NotificationScheduler> notificationSchedulerProvider =
 
 /// Hooky featur napojene na [notificationSchedulerProvider] (I-01).
 List<Override> notificationOverrides() => [
-  prayerSettingsChangedProvider.overrideWith(
-    (ref) =>
-        () => _reschedule(ref),
-  ),
   onboardingRescheduleProvider.overrideWith(
-    (ref) =>
-        () => _reschedule(ref),
-  ),
-  ramadanSeasonChangedProvider.overrideWith(
     (ref) =>
         () => _reschedule(ref),
   ),
@@ -126,21 +98,6 @@ List<Override> notificationOverrides() => [
       ref.watch(notificationPlatformProvider),
     ),
   ),
-  prayerReminderHealthProvider.overrideWith((ref) async {
-    final service = ref.watch(notificationServiceProvider);
-    Future<bool> safe(Future<bool> Function() f) async {
-      try {
-        return await f();
-      } on Object {
-        return true; // Nezisteny stav: ziadny baner.
-      }
-    }
-
-    return PrayerReminderHealth(
-      notificationsEnabled: await safe(service.areEnabled),
-      exactAlarms: await safe(service.canScheduleExact),
-    );
-  }),
 ];
 
 Future<void> _reschedule(Ref ref) =>
@@ -153,38 +110,6 @@ Future<String> currentDeviceZone() async {
   } on Object {
     return 'UTC';
   }
-}
-
-/// Ospravedlnene dni (`day_log.status = excused`) od [today] na horizont
-/// planu notifikacii; v tieto dni sa modlitby neplanuju.
-Future<Set<LocalDate>> excusedDaysAhead(
-  StreakRepository streak,
-  LocalDate today, {
-  int days = 10,
-}) async {
-  final log = await streak
-      .watchDayLog(today, today.addDays(days))
-      .first
-      .timeout(const Duration(seconds: 5), onTimeout: () => const []);
-  return {
-    for (final e in log)
-      if (e.status == DayStatus.excused) e.date,
-  };
-}
-
-/// [TimeZoneStore] v nastaveniach (`notif.confirmed_tz`).
-final class SettingsTimeZoneStore implements TimeZoneStore {
-  const SettingsTimeZoneStore(this._settings);
-
-  final SettingsRepository _settings;
-
-  @override
-  Future<String?> confirmedZone() =>
-      _settings.get(SettingsKeys.notifConfirmedTz);
-
-  @override
-  Future<void> setConfirmedZone(String zone) =>
-      _settings.set(SettingsKeys.notifConfirmedTz, zone);
 }
 
 /// Ciel kliknutej notifikacie (payload P-02 -> go_router cesta).
@@ -231,11 +156,7 @@ Future<NotificationTriggers?> startNotifications(
     final scheduler = container.read(notificationSchedulerProvider);
     triggers = NotificationTriggers(
       settings: container.read(settingsRepositoryProvider),
-      reschedule: () async {
-        await scheduler.reschedule();
-        // Baner na A7.1 sa obnovi (napr. po navrate z nastaveni alarmov).
-        container.invalidate(prayerReminderHealthProvider);
-      },
+      reschedule: scheduler.reschedule,
       logger: logger,
     );
     await triggers!.start();

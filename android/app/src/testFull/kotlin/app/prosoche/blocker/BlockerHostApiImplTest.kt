@@ -177,13 +177,6 @@ class BlockerHostApiImplTest {
     }
 
     @Test
-    fun `schedulePrayerLocks stores windows`() {
-        api.schedulePrayerLocks(listOf(1L, 2L), 20)
-        assertEquals(listOf(1L, 2L) to 20, prefs.prayerLocks())
-        expectError("invalid_target") { api.schedulePrayerLocks(listOf(1L), -1) }
-    }
-
-    @Test
     fun `pickTargets is unsupported on android`() {
         expectError("os_unsupported") { kotlinx.coroutines.runBlocking { api.pickTargets() } }
     }

@@ -9,10 +9,7 @@ enum CardAction {
   unsaved('unsaved'),
   skipped('skipped'),
   shared('shared'),
-  audioPlayed('audio_played'),
   sourceOpened('source_opened'),
-  tafsirOpened('tafsir_opened'),
-  wordOpened('word_opened'),
   reported('reported');
 
   CardAction(this.wire);
@@ -32,9 +29,7 @@ enum CardContext {
   feed('feed'),
   gate('gate'),
   reader('reader'),
-  quiz('quiz'),
-  saved('saved'),
-  review('review');
+  saved('saved');
 
   CardContext(this.wire);
 

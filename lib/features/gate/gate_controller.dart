@@ -9,7 +9,6 @@ import 'package:prosoche/data/blocker/blocker_gateway.dart';
 import 'package:prosoche/data/blocker/gate_repository.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
 import 'package:prosoche/domain/common/common.dart';
-import 'package:prosoche/domain/prayer/prayer.dart';
 import 'package:prosoche/domain/quests/quests.dart';
 import 'package:prosoche/features/gate/gate_deck.dart';
 
@@ -27,9 +26,6 @@ abstract final class GateRules {
   /// Obrazovka "is open for" bez akcie -> automaticky "Continue".
   static const autoContinue = Duration(seconds: 5);
 
-  /// `blocker.prayer_lock_minutes` default (docs/02 0.7): okno pripomienky.
-  static const prayerLockWindow = Duration(minutes: 15);
-
   /// `blocked_app.unlock_minutes` default, ked appka nie je znama.
   static const defaultUnlockMinutes = 10;
 
@@ -40,9 +36,6 @@ abstract final class GateRules {
 /// Faza brany (stavy docs/02 A4).
 enum GatePhase {
   loading,
-
-  /// Prayer lock: pripomienka, nie zamknutie.
-  prayer,
   cards,
 
   /// Emergency odpocet 10 s.
@@ -72,8 +65,7 @@ class GateDeps {
     required this.today,
     required this.log,
     this.dwellMs,
-    this.prayerLockMinutes,
-    this.currentPrayer,
+    this.freeReading,
     this.overlayEnabled,
     this.syncQuests,
   });
@@ -90,12 +82,8 @@ class GateDeps {
   /// `card.seen_dwell_ms`; null = default feedu.
   final Future<int?> Function()? dwellMs;
 
-  /// `blocker.prayer_lock_minutes` (0 = bez pripomienky); null =
-  /// [GateRules.prayerLockWindow].
-  final Future<int?> Function()? prayerLockMinutes;
-
-  /// Aktualna modlitba a jej zaciatok (prayer lock); null bez polohy.
-  final Future<({Prayer prayer, DateTime start})?> Function()? currentPrayer;
+  /// Karty volneho citania po konci sady (B11); null = ziadne.
+  final Future<List<CardId>> Function()? freeReading;
 
   /// Remote kill-switch `blocker_overlay` (docs/06 A.7); null = zapnute.
   final bool Function()? overlayEnabled;
@@ -155,10 +143,6 @@ class GateController extends ChangeNotifier {
   /// Odomknute po N kartach; dalsie karty su "Keep reading".
   bool _unlocked = false;
   bool get unlocked => _unlocked;
-
-  /// Modlitba prayer locku (faza [GatePhase.prayer]).
-  Prayer? _prayer;
-  Prayer? get prayer => _prayer;
 
   Duration _dwell = GateRules.minDwell;
   Timer? _dwellTimer;
@@ -225,9 +209,8 @@ class GateController extends ChangeNotifier {
     _sessionId = await deps.gates.openSession(app.id);
     final date = await deps.sets.activeSetDate(deps.today());
     final state = await deps.sets.ensure(date);
-    final position = await deps.gates.readingPosition();
+    final extra = await deps.freeReading?.call() ?? const <CardId>[];
     final dwellMs = await deps.dwellMs?.call();
-    final prayer = app.prayerLock ? await _activePrayer() : null;
     if (_phase != GatePhase.loading) return;
     _date = date;
     _dwell = Duration(
@@ -236,31 +219,16 @@ class GateController extends ChangeNotifier {
     _deck = GateDeck(
       cards: state.set.cards,
       cursor: state.cursor,
-      readingPosition: position,
+      extra: extra,
     );
-    _items.add(_deck.next());
-    _prayer = prayer;
-    _setPhase(prayer != null ? GatePhase.prayer : GatePhase.cards);
-    if (prayer == null) _activate(0);
-  }
-
-  Future<Prayer?> _activePrayer() async {
-    try {
-      final minutes = await deps.prayerLockMinutes?.call();
-      final window = minutes == null
-          ? GateRules.prayerLockWindow
-          : Duration(minutes: minutes);
-      if (window <= Duration.zero) return null;
-      final current = await deps.currentPrayer?.call();
-      if (current == null || !current.prayer.isSalah) return null;
-      final now = deps.clock.now();
-      final since = now.difference(current.start);
-      return since.isNegative || since >= window ? null : current.prayer;
-    } on Object catch (e, st) {
-      // Bez casov modlitieb bezna brana.
-      deps.log.error(_tag, 'prayer lock check failed', error: e, stack: st);
-      return null;
+    final first = _deck.next();
+    if (first == null) {
+      _setPhase(GatePhase.empty);
+      return;
     }
+    _items.add(first);
+    _setPhase(GatePhase.cards);
+    _activate(0);
   }
 
   // ------------------------------------------------------------- karty
@@ -335,7 +303,13 @@ class GateController extends ChangeNotifier {
       _setPhase(GatePhase.empty);
       return;
     }
-    _items[index] = _deck.next();
+    final replacement = _deck.next();
+    if (replacement == null) {
+      _cancelDwell();
+      _setPhase(GatePhase.empty);
+      return;
+    }
+    _items[index] = replacement;
     if (index == _page) _activate(index);
     notifyListeners();
   }
@@ -345,7 +319,9 @@ class GateController extends ChangeNotifier {
     if (_passed.contains(index) || _date == null) return;
     _passed.add(index);
     _missingInRow = 0;
-    if (index == _items.length - 1) _items.add(_deck.next());
+    if (index == _items.length - 1) {
+      if (_deck.next() case final next?) _items.add(next);
+    }
     notifyListeners();
     final date = _date!;
     final item = _items[index];
@@ -356,16 +332,16 @@ class GateController extends ChangeNotifier {
           () => deps.sets.markSeen(date, card, context: CardContext.gate),
           type: card.cardId.type,
         );
-      case FreeReadingItem(:final ayah):
+      case FreeReadingItem(:final cardId):
         await _guard(
           'free reading failed',
-          () => deps.gates.markFreeReading(date, ayah),
-          type: CardType.ayah,
+          () => deps.gates.markFreeReading(date, cardId),
+          type: cardId.type,
         );
         await _guard(
           'quest sync failed',
           () async => await deps.syncQuests?.call(date),
-          type: CardType.ayah,
+          type: cardId.type,
         );
     }
     if (!_unlocked && _passed.length >= cardsRequired) await _unlock();
@@ -402,20 +378,6 @@ class GateController extends ChangeNotifier {
   }
 
   // ----------------------------------------------------------- akcie
-
-  /// "Show cards anyway" pri prayer locku.
-  void showCardsAnyway() {
-    if (_phase != GatePhase.prayer) return;
-    _setPhase(GatePhase.cards);
-    _activate(_page);
-  }
-
-  /// "I'll pray first": home screen (`result=prayer_locked`).
-  Future<void> prayFirst() async {
-    if (_phase != GatePhase.prayer) return;
-    await _closeSession(GateResult.prayerLocked);
-    await _close(openTarget: false);
-  }
 
   /// "Keep reading" po odomknuti (odomknutie uz plati).
   void keepReading() {
