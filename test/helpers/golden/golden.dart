@@ -1,4 +1,4 @@
-/// Golden a i18n harness pre 6 jazykov (U-02). Pouzitie:
+/// Golden a i18n harness (U-02). Pouzitie:
 ///
 /// ```dart
 /// goldenAllLocales(
@@ -14,4 +14,3 @@ library;
 
 export 'golden_harness.dart';
 export 'no_clipping.dart';
-export 'pseudo_locale.dart';

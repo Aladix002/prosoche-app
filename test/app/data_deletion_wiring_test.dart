@@ -97,7 +97,7 @@ void main() {
       parent: c,
       overrides: [
         ...dataDeletionOverrides(),
-        featureFlagsProvider.overrideWithValue(const FeatureFlags(gate: true)),
+        featureFlagsProvider.overrideWithValue(FeatureFlags.all),
         blockerGatewayProvider.overrideWithValue(blocker),
       ],
     );

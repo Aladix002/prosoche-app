@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:prosoche/ui/gallery/gallery_catalog.dart';
 import 'package:prosoche/ui/gallery/sk_gallery_screen.dart';
@@ -211,72 +210,6 @@ void main() {
     });
   });
 
-  group('SkPrayerRow', () {
-    testWidgets('merged semantics label and tracker tap', (tester) async {
-      final handle = tester.ensureSemantics();
-      var taps = 0;
-      await tester.pumpSk(
-        SkPrayerRow(
-          name: 'Asr',
-          time: '14:21',
-          state: SkPrayerRowState.next,
-          relative: 'in 1 h',
-          estimated: true,
-          notificationOff: true,
-          onTrackerTap: () => taps++,
-          customActions: {
-            const CustomSemanticsAction(label: 'Mark on time'): () {},
-          },
-        ),
-      );
-      final node = tester.getSemantics(find.byType(SkPrayerRow));
-      expect(
-        node.label,
-        'Asr, 14:21, in 1 h, Estimated, Notifications off, Not logged',
-      );
-      await tester.tap(find.byType(SkPrayerTracker));
-      expect(taps, 1);
-      expect(find.text('14:21 *'), findsOneWidget);
-      handle.dispose();
-    });
-
-    testWidgets('statuses have labels; current shows Now', (tester) async {
-      final handle = tester.ensureSemantics();
-      for (final (status, label) in [
-        (SkPrayerStatus.onTime, 'On time'),
-        (SkPrayerStatus.late, 'Late'),
-        (SkPrayerStatus.missed, 'Missed'),
-        (SkPrayerStatus.qada, 'Made up'),
-      ]) {
-        await tester.pumpSk(
-          SkPrayerRow(
-            name: 'Fajr',
-            time: '05:12',
-            state: SkPrayerRowState.current,
-            status: status,
-            adjustedLabel: '+2 min',
-          ),
-        );
-        expect(
-          tester.getSemantics(find.byType(SkPrayerRow)).label,
-          'Fajr, 05:12, Now, +2 min, $label',
-        );
-      }
-      handle.dispose();
-    });
-
-    testWidgets('large text stacks time under name', (tester) async {
-      await tester.pumpSk(
-        const SkPrayerRow(name: 'Maghrib', time: '16:43'),
-        textScale: 2,
-      );
-      expect(
-        tester.getTopLeft(find.text('16:43')).dy,
-        greaterThan(tester.getTopLeft(find.text('Maghrib')).dy),
-      );
-    });
-  });
-
   group('SkDailyProgress', () {
     testWidgets('semantics and states', (tester) async {
       final handle = tester.ensureSemantics();
@@ -299,31 +232,10 @@ void main() {
     });
   });
 
-  group('chips and header', () {
-    testWidgets('next prayer chip and hijri header are tappable', (
-      tester,
-    ) async {
-      var taps = 0;
-      await tester.pumpSk(
-        Column(
-          children: [
-            SkNextPrayerChip(label: 'Asr in 1 h', onTap: () => taps++),
-            SkHijriHeader(
-              date: '14 Jumada al-Ula 1448',
-              eventLabel: 'Event',
-              offsetLabel: '+1 day',
-              onTap: () => taps++,
-            ),
-          ],
-        ),
-      );
-      await tester.tap(find.text('Asr in 1 h'));
-      await tester.tap(find.text('14 Jumada al-Ula 1448'));
-      expect(taps, 2);
-      expect(find.byType(SkTag), findsOneWidget);
-      final style = tester
-          .widget<Text>(find.text('14 Jumada al-Ula 1448'))
-          .style!;
+  group('SkTag', () {
+    testWidgets('uses the accent text color', (tester) async {
+      await tester.pumpSk(const SkTag(label: 'Theme'));
+      final style = tester.widget<Text>(find.text('Theme')).style!;
       expect(style.color, ProsocheColors.light.accentText);
     });
   });
@@ -522,21 +434,13 @@ void main() {
         done: 'Hotovo',
         skippedForToday: 'S',
         iDidIt: 'I',
-        now: 'N',
         freeReading: 'F',
         dailyCards: 'DC',
         scrollForMore: 'SM',
-        notificationsOff: 'NO',
-        estimated: 'E',
         holdToConfirm: 'H',
         contentUnavailableTitle: 'CT',
         contentUnavailableBody: 'CB',
         progressOf: _progress,
-        prayerStatusUnlogged: 'PU',
-        prayerStatusOnTime: 'PO',
-        prayerStatusLate: 'PL',
-        prayerStatusMissed: 'PM',
-        prayerStatusQada: 'PQ',
       );
       await tester.pumpSk(
         SkUiStringsScope(
@@ -568,9 +472,7 @@ void main() {
           height: 300,
           child: SkCardSurface(
             eyebrow: 'REF',
-            arabic: Builder(
-              builder: GalleryCatalog.arabicText.entries[5].builder,
-            ),
+            lead: Text('long text ' * 120),
             translation: const Text('translation'),
           ),
         ),
@@ -588,7 +490,7 @@ void main() {
       handle.dispose();
     });
 
-    testWidgets('compact card is tappable and rejects arabic', (tester) async {
+    testWidgets('compact card is tappable and rejects lead', (tester) async {
       var taps = 0;
       await tester.pumpSk(
         SkCardSurface(
@@ -603,7 +505,7 @@ void main() {
       expect(
         () => SkCardSurface(
           variant: SkCardVariant.compact,
-          arabic: const SizedBox(),
+          lead: const SizedBox(),
         ),
         throwsAssertionError,
       );
@@ -619,7 +521,6 @@ void main() {
       await tester.tap(find.text('Dark theme'));
       await tester.tap(find.text('High contrast'));
       await tester.tap(find.text('2.0'));
-      await tester.tap(find.text('XL'));
       await tester.pumpAndSettle();
       final theme = Theme.of(tester.element(find.text('Prosoche UI gallery')));
       expect(theme.brightness, Brightness.dark);

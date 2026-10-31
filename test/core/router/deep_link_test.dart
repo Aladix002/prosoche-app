@@ -12,25 +12,15 @@ void main() {
   test('maps tabs and feed', () {
     expect(map('prosoche://today'), '/today');
     expect(map('prosoche://feed'), '/feed');
-    expect(map('prosoche://prayer?p=asr'), '/prayer');
-    expect(map('prosoche://quran'), '/quran');
+    expect(map('prosoche://library'), '/library');
+    expect(map('prosoche://practice'), '/practice');
     expect(map('prosoche://journey'), '/journey');
+    expect(map('prosoche://quran'), '/today');
     expect(map('prosoche://unknown'), '/today');
     expect(map('prosoche:'), '/today');
   });
 
   test('maps nested targets from docs/02 C4', () {
-    expect(
-      map('prosoche://quran/2/255'),
-      '/quran/read/2?ayah=2255&mode=browse',
-    );
-    expect(map('prosoche://quran/18'), '/quran/read/18?mode=browse');
-    expect(map('prosoche://quran/115/1'), '/quran');
-    expect(map('prosoche://quran/x'), '/quran');
-    expect(map('prosoche://prayer/qibla'), '/prayer/qibla');
-    expect(map('prosoche://words'), '/words');
-    expect(map('prosoche://words/quiz'), '/words/quiz');
-    expect(map('prosoche://calendar'), '/calendar');
     expect(map('prosoche://settings/blocking'), '/settings/blocking');
     expect(map('prosoche://settings/notifications'), '/settings/notifications');
     expect(map('prosoche://settings/evil'), '/settings');

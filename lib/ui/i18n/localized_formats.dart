@@ -123,8 +123,4 @@ final class ProsocheFormats {
   /// Den v tyzdni a datum, napr. `Saturday, March 7`.
   String weekdayDate(DateTime value) =>
       localizeDigits(DateFormat.MMMMEEEEd(_tag).format(value), digits);
-
-  /// Referencia na vers `2:255` v cisliciach UI, izolovana pre bidi.
-  String ayahRef(int surah, int ayah) =>
-      '\u2068${localizeDigits('$surah:$ayah', digits)}\u2069';
 }

@@ -130,20 +130,8 @@ void main() {
       await log(_quote, context: CardContext.reader);
       await log(CardId.parse('quote:q_2256'), context: CardContext.gate);
       final prompt = CardId.parse('prompt:p_1043');
-      await log(
-        prompt,
-        action: CardAction.answered,
-        context: CardContext.feed,
-        value: 4,
-        correct: true,
-      );
-      await log(
-        prompt,
-        action: CardAction.answered,
-        context: CardContext.feed,
-        value: 1,
-        correct: false,
-      );
+      await log(prompt, action: CardAction.answered, value: 4, correct: true);
+      await log(prompt, action: CardAction.answered, value: 1, correct: false);
 
       expect(
         await dao.countDistinctCards(

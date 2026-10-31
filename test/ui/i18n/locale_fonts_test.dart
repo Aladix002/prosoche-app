@@ -5,83 +5,63 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:prosoche/ui/i18n/i18n.dart';
 
 void main() {
-  test('font family per language', () {
-    expect(
-      {
-        for (final l in ProsocheLocales.all)
-          l.languageCode: LocaleFonts.forLocale(l).family,
-      },
-      {
-        'en': 'Inter',
-        'ar': 'NotoNaskhArabic',
-        'id': 'Inter',
-        'ur': 'NotoNastaliqUrdu',
-        'bn': 'NotoSansBengali',
-        'tr': 'Inter',
-      },
-    );
-  });
-
-  test('Nastaliq gets the tallest line height', () {
-    double h(Locale l) => LocaleFonts.forLocale(l).scaleHeight(1.5)!;
-    expect(h(ProsocheLocales.en), 1.5);
-    expect(h(ProsocheLocales.ur), greaterThan(h(ProsocheLocales.ar)));
-    expect(h(ProsocheLocales.ur), greaterThan(h(ProsocheLocales.bn)));
-    expect(h(ProsocheLocales.ur), greaterThanOrEqualTo(2.2));
-    expect(h(ProsocheLocales.bn), greaterThan(h(ProsocheLocales.en)));
+  test('font family per language (v1: latin only)', () {
+    for (final l in ProsocheLocales.all) {
+      expect(LocaleFonts.forLocale(l), LocaleFonts.latin);
+    }
+    expect(LocaleFonts.forLanguage('de').family, ProsocheFontFamilies.inter);
   });
 
   test('scaleHeight respects minimum and null height', () {
-    expect(LocaleFonts.urdu.scaleHeight(1), 2.2);
-    expect(LocaleFonts.urdu.scaleHeight(null), 2.2);
     expect(LocaleFonts.latin.scaleHeight(null), isNull);
-    expect(LocaleFonts.arabic.scaleHeight(2), closeTo(2.3, 1e-9));
-  });
-
-  test('every spec has a fallback with Latin coverage or Arabic', () {
-    for (final l in ProsocheLocales.all) {
-      final spec = LocaleFonts.forLocale(l);
-      expect(spec.fallback, isNotEmpty);
-      expect(spec.fallback, isNot(contains(spec.family)));
-    }
+    expect(LocaleFonts.latin.scaleHeight(1.5), 1.5);
+    const tall = LocaleFontSpec(
+      family: 'X',
+      fallback: [],
+      lineHeightScale: 1.5,
+      minLineHeight: 2.2,
+    );
+    expect(tall.scaleHeight(1), 2.2);
+    expect(tall.scaleHeight(null), 2.2);
+    expect(tall.scaleHeight(2), 3);
   });
 
   test('applyLocaleFont sets family, fallback and even leading', () {
     const base = TextStyle(fontSize: 16, height: 1.5, fontFamily: 'X');
-    final ur = applyLocaleFont(base, ProsocheLocales.ur);
-    expect(ur.fontFamily, ProsocheFontFamilies.notoNastaliqUrdu);
-    expect(ur.fontFamilyFallback, LocaleFonts.urdu.fallback);
-    expect(ur.height, 2.25);
-    expect(ur.fontSize, 16);
-    expect(ur.leadingDistribution, TextLeadingDistribution.even);
+    final en = applyLocaleFont(base, ProsocheLocales.en);
+    expect(en.fontFamily, ProsocheFontFamilies.inter);
+    expect(en.fontFamilyFallback, LocaleFonts.latin.fallback);
+    expect(en.height, 1.5);
+    expect(en.fontSize, 16);
+    expect(en.leadingDistribution, TextLeadingDistribution.even);
   });
 
   test('applyLocaleFontToTextTheme maps every style', () {
     final theme = ThemeData(brightness: Brightness.light).textTheme;
-    final bn = applyLocaleFontToTextTheme(theme, ProsocheLocales.bn);
+    final en = applyLocaleFontToTextTheme(theme, ProsocheLocales.en);
     final styles = [
-      bn.displayLarge,
-      bn.displayMedium,
-      bn.displaySmall,
-      bn.headlineLarge,
-      bn.headlineMedium,
-      bn.headlineSmall,
-      bn.titleLarge,
-      bn.titleMedium,
-      bn.titleSmall,
-      bn.bodyLarge,
-      bn.bodyMedium,
-      bn.bodySmall,
-      bn.labelLarge,
-      bn.labelMedium,
-      bn.labelSmall,
+      en.displayLarge,
+      en.displayMedium,
+      en.displaySmall,
+      en.headlineLarge,
+      en.headlineMedium,
+      en.headlineSmall,
+      en.titleLarge,
+      en.titleMedium,
+      en.titleSmall,
+      en.bodyLarge,
+      en.bodyMedium,
+      en.bodySmall,
+      en.labelLarge,
+      en.labelMedium,
+      en.labelSmall,
     ];
     for (final s in styles) {
-      expect(s!.fontFamily, ProsocheFontFamilies.notoSansBengali);
+      expect(s!.fontFamily, ProsocheFontFamilies.inter);
     }
     final empty = applyLocaleFontToTextTheme(
       const TextTheme(),
-      ProsocheLocales.bn,
+      ProsocheLocales.en,
     );
     expect(empty.bodyLarge, isNull);
   });
@@ -96,15 +76,9 @@ void main() {
       ).allMatches(File('pubspec.yaml').readAsStringSync()))
         m[1],
     };
-    final used = {
-      for (final spec in [
-        LocaleFonts.latin,
-        LocaleFonts.arabic,
-        LocaleFonts.urdu,
-        LocaleFonts.bengali,
-      ]) ...[spec.family, ...spec.fallback],
+    expect(declared, {
+      ProsocheFontFamilies.inter,
       ProsocheFontFamilies.literata,
-    };
-    expect(declared, containsAll(used));
+    });
   });
 }

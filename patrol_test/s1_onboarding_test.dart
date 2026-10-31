@@ -7,16 +7,15 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'support/app_harness.dart';
 import 'support/flows.dart';
 
-/// TECHNICKY_PLAN 17.5/1: cerstva instalacia, onboarding v `lite`
-/// (O1-O4, O7) so systemovymi dialogmi polohy a notifikacii, suhlas off,
-/// az po Dnes. PostHog ani Sentry sa neinicializuju.
+/// TECHNICKY_PLAN 17.5/1: cerstva instalacia, onboarding v `lite` so
+/// systemovym dialogom notifikacii, suhlas off, az po Dnes. PostHog ani
+/// Sentry sa neinicializuju.
 void main() {
   patrolTest('s1 cerstva instalacia - onboarding az po Dnes', ($) async {
     await startApp($);
 
-    final report = await completeOnboarding($, denyLocationFirst: true);
+    final report = await completeOnboarding($);
 
-    expect(report.locationDialogShown, isTrue, reason: 'dialog polohy');
     // Po instalacii (tool/e2e.sh odinstaluje appku) musi prist systemovy
     // dialog; pri `--no-uninstall` uz moze byt povolene, staci stav "on".
     debugPrint('E2E: dialog notifikacii: ${report.notificationDialogShown}');

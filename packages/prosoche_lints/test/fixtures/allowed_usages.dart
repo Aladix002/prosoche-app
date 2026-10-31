@@ -25,8 +25,7 @@ class Allowed extends StatelessWidget {
   static const m = 'Prosoche 2:255';
   // prosoche-lint: ignore prosoche_text_align_left_right
   static const n = TextAlign.left;
-  static const o = Alignment
-      .centerLeft; // prosoche-lint: ignore prosoche_alignment_left_right
+  static const o = Alignment.centerLeft; // prosoche-lint: ignore prosoche_alignment_left_right
 
   @override
   Widget build(BuildContext context) {

@@ -12,18 +12,18 @@ class _BrokenSettings extends InMemorySettingsRepository {
 
 void main() {
   const lite = OnboardingFlow(gate: false);
-  const pending = OnboardingStatus(completed: false, step: 'location');
+  const pending = OnboardingStatus(completed: false, step: 'notifications');
   const done = OnboardingStatus(completed: true);
 
   group('onboardingRedirect (docs/02 C3)', () {
     test('unfinished onboarding goes to the stored step', () {
       expect(
         onboardingRedirect('/today', pending, lite),
-        '/onboarding/location',
+        '/onboarding/notifications',
       );
       expect(
         onboardingRedirect('/settings/privacy', pending, lite),
-        '/onboarding/location',
+        '/onboarding/notifications',
       );
       expect(
         onboardingRedirect(
@@ -31,19 +31,22 @@ void main() {
           const OnboardingStatus(completed: false),
           lite,
         ),
-        '/onboarding/language',
+        '/onboarding/welcome',
       );
     });
 
     test('onboarding routes and the gate stay', () {
-      expect(onboardingRedirect('/onboarding/niyyah', pending, lite), isNull);
+      expect(
+        onboardingRedirect('/onboarding/intention', pending, lite),
+        isNull,
+      );
       expect(onboardingRedirect('/gate', pending, lite), isNull);
     });
 
     test('finished onboarding leaves onboarding for Today', () {
       expect(onboardingRedirect('/onboarding/privacy', done, lite), '/today');
       expect(onboardingRedirect('/onboarding', done, lite), '/today');
-      expect(onboardingRedirect('/quran', done, lite), isNull);
+      expect(onboardingRedirect('/library', done, lite), isNull);
     });
   });
 
@@ -61,7 +64,7 @@ void main() {
         expect(await first, '/onboarding/notifications');
         // Upstream (deep link) sa prepise guardom.
         expect(
-          guard.redirect(Uri.parse('prosoche://prayer'), '/prayer'),
+          guard.redirect(Uri.parse('prosoche://journey'), '/journey'),
           '/onboarding/notifications',
         );
 

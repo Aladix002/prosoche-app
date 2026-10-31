@@ -1,42 +1,29 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:prosoche/core/result.dart';
 import 'package:prosoche/data/blocker/gate_repository.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
 import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/feed/feed.dart';
-import 'package:prosoche/domain/prayer/prayer.dart';
 import 'package:prosoche/domain/quests/quests.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/cards/cards.dart';
-import 'package:prosoche/features/gate/gate_screen.dart';
 import 'package:prosoche/ui/ui.dart';
 
 import '../../fakes/fake_repositories.dart';
 import 'gate_harness.dart';
 
-/// Sada s hadisom, eventom v strede a kvizmi (pravidla brany A4).
+/// Kratka sada: intro a tri citaty (pravidla brany A4).
 DailySet _mixedSet(LocalDate date) => DailySet(
   date: date,
   phase: DayPhase.morning,
   cards: [
     DailySetCard(pos: 1, cardId: IntroCardId(date), slot: Slot.intro),
-    DailySetCard(
-      pos: 2,
-      cardId: AyahCardId(AyahId(2, 2)),
-      slot: Slot.ayah,
-      khatm: true,
-    ),
-    DailySetCard(pos: 3, cardId: HadithCardId(7), slot: Slot.hadithDua),
-    DailySetCard(
-      pos: 4,
-      cardId: AyahCardId(AyahId(2, 3)),
-      slot: Slot.ayah,
-      khatm: true,
-    ),
+    DailySetCard(pos: 2, cardId: fakeQuoteId(2), slot: Slot.quote),
+    DailySetCard(pos: 3, cardId: fakeQuoteId(7), slot: Slot.quote),
+    DailySetCard(pos: 4, cardId: fakeQuoteId(3), slot: Slot.quote),
   ],
 );
 
@@ -202,12 +189,12 @@ void main() {
       expect(t.gates.unlocks, [(1, UnlockSource.cards, 10)]);
       expect(t.gates.lastResult, GateResult.passed);
       final seen = t.repos.dailySets.seen
-          .where((s) => s.$2 is AyahCardId)
+          .where((s) => s.$2.type == CardType.quote)
           .map((s) => (s.$2, s.$3));
       expect(seen, [
-        (AyahCardId(AyahId(2, 2)), CardContext.gate),
-        (AyahCardId(AyahId(2, 3)), CardContext.gate),
-        (AyahCardId(AyahId(2, 4)), CardContext.gate),
+        (fakeQuoteId(2), CardContext.gate),
+        (fakeQuoteId(3), CardContext.gate),
+        (fakeQuoteId(4), CardContext.gate),
       ]);
       // Cursor sady sa posunul (spolocny s Feedom).
       final state = await t.repos.dailySets.get(gateToday);
@@ -297,19 +284,14 @@ void main() {
       expect(t.blocker.lastCloseOpenTarget, isFalse);
     });
 
-    testWidgets('event and intro are skipped, max one quiz', (tester) async {
+    testWidgets('intro is skipped and marked seen', (tester) async {
       DailySet build(LocalDate date) => DailySet(
         date: date,
         phase: DayPhase.morning,
         cards: [
           DailySetCard(pos: 1, cardId: IntroCardId(date), slot: Slot.intro),
-          DailySetCard(pos: 2, cardId: HadithCardId(7), slot: Slot.hadithDua),
-          DailySetCard(
-            pos: 3,
-            cardId: EventCardId('example', date),
-            slot: Slot.event,
-          ),
-          DailySetCard(pos: 4, cardId: DuaCardId(3), slot: Slot.hadithDua),
+          DailySetCard(pos: 2, cardId: fakeQuoteId(7), slot: Slot.quote),
+          DailySetCard(pos: 3, cardId: fakeQuoteId(3), slot: Slot.quote),
         ],
       );
       final repos = FakeRepositories(
@@ -327,16 +309,15 @@ void main() {
       await tester.pump();
       expect(t.repos.dailySets.seen.map((s) => s.$2), [
         IntroCardId(gateToday),
-        HadithCardId(7),
-        EventCardId('example', gateToday),
-        DuaCardId(3),
+        fakeQuoteId(7),
+        fakeQuoteId(3),
       ]);
       expect(
         t.repos.dailySets.seen.every((s) => s.$3 == CardContext.gate),
         isTrue,
       );
       expect(find.text('Instagram is open for 10 minutes'), findsOneWidget);
-      // Dua bola posledna karta sady.
+      // Citat bol posledna karta sady.
       expect(find.text("You finished today's set."), findsOneWidget);
     });
 
@@ -345,7 +326,7 @@ void main() {
     ) async {
       final repos = FakeRepositories(
         dailySets: FakeDailySetRepository(build: _mixedSet),
-        cards: FakeCardContentRepository(missing: {HadithCardId(7)}),
+        cards: FakeCardContentRepository(missing: {fakeQuoteId(7)}),
       );
       final t = GateTest(
         repos: repos,
@@ -356,7 +337,7 @@ void main() {
       await t.pump(tester);
       await passCard(tester);
       await tester.pump();
-      expect(t.repos.dailySets.skipped, [HadithCardId(7)]);
+      expect(t.repos.dailySets.skipped, [fakeQuoteId(7)]);
       await passCard(tester, next: false);
       await tester.pump();
       expect(t.gates.unlocks, [(1, UnlockSource.cards, 10)]);
@@ -364,9 +345,7 @@ void main() {
     });
 
     testWidgets('only missing content ends in the empty state', (tester) async {
-      final missing = {
-        for (var a = 1; a <= 20; a++) AyahCardId(AyahId(2, a)) as CardId,
-      };
+      final missing = <CardId>{for (var i = 1; i <= 200; i++) fakeQuoteId(i)};
       final repos = FakeRepositories(
         cards: FakeCardContentRepository(missing: missing),
       );
@@ -387,9 +366,7 @@ void main() {
   });
 
   group('free reading', () {
-    testWidgets('finished set shows verses from reading_position+1', (
-      tester,
-    ) async {
+    testWidgets('finished set shows extra cards', (tester) async {
       final repos = FakeRepositories();
       repos.dailySets.put(
         DailySetState(
@@ -398,16 +375,10 @@ void main() {
           completedAt: gateNow,
         ),
       );
-      final t = GateTest(
-        repos: repos,
-        gates: FakeGateRepository(position: AyahId(18, 4)),
-      );
+      final t = GateTest(repos: repos);
       await t.pump(tester);
       expect(
-        find.text(
-          "Today's cards are done. Here are a few verses from where you "
-          'left off.',
-        ),
+        find.text("Today's cards are done. Here are a few more to read."),
         findsOneWidget,
       );
       await passCard(tester);
@@ -415,11 +386,10 @@ void main() {
       await passCard(tester, next: false);
       await tester.pump();
       expect(t.gates.freeReading, [
-        AyahId(18, 5),
-        AyahId(18, 6),
-        AyahId(18, 7),
+        fakeQuoteId(101),
+        fakeQuoteId(102),
+        fakeQuoteId(103),
       ]);
-      expect(t.gates.position, AyahId(18, 7));
       expect(t.repos.dailySets.seen, isEmpty);
       expect(t.gates.unlocks, [(1, UnlockSource.cards, 10)]);
     });
@@ -435,12 +405,12 @@ void main() {
       await passCard(tester, next: false);
       await tester.pump();
       expect(find.text("You finished today's set."), findsOneWidget);
-      // Volne citanie pokracuje za poslednym khatm versom sady (2:3).
+      // Volne citanie pokracuje kartami mimo sady.
       await tester.tap(find.text('Keep reading'));
       await tester.pump();
       await tester.pump();
       await passCard(tester, next: false);
-      expect(t.gates.freeReading, [AyahId(2, 4)]);
+      expect(t.gates.freeReading, [fakeQuoteId(101)]);
     });
   });
 
@@ -531,80 +501,4 @@ void main() {
       expect(t.gates.unlocks, [(1, UnlockSource.emergency, 5)]);
     });
   });
-
-  group('prayer lock', () {
-    final asr = DateTime(2026, 10, 29, 8, 55);
-
-    GateTest prayerGate() => GateTest(
-      gates: FakeGateRepository(
-        apps: {igRef: FakeGateRepository.instagram(prayerLock: true)},
-      ),
-    );
-
-    testWidgets("I'll pray first goes home", (tester) async {
-      final t = prayerGate();
-      await t.pump(tester, extra: [_currentPrayer(Prayer.asr, asr)]);
-      expect(find.text("It's time for Asr"), findsOneWidget);
-      expect(
-        find.text('Instagram will still be here after you pray.'),
-        findsOneWidget,
-      );
-      await tester.tap(find.text("I'll pray first"));
-      await tester.pump();
-      expect(t.blocker.lastCloseOpenTarget, isFalse);
-      expect(t.gates.lastResult, GateResult.prayerLocked);
-    });
-
-    testWidgets('Show cards anyway: cards unlock as usual', (tester) async {
-      final t = prayerGate();
-      await t.pump(tester, extra: [_currentPrayer(Prayer.asr, asr)]);
-      await tester.tap(find.text('Show cards anyway'));
-      await tester.pump();
-      await tester.pump();
-      await passCard(tester);
-      await passCard(tester);
-      await passCard(tester, next: false);
-      await tester.pump();
-      expect(t.gates.unlocks, [(1, UnlockSource.cards, 10)]);
-    });
-
-    testWidgets('outside the window there is no reminder', (tester) async {
-      final t = prayerGate();
-      await t.pump(
-        tester,
-        extra: [_currentPrayer(Prayer.asr, DateTime(2026, 10, 29, 8, 30))],
-      );
-      expect(find.text("It's time for Asr"), findsNothing);
-      expect(find.byType(CardView), findsOneWidget);
-    });
-
-    testWidgets('window follows blocker.prayer_lock_minutes', (tester) async {
-      for (final (minutes, reminder) in [(3, false), (0, false), (30, true)]) {
-        final t = prayerGate();
-        await t.repos.settings.set(
-          SettingsKeys.blockerPrayerLockMinutes,
-          minutes,
-        );
-        await t.pump(tester, extra: [_currentPrayer(Prayer.asr, asr)]);
-        expect(
-          find.text("It's time for Asr"),
-          reminder ? findsOneWidget : findsNothing,
-          reason: '$minutes min',
-        );
-        await tester.pumpWidget(const SizedBox());
-      }
-    });
-
-    testWidgets('sunrise is not a prayer lock', (tester) async {
-      final t = prayerGate();
-      await t.pump(tester, extra: [_currentPrayer(Prayer.sunrise, asr)]);
-      expect(find.byType(CardView), findsOneWidget);
-    });
-  });
 }
-
-/// Aktualna modlitba bez polohy a adhan vypoctu.
-Override _currentPrayer(Prayer prayer, DateTime start) =>
-    gateCurrentPrayerProvider.overrideWithValue(
-      () async => (prayer: prayer, start: start),
-    );

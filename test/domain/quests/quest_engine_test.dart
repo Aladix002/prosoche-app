@@ -304,7 +304,7 @@ void main() {
           lang: 'de',
           templates: [
             _read('read.en', langs: const {'en'}),
-            _read('read.de', langs: const {'en', 'de'}),
+            _read('read.de'),
             _learn('learn.a'),
             _act('act.en', langs: const {'en'}),
           ],

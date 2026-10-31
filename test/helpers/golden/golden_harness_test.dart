@@ -24,11 +24,11 @@ class _Sample extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(l10n.feedTitle, style: Theme.of(context).textTheme.titleLarge),
-          Text(PseudoLocale.sentence(locale, words: 5)),
+          Text(l10n.tabToday, style: Theme.of(context).textTheme.titleLarge),
+          const Text('[PLACEHOLDER] A short sample sentence.'),
           Row(
             children: [
-              Expanded(child: Text(l10n.tabPrayer)),
+              Expanded(child: Text(l10n.tabPractice)),
               Text(time),
               const DirectionalIcon(Icons.chevron_right),
             ],
@@ -104,103 +104,60 @@ void main() {
 
   test('goldenScenarioName', () {
     expect(
-      goldenScenarioName(ProsocheLocales.ur, Brightness.dark, 2),
-      'ur dark x2.0',
+      goldenScenarioName(ProsocheLocales.en, Brightness.dark, 2),
+      'en dark x2.0',
     );
-    expect(fullGoldenLocales.length + smokeLocales.length, 6);
+    expect(fullGoldenLocales.length + smokeLocales.length, 1);
   });
 
-  group('PseudoLocale', () {
-    test('uses the script of the locale and keeps placeholders', () {
-      const src = 'Hello {name}, 3 cards';
-      final ur = PseudoLocale.localize(src, ProsocheLocales.ur);
-      final bn = PseudoLocale.localize(src, ProsocheLocales.bn);
-      final ar = PseudoLocale.localize(src, ProsocheLocales.ar);
-      final tr = PseudoLocale.localize(src, ProsocheLocales.tr);
-      final en = PseudoLocale.localize(src, ProsocheLocales.en);
-      for (final s in [ur, bn, ar, tr, en]) {
-        expect(s, startsWith('['));
-        expect(s, endsWith(']'));
-        expect(s, contains('{name}'));
-        expect(s, contains('3'));
-        expect(s.length, greaterThan(src.length * 1.3));
-      }
-      expect(RegExp('[؀-ۿ]').hasMatch(ur), isTrue);
-      expect(RegExp('[؀-ۿ]').hasMatch(ar), isTrue);
-      expect(RegExp('[ঀ-৿]').hasMatch(bn), isTrue);
-      expect(RegExp('[ğüşıöçĞÜŞİÖÇ]').hasMatch(tr), isTrue);
-      expect(en, isNot(contains('Hello')));
-    });
-
-    test('never produces Arabic alif, lam or ha', () {
-      final all = [
-        for (final l in ProsocheLocales.all)
-          PseudoLocale.sentence(l, words: 40),
-      ].join();
-      expect(all, isNot(matches('[اله]')));
-    });
-
-    test('empty input stays empty inside brackets', () {
-      expect(PseudoLocale.localize('', ProsocheLocales.ar), '[]');
-    });
-  });
-
-  group('UR and BN at textScale 2.0 are not clipped', () {
-    // Realne fonty (Nastaliq ma najvacsiu vysku), nie testovaci font.
+  group('EN at textScale 2.0 is not clipped', () {
+    // Realne fonty, nie testovaci font.
     setUpAll(loadProsocheFonts);
     final strings = _enStrings();
     test('ARB template has strings', () => expect(strings, isNotEmpty));
 
-    for (final locale in [
-      ProsocheLocales.ur,
-      ProsocheLocales.bn,
-      ProsocheLocales.ar,
-    ]) {
-      testWidgets(locale.languageCode, (tester) async {
-        await tester.binding.setSurfaceSize(const Size(360, 640));
-        addTearDown(() => tester.binding.setSurfaceSize(null));
-        await tester.pumpWidget(
-          LocalizedTestApp(
-            locale: locale,
-            textScale: 2,
-            size: const Size(360, 640),
-            child: ListView(
-              children: [
-                for (final MapEntry(:key, :value) in strings.entries) ...[
-                  ListTile(
-                    key: ValueKey(key),
-                    title: Text(PseudoLocale.localize(value, locale)),
-                    trailing: const DirectionalIcon(Icons.chevron_right),
-                  ),
-                  FilledButton(
-                    onPressed: () {},
-                    child: Text(PseudoLocale.localize(value, locale)),
-                  ),
-                ],
+    testWidgets('all ARB strings in list tiles and buttons', (tester) async {
+      await tester.binding.setSurfaceSize(const Size(360, 640));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await tester.pumpWidget(
+        LocalizedTestApp(
+          locale: ProsocheLocales.en,
+          textScale: 2,
+          size: const Size(360, 640),
+          child: ListView(
+            children: [
+              for (final MapEntry(:key, :value) in strings.entries) ...[
+                ListTile(
+                  key: ValueKey(key),
+                  title: Text(value),
+                  trailing: const DirectionalIcon(Icons.chevron_right),
+                ),
+                FilledButton(onPressed: () {}, child: Text(value)),
               ],
-            ),
+            ],
           ),
-        );
-        expectNoTextClipping(tester);
-        expect(
-          tester.renderObject<RenderBox>(find.byType(ListTile).first).size,
-          isNot(Size.zero),
-        );
-      });
-    }
+        ),
+      );
+      expectNoTextClipping(tester);
+      expect(
+        tester.renderObject<RenderBox>(find.byType(ListTile).first).size,
+        isNot(Size.zero),
+      );
+    });
   });
 
   testWidgets('expectNoTextClipping detects an ellipsized text', (
     tester,
   ) async {
     await tester.pumpWidget(
-      LocalizedTestApp(
-        locale: ProsocheLocales.ur,
+      const LocalizedTestApp(
+        locale: ProsocheLocales.en,
         textScale: 2,
+        size: Size(360, 640),
         child: SizedBox(
           width: 100,
           child: Text(
-            PseudoLocale.sentence(ProsocheLocales.ur, words: 20),
+            'A long sentence that will never fit into one short line here.',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -212,13 +169,16 @@ void main() {
 
   testWidgets('expectNoTextClipping detects a layout overflow', (tester) async {
     await tester.pumpWidget(
-      LocalizedTestApp(
-        locale: ProsocheLocales.bn,
+      const LocalizedTestApp(
+        locale: ProsocheLocales.en,
         textScale: 2,
+        size: Size(360, 640),
         child: SizedBox(
           width: 100,
           child: Row(
-            children: [Text(PseudoLocale.sentence(ProsocheLocales.bn))],
+            children: [
+              Text('A long sentence that overflows a narrow row for sure.'),
+            ],
           ),
         ),
       ),

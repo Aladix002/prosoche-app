@@ -91,7 +91,7 @@ void main() {
     test('CHECK rejects bad enum and second singleton', () async {
       await expectLater(
         db.customStatement(
-          "INSERT INTO quest_log (date, slot, quest_id, status) "
+          'INSERT INTO quest_log (date, slot, quest_id, status) '
           "VALUES ('2026-10-29', 'pray', 'q', 'open')",
         ),
         throwsA(isA<SqliteException>()),

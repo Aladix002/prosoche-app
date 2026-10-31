@@ -11,20 +11,16 @@ void main() {
 
   test('lite edition never enables the gate', () {
     expect(FeatureFlags.all.forEdition(Edition.lite).gate, isFalse);
-    expect(FeatureFlags.all.forEdition(Edition.lite).words, isTrue);
     expect(FeatureFlags.all.forEdition(Edition.full), FeatureFlags.all);
   });
 
   test('copyWith, equality, toString', () {
-    const f = FeatureFlags(words: true);
-    expect(
-      f.copyWith(audio: true),
-      const FeatureFlags(words: true, audio: true),
-    );
+    final f = FeatureFlags.none.copyWith(gate: true);
+    expect(f.copyWith(gate: false), FeatureFlags.none);
     expect(f.copyWith(), f);
-    expect(f.hashCode, const FeatureFlags(words: true).hashCode);
-    expect(f, isNot(FeatureFlags.all));
-    expect(f.toString(), contains('words: true'));
+    expect(f.hashCode, FeatureFlags.all.hashCode);
+    expect(f, isNot(FeatureFlags.none));
+    expect(f.toString(), contains('gate: true'));
   });
 
   test('provider follows edition', () {

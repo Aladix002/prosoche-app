@@ -15,7 +15,7 @@ typedef GoldenThemeBuilder = ThemeData Function(Brightness brightness);
 ThemeData _defaultTheme(Brightness brightness) =>
     ThemeData(brightness: brightness, colorSchemeSeed: const Color(0xFF2E6B5E));
 
-/// Nacita pribalene fonty z `FontManifest.json` (Inter, Noto, Amiri), aby
+/// Nacita pribalene fonty z `FontManifest.json` (Inter, Literata), aby
 /// widget testy merali text realnymi fontmi a nie testovacim fontom.
 /// Alchemist to robi sam len pred `goldenTest`; widget testy (napr.
 /// `expectNoTextClipping`) by inak zaviseli od poradia testov v subore.
@@ -33,16 +33,11 @@ Future<void> loadProsocheFonts() async {
   }
 }
 
-/// Jazyky pre goldeny (PLAN_VYVOJA 4.2 bod 3): plne pokrytie EN, AR, UR,
-/// BN; ID a TR su LTR latinka a staci smoke ([smokeLocales]).
-const List<Locale> fullGoldenLocales = [
-  ProsocheLocales.en,
-  ProsocheLocales.ar,
-  ProsocheLocales.ur,
-  ProsocheLocales.bn,
-];
+/// Jazyky pre goldeny: v1 len EN (PLAN.md). Dalsie jazyky sa pridaju
+/// s prekladmi; smoke jazyky maju len svetlu temu a 1.0.
+const List<Locale> fullGoldenLocales = [ProsocheLocales.en];
 
-const List<Locale> smokeLocales = [ProsocheLocales.id, ProsocheLocales.tr];
+const List<Locale> smokeLocales = <Locale>[];
 
 /// textScale pre obrazovky; karty pridavaju 1.5 ([cardTextScales]).
 const List<double> screenTextScales = [1.0, 2.0];
@@ -94,7 +89,7 @@ class LocalizedTestApp extends StatelessWidget {
       child: Localizations(
         locale: locale,
         delegates: AppLocalizations.localizationsDelegates,
-        // Localizations vlozi Directionality podla jazyka (ar/ur = RTL).
+        // Localizations vlozi Directionality podla jazyka.
         child: Theme(data: data, child: content),
       ),
     );
@@ -108,11 +103,11 @@ String goldenScenarioName(
   double textScale,
 ) => '${locale.languageCode} ${brightness.name} x$textScale';
 
-/// Golden test pre 6 jazykov x tema x textScale (PLAN_VYVOJA U-02).
+/// Golden test pre jazyky x tema x textScale (PLAN_VYVOJA U-02).
 ///
 /// Pre kazdy jazyk z [locales] vznikne jeden golden subor
 /// `goldens/ci/<fileName>_<lang>.png` s mriezkou [brightness] x
-/// [textScales]. ID a TR ([smokeLocales]) maju len svetlu temu a 1.0.
+/// [textScales]. Jazyky zo [smokeLocales] maju len svetlu temu a 1.0.
 ///
 /// Pouzite CI goldeny alchemistu (text zakryty blokmi); platform goldeny
 /// su vypnute. Layout textu meraju pribalene fonty z `assets/fonts/`

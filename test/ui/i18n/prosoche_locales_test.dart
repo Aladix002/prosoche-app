@@ -6,59 +6,42 @@ import 'package:prosoche/ui/i18n/i18n.dart';
 import '../../helpers/pump_app.dart';
 
 void main() {
-  test('generated supportedLocales match ProsocheLocales.all', () {
+  test('generated supportedLocales match ProsocheLocales.all (v1: en)', () {
     expect(
       AppLocalizations.supportedLocales.map((l) => l.languageCode).toSet(),
       ProsocheLocales.all.map((l) => l.languageCode).toSet(),
     );
-    expect(ProsocheLocales.all, hasLength(6));
+    expect(ProsocheLocales.all, [ProsocheLocales.en]);
   });
 
-  test('every locale falls back to the EN template text', () {
-    final en = lookupAppLocalizations(ProsocheLocales.en);
-    for (final locale in ProsocheLocales.all) {
-      final l10n = lookupAppLocalizations(locale);
-      expect(l10n.localeName, locale.languageCode);
-      // Kym ludia nedodaju preklad, nikdy prazdny retazec (docs/04 5.1).
-      expect(l10n.tabToday, isNotEmpty);
-      expect(l10n.errorGeneric, isNotEmpty);
-      if (locale == ProsocheLocales.en) expect(l10n.tabToday, en.tabToday);
-    }
+  test('EN template texts are never empty', () {
+    final l10n = lookupAppLocalizations(ProsocheLocales.en);
+    expect(l10n.localeName, 'en');
+    expect(l10n.tabToday, isNotEmpty);
+    expect(l10n.errorGeneric, isNotEmpty);
   });
 
-  test('RTL only for ar and ur', () {
-    expect(
-      [for (final l in ProsocheLocales.all) ProsocheLocales.isRtl(l)],
-      [false, true, false, true, false, false],
-    );
-    expect(textDirectionForLocale(ProsocheLocales.ur), TextDirection.rtl);
-    expect(textDirectionForLocale(ProsocheLocales.tr), TextDirection.ltr);
-    expect(textDirectionForLanguage('ar'), TextDirection.rtl);
+  test('RTL detection stays for future languages', () {
+    expect(ProsocheLocales.isRtl(ProsocheLocales.en), isFalse);
+    expect(ProsocheLocales.isRtl(const Locale('he')), isTrue);
+    expect(textDirectionForLocale(ProsocheLocales.en), TextDirection.ltr);
+    expect(textDirectionForLanguage('fa'), TextDirection.rtl);
     expect(textDirectionForLanguage('en'), TextDirection.ltr);
   });
 
   group('resolve', () {
-    test('stored choice wins', () {
-      expect(
-        ProsocheLocales.resolve(
-          stored: 'bn',
-          deviceLocales: const [Locale('ar')],
-        ),
-        ProsocheLocales.bn,
-      );
+    test('stored choice wins when supported', () {
+      expect(ProsocheLocales.resolve(stored: 'en'), ProsocheLocales.en);
     });
 
-    test('unknown stored value falls through to device locales', () {
+    test('unknown stored value and device locales fall back to en', () {
       expect(
         ProsocheLocales.resolve(
           stored: 'bs',
-          deviceLocales: const [Locale('de'), Locale('ar', 'EG')],
+          deviceLocales: const [Locale('de'), Locale('en', 'GB')],
         ),
-        ProsocheLocales.ar,
+        ProsocheLocales.en,
       );
-    });
-
-    test('falls back to en', () {
       expect(ProsocheLocales.resolve(), ProsocheLocales.en);
       expect(
         ProsocheLocales.resolve(deviceLocales: const [Locale('sk')]),
@@ -67,27 +50,20 @@ void main() {
     });
 
     test('isSupported ignores the region', () {
-      expect(ProsocheLocales.isSupported(const Locale('ur', 'PK')), isTrue);
+      expect(ProsocheLocales.isSupported(const Locale('en', 'US')), isTrue);
       expect(ProsocheLocales.isSupported(const Locale('bs')), isFalse);
     });
   });
 
-  group('app follows the device locale', () {
-    for (final locale in ProsocheLocales.all) {
-      testWidgets('${locale.languageCode} sets direction', (tester) async {
-        tester.platformDispatcher.localesTestValue = [locale];
-        addTearDown(tester.platformDispatcher.clearLocalesTestValue);
-        await tester.pumpProsoche();
-
-        final context = tester.element(navBar);
-        expect(Localizations.localeOf(context), locale);
-        expect(Directionality.of(context), textDirectionForLocale(locale));
-        // EN fallback textu, kym nie je preklad.
-        expect(
-          find.text(lookupAppLocalizations(locale).tabToday),
-          findsWidgets,
-        );
-      });
-    }
+  testWidgets('unsupported device locale falls back to EN, LTR', (
+    tester,
+  ) async {
+    tester.platformDispatcher.localesTestValue = [const Locale('de')];
+    addTearDown(tester.platformDispatcher.clearLocalesTestValue);
+    await tester.pumpProsoche();
+    final context = tester.element(navBar);
+    expect(Localizations.localeOf(context), ProsocheLocales.en);
+    expect(Directionality.of(context), TextDirection.ltr);
+    expect(find.text('Today'), findsWidgets);
   });
 }

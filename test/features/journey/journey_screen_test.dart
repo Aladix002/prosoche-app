@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:prosoche/core/flags/feature_flags.dart';
-import 'package:prosoche/data/repositories/repositories.dart' show ReaderMode;
 import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/quests/quests.dart' show CardContext;
 import 'package:prosoche/domain/settings/settings_repository.dart';
@@ -10,8 +9,6 @@ import 'package:prosoche/features/journey/journey_calendar.dart';
 import 'package:prosoche/features/journey/journey_day_screen.dart';
 import 'package:prosoche/features/journey/journey_screen.dart';
 import 'package:prosoche/features/journey/saved_screen.dart';
-import 'package:prosoche/features/journey/surah_map.dart';
-import 'package:prosoche/features/quran/reader/quran_reader_screen.dart';
 import 'package:prosoche/ui/i18n/i18n.dart';
 import 'package:prosoche/ui/ui.dart';
 
@@ -98,15 +95,6 @@ void main() {
     expect(journeyMonthsBetween((2025, 11), (2026, 10)), 11);
   });
 
-  test('read percent', () {
-    expect(readPercent(0, 7), 0);
-    expect(readPercent(1, 286), 1);
-    expect(readPercent(143, 286), 50);
-    expect(readPercent(286, 286), 100);
-    expect(quranReadPercent({1: 7, 2: 286}), 4);
-    expect(quranReadPercent({}), 0);
-  });
-
   group('JourneyScreen', () {
     Future<FakeRepositories> pump(
       WidgetTester tester, {
@@ -115,12 +103,7 @@ void main() {
       bool settle = true,
     }) async {
       phoneView(tester);
-      final r =
-          repos ??
-          FakeRepositories(
-            streak: fixtureStreak(),
-            quran: JourneyQuranRepository(counts: {1: 7, 2: 143}, khatms: 1),
-          );
+      final r = repos ?? FakeRepositories(streak: fixtureStreak());
       await tester.pumpProsoche(location: '/journey', flags: flags, fakes: r);
       return r;
     }
@@ -242,13 +225,6 @@ void main() {
         find.bySemanticsLabel('Thursday, October 29, Today'),
         findsOneWidget,
       );
-      // D-05: uvodny panel je vyssi, mapa sur moze byt pod okrajom.
-      await tester.scrollUntilVisible(
-        find.text('Verses you read will fill this map.'),
-        200,
-      );
-      expect(find.text('Verses you read will fill this map.'), findsOneWidget);
-      expect(find.text('0% read'), findsOneWidget);
     });
 
     testWidgets('loading shows the calendar skeleton', (tester) async {
@@ -295,65 +271,18 @@ void main() {
       expect(screen.date, LocalDate(2026, 10, 28));
     });
 
-    testWidgets('surah map: progress labels, khatm and reader links', (
-      tester,
-    ) async {
-      phoneView(tester);
-      await tester.pumpProsoche(
-        location: '/journey',
-        flags: FeatureFlags.none,
-        fakes: FakeRepositories(
-          streak: fixtureStreak(),
-          quran: JourneyQuranRepository(counts: {1: 7, 2: 143}, khatms: 1),
-        ),
-      );
-      await scrollTo(tester, find.text('Khatm: 1'));
-      expect(find.text('2% read'), findsOneWidget);
-      expect(find.text('Khatm: 1'), findsOneWidget);
-      expect(find.text('Next verse \u20681:1\u2069'), findsOneWidget);
-      expect(find.bySemanticsLabel('Placeholder 1, 100% read'), findsOneWidget);
-      expect(find.bySemanticsLabel('Placeholder 2, 50% read'), findsOneWidget);
-      expect(find.bySemanticsLabel('Placeholder 3, 0% read'), findsOneWidget);
-      expect(
-        find.text(
-          'Each square is a surah. The fuller it is, the more of it you '
-          'have read.',
-        ),
-        findsOneWidget,
-      );
-
-      final tile = find.bySemanticsLabel('Placeholder 2, 50% read');
-      await tester.scrollUntilVisible(
-        tile,
-        -100,
-        scrollable: find
-            .descendant(
-              of: find.byType(JourneyScreen),
-              matching: find.byType(Scrollable),
-            )
-            .first,
-      );
-      await tester.pumpAndSettle();
-      await tester.tap(tile);
-      await tester.pumpAndSettle();
-      final reader = tester.widget<QuranReaderScreen>(
-        find.byType(QuranReaderScreen),
-      );
-      expect((reader.surah, reader.mode), (2, ReaderMode.browse));
-    });
-
     testWidgets('saved cards button shows the count and opens Saved', (
       tester,
     ) async {
       final repos = FakeRepositories(streak: fixtureStreak());
       await repos.actions.save(
         journeyToday,
-        AyahCardId(AyahId(2, 255)),
+        fakeQuoteId(1),
         context: CardContext.feed,
       );
       await repos.actions.save(
         journeyToday,
-        HadithCardId(13),
+        ContentCardId(CardType.concept, 'logos'),
         context: CardContext.feed,
       );
       await pump(tester, repos: repos);
@@ -364,39 +293,30 @@ void main() {
       expect(find.byType(SavedCardsScreen), findsOneWidget);
     });
 
-    testWidgets('words row only with FEATURE_WORDS', (tester) async {
-      await pump(tester);
-      await scrollTo(tester, find.textContaining('Saved cards'));
-      expect(find.text('Words'), findsNothing);
-      await pump(tester, flags: FeatureFlags.all);
-      await scrollTo(tester, find.text('Words'));
-      expect(find.text('Words'), findsOneWidget);
-    });
-
-    testWidgets('edit intention writes niyyah settings', (tester) async {
+    testWidgets('edit intention writes intention settings', (tester) async {
       final repos = await pump(tester);
       expect(find.text('Add your intention'), findsOneWidget);
       await tester.tap(find.byTooltip('Edit intention'));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const ValueKey('journey-niyyah:khatm')));
+      await tester.tap(find.byKey(const ValueKey('journey-intention:calm')));
       await tester.pump();
       await tester.tap(find.text('Save'));
       await tester.pumpAndSettle();
-      expect(await repos.settings.get(SettingsKeys.niyyahPreset), 'khatm');
-      expect(find.text('Read the Quran regularly'), findsOneWidget);
+      expect(await repos.settings.get(SettingsKeys.intentionPreset), 'calm');
+      expect(find.text('Stay calm under pressure'), findsOneWidget);
 
       await tester.tap(find.byTooltip('Edit intention'));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const ValueKey('journey-niyyah:own')));
+      await tester.tap(find.byKey(const ValueKey('journey-intention:own')));
       await tester.pump();
       await tester.enterText(
-        find.byKey(const ValueKey('journey-niyyah:text')),
+        find.byKey(const ValueKey('journey-intention:text')),
         '[PLACEHOLDER own words]',
       );
       await tester.tap(find.text('Save'));
       await tester.pumpAndSettle();
       expect(
-        await repos.settings.get(SettingsKeys.niyyahText),
+        await repos.settings.get(SettingsKeys.intentionText),
         '[PLACEHOLDER own words]',
       );
       expect(find.text('“[PLACEHOLDER own words]”'), findsOneWidget);

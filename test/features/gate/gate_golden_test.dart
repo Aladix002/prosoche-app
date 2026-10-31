@@ -77,16 +77,6 @@ void main() {
   );
 
   screen(
-    'prayer',
-    (context) => GatePrayerView(
-      app: 'Instagram',
-      prayer: 'Asr',
-      onPray: noop,
-      onShowCards: noop,
-    ),
-  );
-
-  screen(
     'error',
     (context) =>
         GateErrorView(app: 'Instagram', onContinue: noop, onBack: noop),

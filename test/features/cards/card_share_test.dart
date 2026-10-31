@@ -6,28 +6,28 @@ import 'package:prosoche/features/feed/feed_rules.dart';
 
 void main() {
   group('buildShareText (docs/02 B0.7)', () {
-    test('arabic, translation, reference with attribution and via', () {
+    test('text, reference with attribution, source and via', () {
       expect(
         buildShareText(
           const CardShareData(
-            arabic: 'AR',
-            translation: 'TR',
-            reference: 'Ref 1:1',
-            attribution: 'Translation: X',
+            text: 'TX',
+            reference: 'Work 1.1',
+            attribution: 'Author',
+            source: 'Source: S',
           ),
           via: 'via Prosoche',
         ),
-        'AR\n\nTR\n\n- Ref 1:1 (Translation: X)\nvia Prosoche',
+        'TX\n\n- Work 1.1 (Author)\nSource: S\nvia Prosoche',
       );
     });
 
-    test('without arabic and attribution', () {
+    test('without attribution', () {
       expect(
         buildShareText(
-          const CardShareData(translation: 'TR', reference: 'Ref'),
+          const CardShareData(text: 'TX', reference: 'Ref'),
           via: 'via Prosoche',
         ),
-        'TR\n\n- Ref\nvia Prosoche',
+        'TX\n\n- Ref\nvia Prosoche',
       );
     });
   });
@@ -48,56 +48,47 @@ void main() {
       expect(translationChars(null), 0);
       expect(
         translationChars(
-          ReflectionContent(
-            ReflectionCardId(1),
-            lang: 'en',
-            text: 'abc',
-            question: 'de',
-          ),
-        ),
-        5,
-      );
-      expect(
-        translationChars(
-          NameContent(
-            NameCardId(1),
-            textAr: 'x',
-            meaning: 'ab',
-            shortNote: 'c',
-          ),
-        ),
-        3,
-      );
-      expect(
-        translationChars(
-          DuaContent(
-            DuaCardId(1),
-            textAr: 'x',
-            sourceRef: 'r',
-            repeatCount: 1,
-            text: 'abcd',
-          ),
-        ),
-        4,
-      );
-      expect(
-        translationChars(
-          HadithContent(
-            HadithCardId(1),
-            textAr: 'x',
-            grade: 'sahih',
-            collection: 'c',
-            sourceId: 's',
+          IntroContent(
+            IntroCardId(LocalDate(2026, 1, 1)),
+            date: LocalDate(2026, 1, 1),
           ),
         ),
         0,
       );
+      expect(
+        translationChars(
+          QuoteContent(
+            ContentCardId.quote('q'),
+            text: 'abcde',
+            author: 'A',
+            work: 'W',
+            sourceId: 's',
+          ),
+        ),
+        5,
+      );
     });
 
-    test('nextReadingAyah continues after the position, wraps after 114:6', () {
-      expect(nextReadingAyah(null), AyahId.first);
-      expect(nextReadingAyah(AyahId(2, 5)), AyahId(2, 6));
-      expect(nextReadingAyah(AyahId.last), AyahId.first);
+    test('quote reference with and without ref', () {
+      final q = QuoteContent(
+        ContentCardId.quote('q'),
+        text: 't',
+        author: 'A',
+        work: 'W',
+        ref: '2.1',
+        sourceId: 's',
+      );
+      expect(q.reference, 'W 2.1');
+      expect(
+        QuoteContent(
+          ContentCardId.quote('q'),
+          text: 't',
+          author: 'A',
+          work: 'W',
+          sourceId: 's',
+        ).reference,
+        'W',
+      );
     });
   });
 }

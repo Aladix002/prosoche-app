@@ -35,18 +35,14 @@ void main() {
     'TodayScreen',
     fileName: 'today_screen',
     theme: theme,
-    builder: (context) => screen(
-      context,
-      FakeRepositories(prayer: FakePrayerRepository(location: fakeBratislava)),
-      const TodayScreen(),
-    ),
+    builder: (context) =>
+        screen(context, FakeRepositories(), const TodayScreen()),
   );
 
   goldenAllLocales(
     'TodayScreen in progress',
     fileName: 'today_screen_in_progress',
     theme: theme,
-    locales: fullGoldenLocales,
     brightness: const [Brightness.light],
     builder: (context) {
       final repos = FakeRepositories();

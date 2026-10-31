@@ -6,7 +6,7 @@ import 'package:prosoche/features/cards/types/day_cards.dart';
 import 'package:prosoche/ui/ui.dart';
 
 /// Kroky cez UI spolocne pre scenare. Texty su EN (`lib/l10n/app_en.arb`),
-/// kluce z obrazoviek (`ValueKey('language:en')` a pod.).
+/// kluce z obrazoviek (`ValueKey('intention:calm')` a pod.).
 
 const _short = Duration(milliseconds: 300);
 
@@ -102,66 +102,27 @@ Finder get continueButton => find.widgetWithText(SkButton, 'Continue');
 
 /// Vysledok onboardingu pre kontroly v scenari 1.
 class OnboardingReport {
-  bool locationDialogShown = false;
   bool notificationDialogShown = false;
   bool notificationsOn = false;
 }
 
-/// Cely onboarding v `lite` (O1-O4, O7): EN, umysel, poloha (GPS
-/// odmietnute v systemovom dialogu, potom rucne Bratislava), povolenie
-/// notifikacii v systemovom dialogu, sukromie bez suhlasu, az po Dnes.
-///
-/// [denyLocationFirst]: tapne "Use my location" a v systemovom dialogu
-/// polohu odmietne (emulator nema fix polohy, odmietnutie je
-/// deterministicke).
-Future<OnboardingReport> completeOnboarding(
-  PatrolIntegrationTester $, {
-  bool denyLocationFirst = false,
-}) async {
+/// Cely onboarding v `lite`: uvitanie, umysel, povolenie notifikacii
+/// v systemovom dialogu, sukromie bez suhlasu, az po Dnes.
+Future<OnboardingReport> completeOnboarding(PatrolIntegrationTester $) async {
   final report = OnboardingReport();
 
-  // O1 Jazyk.
-  await waitFor($, text('Choose your language'), timeout: _contentTimeout);
-  expect(text('Step 1 of 5'), findsOneWidget);
-  await tapUntil($, key('language:en'), text('Quran translation'));
+  // O1 Uvitanie.
+  await waitFor($, text('Step 1 of 4'), timeout: _contentTimeout);
   await tapUntil($, continueButton, text('Why are you here?'));
 
   // O2 Umysel.
-  expect(text('Step 2 of 5'), findsOneWidget);
-  await $.tester.tap(key('niyyah:khatm'));
+  expect(text('Step 2 of 4'), findsOneWidget);
+  await $.tester.tap(key('intention:calm'));
   await $.tester.pump();
-  await tapUntil($, continueButton, text('Prayer times for where you are'));
-
-  // O3 Poloha.
-  expect(text('Step 3 of 5'), findsOneWidget);
-  if (denyLocationFirst) {
-    await $.tester.tap(text('Use my location'));
-    await $.tester.pump();
-    report.locationDialogShown = await $.platform.mobile
-        .isPermissionDialogVisible(timeout: const Duration(seconds: 10));
-    if (report.locationDialogShown) {
-      await $.platform.mobile.denyPermission();
-    }
-    await waitFor($, text('Location is off. Choose your city instead.'));
-  }
-  await tapUntil($, text('Choose a city instead'), key('city:search'));
-  await $.tester.enterText(key('city:search'), 'Bratislava');
-  final city = find.widgetWithText(ListTile, 'Bratislava');
-  await waitFor($, city);
-  await $.tester.tap(city.first);
-  await waitFor(
-    $,
-    find.byWidgetPredicate(
-      (w) =>
-          w is Text &&
-          w.key == const ValueKey('location:city') &&
-          (w.data ?? '').contains('Bratislava'),
-    ),
-  );
   await tapUntil($, continueButton, text('Gentle reminders'));
 
   // O4 Notifikacie.
-  expect(text('Step 4 of 5'), findsOneWidget);
+  expect(text('Step 3 of 4'), findsOneWidget);
   final on = text('Notifications are on');
   final allow = text('Allow notifications');
   await waitForAny($, [on, allow]);
@@ -179,7 +140,7 @@ Future<OnboardingReport> completeOnboarding(
   await tapUntil($, continueButton, text('Your data stays here'));
 
   // O7 Sukromie: vek nepotvrdeny, suhlasy ostanu "nie".
-  expect(text('Step 5 of 5'), findsOneWidget);
+  expect(text('Step 4 of 4'), findsOneWidget);
   await tapUntil(
     $,
     find.widgetWithText(SkButton, 'Finish'),
@@ -188,7 +149,7 @@ Future<OnboardingReport> completeOnboarding(
   return report;
 }
 
-/// Prva instalacia rozbaluje ~45 MB content.db.
+/// Prva instalacia rozbaluje content.db.
 const _contentTimeout = Duration(seconds: 90);
 
 /// Pozicia (1-based) karty, ktora je prave na obrazovke; null = ziadna
@@ -252,7 +213,7 @@ Future<void> finishFeed(PatrolIntegrationTester $) async {
 }
 
 /// Taby spodnej navigacie (poradie docs/01 D1), nezavisle od jazyka.
-enum AppTab { today, quran, prayer, journey }
+enum AppTab { today, library, practice, journey }
 
 /// Prepne tab v spodnej navigacii.
 Future<void> openTab(PatrolIntegrationTester $, AppTab tab) async {

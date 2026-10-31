@@ -9,13 +9,14 @@ import '../helpers/pump_app.dart';
 
 /// Q-03: pristupnost hlavnych obrazoviek (docs/01 8.7, TECHNICKY_PLAN 12.3).
 ///
-/// Kazda obrazovka s fakes v EN a AR (RTL) pri textScale 2.0 na sirke
+/// Kazda obrazovka s fakes v EN pri textScale 2.0 na sirke
 /// telefonu (412 dp): tap target 48x48 (Android), labely tap targetov,
 /// kontrast textu (WCAG AA, svetla aj tmava tema) a ziadny orezany text.
 /// Nalez A11Y-1 (orezane titulky AppBar) opravil I-03 cez `skAppBar`,
 /// ziadna obrazovka nema vynimku.
 void main() {
-  for (final locale in ['en', 'ar']) {
+  // S-01: Prosoche ma zatial len EN; RTL kod ostava pre buduce jazyky.
+  for (final locale in ['en']) {
     group('$locale textScale 2.0', () {
       for (final screen in _screens) {
         for (final g in _Guideline.values) {
@@ -59,28 +60,18 @@ class _Screen {
 const _screens = [
   _Screen('/today'),
   _Screen('/feed'),
-  _Screen('/quran'),
-  _Screen('/quran/read/1'),
-  _Screen('/quran/search'),
-  _Screen('/prayer'),
-  _Screen('/prayer/qibla'),
-  _Screen('/calendar'),
+  _Screen('/library'),
+  _Screen('/practice'),
   _Screen('/journey'),
   _Screen('/journey/saved'),
-  _Screen('/words'),
   _Screen('/settings'),
-  _Screen('/settings/prayer'),
-  _Screen('/settings/prayer/location'),
-  _Screen('/settings/calendar'),
   _Screen('/settings/notifications'),
-  _Screen('/settings/language'),
   _Screen('/settings/display'),
   _Screen('/settings/privacy'),
   _Screen('/settings/sources'),
   _Screen('/settings/about'),
-  _Screen('/onboarding/language'),
-  _Screen('/onboarding/niyyah'),
-  _Screen('/onboarding/location'),
+  _Screen('/onboarding/welcome'),
+  _Screen('/onboarding/intention'),
   _Screen('/onboarding/notifications'),
   _Screen('/onboarding/privacy'),
 ];

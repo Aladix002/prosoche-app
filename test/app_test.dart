@@ -9,7 +9,7 @@ import 'package:prosoche/core/flags/feature_flags.dart';
 import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/core/router/app_router.dart';
 import 'package:prosoche/domain/settings/settings_keys.dart';
-import 'package:prosoche/features/settings/language_settings_screen.dart';
+import 'package:prosoche/features/settings/display_settings_screen.dart';
 import 'package:prosoche/ui/foundation/sk_text_scaling.dart';
 import 'package:prosoche/ui/foundation/sk_ui_strings.dart';
 import 'package:prosoche/ui/i18n/i18n.dart';
@@ -54,17 +54,13 @@ void main() {
       }
     });
 
-    test('Nastaliq line height is not scaled twice', () {
+    test('EN uses Inter with the scale line height', () {
       final en = prosocheAppTheme(
         brightness: Brightness.light,
         locale: ProsocheLocales.en,
       ).textTheme.bodyLarge!;
-      final ur = prosocheAppTheme(
-        brightness: Brightness.light,
-        locale: ProsocheLocales.ur,
-      ).textTheme.bodyLarge!;
       expect(en.fontFamily, SkFonts.inter);
-      expect(ur.height, LocaleFonts.urdu.scaleHeight(en.height));
+      expect(en.height, LocaleFonts.latin.scaleHeight(24 / 16));
     });
   });
 
@@ -82,21 +78,13 @@ void main() {
       x.done,
       x.skippedForToday,
       x.iDidIt,
-      x.now,
       x.freeReading,
       x.dailyCards,
       x.scrollForMore,
-      x.notificationsOff,
-      x.estimated,
       x.holdToConfirm,
       x.contentUnavailableTitle,
       x.contentUnavailableBody,
       x.progressOf(5, 12),
-      x.prayerStatusUnlogged,
-      x.prayerStatusOnTime,
-      x.prayerStatusLate,
-      x.prayerStatusMissed,
-      x.prayerStatusQada,
     ];
     expect(all(s), all(f));
   });
@@ -158,7 +146,7 @@ void main() {
       );
       addTearDown(container.dispose);
       final router = container.read(appRouterProvider);
-      await fakes.settings.set(SettingsKeys.uiLocale, 'ar');
+      await fakes.settings.set(SettingsKeys.uiLocale, 'de');
       await tester.pump();
       expect(identical(container.read(appRouterProvider), router), isTrue);
     });
@@ -172,14 +160,14 @@ void main() {
       final router = await tester.pumpProsoche(fakes: fakes);
       unawaited(router.push('/settings'));
       await tester.pumpAndSettle();
-      unawaited(router.push('/settings/language'));
+      unawaited(router.push('/settings/display'));
       await tester.pumpAndSettle();
       expect(calls.last, isTrue);
 
-      await fakes.settings.set(SettingsKeys.uiLocale, 'ar');
+      await fakes.settings.set(SettingsKeys.uiLocale, 'de');
       await tester.pumpAndSettle();
       expect(router.canPop(), isTrue);
-      expect(find.byType(LanguageSettingsScreen), findsOneWidget);
+      expect(find.byType(DisplaySettingsScreen), findsOneWidget);
 
       // Notifikacia "nemam co popnut" zvonka root navigatora (napr. po
       // prebudovani stromu) nesmie enginu povedat, ze back nespracujeme.
@@ -187,10 +175,10 @@ void main() {
           .dispatch(tester.element(find.byType(SkTextScaling)));
       expect(calls.last, isTrue);
 
-      // Systemovy back popne obrazovku Jazyk, appka ostane.
+      // Systemovy back popne obrazovku Zobrazenie, appka ostane.
       expect(await tester.binding.handlePopRoute(), isTrue);
       await tester.pumpAndSettle();
-      expect(find.byType(LanguageSettingsScreen), findsNothing);
+      expect(find.byType(DisplaySettingsScreen), findsNothing);
       expect(router.canPop(), isTrue);
     });
 

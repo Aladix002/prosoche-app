@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:prosoche/domain/prayer/prayer.dart';
 import 'package:prosoche/features/shell/day_phase.dart';
 import 'package:prosoche/ui/ui.dart';
 
@@ -13,15 +12,15 @@ Widget _app(Widget child, {bool reduce = false}) => MaterialApp(
 );
 
 /// D-05: motiv je len dekor (bez semantiky), animacia respektuje reduce
-/// motion a cast dna sa urci z najblizsej modlitby.
+/// motion a cast dna sa urci podla hodiny.
 void main() {
-  test('star has 16 points on two radii', () {
-    final pts = skStarPoints(Offset.zero, 10);
-    expect(pts, hasLength(16));
+  test('diamond has 4 points on one radius', () {
+    final pts = skDiamondPoints(Offset.zero, 10);
+    expect(pts, hasLength(4));
     expect(pts.first.dy, closeTo(-10, 1e-9));
-    final inner = pts[1].distance;
-    expect(inner, lessThan(10));
-    expect(inner, greaterThan(7));
+    for (final p in pts) {
+      expect(p.distance, closeTo(10, 1e-9));
+    }
   });
 
   testWidgets('motif widgets paint without semantics', (tester) async {
@@ -53,15 +52,9 @@ void main() {
     await tester.pumpAndSettle();
   });
 
-  test('day phase follows the next prayer, hour without location', () {
-    final noon = DateTime(2026, 10, 30, 12);
-    expect(dayPhaseFor(Prayer.fajr, noon), SkDayPhase.night);
-    expect(dayPhaseFor(Prayer.sunrise, noon), SkDayPhase.dawn);
-    expect(dayPhaseFor(Prayer.dhuhr, noon), SkDayPhase.morning);
-    expect(dayPhaseFor(Prayer.asr, noon), SkDayPhase.midday);
-    expect(dayPhaseFor(Prayer.maghrib, noon), SkDayPhase.afternoon);
-    expect(dayPhaseFor(Prayer.isha, noon), SkDayPhase.dusk);
-    expect(dayPhaseFor(null, noon), SkDayPhase.midday);
+  test('day phase follows the hour', () {
+    expect(dayPhaseFor(DateTime(2026, 10, 30, 12)), SkDayPhase.midday);
+    expect(dayPhaseFor(DateTime(2026, 10, 30, 19)), SkDayPhase.dusk);
     expect(SkDayPhase.fromHour(5), SkDayPhase.dawn);
     expect(SkDayPhase.fromHour(23), SkDayPhase.night);
     expect(SkDayPhase.fromHour(2), SkDayPhase.night);

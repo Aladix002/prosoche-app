@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:prosoche/core/flags/feature_flags.dart';
 import 'package:prosoche/data/blocker/blocked_apps_repository.dart';
 import 'package:prosoche/data/blocker/blocker_gateway_provider.dart';
 import 'package:prosoche/data/blocker/fake_blocked_apps_repository.dart';
 import 'package:prosoche/data/blocker/fake_blocker_gateway.dart';
-import 'package:prosoche/data/content/hadith_extra_pack_providers.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/settings/about_screen.dart';
 import 'package:prosoche/features/settings/blocking/blocking_screen.dart';
@@ -20,11 +18,8 @@ import 'settings_test_app.dart';
 
 void main() {
   group('SettingsScreen (A10.0)', () {
-    testWidgets('lite: rows with current values, no gate or audio', (
-      tester,
-    ) async {
+    testWidgets('lite: rows without gate, prayer or language', (tester) async {
       final settings = InMemorySettingsRepository();
-      await settings.set(SettingsKeys.hijriOffset, 1);
       await pumpSettings(
         tester,
         overrides: settingsOverrides(
@@ -36,22 +31,20 @@ void main() {
       expect(find.text('Audio'), findsNothing);
       expect(find.textContaining('Backup'), findsNothing);
       for (final row in [
-        'Prayer times',
         'Notifications',
-        'Language & translation',
         'Daily set & display',
-        'Hijri calendar',
         'Privacy',
         'Sources & licenses',
         'About',
       ]) {
         expect(find.text(row), findsOneWidget, reason: row);
       }
-      expect(find.text('English'), findsOneWidget);
-      expect(find.text('+1 day'), findsOneWidget);
+      expect(find.textContaining('Prayer'), findsNothing);
+      expect(find.textContaining('Hijri'), findsNothing);
+      expect(find.textContaining('Language'), findsNothing);
     });
 
-    testWidgets('full: gate and audio rows', (tester) async {
+    testWidgets('full: gate row', (tester) async {
       final settings = InMemorySettingsRepository();
       await settings.set(SettingsKeys.blockerEnabled, true);
       await pumpSettings(
@@ -70,7 +63,6 @@ void main() {
       );
       expect(find.text('The gate'), findsOneWidget);
       expect(find.text('On'), findsOneWidget);
-      expect(find.text('Audio'), findsOneWidget);
       await tester.tap(find.text('The gate'));
       await tester.pumpAndSettle();
       expect(find.byType(BlockingScreen), findsOneWidget);
@@ -111,9 +103,9 @@ void main() {
       );
       expect(find.text('1.2.3+42'), findsOneWidget);
       expect(find.text('fixture'), findsOneWidget);
-      expect(find.textContaining('local mosque'), findsOneWidget);
-      expect(find.textContaining('not the Qur'), findsOneWidget);
-      expect(find.textContaining('fatwas'), findsOneWidget);
+      expect(find.textContaining('public domain'), findsOneWidget);
+      expect(find.textContaining('not medical'), findsOneWidget);
+      expect(find.textContaining('mosque'), findsNothing);
       // Bez nastavenych URL sa riadky neukazu.
       expect(find.byKey(const ValueKey('about:feedback')), findsNothing);
       expect(find.byKey(const ValueKey('about:policy')), findsNothing);
@@ -168,41 +160,6 @@ void main() {
       expect(find.byType(LicensePage), findsOneWidget);
     });
 
-    testWidgets('downloaded hadith explanations can be deleted', (
-      tester,
-    ) async {
-      final service = _MockPackService();
-      when(service.delete)
-          .thenAnswer((_) async => const HadithExtraNotDownloaded());
-      await pumpSettings(
-        tester,
-        location: SettingsPaths.about,
-        overrides: [
-          ...settingsOverrides(
-            fakes: FakeRepositories(),
-            content: contentFixture(),
-          ),
-          hadithExtraPackStatusProvider.overrideWith(
-            (ref) => Stream.value(
-              const HadithExtraReady(sizeBytes: 2 * 1024 * 1024),
-            ),
-          ),
-          hadithExtraPackServiceProvider.overrideWithValue(service),
-        ],
-      );
-      expect(find.text('2.0 MB on this phone'), findsOneWidget);
-      await tester.tap(
-        find.descendant(
-          of: find.byKey(const ValueKey('about:hadith_extra')),
-          matching: find.byType(TextButton),
-        ),
-      );
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('Delete').last);
-      await tester.pumpAndSettle();
-      verify(service.delete).called(1);
-    });
-
     test('invalid link URLs are ignored', () {
       const links = AppLinks(privacyPolicy: 'not a url', feedback: '');
       expect(links.privacyPolicyUri, isNull);
@@ -211,5 +168,3 @@ void main() {
     });
   });
 }
-
-class _MockPackService extends Mock implements HadithExtraPackService;

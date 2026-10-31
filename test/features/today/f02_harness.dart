@@ -24,7 +24,7 @@ import '../../fakes/fake_repositories.dart';
 final f02Today = LocalDate(2026, 10, 29);
 final f02Now = DateTime(2026, 10, 29, 9);
 
-/// Zastupna obrazovka cielov mimo F-02 (reader, nastavenia, kalendar).
+/// Zastupna obrazovka cielov mimo F-02 (kniznica, nastavenia).
 class StubScreen extends StatelessWidget {
   const StubScreen(this.uri, {super.key});
 
@@ -86,10 +86,8 @@ Future<GoRouter> pumpF02(
           path: '/host',
           builder: (context, state) => Scaffold(body: SafeArea(child: host)),
         ),
-      _stub('/quran'),
+      _stub('/library'),
       _stub('/settings'),
-      _stub('/calendar'),
-      _stub('/prayer'),
     ],
   );
   addTearDown(router.dispose);

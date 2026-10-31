@@ -155,14 +155,16 @@ IconData savedTypeIcon(CardType type) => switch (type) {
 };
 
 /// Titulok a nahlad ulozenej karty; texty su doslovne z content.db.
-(String, String?) savedPreview(BuildContext context, CardContent? content) {
-  final l10n = context.l10n;
-  String type(CardType t) => l10n.journeyCardType(t.wire);
-  return switch (content) {
-    QuoteContent(:final reference, :final text) => (reference, text),
-    _ => (type(content?.id.type ?? CardType.quote), null),
-  };
-}
+///
+/// Bez obsahu (typ, ktory S-01 este nevie nacitat) je titulok typ karty.
+(String, String?) savedPreview(
+  BuildContext context,
+  CardId card,
+  CardContent? content,
+) => switch (content) {
+  QuoteContent(:final reference, :final text) => (reference, text),
+  _ => (context.l10n.journeyCardType(card.type.wire), null),
+};
 
 class _SavedTile extends ConsumerWidget {
   const _SavedTile({
@@ -182,7 +184,7 @@ class _SavedTile extends ConsumerWidget {
     final sk = context.sk;
     final content = ref.watch(cardContentProvider(card));
     final (title, preview) = content.hasValue
-        ? savedPreview(context, content.value)
+        ? savedPreview(context, card, content.value)
         : (l10n.journeyCardType(card.type.wire), null);
     return Dismissible(
       key: ValueKey('dismiss:$card'),

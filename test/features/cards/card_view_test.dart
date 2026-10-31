@@ -8,9 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:prosoche/core/logging/app_logger.dart';
 import 'package:prosoche/data/observability/observability_providers.dart';
 import 'package:prosoche/data/observability/problem_report.dart';
-import 'package:prosoche/data/repositories/repositories.dart';
 import 'package:prosoche/domain/common/common.dart';
-import 'package:prosoche/domain/feed/feed.dart';
 import 'package:prosoche/domain/quests/quests.dart';
 import 'package:prosoche/features/cards/cards.dart';
 import 'package:prosoche/features/settings/problem_report_sheet.dart';
@@ -19,7 +17,6 @@ import 'package:prosoche/ui/ui.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../helpers/golden/golden.dart';
-import '../../ui/helpers/arabic_text_guard.dart';
 import '../today/f02_harness.dart';
 
 class FakeSharer implements CardSharer {
@@ -37,24 +34,13 @@ class FakeSharer implements CardSharer {
   }
 }
 
-class _Explained implements HadithExtraRepository {
-  @override
-  Future<HadithExtra?> explanation(int hadithId, String lang) async =>
-      HadithExtra(
-        hadithId: hadithId,
-        lang: lang,
-        explanation: '[PLACEHOLDER explanation]',
-      );
-}
-
-final _ayah = AyahCardId(AyahId(2, 2));
+final ContentCardId _quote = fakeQuoteId(2);
 
 Future<FakeRepositories> _host(
   WidgetTester tester,
   CardId id, {
   CardSurface surface = CardSurface.feed,
   FakeSharer? sharer,
-  bool explained = false,
   double textScale = 1,
   List<Override> extra = const [],
 }) async {
@@ -73,8 +59,6 @@ Future<FakeRepositories> _host(
     ),
     overrides: [
       cardSharerProvider.overrideWithValue(sharer ?? FakeSharer()),
-      if (explained)
-        hadithExtraRepositoryProvider.overrideWithValue(_Explained()),
       ...extra,
     ],
   );
@@ -82,21 +66,17 @@ Future<FakeRepositories> _host(
   return repos;
 }
 
-/// Zdroj `fake` (hadis z FakeCardContentRepository) ako riadok `source`.
-final Override _hadithSource = cardSourceProvider.overrideWith(
+/// Zdroj `fake` (citat z FakeCardContentRepository) ako riadok `source`.
+final Override _quoteSource = cardSourceProvider.overrideWith(
   (ref, id) async => CardSourceInfo(
     id: id,
-    name: 'HadeethEnc - Encyclopedia of Translated Prophetic Hadiths (EN)',
-    version: 'snapshot-2026-10-29',
-    attribution:
-        'HadeethEnc.com - Encyclopedia of Translated Prophetic Hadiths, '
-        'version snapshot-2026-10-29',
+    name: 'Project Gutenberg (sample)',
+    version: 'pg-1',
+    attribution: 'Project Gutenberg, version pg-1',
   ),
 );
 
-const _hadithSourceLine =
-    'Source: HadeethEnc.com - Encyclopedia of Translated Prophetic Hadiths, '
-    'version snapshot-2026-10-29';
+const _quoteSourceLine = 'Source: Project Gutenberg, version pg-1';
 
 List<CardAction> _actions(FakeRepositories repos) => [
   for (final l in repos.actions.logged) l.$2,
@@ -105,41 +85,22 @@ List<CardAction> _actions(FakeRepositories repos) => [
 void main() {
   setUpAll(loadProsocheFonts);
 
-  testWidgets('loading skeleton, then the verse with attribution', (
+  testWidgets('quote card shows text, type, reference and author', (
     tester,
   ) async {
-    await _host(tester, _ayah);
-    expect(find.byType(AyahCard), findsOneWidget);
-    // D-05: typ a referencia su v hlavicke na dvoch riadkoch.
-    expect(find.text('VERSE'), findsOneWidget);
+    await _host(tester, _quote);
+    expect(find.byType(QuoteCard), findsOneWidget);
+    expect(find.text('Quote'), findsOneWidget);
+    expect(find.text('[PLACEHOLDER work] 1.1'), findsOneWidget);
+    expect(find.text('[PLACEHOLDER quote q_0002]'), findsOneWidget);
     expect(
-      find.text('\u2068Placeholder 2\u2069 \u20682:2\u2069'),
-      findsOneWidget,
-    );
-    expect(find.text('Translation: Fake translation'), findsOneWidget);
-    expect(find.text('Read in context'), findsOneWidget);
-    expect(bareArabicTexts(tester), isEmpty);
-  });
-
-  testWidgets('gate hides "Read in context" (B0.2)', (tester) async {
-    await _host(tester, _ayah, surface: CardSurface.gate);
-    expect(find.text('Read in context'), findsNothing);
-  });
-
-  testWidgets('Read in context opens the reader in browse mode', (
-    tester,
-  ) async {
-    await _host(tester, _ayah);
-    await tester.tap(find.text('Read in context'));
-    await tester.pumpAndSettle();
-    expect(
-      find.text('stub:/quran/read/2?ayah=2002&mode=browse'),
+      find.text('[PLACEHOLDER author], [PLACEHOLDER work] 1.1'),
       findsOneWidget,
     );
   });
 
   testWidgets('bookmark saves with Undo', (tester) async {
-    final repos = await _host(tester, _ayah);
+    final repos = await _host(tester, _quote);
     await tester.tap(find.byTooltip('Save'));
     await tester.pumpAndSettle();
     expect(_actions(repos), [CardAction.saved]);
@@ -151,8 +112,8 @@ void main() {
   });
 
   testWidgets('double tap toggles saving', (tester) async {
-    final repos = await _host(tester, _ayah);
-    final target = find.text('[PLACEHOLDER translation 2:2]');
+    final repos = await _host(tester, _quote);
+    final target = find.text('[PLACEHOLDER quote q_0002]');
     await tester.tap(target);
     await tester.pump(const Duration(milliseconds: 100));
     await tester.tap(target);
@@ -164,19 +125,17 @@ void main() {
     tester,
   ) async {
     final sharer = FakeSharer();
-    final repos = await _host(tester, _ayah, sharer: sharer);
-    await tester.longPress(find.byType(AyahCard));
+    final repos = await _host(tester, _quote, sharer: sharer);
+    await tester.longPress(find.byType(QuoteCard));
     await tester.pumpAndSettle();
     expect(find.text('Copy text'), findsOneWidget);
     expect(find.text('Report a problem'), findsOneWidget);
     await tester.tap(find.text('Share as text'));
     await tester.pumpAndSettle();
     expect(sharer.texts.single, '''
-[PLACEHOLDER uthmani 2:2]
+[PLACEHOLDER quote q_0002]
 
-[PLACEHOLDER translation 2:2]
-
-- \u2068Placeholder 2\u2069 \u20682:2\u2069 (Translation: [PLACEHOLDER attribution])
+- [PLACEHOLDER work] 1.1 ([PLACEHOLDER author])
 via Prosoche''');
     expect(_actions(repos), [CardAction.shared]);
   });
@@ -198,24 +157,23 @@ via Prosoche''');
         null,
       ),
     );
-    await _host(tester, _ayah);
+    await _host(tester, _quote);
     await tester.tap(find.byTooltip('More options'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Copy text'));
     await tester.pumpAndSettle();
-    expect(copied, contains('[PLACEHOLDER translation 2:2]'));
+    expect(copied, contains('[PLACEHOLDER quote q_0002]'));
     expect(find.text('Copied'), findsOneWidget);
   });
 
   testWidgets('show source logs source_opened', (tester) async {
-    final repos = await _host(tester, _ayah);
+    final repos = await _host(tester, _quote, extra: [_quoteSource]);
     await tester.tap(find.byTooltip('More options'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Show source'));
     await tester.pumpAndSettle();
     expect(find.text('Source'), findsOneWidget);
-    expect(find.text('[PLACEHOLDER attribution]'), findsOneWidget);
-    expect(find.text('License: test-only'), findsOneWidget);
+    expect(find.text(_quoteSourceLine), findsWidgets);
     expect(_actions(repos), [CardAction.sourceOpened]);
   });
 
@@ -239,7 +197,7 @@ via Prosoche''');
     );
     final repos = await _host(
       tester,
-      _ayah,
+      _quote,
       extra: [problemReportProvider.overrideWithValue(report)],
     );
     await tester.tap(find.byTooltip('More options'));
@@ -250,11 +208,11 @@ via Prosoche''');
     expect(find.textContaining('you send yourself'), findsOneWidget);
     await tester.enterText(
       find.byKey(const ValueKey('report:description')),
-      'Wrong verse number',
+      'Wrong reference',
     );
     await tester.tap(find.byKey(const ValueKey('report:preview')));
     await tester.pumpAndSettle();
-    expect(find.textContaining('card: ayah:2002'), findsWidgets);
+    expect(find.textContaining('card: quote:q_0002'), findsWidgets);
 
     final shareButton = find.byKey(const ValueKey('report:share'));
     await tester.ensureVisible(shareButton);
@@ -269,17 +227,17 @@ via Prosoche''');
     expect(shared, hasLength(1));
     expect(shared.single, endsWith('.txt'));
     final text = File(shared.single).readAsStringSync();
-    expect(text, contains('card: ayah:2002'));
-    expect(text, contains('Wrong verse number'));
+    expect(text, contains('card: quote:q_0002'));
+    expect(text, contains('Wrong reference'));
     expect(text, contains('feed'));
-    // Ziadny text karty (preklad, arabcina) v reporte.
-    expect(text, isNot(contains('PLACEHOLDER')));
+    // Ziadny text karty v reporte.
+    expect(text, isNot(contains('[PLACEHOLDER quote')));
     expect(_actions(repos), [CardAction.reported]);
     expect(find.byType(ProblemReportSheet), findsNothing);
   });
 
   testWidgets('report a problem: cancel logs nothing', (tester) async {
-    final repos = await _host(tester, _ayah);
+    final repos = await _host(tester, _quote);
     await tester.tap(find.byTooltip('More options'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Report a problem'));
@@ -299,7 +257,7 @@ via Prosoche''');
       tester,
       repos: repos,
       location: '/host',
-      host: CardView(cardId: _ayah, date: f02Today),
+      host: CardView(cardId: _quote, date: f02Today),
       overrides: [
         cardSharerProvider.overrideWithValue(sharer),
         cardImageRendererProvider.overrideWithValue((_, _) async => png),
@@ -309,10 +267,7 @@ via Prosoche''');
     await tester.tap(find.byTooltip('Share'));
     await tester.pumpAndSettle();
     expect(sharer.images.single.$1, png);
-    expect(
-      sharer.images.single.$2,
-      contains('Translation: [PLACEHOLDER attribution]'),
-    );
+    expect(sharer.images.single.$2, contains('([PLACEHOLDER author])'));
     expect(_actions(repos), [CardAction.shared]);
   });
 
@@ -323,7 +278,7 @@ via Prosoche''');
     await pumpF02(
       tester,
       location: '/host',
-      host: CardView(cardId: _ayah, date: f02Today),
+      host: CardView(cardId: _quote, date: f02Today),
       overrides: [
         cardSharerProvider.overrideWithValue(sharer),
         cardImageRendererProvider.overrideWithValue((_, _) async => null),
@@ -345,14 +300,13 @@ via Prosoche''');
   testWidgets('renderWidgetToPng: 1080 px wide PNG, null when too tall', (
     tester,
   ) async {
-    await _host(tester, _ayah);
-    final context = tester.element(find.byType(AyahCard));
+    await _host(tester, _quote);
+    final context = tester.element(find.byType(QuoteCard));
     const data = CardShareData(
-      arabic: '[PLACEHOLDER uthmani]',
-      arabicIsQuran: true,
-      translation: '[PLACEHOLDER translation]',
-      reference: 'Placeholder 2:2',
-      attribution: 'Translation: Fake translation',
+      text: '[PLACEHOLDER quote]',
+      textLang: 'en',
+      reference: 'Placeholder 2.2',
+      attribution: 'Placeholder author',
     );
     final png = await tester.runAsync(
       () => renderWidgetToPng(
@@ -370,7 +324,7 @@ via Prosoche''');
         CardShareImage(
           data: CardShareData(
             reference: 'x',
-            translation: List.filled(400, '[PLACEHOLDER]').join(' '),
+            text: List.filled(400, '[PLACEHOLDER]').join(' '),
           ),
           appName: 'Prosoche',
         ),
@@ -379,32 +333,15 @@ via Prosoche''');
     expect(long, isNull);
   });
 
-  testWidgets('hadith: collection, grade; explanation only when available', (
-    tester,
-  ) async {
-    await _host(tester, HadithCardId(13));
-    expect(find.byType(HadithCard), findsOneWidget);
-    expect(find.text('Grade: Sahih (authentic)'), findsOneWidget);
-    expect(find.text('Explanation'), findsNothing);
-  });
-
-  testWidgets('hadith shows HadeethEnc source with version (docs/09)', (
-    tester,
-  ) async {
+  testWidgets('quote shows the source with version (docs/09)', (tester) async {
     final sharer = FakeSharer();
-    await _host(
-      tester,
-      HadithCardId(13),
-      sharer: sharer,
-      extra: [_hadithSource],
-    );
-    expect(find.text(_hadithSourceLine), findsOneWidget);
+    await _host(tester, _quote, sharer: sharer, extra: [_quoteSource]);
+    expect(find.text(_quoteSourceLine), findsOneWidget);
     await tester.tap(find.byTooltip('More options'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Share as text'));
     await tester.pumpAndSettle();
-    expect(sharer.texts.single, contains(_hadithSourceLine));
-    expect(sharer.texts.single, contains('HadeethEnc.com'));
+    expect(sharer.texts.single, contains(_quoteSourceLine));
   });
 
   testWidgets('source line adds the version when attribution lacks it', (
@@ -412,105 +349,61 @@ via Prosoche''');
   ) async {
     await _host(
       tester,
-      HadithCardId(13),
+      _quote,
       extra: [
         cardSourceProvider.overrideWith(
           (ref, id) async => const CardSourceInfo(
             id: 'fake',
-            name: 'HadeethEnc',
+            name: 'Sample',
             version: 'v9',
-            attribution: 'HadeethEnc.com',
+            attribution: 'Sample source',
           ),
         ),
       ],
     );
-    expect(find.text('Source: HadeethEnc.com, version v9'), findsOneWidget);
+    expect(find.text('Source: Sample source, version v9'), findsOneWidget);
   });
 
-  testWidgets('hadith explanation opens a sheet', (tester) async {
-    await _host(tester, HadithCardId(13), explained: true);
-    await tester.tap(find.text('Explanation'));
-    await tester.pumpAndSettle();
-    expect(find.text('[PLACEHOLDER explanation]'), findsOneWidget);
+  testWidgets('intro card renders without bookmark', (tester) async {
+    await _host(tester, IntroCardId(f02Today));
+    expect(find.byType(IntroCard), findsOneWidget);
+    expect(find.byType(SkErrorState), findsNothing);
+    expect(find.byTooltip('Save'), findsNothing);
+    expectNoTextClipping(tester);
   });
 
-  testWidgets('dua counter counts repetitions locally', (tester) async {
-    await _host(tester, DuaCardId(77));
-    expect(find.byType(DuaCard), findsOneWidget);
-    expect(find.text('Source: example:1'), findsOneWidget);
-  });
-
-  testWidgets('intro, name, reflection, event and khatm cards render', (
-    tester,
-  ) async {
-    for (final id in <CardId>[
-      IntroCardId(f02Today),
-      NameCardId(7),
-      ReflectionCardId(31),
-      EventCardId('jumuah', f02Today),
-      KhatmCardId(1),
-    ]) {
-      await _host(tester, id);
-      expect(find.byType(SkCardSurface), findsOneWidget, reason: '$id');
-      expect(find.byType(SkErrorState), findsNothing, reason: '$id');
-      // Neulozitelne typy nemaju bookmark (docs/02 0.2).
-      expect(
-        find.byTooltip('Save'),
-        id.type.canSave ? findsOneWidget : findsNothing,
-        reason: '$id',
-      );
-      expectNoTextClipping(tester);
-    }
+  testWidgets('types without content yet show the card error', (tester) async {
+    await _host(tester, ContentCardId(CardType.practice, 'p_1'));
+    expect(find.text("This card didn't load"), findsOneWidget);
   });
 
   testWidgets('missing content shows the card error', (tester) async {
     final repos = FakeRepositories(
-      cards: FakeCardContentRepository(missing: {_ayah}),
+      cards: FakeCardContentRepository(missing: {_quote}),
     );
     await pumpF02(
       tester,
       repos: repos,
       location: '/host',
-      host: CardView(cardId: _ayah, date: f02Today),
+      host: CardView(cardId: _quote, date: f02Today),
     );
     await tester.pumpAndSettle();
     expect(find.text("This card didn't load"), findsOneWidget);
   });
 
-  testWidgets('every card type in a feed set', (tester) async {
+  testWidgets('intro and quotes in a feed set', (tester) async {
     final repos = FakeRepositories(
-      dailySets: FakeDailySetRepository(
-        build: (d) => DailySet(
-          date: d,
-          phase: DayPhase.morning,
-          cards: [
-            DailySetCard(pos: 1, cardId: IntroCardId(d), slot: Slot.intro),
-            DailySetCard(
-              pos: 2,
-              cardId: EventCardId('jumuah', d),
-              slot: Slot.event,
-            ),
-            DailySetCard(pos: 3, cardId: HadithCardId(1), slot: Slot.hadithDua),
-            DailySetCard(pos: 4, cardId: NameCardId(7), slot: Slot.name),
-            DailySetCard(
-              pos: 5,
-              cardId: ReflectionCardId(3),
-              slot: Slot.reflection,
-            ),
-          ],
-        ),
-      ),
+      dailySets: FakeDailySetRepository(build: (d) => fakeDailySet(d, n: 3)),
     );
     await pumpF02(tester, repos: repos, location: '/feed', below: '/today');
     await tester.pumpAndSettle();
-    for (final type in [IntroCard, EventCard, HadithCard, NameCard]) {
-      expect(find.byType(type), findsOneWidget, reason: '$type');
+    expect(find.byType(IntroCard), findsOneWidget);
+    for (var i = 0; i < 2; i++) {
       await tester.pump(const Duration(milliseconds: 2600));
       await tester.fling(find.byType(PageView), const Offset(0, -400), 1500);
       await tester.pumpAndSettle();
+      expect(find.byType(QuoteCard), findsOneWidget);
     }
-    expect(find.byType(ReflectionCard), findsOneWidget);
-    expect(find.text(Bidi.isolateLtr('0 / 5')), findsNothing);
-    expect(find.text(Bidi.isolateLtr('4 / 5')), findsOneWidget);
+    expect(find.text(Bidi.isolateLtr('2 / 3')), findsOneWidget);
   });
 }

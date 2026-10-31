@@ -82,10 +82,7 @@ void main() {
         location: SettingsPaths.blocking,
       );
       expect(find.text('Instagram'), findsOneWidget);
-      expect(
-        find.text('3 cards · 10 min · prayer reminder\n4 unlocks'),
-        findsOneWidget,
-      );
+      expect(find.text('3 cards · 10 min\n4 unlocks'), findsOneWidget);
       expect(find.text('Pauses'), findsOneWidget);
       expect(find.text('4'), findsOneWidget);
 
@@ -188,21 +185,6 @@ void main() {
       );
     });
 
-    testWidgets('prayer reminder minutes are saved', (tester) async {
-      final h = BlockingHarness();
-      await pumpSettings(
-        tester,
-        gate: true,
-        overrides: h.overrides,
-        location: SettingsPaths.blocking,
-      );
-      await tapIn(tester, find.byTooltip('Increase Remind for'));
-      expect(
-        await h.fakes.settings.get(SettingsKeys.blockerPrayerLockMinutes),
-        20,
-      );
-    });
-
     testWidgets('add apps: picker hides blocked apps and adds selection', (
       tester,
     ) async {
@@ -250,8 +232,6 @@ void main() {
       expect(h.blocker.targets.single.cardsRequired, 5);
       await tapIn(tester, find.byTooltip('Decrease Unlock for'));
       expect(h.repo.current.single.unlockMinutes, 5);
-      await tapIn(tester, find.byKey(const ValueKey('app:prayer')));
-      expect(h.repo.current.single.prayerLock, isFalse);
 
       await tapIn(tester, find.byKey(const ValueKey('app:remove')));
       expect(find.text('Remove Instagram?'), findsOneWidget);

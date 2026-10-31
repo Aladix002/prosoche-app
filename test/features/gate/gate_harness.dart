@@ -27,13 +27,12 @@ final gateToday = LocalDate(2026, 10, 29);
 
 /// Pamatovy [GateRepository]: appky, sessions a odomknutia v zoznamoch.
 class FakeGateRepository implements GateRepository {
-  FakeGateRepository({Map<String, GateTarget>? apps, this.position})
+  FakeGateRepository({Map<String, GateTarget>? apps})
     : apps = apps ?? {igRef: instagram()};
 
   static GateTarget instagram({
     int cardsRequired = 3,
     int unlockMinutes = 10,
-    bool prayerLock = false,
     bool enabled = true,
     String? label = 'Instagram',
   }) => GateTarget(
@@ -42,12 +41,10 @@ class FakeGateRepository implements GateRepository {
     label: label,
     cardsRequired: cardsRequired,
     unlockMinutes: unlockMinutes,
-    prayerLock: prayerLock,
     enabled: enabled,
   );
 
   final Map<String, GateTarget> apps;
-  AyahId? position;
 
   /// Chyba pri citani appky (DB zamknuta a pod.).
   Exception? appError;
@@ -57,7 +54,7 @@ class FakeGateRepository implements GateRepository {
 
   final sessions = <int, ({GateResult? result, int cardsSeen})>{};
   final unlocks = <(int?, UnlockSource, int)>[];
-  final freeReading = <AyahId>[];
+  final freeReading = <CardId>[];
 
   @override
   Future<GateTarget?> app(String ref) async {
@@ -88,13 +85,8 @@ class FakeGateRepository implements GateRepository {
   }) async => unlocks.add((appId, source, minutes));
 
   @override
-  Future<AyahId?> readingPosition() async => position;
-
-  @override
-  Future<void> markFreeReading(LocalDate date, AyahId ayah) async {
-    freeReading.add(ayah);
-    position = ayah;
-  }
+  Future<void> markFreeReading(LocalDate date, CardId card) async =>
+      freeReading.add(card);
 
   GateResult? get lastResult => sessions.values.lastOrNull?.result;
 }
@@ -110,13 +102,18 @@ class GateTest {
     FakeRepositories? repos,
     FakeGateRepository? gates,
     FakeBlockerGateway? blocker,
-  }) : repos = repos ?? FakeRepositories(),
+    List<CardId>? extra,
+  }) : extra = extra ?? [for (var i = 101; i <= 110; i++) fakeQuoteId(i)],
+       repos = repos ?? FakeRepositories(),
        gates = gates ?? FakeGateRepository(),
        blocker = blocker ?? FakeBlockerGateway();
 
   final FakeRepositories repos;
   final FakeGateRepository gates;
   final FakeBlockerGateway blocker;
+
+  /// Karty volneho citania po konci sady.
+  final List<CardId> extra;
   int closed = 0;
 
   List<Override> overrides(
@@ -130,6 +127,7 @@ class GateTest {
     blockerGatewayProvider.overrideWithValue(blocker),
     gateRepositoryProvider.overrideWithValue(gates),
     gateOverlayEnabledProvider.overrideWithValue(overlayEnabled),
+    gateFreeReadingProvider.overrideWithValue(() async => this.extra),
     ...extra,
   ];
 

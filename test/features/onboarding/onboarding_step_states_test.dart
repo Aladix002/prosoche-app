@@ -1,36 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:prosoche/core/l10n/l10n.dart';
-import 'package:prosoche/data/repositories/prayer/city_repository.dart';
-import 'package:prosoche/data/repositories/quran/quran_repository.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
-import 'package:prosoche/features/onboarding/onboarding_platform.dart';
 import 'package:prosoche/features/onboarding/onboarding_steps.dart';
-import 'package:prosoche/features/onboarding/steps/niyyah_step.dart';
+import 'package:prosoche/features/onboarding/steps/intention_step.dart';
 import 'package:prosoche/ui/i18n/i18n.dart';
 import 'package:prosoche/ui/ui.dart';
 
 import '../../fakes/fake_repositories.dart';
 import '../../fakes/in_memory_settings_repository.dart';
 import 'onboarding_test_helpers.dart';
-
-class _BrokenQuran extends FakeQuranRepository {
-  @override
-  Future<List<TranslationSource>> translationSources(String lang) =>
-      Future.error(StateError('content.db'));
-}
-
-class _SlowQuran extends FakeQuranRepository {
-  @override
-  Future<List<TranslationSource>> translationSources(String lang) =>
-      Future.delayed(const Duration(seconds: 1), () => const []);
-}
-
-class _BrokenCities extends FakeCityRepository {
-  @override
-  Future<List<City>> search(String prefix, {int limit = 30}) =>
-      Future.error(StateError('content.db'));
-}
 
 /// Krok onboardingu bez routera vo svetlej teme Prosoche.
 Future<void> pumpStep(
@@ -52,149 +31,41 @@ Future<void> pumpStep(
 }
 
 void main() {
-  group('O1 language', () {
-    testWidgets('content.db that cannot be opened is a fatal state', (
-      tester,
-    ) async {
-      final h = OnboardingHarness(
-        repos: FakeRepositories(quran: _BrokenQuran()),
-      );
-      await pumpStep(tester, h, OnboardingStep.language);
-      expect(find.byType(SkErrorState), findsOneWidget);
-      expect(find.text('Please reinstall the app.'), findsOneWidget);
-    });
-
-    testWidgets('Continue waits for translations to load', (tester) async {
-      final h = OnboardingHarness(repos: FakeRepositories(quran: _SlowQuran()));
-      await pumpStep(tester, h, OnboardingStep.language);
-      expect(find.byType(SkSkeletonBox), findsOneWidget);
-      expect(isPrimaryEnabled(tester, 'Continue'), isFalse);
-      await tester.pump(const Duration(seconds: 2));
+  group('O1 welcome', () {
+    testWidgets('app name, short text and Continue', (tester) async {
+      final h = OnboardingHarness();
+      await pumpStep(tester, h, OnboardingStep.welcome);
+      expect(find.text('Prosoche'), findsOneWidget);
+      expect(find.textContaining('Stoics'), findsOneWidget);
+      expect(find.text('Skip'), findsNothing);
       expect(isPrimaryEnabled(tester, 'Continue'), isTrue);
     });
   });
 
-  group('O2 niyyah', () {
+  group('O2 intention', () {
     testWidgets('restores stored presets and text', (tester) async {
       final settings = InMemorySettingsRepository();
-      await settings.set(SettingsKeys.niyyahPreset, 'prayer,khatm');
-      await settings.set(SettingsKeys.niyyahText, 'Mine');
+      await settings.set(SettingsKeys.intentionPreset, 'reflect,calm');
+      await settings.set(SettingsKeys.intentionText, 'Mine');
       final h = OnboardingHarness(repos: FakeRepositories(settings: settings));
-      await pumpStep(tester, h, OnboardingStep.niyyah);
+      await pumpStep(tester, h, OnboardingStep.intention);
       FilterChip chip(String id) =>
-          tester.widget<FilterChip>(find.byKey(ValueKey('niyyah:$id')));
-      expect(chip('khatm').selected, isTrue);
-      expect(chip('prayer').selected, isTrue);
-      expect(chip('arabic').selected, isFalse);
+          tester.widget<FilterChip>(find.byKey(ValueKey('intention:$id')));
+      expect(chip('calm').selected, isTrue);
+      expect(chip('reflect').selected, isTrue);
+      expect(chip('read_daily').selected, isFalse);
       expect(chip('own').selected, isTrue);
       expect(find.text('Mine'), findsOneWidget);
     });
 
     test('preset encoding keeps the canonical order', () {
-      expect(encodeNiyyahPresets({'prayer', 'khatm'}), 'khatm,prayer');
-      expect(encodeNiyyahPresets({}), isNull);
-      expect(parseNiyyahPresets('less_social, evil,arabic'), {
-        'less_social',
-        'arabic',
+      expect(encodeIntentionPresets({'reflect', 'calm'}), 'calm,reflect');
+      expect(encodeIntentionPresets({}), isNull);
+      expect(parseIntentionPresets('less_scrolling, evil,calm'), {
+        'less_scrolling',
+        'calm',
       });
-      expect(parseNiyyahPresets(null), isEmpty);
-    });
-  });
-
-  group('O3 location', () {
-    testWidgets('denied permission offers the city search first', (
-      tester,
-    ) async {
-      final h = OnboardingHarness(
-        location: FakeDeviceLocation(const LocationDenied()),
-      );
-      await pumpStep(tester, h, OnboardingStep.location);
-      await tapVisible(tester, find.text('Use my location'));
-      expect(
-        find.text('Location is off. Choose your city instead.'),
-        findsOneWidget,
-      );
-      expect(isPrimaryEnabled(tester, 'Continue'), isFalse);
-
-      await tapVisible(tester, find.text('Choose a city instead'));
-      await tester.enterText(find.byKey(const ValueKey('city:search')), 'xyz');
-      await tester.pumpAndSettle();
-      expect(
-        find.text('No city found. Try a nearby larger city.'),
-        findsOneWidget,
-      );
-      await tester.enterText(find.byKey(const ValueKey('city:search')), 'Sar');
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const ValueKey('city:2')));
-      await tester.pumpAndSettle();
-
-      expect(find.byKey(const ValueKey('location:city')), findsOneWidget);
-      expect(find.text('Sarajevo'), findsOneWidget);
-      // Sarajevo (43.85) nie je vysoka sirka.
-      expect(find.textContaining('Middle of the night'), findsNothing);
-      expect(isPrimaryEnabled(tester, 'Continue'), isTrue);
-      expect((await h.repos.prayer.config())!.location.country, 'BA');
-    });
-
-    testWidgets('GPS timeout shows a snackbar and the manual choice', (
-      tester,
-    ) async {
-      final h = OnboardingHarness(
-        location: FakeDeviceLocation(const LocationFailed()),
-      );
-      await pumpStep(tester, h, OnboardingStep.location);
-      await tapVisible(tester, find.text('Use my location'));
-      expect(
-        find.text("Couldn't get your location. Choose your city instead."),
-        findsNWidgets(2),
-      );
-    });
-
-    testWidgets('no city near the location', (tester) async {
-      final h = OnboardingHarness(
-        repos: FakeRepositories(cities: FakeCityRepository(const [])),
-      );
-      await pumpStep(tester, h, OnboardingStep.location);
-      await tapVisible(tester, find.text('Use my location'));
-      expect(
-        find.text('No city found nearby. Choose your city instead.'),
-        findsOneWidget,
-      );
-    });
-
-    testWidgets('city search error', (tester) async {
-      final h = OnboardingHarness(
-        repos: FakeRepositories(cities: _BrokenCities()),
-      );
-      await pumpStep(tester, h, OnboardingStep.location);
-      await tapVisible(tester, find.text('Choose a city instead'));
-      await tester.enterText(find.byKey(const ValueKey('city:search')), 'B');
-      await tester.pumpAndSettle();
-      expect(find.text('Cities could not be loaded.'), findsOneWidget);
-    });
-
-    testWidgets('method and asr changes are saved and recalculated', (
-      tester,
-    ) async {
-      final h = OnboardingHarness(
-        repos: FakeRepositories(
-          prayer: FakePrayerRepository(location: bratislava),
-        ),
-      );
-      await pumpStep(tester, h, OnboardingStep.location);
-      expect(find.text('Muslim World League'), findsOneWidget);
-      await tapVisible(
-        tester,
-        find.text("Standard (Shafi'i, Maliki, Hanbali)"),
-      );
-      await tester.tap(find.text('Hanafi').last);
-      await tester.pumpAndSettle();
-      final config = (await h.repos.prayer.config())!;
-      expect(config.settings.asr.key, 'hanafi');
-      expect(h.repos.prayer.changes, greaterThan(0));
-      // Nahlad dnesnych casov (5 modlitieb).
-      expect(find.textContaining('Dhuhr '), findsOneWidget);
-      expect(find.textContaining('Maghrib '), findsOneWidget);
+      expect(parseIntentionPresets(null), isEmpty);
     });
   });
 
@@ -202,12 +73,8 @@ void main() {
     testWidgets('denied permission links to system settings', (tester) async {
       final h = OnboardingHarness(
         notifications: FakeOnboardingNotifications(grant: false, exact: true),
-        repos: FakeRepositories(
-          prayer: FakePrayerRepository(location: bratislava),
-        ),
       );
       await pumpStep(tester, h, OnboardingStep.notifications);
-      expect(find.text('On-time prayer reminders'), findsNothing);
       await tapVisible(tester, find.text('Allow notifications'));
       expect(
         find.text(
@@ -221,33 +88,31 @@ void main() {
       expect(isPrimaryEnabled(tester, 'Continue'), isTrue);
     });
 
-    testWidgets('without location the prayer switch is disabled', (
+    testWidgets('morning and private switches, no prayer reminders', (
       tester,
     ) async {
       final h = OnboardingHarness(
-        notifications: FakeOnboardingNotifications(enabled: true, exact: true),
+        notifications: FakeOnboardingNotifications(enabled: true),
       );
       await pumpStep(tester, h, OnboardingStep.notifications);
-      expect(find.text('Set your location first'), findsOneWidget);
-      final prayers = tester.widget<SwitchListTile>(
-        find.byKey(const ValueKey('notif:prayers')),
-      );
-      expect(prayers.onChanged, isNull);
-      expect(prayers.value, isFalse);
       expect(find.text('Notifications are on'), findsOneWidget);
       expect(find.text('Morning reminder at 07:30'), findsOneWidget);
+      expect(find.textContaining('prayer'), findsNothing);
+      expect(find.byKey(const ValueKey('notif:prayers')), findsNothing);
+      // Ulozenie po Continue overuje onboarding_flow_test (bez routera).
+      expect(find.byKey(const ValueKey('notif:morning')), findsOneWidget);
     });
 
     testWidgets('status is read again when the app resumes', (tester) async {
-      final notifications = FakeOnboardingNotifications(enabled: true);
+      final notifications = FakeOnboardingNotifications();
       final h = OnboardingHarness(notifications: notifications);
       await pumpStep(tester, h, OnboardingStep.notifications);
-      expect(find.text('On-time prayer reminders'), findsOneWidget);
-      notifications.exact = true;
+      expect(find.text('Allow notifications'), findsOneWidget);
+      notifications.enabled = true;
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
       await tester.pumpAndSettle();
-      expect(find.text('On-time prayer reminders'), findsNothing);
+      expect(find.text('Notifications are on'), findsOneWidget);
     });
   });
 
@@ -278,7 +143,7 @@ void main() {
       await pumpStep(tester, h, OnboardingStep.privacy);
       await tapVisible(tester, find.text('What we collect'));
       expect(
-        find.textContaining('Never what you read or pray'),
+        find.textContaining('Never what you read or write'),
         findsOneWidget,
       );
     });
@@ -291,15 +156,15 @@ void main() {
       final semantics = tester.ensureSemantics();
       final h = OnboardingHarness();
       for (final step in [
-        OnboardingStep.language,
-        OnboardingStep.location,
+        OnboardingStep.welcome,
+        OnboardingStep.notifications,
         OnboardingStep.privacy,
       ]) {
         await pumpStep(tester, h, step);
         await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
         await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
       }
-      await pumpStep(tester, h, OnboardingStep.niyyah);
+      await pumpStep(tester, h, OnboardingStep.intention);
       expect(
         tester.getSemantics(find.text('Why are you here?')),
         matchesSemantics(isHeader: true, label: 'Why are you here?'),

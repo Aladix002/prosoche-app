@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:prosoche/ui/motif/sk_atmosphere.dart';
 import 'package:prosoche/ui/theme/contrast.dart';
 import 'package:prosoche/ui/theme/prosoche_colors.dart';
-import 'package:prosoche/ui/theme/tajwid_colors.dart';
 
 /// Kontrastny test z tokenov (docs/01 2.1.3, D10). Kazda nova kombinacia
 /// farieb v komponentoch sa prida sem.
@@ -24,17 +23,14 @@ void main() {
     );
   });
 
-  final themes = <String, (ProsocheColors, TajwidColors)>{
-    'light': (ProsocheColors.light, TajwidColors.light),
-    'dark': (ProsocheColors.dark, TajwidColors.dark),
-    'light high contrast': (
-      ProsocheColors.lightHighContrast,
-      TajwidColors.light,
-    ),
-    'dark high contrast': (ProsocheColors.darkHighContrast, TajwidColors.dark),
+  final themes = <String, ProsocheColors>{
+    'light': ProsocheColors.light,
+    'dark': ProsocheColors.dark,
+    'light high contrast': ProsocheColors.lightHighContrast,
+    'dark high contrast': ProsocheColors.darkHighContrast,
   };
 
-  for (final MapEntry(key: name, value: (c, tajwid)) in themes.entries) {
+  for (final MapEntry(key: name, value: c) in themes.entries) {
     group('$name theme', () {
       final backgrounds = {
         'bg': c.bg,
@@ -109,11 +105,6 @@ void main() {
           c.surface,
           SkContrast.nonText,
         ),
-        // Tajwid iba na surface a bg (docs/01 2.2).
-        for (final MapEntry(key: rule, value: t) in tajwid.asMap().entries) ...{
-          'tajwid.$rule / surface': (t, c.surface, SkContrast.text),
-          'tajwid.$rule / bg': (t, c.bg, SkContrast.text),
-        },
       };
 
       for (final MapEntry(key: label, value: (fg, bg, min)) in pairs.entries) {
@@ -160,7 +151,7 @@ void main() {
 
   // D-05: atmosfera hlavicky (gradient podla casti dna). Text lezi na
   // hornom odtieni aj na spodnom `surface`; oba musia drzat AA.
-  for (final MapEntry(key: name, value: (c, _)) in themes.entries) {
+  for (final MapEntry(key: name, value: c) in themes.entries) {
     group('$name atmosphere', () {
       for (final phase in SkDayPhase.values) {
         final a = SkAtmosphereColors.of(phase, c);

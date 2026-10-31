@@ -41,20 +41,16 @@ DailySetState _state({int cursor = 0, bool completed = false}) => DailySetState(
 void main() {
   setUpAll(loadProsocheFonts);
 
-  testWidgets('data: dates, quests, begin CTA, streak and prayer chip', (
-    tester,
-  ) async {
+  testWidgets('data: dates, quests, begin CTA and streak', (tester) async {
     await pumpF02(tester);
     await tester.pumpAndSettle();
 
     expect(find.byType(TodayScreen), findsOneWidget);
     expect(find.text('Thursday, October 29'), findsOneWidget);
-    // Hijri datum (Umm al-Qura) s nazvom mesiaca z ARB.
-    expect(find.byType(SkHijriHeader), findsOneWidget);
-    expect(find.textContaining('1448'), findsOneWidget);
+    expect(find.text('October 29, 2026'), findsOneWidget);
     expect(find.text("Today's intentions"), findsOneWidget);
-    expect(find.text('Read 10 verses'), findsOneWidget);
-    expect(find.text('Read 1 hadith or dua card'), findsOneWidget);
+    expect(find.text('Read 5 cards'), findsOneWidget);
+    expect(find.text('Learn one idea'), findsOneWidget);
     expect(find.text('[PLACEHOLDER act quest]'), findsOneWidget);
     expect(find.text("Begin today's cards"), findsOneWidget);
     expect(find.text('10 cards'), findsOneWidget);
@@ -64,7 +60,7 @@ void main() {
       ),
       findsOneWidget,
     );
-    expect(find.text('Set your location to see prayer times'), findsOneWidget);
+    expect(find.textContaining('prayer'), findsNothing);
     expectNoTextClipping(tester);
   });
 
@@ -109,7 +105,7 @@ void main() {
       find.text('Please try again. Your progress is safe.'),
       findsOneWidget,
     );
-    expect(find.text('Read 10 verses'), findsOneWidget);
+    expect(find.text('Read 5 cards'), findsOneWidget);
 
     sets.ensureError = null;
     await tester.ensureVisible(find.text('Try again'));
@@ -119,7 +115,7 @@ void main() {
     expect(find.text("Begin today's cards"), findsOneWidget);
   });
 
-  testWidgets('empty: first day without quests, streak or niyyah', (
+  testWidgets('empty: first day without quests, streak or intention', (
     tester,
   ) async {
     final repos = FakeRepositories(
@@ -147,28 +143,26 @@ void main() {
     expect(find.text(Bidi.isolate('Continue · 5 of 10')), findsOneWidget);
   });
 
-  testWidgets('completed: complete state and free reading in khatm mode', (
+  testWidgets('completed: complete state, keep reading opens Library', (
     tester,
   ) async {
     final sets = FakeDailySetRepository()
       ..put(_state(cursor: 10, completed: true));
     final repos = FakeRepositories(dailySets: sets);
-    repos.quran.position = AyahId(2, 5);
     await pumpF02(tester, repos: repos);
     await tester.pumpAndSettle();
     expect(find.text("Today's cards are complete"), findsOneWidget);
-    await tester.tap(find.text('Read the Quran'));
+    await tester.ensureVisible(find.text('Keep reading'));
     await tester.pumpAndSettle();
-    expect(
-      find.text('stub:/quran/read/2?ayah=2006&mode=khatm'),
-      findsOneWidget,
-    );
+    await tester.tap(find.text('Keep reading'));
+    await tester.pumpAndSettle();
+    expect(find.text('stub:/library'), findsOneWidget);
   });
 
   testWidgets('simple mode hides streak and grace days', (tester) async {
     final settings = InMemorySettingsRepository();
     await settings.set(SettingsKeys.simpleMode, true);
-    await settings.set(SettingsKeys.niyyahText, 'My own words');
+    await settings.set(SettingsKeys.intentionText, 'My own words');
     await pumpF02(tester, repos: FakeRepositories(settings: settings));
     await tester.pumpAndSettle();
     expect(find.textContaining('streak'), findsNothing);
@@ -200,43 +194,18 @@ void main() {
   testWidgets('READ quest opens the feed', (tester) async {
     await pumpF02(tester);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Read 10 verses'));
+    await tester.tap(find.text('Read 5 cards'));
     await tester.pump();
     await tester.pump();
     expect(find.byType(FeedScreen), findsOneWidget);
   });
 
-  testWidgets('prayer chip counts down to the next prayer', (tester) async {
-    final repos = FakeRepositories(
-      prayer: FakePrayerRepository(location: fakeBratislava),
-    );
-    await pumpF02(tester, repos: repos);
-    await tester.pumpAndSettle();
-    expect(
-      find.textContaining(RegExp(r'^Dhuhr in (\d+ h )?\d+ min$')),
-      findsOneWidget,
-    );
-    await tester.tap(find.byType(SkNextPrayerChip));
-    await tester.pumpAndSettle();
-    expect(find.text('stub:/prayer'), findsOneWidget);
-  });
-
-  testWidgets('gear opens settings, hijri date opens the calendar', (
-    tester,
-  ) async {
+  testWidgets('gear opens settings', (tester) async {
     await pumpF02(tester);
     await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('Settings'));
     await tester.pumpAndSettle();
     expect(find.text('stub:/settings'), findsOneWidget);
-  });
-
-  testWidgets('hijri date opens the calendar', (tester) async {
-    await pumpF02(tester);
-    await tester.pumpAndSettle();
-    await tester.tap(find.byType(SkHijriHeader));
-    await tester.pumpAndSettle();
-    expect(find.text('stub:/calendar'), findsOneWidget);
   });
 
   testWidgets('midnight: new date and a fresh CTA within 60 s', (tester) async {
@@ -264,21 +233,16 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.bySemanticsLabel("Today's intentions"), findsOneWidget);
     final quest = tester.getSemantics(find.byType(SkQuestItem).first);
-    expect(quest.value, '0 of 10');
-    expect(quest.label, contains('Read 10 verses'));
+    expect(quest.value, '0 of 5');
+    expect(quest.label, contains('Read 5 cards'));
     handle.dispose();
   });
 
-  for (final locale in [const Locale('ar'), const Locale('ur')]) {
-    testWidgets(
-      '${locale.languageCode}: RTL at text scale 2 without clipping',
-      (tester) async {
-        await pumpF02(tester, locale: locale, textScale: 2);
-        await tester.pumpAndSettle();
-        final ctx = tester.element(find.byType(TodayScreen));
-        expect(Directionality.of(ctx), TextDirection.rtl);
-        expectNoTextClipping(tester);
-      },
-    );
-  }
+  testWidgets('text scale 2 without clipping', (tester) async {
+    await pumpF02(tester, textScale: 2);
+    await tester.pumpAndSettle();
+    final ctx = tester.element(find.byType(TodayScreen));
+    expect(Directionality.of(ctx), TextDirection.ltr);
+    expectNoTextClipping(tester);
+  });
 }

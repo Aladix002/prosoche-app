@@ -73,33 +73,6 @@ class StuckStreakRepository extends FakeStreakRepository {
       : Stream.error(error!);
 }
 
-/// Koran s precitanymi versami, khatmami a nazvami vsetkych 114 sur.
-class JourneyQuranRepository extends FakeQuranRepository {
-  JourneyQuranRepository({this.counts = const {}, this.khatms = 0});
-
-  final Map<int, int> counts;
-  final int khatms;
-
-  @override
-  Future<List<SurahInfo>> surahs(String lang) async => [
-    for (var s = 1; s <= AyahId.surahCount; s++)
-      SurahInfo(
-        id: s,
-        nameAr: '[PLACEHOLDER name_ar $s]',
-        nameTranslit: 'Placeholder $s',
-        revelationPlace: 'meccan',
-        ayahCount: AyahId.ayahCount(s),
-        bismillahPre: s != 1 && s != 9,
-      ),
-  ];
-
-  @override
-  Stream<Map<int, int>> watchReadCounts() => Stream.value(counts);
-
-  @override
-  Future<int> completedKhatms() async => khatms;
-}
-
 /// Ulozene karty, ktore sa nikdy nenacitaju alebo zlyhaju.
 class StuckActionsRepository extends FakeCardActionsRepository {
   StuckActionsRepository({this.error});
@@ -125,39 +98,4 @@ void phoneView(WidgetTester tester) {
     ..physicalSize = const Size(1080, 2340)
     ..devicePixelRatio = 3;
   addTearDown(tester.view.reset);
-}
-
-/// Obsah kariet, kde preklad versa ma znacky a poznamky prekladatela
-/// (text, footnotes) podla versa (BF-02).
-class NotesCardContentRepository extends FakeCardContentRepository {
-  NotesCardContentRepository(this.notes);
-
-  final Map<AyahId, (String, String)> notes;
-
-  @override
-  Future<CardContent?> load(CardId id, {required String lang}) async {
-    final c = await super.load(id, lang: lang);
-    if (c is! AyahContent) return c;
-    final tr = c.ayah.translation;
-    final n = notes[c.ayah.id];
-    if (tr == null || n == null) return c;
-    return AyahContent(
-      id as AyahCardId,
-      surah: c.surah,
-      arabicOnly: c.arabicOnly,
-      ayah: AyahView(
-        id: c.ayah.id,
-        textUthmani: c.ayah.textUthmani,
-        juz: c.ayah.juz,
-        page: c.ayah.page,
-        translation: TranslationText(
-          text: n.$1,
-          footnotes: n.$2,
-          sourceId: tr.sourceId,
-          lang: tr.lang,
-          isFallback: tr.isFallback,
-        ),
-      ),
-    );
-  }
 }

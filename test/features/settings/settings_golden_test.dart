@@ -24,13 +24,13 @@ const _sources = SourcesInfo(
   contentVersion: '2026.11.1',
   sources: [
     ContentSource(
-      id: 'fx-uthmani',
-      kind: 'quran_text',
-      name: '[PLACEHOLDER quran text]',
+      id: 'fx-text',
+      kind: 'text',
+      name: '[PLACEHOLDER text]',
       version: '1.1',
-      license: 'CC BY 3.0',
+      license: 'Public domain',
       attribution: '[PLACEHOLDER attribution]',
-      url: 'https://example.invalid/quran',
+      url: 'https://example.invalid/text',
     ),
     ContentSource(
       id: 'fx-en',
@@ -54,7 +54,7 @@ const _sources = SourcesInfo(
   ],
 );
 
-/// Goldeny nastaveni A10.0, A10.9 a A11 (EN, AR, UR, BN, smoke ID a TR).
+/// Goldeny nastaveni A10.0, A10.9 a A11 (EN).
 ///
 ///   flutter test --update-goldens test/features/settings/settings_golden_test.dart
 void main() {

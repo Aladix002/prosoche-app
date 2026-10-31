@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:prosoche/features/feed/feed_screen.dart';
 import 'package:prosoche/features/gate/gate_screen.dart';
 import 'package:prosoche/features/journey/journey_screen.dart';
-import 'package:prosoche/features/prayer/prayer_screen.dart';
-import 'package:prosoche/features/quran/quran_screen.dart';
+import 'package:prosoche/features/library/library_screen.dart';
+import 'package:prosoche/features/practice/practice_screen.dart';
 import 'package:prosoche/features/today/today_screen.dart';
 import 'package:prosoche/ui/gallery/sk_gallery_screen.dart';
 
@@ -21,8 +21,8 @@ void main() {
   testWidgets('switches tabs', (tester) async {
     await tester.pumpProsoche();
     for (final (label, screen) in [
-      ('Quran', QuranScreen),
-      ('Prayer', PrayerScreen),
+      ('Library', LibraryScreen),
+      ('Practice', PracticeScreen),
       ('Journey', JourneyScreen),
       ('Today', TodayScreen),
     ]) {

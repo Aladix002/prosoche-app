@@ -5,7 +5,6 @@ import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/quests/quests.dart'
     show CardAction, CardContext;
 import 'package:prosoche/features/cards/cards.dart' show CardView;
-import 'package:prosoche/features/cards/translator_notes.dart';
 import 'package:prosoche/features/journey/card_pager.dart';
 import 'package:prosoche/features/journey/saved_screen.dart';
 import 'package:prosoche/ui/ui.dart';
@@ -16,7 +15,8 @@ import 'journey_fixtures.dart';
 
 void main() {
   test('parseSavedType accepts only saveable types', () {
-    expect(parseSavedType('hadith'), CardType.hadith);
+    expect(parseSavedType('quote'), CardType.quote);
+    expect(parseSavedType('concept'), CardType.concept);
     expect(parseSavedType('intro'), isNull);
     expect(parseSavedType('evil'), isNull);
     expect(parseSavedType(null), isNull);
@@ -41,11 +41,9 @@ void main() {
     return r;
   }
 
-  final ayah = AyahCardId(AyahId(2, 255));
-  final hadith = HadithCardId(13);
-  final dua = DuaCardId(77);
-  final name = NameCardId(7);
-  final reflection = ReflectionCardId(31);
+  final first = fakeQuoteId(1);
+  final second = fakeQuoteId(2);
+  final idea = ContentCardId(CardType.concept, 'logos');
 
   testWidgets('empty state (EMPTY-SAVED)', (tester) async {
     await pump(tester);
@@ -79,87 +77,39 @@ void main() {
     expect(find.text('Try again'), findsOneWidget);
   });
 
-  testWidgets('data: newest first, previews without Arabic', (tester) async {
-    await pump(tester, saved: [hadith, dua, name, reflection, ayah]);
+  testWidgets('data: newest first with reference and preview', (tester) async {
+    await pump(tester, saved: [idea, second, first]);
     final titles = tester
         .widgetList<ListTile>(find.byType(ListTile))
         .map((t) => (t.title! as Text).data)
         .toList();
-    expect(titles.first, 'Placeholder 2 \u20682:255\u2069');
-    expect(titles, hasLength(5));
-    expect(find.text('[PLACEHOLDER translation 2:255]'), findsOneWidget);
-    expect(find.text('[PLACEHOLDER hadith]'), findsOneWidget);
-    expect(find.text('[PLACEHOLDER meaning]'), findsOneWidget);
-    expect(find.textContaining('PLACEHOLDER hadith ar'), findsNothing);
-  });
-
-  // BF-02: znacky `[n]` v nahlade ako horny index bez tapu (rovnaky
-  // renderer ako karta), text nahladu sa nemeni.
-  testWidgets('verse preview: note markers as superscript, not tappable', (
-    tester,
-  ) async {
-    const text =
-        '(1) [PLACEHOLDER] one,[2] [PLACEHOLDER] two, [PLACEHOLDER] three, '
-        '[PLACEHOLDER] four, [PLACEHOLDER] five, [PLACEHOLDER] six.[3]';
-    final handle = tester.ensureSemantics();
-    await pump(
-      tester,
-      repos: FakeRepositories(
-        cards: NotesCardContentRepository({
-          AyahId(2, 255): (text, '[2]- [PLACEHOLDER]\n[3]- [PLACEHOLDER]'),
-        }),
-      ),
-      saved: [ayah],
-    );
-    final markers = find.byType(TranslatorNoteMarker);
-    expect(markers, findsNWidgets(2));
-    for (final m in tester.widgetList<TranslatorNoteMarker>(markers)) {
-      expect(m.interactive, isFalse);
-    }
-    expect(find.bySemanticsLabel(RegExp("Translator's note")), findsNothing);
-    final subtitle = tester.widget<ListTile>(find.byType(ListTile)).subtitle!;
-    expect(subtitle, isA<Text>());
-    final rich = subtitle as Text;
-    expect(rich.maxLines, 2);
-    expect(rich.overflow, TextOverflow.ellipsis);
-    // Text nahladu je doslovne preklad (znacky su WidgetSpan s `[n]`).
-    final plain = StringBuffer();
-    rich.textSpan!.visitChildren((span) {
-      if (span is TextSpan && span.text != null) plain.write(span.text);
-      if (span is WidgetSpan) {
-        plain.write((span.child as TranslatorNoteMarker).marker);
-      }
-      return true;
-    });
-    expect(plain.toString(), text);
-
-    // Tap na znacku nic neotvori, otvori sa karta (ako tap na riadok).
-    await tester.tap(find.text('[2]'), warnIfMissed: false);
-    await tester.pumpAndSettle();
-    expect(find.text("Translator's note"), findsNothing);
-    handle.dispose();
+    expect(titles.first, '[PLACEHOLDER work] 1.1');
+    expect(titles.last, 'Idea');
+    expect(titles, hasLength(3));
+    expect(find.text('[PLACEHOLDER quote q_0001]'), findsOneWidget);
+    expect(find.text('[PLACEHOLDER quote q_0002]'), findsOneWidget);
   });
 
   testWidgets('filters by type, also from ?type=', (tester) async {
-    await pump(tester, saved: [hadith, ayah, dua]);
-    await tester.tap(find.byKey(const ValueKey('saved-filter:hadith')));
+    await pump(tester, saved: [idea, first]);
+    await tester.tap(find.byKey(const ValueKey('saved-filter:quote')));
     await tester.pumpAndSettle();
     expect(find.byType(ListTile), findsOneWidget);
-    expect(find.text('[PLACEHOLDER hadith]'), findsOneWidget);
+    expect(find.text('[PLACEHOLDER quote q_0001]'), findsOneWidget);
 
-    await tester.tap(find.byKey(const ValueKey('saved-filter:name')));
+    await tester.tap(find.byKey(const ValueKey('saved-filter:practice')));
     await tester.pumpAndSettle();
     expect(find.text('Nothing saved yet'), findsOneWidget);
 
     await pump(
       tester,
-      location: '/journey/saved?type=dua',
-      saved: [hadith, ayah, dua],
+      location: '/journey/saved?type=concept',
+      saved: [idea, first],
     );
     expect(find.byType(ListTile), findsOneWidget);
-    expect(find.text('[PLACEHOLDER dua]'), findsOneWidget);
+    expect(find.text('Idea'), findsWidgets);
     final chip = tester.widget<ChoiceChip>(
-      find.byKey(const ValueKey('saved-filter:dua')),
+      find.byKey(const ValueKey('saved-filter:concept')),
     );
     expect(chip.selected, isTrue);
   });
@@ -167,12 +117,12 @@ void main() {
   testWidgets('tap opens the card fullscreen, swipe between saved', (
     tester,
   ) async {
-    await pump(tester, saved: [hadith, ayah]);
-    await tester.tap(find.text('[PLACEHOLDER translation 2:255]'));
+    await pump(tester, saved: [second, first]);
+    await tester.tap(find.text('[PLACEHOLDER quote q_0001]'));
     await tester.pumpAndSettle();
     expect(find.byType(JourneyCardPager), findsOneWidget);
     expect(find.text('1 of 2'), findsOneWidget);
-    expect(tester.widget<CardView>(find.byType(CardView)).cardId, ayah);
+    expect(tester.widget<CardView>(find.byType(CardView)).cardId, first);
 
     await tester.drag(find.byType(PageView), const Offset(-300, 0));
     await tester.pumpAndSettle();
@@ -185,25 +135,25 @@ void main() {
   });
 
   testWidgets('swipe removes with undo', (tester) async {
-    final repos = await pump(tester, saved: [hadith, ayah]);
+    final repos = await pump(tester, saved: [second, first]);
     await tester.drag(
-      find.text('[PLACEHOLDER translation 2:255]'),
+      find.text('[PLACEHOLDER quote q_0001]'),
       const Offset(-500, 0),
     );
     await tester.pumpAndSettle();
-    expect(find.text('[PLACEHOLDER translation 2:255]'), findsNothing);
+    expect(find.text('[PLACEHOLDER quote q_0001]'), findsNothing);
     expect(find.text('Removed from saved'), findsOneWidget);
     expect(repos.actions.logged.last, (
-      ayah,
+      first,
       CardAction.unsaved,
       CardContext.saved,
     ));
 
     await tester.tap(find.text('Undo'));
     await tester.pumpAndSettle();
-    expect(find.text('[PLACEHOLDER translation 2:255]'), findsOneWidget);
+    expect(find.text('[PLACEHOLDER quote q_0001]'), findsOneWidget);
     expect(repos.actions.logged.last, (
-      ayah,
+      first,
       CardAction.saved,
       CardContext.saved,
     ));
@@ -211,7 +161,7 @@ void main() {
 
   testWidgets('screen reader remove action', (tester) async {
     final handle = tester.ensureSemantics();
-    final repos = await pump(tester, saved: [hadith]);
+    final repos = await pump(tester, saved: [first]);
     final node = tester.getSemantics(
       find.descendant(
         of: find.byType(Dismissible),

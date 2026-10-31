@@ -24,8 +24,7 @@ void main() {
     await $.tester.pump();
     await $.tester.tap(key('delete:go'));
 
-    await waitFor($, text('Choose your language'));
-    expect(text('Step 1 of 5'), findsOneWidget);
+    await waitFor($, text('Step 1 of 4'));
 
     // Po novom onboardingu je den bez progresu.
     await completeOnboarding($);

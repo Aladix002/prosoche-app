@@ -9,7 +9,6 @@ import 'package:prosoche/data/blocker/fake_blocker_gateway.dart';
 import 'package:prosoche/features/onboarding/onboarding_steps.dart';
 import 'package:prosoche/ui/theme/prosoche_theme.dart';
 
-import '../../fakes/fake_repositories.dart';
 import '../../helpers/golden/golden.dart';
 import 'onboarding_test_helpers.dart';
 
@@ -26,14 +25,8 @@ void main() {
       'onboarding ${step.key}',
       fileName: 'onboarding_${step.key}',
       theme: theme,
-      builder: (context) => SizedBox(
-        height: 640,
-        child: OnboardingHarness(
-          repos: FakeRepositories(
-            prayer: FakePrayerRepository(location: bratislava),
-          ),
-        ).step(step),
-      ),
+      builder: (context) =>
+          SizedBox(height: 640, child: OnboardingHarness().step(step)),
     );
   }
 
@@ -46,7 +39,7 @@ void main() {
       builder: (context) => SizedBox(
         height: 640,
         child: OnboardingHarness(
-          flags: const FeatureFlags(gate: true),
+          flags: FeatureFlags.all,
           blocker: FakeBlockerGateway(
             manufacturer: 'xiaomi',
             permissionsState: const BlockerPermissions(

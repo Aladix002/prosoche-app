@@ -47,7 +47,7 @@ class BlockingHarness {
   late final FakeBlockedAppsRepository repo;
 
   List<Override> get overrides => [
-    ...settingsOverrides(fakes: fakes, flags: const FeatureFlags(gate: true)),
+    ...settingsOverrides(fakes: fakes, flags: FeatureFlags.all),
     blockerGatewayProvider.overrideWithValue(blocker),
     blockedAppsRepositoryProvider.overrideWithValue(repo),
   ];
@@ -59,5 +59,4 @@ const igApp = BlockedApp(
   label: 'Instagram',
   cardsRequired: 3,
   unlockMinutes: 10,
-  prayerLock: true,
 );

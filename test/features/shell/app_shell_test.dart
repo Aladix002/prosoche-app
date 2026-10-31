@@ -7,7 +7,8 @@ import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/core/router/app_router.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/journey/journey_screen.dart';
-import 'package:prosoche/features/quran/quran_screen.dart';
+import 'package:prosoche/features/library/library_screen.dart';
+import 'package:prosoche/features/practice/practice_screen.dart';
 import 'package:prosoche/features/shell/app_locale.dart';
 import 'package:prosoche/features/shell/app_shell.dart';
 import 'package:prosoche/features/shell/settings_button.dart';
@@ -23,7 +24,8 @@ void main() {
     testWidgets('tab root other than Today switches to Today', (tester) async {
       await tester.pumpProsoche();
       for (final (label, screen) in [
-        ('Quran', QuranScreen),
+        ('Library', LibraryScreen),
+        ('Practice', PracticeScreen),
         ('Journey', JourneyScreen),
       ]) {
         await tester.tap(
@@ -85,9 +87,9 @@ void main() {
       expect(
         resolveAppLocales([
           const Locale('de'),
-          const Locale('ur', 'PK'),
+          const Locale('en', 'GB'),
         ], const []),
-        ProsocheLocales.ur,
+        ProsocheLocales.en,
       );
       expect(resolveAppLocales(null, const []), ProsocheLocales.en);
     });
@@ -112,11 +114,13 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    testWidgets('stored Arabic makes the app RTL', (tester) async {
+    testWidgets('stored unsupported language falls back to English', (
+      tester,
+    ) async {
       await pumpWith(tester, 'ar');
       final context = tester.element(find.byType(TodayScreen));
-      expect(Localizations.localeOf(context), ProsocheLocales.ar);
-      expect(Directionality.of(context), TextDirection.rtl);
+      expect(Localizations.localeOf(context), ProsocheLocales.en);
+      expect(Directionality.of(context), TextDirection.ltr);
     });
 
     testWidgets('unsupported system language falls back to English', (

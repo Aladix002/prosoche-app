@@ -11,7 +11,6 @@ import 'package:prosoche/data/blocker/blocker_gateway_provider.dart';
 import 'package:prosoche/data/blocker/fake_blocked_apps_repository.dart';
 import 'package:prosoche/data/blocker/fake_blocker_gateway.dart';
 import 'package:prosoche/domain/common/common.dart';
-import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/onboarding/onboarding_controller.dart';
 import 'package:prosoche/features/onboarding/onboarding_guard.dart';
 import 'package:prosoche/features/onboarding/onboarding_platform.dart';
@@ -23,27 +22,6 @@ import '../../fakes/fake_repositories.dart';
 /// Datum a cas testov (stvrtok 29. 10. 2026 9:00).
 final testNow = DateTime(2026, 10, 29, 9);
 final testToday = LocalDate(2026, 10, 29);
-
-final bratislava = PrayerLocation(
-  lat: 48.15,
-  lng: 17.11,
-  country: 'SK',
-  tz: 'Europe/Bratislava',
-  city: 'Bratislava',
-);
-
-class FakeDeviceLocation implements DeviceLocation {
-  FakeDeviceLocation([this.result = const LocationFound(48.1486, 17.1077)]);
-
-  LocationResult result;
-  int calls = 0;
-
-  @override
-  Future<LocationResult> locateOnce() async {
-    calls++;
-    return result;
-  }
-}
 
 class FakeOnboardingNotifications implements OnboardingNotifications {
   FakeOnboardingNotifications({
@@ -88,20 +66,17 @@ class FakeOnboardingNotifications implements OnboardingNotifications {
 class OnboardingHarness {
   OnboardingHarness({
     FakeRepositories? repos,
-    FakeDeviceLocation? location,
     FakeOnboardingNotifications? notifications,
     FakeBlockerGateway? blocker,
     this.flags = FeatureFlags.none,
     this.deviceLanguage = 'en',
   }) : repos = repos ?? FakeRepositories(),
-       location = location ?? FakeDeviceLocation(),
        notifications = notifications ?? FakeOnboardingNotifications(),
        blocker = blocker ?? FakeBlockerGateway() {
     blockedApps = FakeBlockedAppsRepository(gateway: this.blocker);
   }
 
   final FakeRepositories repos;
-  final FakeDeviceLocation location;
   final FakeOnboardingNotifications notifications;
 
   /// Brana (O5, O6): nativ a `blocked_app`.
@@ -115,7 +90,6 @@ class OnboardingHarness {
   List<Override> get overrides => [
     ...repos.overrides(now: testNow, deviceLanguage: deviceLanguage),
     featureFlagsProvider.overrideWithValue(flags),
-    deviceLocationProvider.overrideWithValue(location),
     onboardingNotificationsProvider.overrideWithValue(notifications),
     onboardingAnalyticsSinkProvider.overrideWithValue(sent.addAll),
     onboardingRescheduleProvider.overrideWithValue(() async => reschedules++),

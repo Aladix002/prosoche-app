@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:prosoche/core/flags/feature_flags.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
 import 'package:prosoche/domain/common/common.dart';
-import 'package:prosoche/domain/prayer/prayer.dart';
 import 'package:prosoche/domain/streak/streak.dart';
 import 'package:prosoche/features/journey/card_pager.dart';
 import 'package:prosoche/features/journey/journey_day_screen.dart';
@@ -41,9 +40,7 @@ void main() {
     return r;
   }
 
-  testWidgets('completed yesterday: 10/10, time, sources and prayers', (
-    tester,
-  ) async {
+  testWidgets('completed yesterday: 10/10, time and sources', (tester) async {
     final repos = FakeRepositories(streak: fixtureStreak());
     repos.dailySets.put(
       DailySetState(
@@ -53,8 +50,6 @@ void main() {
         completedAt: DateTime(2026, 10, 28, 9, 10),
       ),
     );
-    await repos.prayer.setStatus(yesterday, Prayer.fajr, PrayerStatus.onTime);
-    await repos.prayer.setStatus(yesterday, Prayer.isha, PrayerStatus.qada);
     await pump(tester, repos: repos);
 
     expect(find.text('Wednesday, October 28'), findsOneWidget);
@@ -62,9 +57,7 @@ void main() {
     expect(find.text('Daily cards completed'), findsOneWidget);
     expect(find.text('Daily cards: 10/10'), findsOneWidget);
     expect(find.text('Completed at 09:10'), findsOneWidget);
-    expect(find.text('On time'), findsOneWidget);
-    expect(find.text('Made up'), findsOneWidget);
-    expect(find.text('Not logged'), findsNWidgets(3));
+    expect(find.textContaining('prayer'), findsNothing);
   });
 
   testWidgets('View cards opens the set read-only', (tester) async {

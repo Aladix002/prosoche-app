@@ -28,12 +28,12 @@ void main() {
         _source('f', 'font'),
         _source('x', 'zzz_new'),
         _source('t2', 'translation', lang: 'id'),
-        _source('q', 'quran_text'),
+        _source('q', 'text'),
         _source('t1', 'translation', lang: 'en'),
         _source('a', 'aaa_new'),
       ]);
       expect(groups.map((g) => g.kind), [
-        'quran_text',
+        'text',
         'translation',
         'font',
         'aaa_new',
@@ -93,12 +93,12 @@ void main() {
           links: links,
         ),
       );
-      final tile = find.byKey(const ValueKey('source:fx-uthmani'));
+      final tile = find.byKey(const ValueKey('source:fx-text'));
       await tester.tap(
         find.descendant(of: tile, matching: find.byType(TextButton)),
       );
       await tester.pump();
-      expect(links.opened, [Uri.parse('https://example.invalid/fx-uthmani')]);
+      expect(links.opened, [Uri.parse('https://example.invalid/fx-text')]);
     });
 
     testWidgets('failed link shows a snackbar', (tester) async {
@@ -112,7 +112,7 @@ void main() {
           links: links,
         ),
       );
-      final tile = find.byKey(const ValueKey('source:fx-uthmani'));
+      final tile = find.byKey(const ValueKey('source:fx-text'));
       await tester.tap(
         find.descendant(of: tile, matching: find.byType(TextButton)),
       );
@@ -129,7 +129,7 @@ void main() {
           content: contentFixture(),
         ),
       );
-      await tester.tap(find.byKey(const ValueKey('source:fx-uthmani')));
+      await tester.tap(find.byKey(const ValueKey('source:fx-text')));
       await tester.pumpAndSettle();
       expect(find.byType(SkSheet), findsOneWidget);
       expect(find.text('[PLACEHOLDER license]'), findsOneWidget);
@@ -191,7 +191,7 @@ void main() {
         overrides: [
           ...settingsOverrides(fakes: FakeRepositories()),
           sourcesInfoProvider.overrideWith(
-            (ref) async => SourcesInfo(sources: [_source('q', 'quran_text')]),
+            (ref) async => SourcesInfo(sources: [_source('q', 'text')]),
           ),
         ],
       );
