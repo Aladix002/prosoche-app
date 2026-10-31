@@ -124,7 +124,8 @@ class _Intro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sk = context.sk;
-    // D-05: prvy den bez historie - medailon a uvod v tonalnom paneli.
+    // D-01: prvy den bez historie - stlp (zaciatok cesty) a uvod
+    // v tonalnom paneli.
     return DecoratedBox(
       decoration: BoxDecoration(
         color: sk.colors.surface,
@@ -134,7 +135,7 @@ class _Intro extends StatelessWidget {
         padding: const EdgeInsetsDirectional.all(SkSpace.space16),
         child: Row(
           children: [
-            const SkMotifBadge(icon: Icons.route_outlined, size: 48),
+            const SkColumn(height: 64),
             const SizedBox(width: SkSpace.space16),
             Expanded(
               child: Column(

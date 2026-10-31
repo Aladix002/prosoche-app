@@ -1,0 +1,7 @@
+{
+  "@@locale": "en",
+  "onbWelcomeMeaning": "προσοχή · attention",
+  "@onbWelcomeMeaning": {
+    "description": "Under the app name on the welcome screen: the Greek word prosoche and its meaning. Keep the Greek word as is, translate only 'attention'."
+  }
+}

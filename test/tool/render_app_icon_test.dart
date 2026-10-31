@@ -18,12 +18,13 @@ Future<List<int>> _png(int size) async {
   final recorder = ui.PictureRecorder();
   final canvas = Canvas(recorder);
   const c = ProsocheColors.dark;
-  // Rovnake proporcie ako adaptivna ikona: znacka v zone 56/108.
+  // PNG ikony sa neorezavaju maskou ako adaptivna ikona (zona 56/108),
+  // preto mensi okraj.
   SkPortalMarkPainter(
     color: c.goldDeco,
     dotColor: ProsocheColors.light.bg,
     background: ProsocheColors.light.primary,
-    padding: 26 / 108,
+    padding: 0.16,
   ).paint(canvas, Size.square(size.toDouble()));
   final image = await recorder.endRecording().toImage(size, size);
   final data = await image.toByteData(format: ui.ImageByteFormat.png);
