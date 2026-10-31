@@ -17,7 +17,6 @@ class LibraryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
-    final sk = context.sk;
     final authors = ref.watch(libraryAuthorsProvider);
     final positions =
         ref.watch(readingPositionsProvider).value ??
@@ -47,6 +46,12 @@ class LibraryScreen extends ConsumerWidget {
         key: const ValueKey('library:list'),
         padding: const EdgeInsetsDirectional.only(bottom: SkSpace.space24),
         children: [
+          Padding(
+            padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: SkSpace.space16,
+            ),
+            child: SkScreenTitle(title: l10n.tabLibrary),
+          ),
           if (last != null && lastWork != null)
             Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(
@@ -72,7 +77,6 @@ class LibraryScreen extends ConsumerWidget {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.tabLibrary, style: sk.text.headlineSmall),
         actions: [
           SkIconButton(
             key: const ValueKey('library:search'),

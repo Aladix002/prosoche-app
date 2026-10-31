@@ -169,7 +169,6 @@ class _ReaderState extends ConsumerState<_Reader> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final sk = context.sk;
     final work = widget.text.work;
     final marked = {
       for (final b
@@ -181,18 +180,6 @@ class _ReaderState extends ConsumerState<_Reader> {
     final progress = readingProgress(_index + 1, _sections.length);
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(work.title, style: sk.text.titleLarge),
-            Text(
-              _current.reference,
-              style: sk.text.bodySmall!.copyWith(
-                color: sk.colors.textSecondary,
-              ),
-            ),
-          ],
-        ),
         actions: [
           SkIconButton(
             key: const ValueKey('reader:bookmark'),
@@ -218,15 +205,10 @@ class _ReaderState extends ConsumerState<_Reader> {
         ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(2),
-          child: Semantics(
+          child: SkReadingProgress(
+            value: progress,
             label: l10n.readerProgressA11y,
-            value: l10n.readerProgressValue(_index + 1, _sections.length),
-            child: LinearProgressIndicator(
-              value: progress,
-              minHeight: 2,
-              color: sk.colors.primary,
-              backgroundColor: sk.colors.outline,
-            ),
+            valueLabel: l10n.readerProgressValue(_index + 1, _sections.length),
           ),
         ),
       ),

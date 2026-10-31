@@ -7,6 +7,7 @@ import 'package:prosoche/data/repositories/repositories.dart';
 import 'package:prosoche/domain/practice/practice.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/cards/types/text_cards.dart';
+import 'package:prosoche/features/practice/widgets/journal_widgets.dart';
 import 'package:prosoche/features/practice/widgets/practice_actions.dart';
 import 'package:prosoche/ui/ui.dart';
 
@@ -18,46 +19,29 @@ class MementoMoriScreen extends ConsumerWidget {
 
   static const practiceId = 'practice:memento-mori';
 
-  Future<void> _editYear(BuildContext context, WidgetRef ref, int? current) {
+  Future<void> _editYear(
+    BuildContext context,
+    WidgetRef ref,
+    int? current,
+  ) async {
     final l10n = context.l10n;
-    final controller = TextEditingController(text: current?.toString() ?? '');
     final today = ref.read(localDateProvider);
-    return showDialog<void>(
-      context: context,
-      builder: (dialog) => AlertDialog(
-        title: Text(l10n.mementoBirthYear),
-        content: TextField(
-          key: const ValueKey('memento:yearField'),
-          controller: controller,
-          autofocus: true,
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-            helperText: l10n.mementoBirthYearHelp,
-            border: const OutlineInputBorder(),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialog).pop(),
-            child: Text(SkUiStrings.of(context).cancel),
-          ),
-          TextButton(
-            key: const ValueKey('memento:yearSave'),
-            onPressed: () async {
-              final y = int.tryParse(controller.text.trim());
-              if (y == null || !LifeInWeeks.isValidBirthYear(y, today)) {
-                return;
-              }
-              await ref
-                  .read(settingsRepositoryProvider)
-                  .set(SettingsKeys.practiceBirthYear, y);
-              if (dialog.mounted) Navigator.of(dialog).pop();
-            },
-            child: Text(l10n.journalSave),
-          ),
-        ],
-      ),
-    ).whenComplete(controller.dispose);
+    final text = await showTextInputDialog(
+      context,
+      title: l10n.mementoBirthYear,
+      saveLabel: l10n.journalSave,
+      initial: current?.toString() ?? '',
+      helper: l10n.mementoBirthYearHelp,
+      keyboardType: TextInputType.number,
+      maxLines: 1,
+      fieldKey: const ValueKey('memento:yearField'),
+      saveKey: const ValueKey('memento:yearSave'),
+    );
+    final y = int.tryParse(text?.trim() ?? '');
+    if (y == null || !LifeInWeeks.isValidBirthYear(y, today)) return;
+    await ref
+        .read(settingsRepositoryProvider)
+        .set(SettingsKeys.practiceBirthYear, y);
   }
 
   @override
@@ -135,7 +119,7 @@ class MementoMoriScreen extends ConsumerWidget {
                     onPressed: () => unawaited(
                       ref
                           .read(settingsRepositoryProvider)
-                          .set(SettingsKeys.practiceBirthYear, null),
+                          .reset(SettingsKeys.practiceBirthYear),
                     ),
                     child: Text(l10n.mementoClearYear),
                   ),

@@ -18,34 +18,13 @@ class JournalScreen extends ConsumerWidget {
 
   Future<void> _addNote(BuildContext context, WidgetRef ref) async {
     final l10n = context.l10n;
-    final controller = TextEditingController();
-    final text = await showDialog<String>(
-      context: context,
-      builder: (dialog) => AlertDialog(
-        title: Text(l10n.journalNewNote),
-        content: TextField(
-          key: const ValueKey('journal:noteField'),
-          controller: controller,
-          autofocus: true,
-          minLines: 3,
-          maxLines: 8,
-          textCapitalization: TextCapitalization.sentences,
-          decoration: const InputDecoration(border: OutlineInputBorder()),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialog).pop(),
-            child: Text(SkUiStrings.of(context).cancel),
-          ),
-          TextButton(
-            key: const ValueKey('journal:noteSave'),
-            onPressed: () => Navigator.of(dialog).pop(controller.text),
-            child: Text(l10n.journalSave),
-          ),
-        ],
-      ),
+    final text = await showTextInputDialog(
+      context,
+      title: l10n.journalNewNote,
+      saveLabel: l10n.journalSave,
+      fieldKey: const ValueKey('journal:noteField'),
+      saveKey: const ValueKey('journal:noteSave'),
     );
-    controller.dispose();
     if (text == null || text.trim().isEmpty) return;
     await ref
         .read(practiceRepositoryProvider)

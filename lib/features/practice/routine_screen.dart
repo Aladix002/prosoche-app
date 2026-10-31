@@ -25,7 +25,6 @@ class RoutineScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
-    final sk = context.sk;
     final routine = ref.watch(practiceRoutineProvider(kind));
     final eyebrow = switch (kind) {
       RoutineKind.morning => l10n.practiceMorning,
@@ -43,15 +42,7 @@ class RoutineScreen extends ConsumerWidget {
       body = _RoutineBody(routine: routine.requireValue, eyebrow: eyebrow);
     }
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          eyebrow.toUpperCase(),
-          style: sk.text.labelLarge!.copyWith(
-            color: sk.colors.accentText,
-            letterSpacing: 1.4,
-          ),
-        ),
-      ),
+      appBar: AppBar(),
       body: SafeArea(top: false, child: body),
     );
   }
@@ -87,24 +78,20 @@ class _RoutineBody extends ConsumerWidget {
       key: ValueKey('routine:body:${routine.kind.tag}'),
       padding: const EdgeInsetsDirectional.all(SkSpace.space16),
       children: [
-        Semantics(
-          header: true,
-          child: Text(
-            practice?.title ??
-                switch (routine.kind) {
-                  RoutineKind.morning => l10n.practiceMorningTitle,
-                  RoutineKind.evening => l10n.practiceEveningTitle,
-                },
-            style: sk.text.headlineMedium,
-          ),
+        // D-01: hlavicka s oblukom (rano bod vysoko, vecer nizko).
+        SkPracticeHeader(
+          time: routine.kind == RoutineKind.morning
+              ? SkPracticeTime.morning
+              : SkPracticeTime.evening,
+          eyebrow: eyebrow,
+          title:
+              practice?.title ??
+              switch (routine.kind) {
+                RoutineKind.morning => l10n.practiceMorningTitle,
+                RoutineKind.evening => l10n.practiceEveningTitle,
+              },
+          subtitle: [?practice?.subtitle, ?section?.reference].join(' \u00B7 '),
         ),
-        if (practice?.subtitle case final s?)
-          Text(
-            s,
-            style: sk.text.titleMedium!.copyWith(
-              color: sk.colors.textSecondary,
-            ),
-          ),
         if (section != null) ...[
           const SizedBox(height: SkSpace.space24),
           _SectionQuote(section: section),

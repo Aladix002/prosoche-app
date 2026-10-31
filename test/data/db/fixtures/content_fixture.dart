@@ -268,7 +268,7 @@ void _fill(Database db) {
       title: 'Evening review',
       subtitle: '[PLACEHOLDER subtitle]',
       text:
-          '[PLACEHOLDER evening intro] Question one? Question two?\n\n'
+          '[PLACEHOLDER evening intro]. Question one? Question two?\n\n'
           '[PLACEHOLDER evening outro]',
       sectionKey: 'work-flat.3',
       tags: '["evening"]',

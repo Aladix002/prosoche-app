@@ -61,7 +61,7 @@ class ReaderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final sk = context.sk;
-    final style = sk.type.translationReader.copyWith(color: sk.colors.lead);
+    final style = sk.type.reader.copyWith(color: sk.colors.lead);
     final marked = style.copyWith(
       backgroundColor: sk.colors.primaryContainer,
       color: sk.colors.onPrimaryContainer,
@@ -83,12 +83,11 @@ class ReaderPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Text(work.title.toUpperCase(), style: sk.type.eyebrow),
+                  const SizedBox(height: SkSpace.space8),
                   if (bookTitle case final b?) ...[
-                    Semantics(
-                      header: true,
-                      child: Text(b, style: sk.text.headlineSmall),
-                    ),
-                    const SizedBox(height: SkSpace.space24),
+                    SkReaderHeading(title: b),
+                    const SizedBox(height: SkSpace.space8),
                   ],
                   Semantics(
                     header: true,
@@ -106,22 +105,29 @@ class ReaderPage extends StatelessWidget {
                     Text(t, style: sk.text.titleLarge),
                   ],
                   const SizedBox(height: SkSpace.space16),
-                  for (final p in paragraphs) ...[
-                    Text.rich(
-                      p.start == null
-                          ? TextSpan(text: p.text, style: style)
-                          : TextSpan(
-                              style: style,
-                              children: [
-                                TextSpan(text: p.text.substring(0, p.start)),
-                                TextSpan(
-                                  text: p.text.substring(p.start!, p.end),
-                                  style: marked,
-                                ),
-                                TextSpan(text: p.text.substring(p.end!)),
-                              ],
+                  for (final (i, p) in paragraphs.indexed) ...[
+                    if (p.start == null)
+                      // D-01 odstavec citacky; cislo sekcie pri prvom.
+                      SkReaderText(
+                        text: p.text,
+                        sectionNumber: i == 0 ? section.number : null,
+                      )
+                    else
+                      // Citat z karty: zvyraznena presne jeho cast
+                      // (kontrakt kap. 6, doslovny podretazec sekcie).
+                      Text.rich(
+                        TextSpan(
+                          style: style,
+                          children: [
+                            TextSpan(text: p.text.substring(0, p.start)),
+                            TextSpan(
+                              text: p.text.substring(p.start!, p.end),
+                              style: marked,
                             ),
-                    ),
+                            TextSpan(text: p.text.substring(p.end!)),
+                          ],
+                        ),
+                      ),
                     const SizedBox(height: SkSpace.space16),
                   ],
                   const SizedBox(height: SkSpace.space8),

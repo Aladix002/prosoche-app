@@ -22,15 +22,14 @@ class PracticeScreen extends ConsumerWidget {
     final practices = ref.watch(practicesProvider);
     final journal = ref.watch(journalProvider).value;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.tabPractice, style: sk.text.headlineSmall),
-      ),
+      appBar: AppBar(),
       body: SafeArea(
         top: false,
         child: ListView(
           key: const ValueKey('practice:list'),
           padding: const EdgeInsetsDirectional.all(SkSpace.space16),
           children: [
+            SkScreenTitle(title: l10n.tabPractice),
             for (final kind in RoutineKind.values) ...[
               _RoutineTile(kind: kind, done: done.contains(kind)),
               const SizedBox(height: SkSpace.space12),
