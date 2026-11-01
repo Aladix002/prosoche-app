@@ -13,6 +13,7 @@ import 'package:prosoche/data/blocker/blocker_gateway_provider.dart';
 import 'package:prosoche/data/blocker/fake_blocker_gateway.dart';
 import 'package:prosoche/data/blocker/gate_repository.dart';
 import 'package:prosoche/domain/common/common.dart';
+import 'package:prosoche/features/gate/gate_app.dart';
 import 'package:prosoche/features/gate/gate_screen.dart';
 import 'package:prosoche/ui/foundation/sk_ui_strings.dart';
 import 'package:prosoche/ui/theme/prosoche_theme.dart';
@@ -103,6 +104,7 @@ class GateTest {
     FakeGateRepository? gates,
     FakeBlockerGateway? blocker,
     List<CardId>? extra,
+    this.externalChanges = _noChanges,
   }) : extra = extra ?? [for (var i = 101; i <= 110; i++) fakeQuoteId(i)],
        repos = repos ?? FakeRepositories(),
        gates = gates ?? FakeGateRepository(),
@@ -114,7 +116,12 @@ class GateTest {
 
   /// Karty volneho citania po konci sady.
   final List<CardId> extra;
+
+  /// Signal o zmenach user.db z hlavnej appky (P-03); bez user.db nic.
+  final void Function() externalChanges;
   int closed = 0;
+
+  static void _noChanges() {}
 
   List<Override> overrides(
     WidgetTester tester, {
@@ -128,6 +135,7 @@ class GateTest {
     gateRepositoryProvider.overrideWithValue(gates),
     gateOverlayEnabledProvider.overrideWithValue(overlayEnabled),
     gateFreeReadingProvider.overrideWithValue(() async => this.extra),
+    gateExternalChangesProvider.overrideWithValue(externalChanges),
     ...extra,
   ];
 
