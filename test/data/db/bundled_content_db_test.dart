@@ -44,6 +44,17 @@ void main() {
             .check(db, expectedSectionsSha256: manifest.sectionsSha256),
         const Ok<void>(null),
       );
+      // C-03: schvaleny obsah (dev_content = 0) prijme aj prod flavor
+      // (ContentIntegrityChecker bez allowDevContent).
+      if (!dev) {
+        expect(
+          await const ContentIntegrityChecker().check(
+            db,
+            expectedSectionsSha256: manifest.sectionsSha256,
+          ),
+          const Ok<void>(null),
+        );
+      }
       // Kontrakt kap. 5: nazov "Project Gutenberg" nikde v obsahu.
       final hits = await db
           .customSelect(
