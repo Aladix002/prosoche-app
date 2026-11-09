@@ -182,6 +182,10 @@ abstract interface class BlockerGateway {
   /// false: home screen.
   Future<Result<void>> closeGate({required bool openTarget});
 
+  /// Zavrie branu a otvori Practice v hlavnej appke (ranny zamok
+  /// "Practice first", G-01). V hlavnom engine nic nerobi.
+  Future<Result<void>> openPractice();
+
   /// Zmaze vsetky odomknutia (po "Delete all my data", A10.9).
   Future<Result<void>> clearUnlocks();
 

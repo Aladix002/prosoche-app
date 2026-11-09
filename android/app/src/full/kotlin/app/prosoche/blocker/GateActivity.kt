@@ -3,6 +3,7 @@ package app.prosoche.blocker
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -147,6 +148,21 @@ class GateActivity : FlutterActivity(), GateHost {
         finishAndRemoveTask()
     }
 
+    /**
+     * Ranny zamok "Practice first" (G-01): zavrie branu a otvori Practice
+     * v hlavnej appke cez vlastny deep link (len tento balik, nic sa
+     * neodomkne).
+     */
+    override fun openPractice() {
+        main.removeCallbacks(showFallback)
+        try {
+            startActivity(practiceIntent(packageName))
+        } catch (e: RuntimeException) {
+            startActivity(homeIntent())
+        }
+        finishAndRemoveTask()
+    }
+
     companion object {
         const val EXTRA_APP = "app.prosoche.gate.APP"
         const val EXTRA_SRC = "app.prosoche.gate.SRC"
@@ -167,6 +183,14 @@ class GateActivity : FlutterActivity(), GateHost {
                 .putExtra(EXTRA_APP, ref)
                 .putExtra(EXTRA_SRC, source.takeIf { it in SOURCES } ?: SOURCE_MONITOR)
 
+        /** Deep link na tab Practice (mapDeepLink v Darte). */
+        const val PRACTICE_URI = "prosoche://practice"
+
+        fun practiceIntent(packageName: String): Intent =
+            Intent(Intent.ACTION_VIEW, Uri.parse(PRACTICE_URI))
+                .setPackage(packageName)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
         fun homeIntent(): Intent =
             Intent(Intent.ACTION_MAIN)
                 .addCategory(Intent.CATEGORY_HOME)
@@ -179,4 +203,7 @@ interface GateHost {
     val gateTarget: String?
 
     fun finishGate(openTarget: Boolean)
+
+    /** Zavrie branu a otvori Practice (G-01). */
+    fun openPractice()
 }

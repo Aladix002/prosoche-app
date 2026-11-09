@@ -8,6 +8,7 @@ import 'package:prosoche/core/result.dart';
 import 'package:prosoche/data/blocker/blocker_gateway.dart';
 import 'package:prosoche/data/blocker/gate_repository.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/blocker/gate_friction.dart';
 import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/quests/quests.dart';
 import 'package:prosoche/features/gate/gate_deck.dart';
@@ -36,6 +37,13 @@ abstract final class GateRules {
 /// Faza brany (stavy docs/02 A4).
 enum GatePhase {
   loading,
+
+  /// "Why are you opening {app}?" pred kartami (G-01).
+  intent,
+
+  /// Ranny zamok "Practice first": namiesto kariet Practice (G-01).
+  practiceFirst,
+
   cards,
 
   /// Emergency odpocet 10 s.
@@ -54,6 +62,28 @@ enum GatePhase {
   closed,
 }
 
+/// Nastavenia brany z `settings` (G-01). Default = vsetko vypnute.
+@immutable
+class GateOptions {
+  const GateOptions({
+    this.askIntent = false,
+    this.risingFriction = false,
+    this.practiceFirst = const PracticeFirstRule(
+      enabled: false,
+      until: PracticeFirstRule.defaultUntil,
+    ),
+  });
+
+  /// `gate.ask_intent`
+  final bool askIntent;
+
+  /// `gate.rising_friction`
+  final bool risingFriction;
+
+  /// `gate.practice_first` a `gate.practice_first.until`
+  final PracticeFirstRule practiceFirst;
+}
+
 /// Zavislosti brany, v testoch fakes.
 @immutable
 class GateDeps {
@@ -68,6 +98,7 @@ class GateDeps {
     this.freeReading,
     this.overlayEnabled,
     this.syncQuests,
+    this.options,
   });
 
   final BlockerGateway blocker;
@@ -90,6 +121,9 @@ class GateDeps {
 
   /// Prepocet auto questov po volnom citani (READ quest).
   final Future<void> Function(LocalDate date)? syncQuests;
+
+  /// Nastavenia G-01 (zamer, odpor, ranny zamok); null = vypnute.
+  final Future<GateOptions> Function()? options;
 }
 
 /// Stav a logika jednej brany pre appku [ref]. Obrazovka len vykresluje.
@@ -98,7 +132,12 @@ class GateDeps {
 /// "Continue to {app}" a ked zlyha aj nativ, `closeGate(openTarget: true)`
 /// prepusti pouzivatela s kratkym prechodom (GateActivity).
 class GateController extends ChangeNotifier {
-  GateController({required this.ref, required this.deps, this.onClosed});
+  GateController({
+    required this.ref,
+    required this.deps,
+    this.onClosed,
+    this.onPractice,
+  });
 
   static const _tag = 'gate';
 
@@ -108,6 +147,10 @@ class GateController extends ChangeNotifier {
 
   /// Brana sa zavrela (GateTarget sa vrati do necinneho stavu).
   final VoidCallback? onClosed;
+
+  /// Brana sa zavrela cez "Start morning preparation" (hlavny engine
+  /// prejde na Practice); null = [onClosed].
+  final VoidCallback? onPractice;
 
   GatePhase _phase = GatePhase.loading;
   GatePhase get phase => _phase;
@@ -133,7 +176,23 @@ class GateController extends ChangeNotifier {
   int _page = 0;
   int get page => _page;
 
-  int get cardsRequired => math.max(_app?.cardsRequired ?? 0, 1);
+  int get cardsRequired =>
+      math.max(_app?.cardsRequired ?? 0, 1) + _friction.extraCards;
+
+  GateFriction _friction = GateFriction.none;
+
+  /// Rastuci odpor tohto otvorenia (G-01).
+  GateFriction get friction => _friction;
+
+  /// Kolkate otvorenie appky dnes; null = pocitadlo vypnute (G-01).
+  int? _opensToday;
+  int? get opensToday => _opensToday;
+
+  /// Koniec ranneho zamku `HH:mm` vo faze [GatePhase.practiceFirst].
+  int _practiceUntil = 0;
+
+  /// Minuta dna, kedy ranny zamok skonci aj bez pripravy.
+  int get practiceUntilMinutes => _practiceUntil;
   int get unlockMinutes =>
       _app?.unlockMinutes ?? GateRules.defaultUnlockMinutes;
 
@@ -207,14 +266,37 @@ class GateController extends ChangeNotifier {
     }
     _app = app;
     _sessionId = await deps.gates.openSession(app.id);
-    final date = await deps.sets.activeSetDate(deps.today());
+    final options = await deps.options?.call() ?? const GateOptions();
+    final today = deps.today();
+    final rule = options.practiceFirst;
+    if (rule.enabled && app.practiceFirst) {
+      final done = await deps.gates.morningPracticeDone(today);
+      if (_phase != GatePhase.loading) return;
+      if (rule.locks(
+        now: deps.clock.now(),
+        appSelected: app.practiceFirst,
+        morningDone: done,
+      )) {
+        _practiceUntil = rule.untilMinutes;
+        _setPhase(GatePhase.practiceFirst);
+        return;
+      }
+    }
+    if (options.risingFriction) {
+      final opens = await deps.gates.opensOn(app.id, today);
+      _opensToday = math.max(opens, 1);
+      _friction = GateFriction.forOpen(opens);
+    }
+    final date = await deps.sets.activeSetDate(today);
     final state = await deps.sets.ensure(date);
     final extra = await deps.freeReading?.call() ?? const <CardId>[];
     final dwellMs = await deps.dwellMs?.call();
     if (_phase != GatePhase.loading) return;
     _date = date;
-    _dwell = Duration(
-      milliseconds: math.max(dwellMs ?? 0, GateRules.minDwell.inMilliseconds),
+    _dwell = _friction.dwell(
+      Duration(
+        milliseconds: math.max(dwellMs ?? 0, GateRules.minDwell.inMilliseconds),
+      ),
     );
     _deck = GateDeck(
       cards: state.set.cards,
@@ -227,8 +309,45 @@ class GateController extends ChangeNotifier {
       return;
     }
     _items.add(first);
+    if (options.askIntent) {
+      _setPhase(GatePhase.intent);
+      return;
+    }
     _setPhase(GatePhase.cards);
     _activate(0);
+  }
+
+  // ------------------------------------------------------------ zamer
+
+  /// Odpoved na "Why are you opening {app}?" alebo "Skip" ([intent] null).
+  /// Ulozi sa len lokalne k session, potom karty (G-01).
+  Future<void> chooseIntent(GateIntent? intent) async {
+    if (_phase != GatePhase.intent) return;
+    final id = _sessionId;
+    _setPhase(GatePhase.cards);
+    _activate(_page);
+    notifyListeners();
+    if (intent != null && id != null) {
+      await _guard('intent failed', () => deps.gates.setIntent(id, intent));
+    }
+  }
+
+  /// "Start morning preparation": brana sa zavrie a otvori sa Practice,
+  /// nic sa neodomkne (G-01).
+  Future<void> openPractice() async {
+    if (_phase != GatePhase.practiceFirst || _busy) return;
+    _busy = true;
+    await _closeSession(GateResult.dismissed);
+    _emergencyTimer?.cancel();
+    _setPhase(GatePhase.closed);
+    final result = await deps.blocker.openPractice();
+    if (result case Err(:final failure)) {
+      deps.log.failure(_tag, failure);
+      final close = await deps.blocker.closeGate(openTarget: false);
+      if (close case Err(:final failure)) deps.log.failure(_tag, failure);
+    }
+    _busy = false;
+    (onPractice ?? onClosed)?.call();
   }
 
   // ------------------------------------------------------------- karty
@@ -439,9 +558,17 @@ class GateController extends ChangeNotifier {
     await _close(openTarget: true);
   }
 
+  /// Faza, z ktorej ide emergency (karty, otazka zameru, ranny zamok).
+  static const Set<GatePhase> _emergencyFrom = {
+    GatePhase.cards,
+    GatePhase.intent,
+    GatePhase.practiceFirst,
+  };
+
   /// Podrzanie 1,5 s (alebo a11y dialog): 10 s odpocet (docs/01 D4).
+  /// Emergency je dostupne vzdy, aj pri odpore a rannom zamku (G-01).
   void startEmergency() {
-    if (_phase != GatePhase.cards || _unlocked) return;
+    if (!_emergencyFrom.contains(_phase) || _unlocked) return;
     _beforeEmergency = _phase;
     _cancelDwell();
     _emergencyLeft = GateRules.emergencyCountdown.inSeconds;
@@ -462,7 +589,7 @@ class GateController extends ChangeNotifier {
     if (_phase != GatePhase.emergency) return;
     _emergencyTimer?.cancel();
     _setPhase(_beforeEmergency);
-    _activate(_page);
+    if (_phase == GatePhase.cards) _activate(_page);
   }
 
   Future<void> _emergencyUnlock() async {

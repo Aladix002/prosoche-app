@@ -665,6 +665,26 @@ class BlockerHostApi {
     );
   }
 
+  /// Zavrie branu a otvori Practice v hlavnej appke (`prosoche://practice`,
+  /// ranny zamok "Practice first", G-01). V hlavnom engine nic.
+  Future<void> openPractice() async {
+    final pigeonVar_channelName =
+        'dev.flutter.pigeon.prosoche.BlockerHostApi.openPractice$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+
+    _extractReplyValueOrThrow(
+      pigeonVar_replyList,
+      pigeonVar_channelName,
+      isNullValid: true,
+    );
+  }
+
   /// Zmaze vsetky odomknutia (`UnlockStore`), napr. po "Delete all my
   /// data" (A10.9).
   Future<void> clearUnlocks() async {

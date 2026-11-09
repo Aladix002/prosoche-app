@@ -102,6 +102,10 @@ class BlockerHostApiImpl(
         gateHost?.finishGate(openTarget)
     }
 
+    override fun openPractice() {
+        gateHost?.openPractice()
+    }
+
     override fun clearUnlocks() {
         unlocks.clearAll()
     }

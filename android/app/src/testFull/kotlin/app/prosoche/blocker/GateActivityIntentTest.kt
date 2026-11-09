@@ -33,6 +33,15 @@ class GateActivityIntentTest {
     }
 
     @Test
+    fun `practice intent is an explicit deep link into this app`() {
+        val intent = GateActivity.practiceIntent("app.prosoche.dev")
+        assertEquals(android.content.Intent.ACTION_VIEW, intent.action)
+        assertEquals("prosoche://practice", intent.dataString)
+        assertEquals("app.prosoche.dev", intent.`package`)
+        assertTrue(intent.flags and android.content.Intent.FLAG_ACTIVITY_NEW_TASK != 0)
+    }
+
+    @Test
     fun `sources match the Dart GateParams`() {
         assertEquals(setOf("monitor", "notif", "test", "error"), GateActivity.SOURCES)
         assertTrue(GateActivity.FALLBACK_MS in 3_000L..10_000L)

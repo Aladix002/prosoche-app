@@ -1,0 +1,165 @@
+{
+  "@@locale": "en",
+  "gateIntentQuestion": "Why are you opening {app}?",
+  "@gateIntentQuestion": {
+    "description": "Gate (G-01): optional one-tap question before the cards. {app} is the app name. Neutral, never judging.",
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "gateIntentQuestionGeneric": "Why are you opening this app?",
+  "@gateIntentQuestionGeneric": {
+    "description": "Gate intent question when the app name is unknown."
+  },
+  "gateIntentNote": "Noticing your reason is already a choice of your own.",
+  "@gateIntentNote": {
+    "description": "Short calm line under the intent question: attention to one's own choices. No preaching, no quote."
+  },
+  "gateIntentBoredom": "Boredom",
+  "@gateIntentBoredom": {
+    "description": "Intent chip: opening the app out of boredom."
+  },
+  "gateIntentMessage": "A message",
+  "@gateIntentMessage": {
+    "description": "Intent chip: opening the app to read or answer a message."
+  },
+  "gateIntentWork": "Work",
+  "@gateIntentWork": {
+    "description": "Intent chip: opening the app for work."
+  },
+  "gateIntentHabit": "Habit",
+  "@gateIntentHabit": {
+    "description": "Intent chip: opening the app out of habit."
+  },
+  "gateIntentOther": "Something else",
+  "@gateIntentOther": {
+    "description": "Intent chip: any other reason."
+  },
+  "gateIntentSkip": "Skip",
+  "@gateIntentSkip": {
+    "description": "Skips the intent question; nothing is saved."
+  },
+  "gateIntentChoicesA11y": "Reason for opening",
+  "@gateIntentChoicesA11y": {
+    "description": "Accessibility label of the group of intent chips."
+  },
+  "gateOpenCount": "{form, select, one{This is your {count}st time opening {app} today.} two{This is your {count}nd time opening {app} today.} few{This is your {count}rd time opening {app} today.} other{This is your {count}th time opening {app} today.}}",
+  "@gateOpenCount": {
+    "description": "Gate (G-01): how many times the app was opened today, as an English ordinal (1st, 2nd, 3rd, 4th, 11th, 21st...). {form} is the CLDR ordinal category of {count} for the UI language (one, two, few, many, other); translate each branch with the right ordinal form.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "form": {
+        "type": "String"
+      },
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "gateOpenCountGeneric": "{form, select, one{This is your {count}st time opening this app today.} two{This is your {count}nd time opening this app today.} few{This is your {count}rd time opening this app today.} other{This is your {count}th time opening this app today.}}",
+  "@gateOpenCountGeneric": {
+    "description": "Same as gateOpenCount when the app name is unknown.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "form": {
+        "type": "String"
+      }
+    }
+  },
+  "gateFrictionNote": "Each return today asks for a little more time.",
+  "@gateFrictionNote": {
+    "description": "Gate (G-01): shown when rising friction made the wait longer. Calm, not scolding."
+  },
+  "gatePracticeFirstTitle": "Practice first",
+  "@gatePracticeFirstTitle": {
+    "description": "Gate (G-01) morning lock title (same as the setting name)."
+  },
+  "gatePracticeFirstBody": "{app} stays closed until you finish your morning preparation, or until {time}.",
+  "@gatePracticeFirstBody": {
+    "description": "Gate morning lock body. {app} is the app name, {time} the local end of the lock, e.g. 10:00 AM.",
+    "placeholders": {
+      "app": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "gatePracticeFirstBodyGeneric": "This app stays closed until you finish your morning preparation, or until {time}.",
+  "@gatePracticeFirstBodyGeneric": {
+    "description": "Gate morning lock body when the app name is unknown.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "gatePracticeFirstWhy": "You chose to start the day with your own thoughts before anyone else's.",
+  "@gatePracticeFirstWhy": {
+    "description": "Gate morning lock: short reason, reminding the user it was their own choice. No preaching."
+  },
+  "gatePracticeFirstStart": "Start morning preparation",
+  "@gatePracticeFirstStart": {
+    "description": "Gate morning lock: opens Practice in the app."
+  },
+  "blkGateSection": "At the gate",
+  "@blkGateSection": {
+    "description": "Settings > Gate (G-01): section with gate behaviour switches."
+  },
+  "blkAskIntent": "Ask why I'm opening an app",
+  "@blkAskIntent": {
+    "description": "Settings switch (G-01): the gate asks for a reason (one tap, can be skipped)."
+  },
+  "blkAskIntentHelp": "One tap or skip. Answers stay on this phone.",
+  "@blkAskIntentHelp": {
+    "description": "Help under the intent switch."
+  },
+  "blkFriction": "Rising friction",
+  "@blkFriction": {
+    "description": "Settings switch (G-01): each repeat opening of the same app today waits longer."
+  },
+  "blkFrictionHelp": "Shows how often you opened an app today. Each return waits a little longer, up to twice as long, with one more card from the 4th time.",
+  "@blkFrictionHelp": {
+    "description": "Help under the rising friction switch."
+  },
+  "blkPracticeFirst": "Practice first",
+  "@blkPracticeFirst": {
+    "description": "Settings (G-01): morning lock until the morning preparation in Practice is done."
+  },
+  "blkPracticeFirstHelp": "In the morning, chosen apps stay closed until you finish your morning preparation in Practice. Emergency still works.",
+  "@blkPracticeFirstHelp": {
+    "description": "Help for the Practice first setting."
+  },
+  "blkPracticeFirstOn": "On until {time}",
+  "@blkPracticeFirstOn": {
+    "description": "Value of the Practice first tile when on. {time} is the local end time, e.g. 10:00 AM.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "blkPracticeFirstOff": "Off",
+  "@blkPracticeFirstOff": {
+    "description": "Value of the Practice first tile when off."
+  },
+  "blkPracticeFirstUntil": "Lock ends at",
+  "@blkPracticeFirstUntil": {
+    "description": "Practice first: tile with the time when the morning lock ends anyway."
+  },
+  "blkPracticeFirstApps": "Apps locked in the morning",
+  "@blkPracticeFirstApps": {
+    "description": "Practice first: section with the blocked apps the lock applies to."
+  },
+  "blkPracticeFirstAppsNone": "Add apps to the gate first.",
+  "@blkPracticeFirstAppsNone": {
+    "description": "Practice first: no blocked apps yet."
+  }
+}

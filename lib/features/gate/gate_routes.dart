@@ -28,6 +28,9 @@ List<RouteBase> gateRoutes() => [
       onClosed: () {
         if (context.mounted) context.go(AppRoutes.today);
       },
+      onPractice: () {
+        if (context.mounted) context.go(AppRoutes.practice);
+      },
     ),
   ),
 ];
