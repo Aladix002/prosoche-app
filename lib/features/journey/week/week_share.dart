@@ -279,6 +279,7 @@ class _WeekShareSheetState extends ConsumerState<WeekShareSheet> {
       closeLabel: l10n.journeyWeekShareClose,
       actions: [
         SkButton.primary(
+          key: const ValueKey('week:share-image'),
           label: l10n.journeyWeekShareImage,
           icon: Icons.ios_share,
           expand: true,

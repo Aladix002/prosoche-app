@@ -102,7 +102,7 @@ class _JourneyScreenState extends ConsumerState<JourneyScreen> {
               JourneyStreakSummary(summary: summary),
             ],
             const SizedBox(height: SkSpace.space24),
-            const JourneyWeekCard(),
+            const JourneyWeekCard(key: ValueKey('journey:week')),
           ],
           const SizedBox(height: SkSpace.space24),
           const _SavedButton(),

@@ -12,11 +12,34 @@ import 'package:prosoche/ui/ui.dart';
 
 /// Karta "This week" na Journey (J-01). Pri chybe alebo pocas nacitania
 /// sa nezobrazi nic (Journey ma vlastny stav chyby a nacitania).
-class JourneyWeekCard extends ConsumerWidget {
+class JourneyWeekCard extends ConsumerStatefulWidget {
   const JourneyWeekCard({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<JourneyWeekCard> createState() => _JourneyWeekCardState();
+}
+
+class _JourneyWeekCardState extends ConsumerState<JourneyWeekCard> {
+  // Brana zapisuje gate_session zo svojho izolatu; drift hlavnej appky
+  // o tom nevie. Po navrate do appky sa tyzden nacita znova.
+  late final AppLifecycleListener _lifecycle;
+
+  @override
+  void initState() {
+    super.initState();
+    _lifecycle = AppLifecycleListener(
+      onResume: () => ref.invalidate(weekActivityProvider),
+    );
+  }
+
+  @override
+  void dispose() {
+    _lifecycle.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final summary = ref.watch(weekSummaryProvider).value;
     if (summary == null) return const SizedBox.shrink();
     return WeekSummaryCard(
@@ -125,6 +148,7 @@ class WeekSummaryCard extends StatelessWidget {
           Align(
             alignment: AlignmentDirectional.centerStart,
             child: SkButton.outlined(
+              key: const ValueKey('week:share'),
               label: l10n.journeyWeekShare,
               icon: Icons.ios_share,
               onPressed: onShare,

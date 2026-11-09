@@ -1,12 +1,13 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:prosoche/core/flags/feature_flags.dart';
 import 'package:prosoche/data/observability/analytics.dart';
 import 'package:prosoche/data/observability/observability_providers.dart';
+import 'package:prosoche/data/repositories/journey/week_repository.dart';
 import 'package:prosoche/domain/common/common.dart';
-import 'package:prosoche/domain/journey/week_summary.dart';
 import 'package:prosoche/domain/practice/routine.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/cards/cards.dart';
@@ -255,5 +256,25 @@ void main() {
     await tester.tap(find.text('Share'));
     await tester.pumpAndSettle();
     expect(find.byType(SwitchListTile), findsNothing);
+  });
+
+  testWidgets('reloads the week when the app resumes', (tester) async {
+    await pump(tester, activity: WeekActivity.empty);
+    final fake = ProviderScope.containerOf(
+      tester.element(find.byType(WeekSummaryCard)),
+    ).read(weekRepositoryProvider) as FakeWeekRepository;
+    final before = fake.windows.length;
+    fake.activity = WeekActivity(cardsReadByDay: {journeyToday: 7});
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await tester.pumpAndSettle();
+    expect(fake.windows.length, greaterThan(before));
+    expect(
+      find.descendant(
+        of: find.byType(WeekSummaryCard),
+        matching: find.text('7'),
+      ),
+      findsOneWidget,
+    );
   });
 }
