@@ -4,6 +4,13 @@ Flutter appka Prosoche (Android, iOS): stoicka appka proti doomscrollingu.
 Vznikla forkom appky Mursa (sakina-app, tag rc1.2, uloha S-01); islamske
 casti su odstranene. Plan: `../PLAN.md`.
 
+## APK do mobilu
+
+Posledna testovacia verzia (devFull s branou, arm64):
+[prosoche-v0.2.0-rc1.apk](https://github.com/Aladix002/prosoche-app/blob/apk/prosoche-v0.2.0-rc1.apk)
+(vetva `apk`). V mobile sa prihlas na GitHub, stiahni subor a povol
+instalaciu z neznamych zdrojov.
+
 ## Poziadavky
 
 - Flutter 3.47.8 / Dart 3.13 (pin v `pubspec.yaml`, kontroluje `tool/check.sh`)
