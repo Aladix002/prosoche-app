@@ -7,8 +7,9 @@ Drift databazy.
   `LibraryDao.search`.
 - `content_integrity.dart`: kontrola po otvoreni (schema_version,
   dev_content, sekcie a karty, sha256 sekcii, sections_sha256).
-- `user_db.dart` + `user_tables.dart`: user.db v3 (F-01: practice_log,
-  reading_position, section_bookmark), WAL + busy_timeout. Zalohuje sa
+- `user_db.dart` + `user_tables.dart`: user.db v4 (F-01: practice_log,
+  reading_position, section_bookmark; G-01: `gate_session.intent`,
+  `blocked_app.practice_first`), WAL + busy_timeout. Zalohuje sa
   (Android Auto Backup, len sifrovane).
 - `journal_db.dart` + `journal_tables.dart`: journal.db v1 (C-02), lokalny
   dennik `journal_entry`. Samostatny subor, Android zaloha ho nikdy nezahrna

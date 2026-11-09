@@ -1,10 +1,11 @@
 // Deklaracie tabuliek cita len drift_dev pri generovani, za behu sa
 // nevykonavaju.
 // coverage:ignore-file
-// Drift tabulky user.db, schema v3 (plan 5.2 + docs/02 D1, D7, D8, D12, D13
+// Drift tabulky user.db, schema v4 (plan 5.2 + docs/02 D1, D7, D8, D12, D13
 // + 07 ADR-06 Z2). v2 (F-01): dennik, prax dna, pozicia citania a zalozky
 // sekcii v Library. v3 (C-02): dennik presunuty do journal.db
-// (journal_tables.dart), ktora sa nezalohuje.
+// (journal_tables.dart), ktora sa nezalohuje. v4 (G-01): zamer otvorenia
+// `gate_session.intent` a `blocked_app.practice_first`.
 //
 // Konvencie:
 //  * datum dna (`date`) = TEXT `YYYY-MM-DD` ([LocalDateConverter]),
@@ -170,6 +171,10 @@ class BlockedApps extends Table {
   IntColumn get unlockMinutes => integer().withDefault(const Constant(10))();
   BoolColumn get enabled => boolean().withDefault(const Constant(true))();
   IntColumn get createdAt => integer().map(const UtcMillisConverter())();
+
+  /// Rano zamknuta do rannej pripravy, ked je zapnute "Practice first"
+  /// (`gate.practice_first`, G-01, v4).
+  BoolColumn get practiceFirst => boolean().withDefault(const Constant(true))();
 }
 
 /// Otvorenie brany (docs/02 D12). `result` je null, kym brana bezi.
@@ -192,6 +197,12 @@ class GateSessions extends Table {
       .nullable()
       .check(result.isIn(GateResult.values.map((e) => e.wire)))
       .map(const WireEnumConverter(GateResult.values))();
+
+  /// Odpoved na otazku zameru (G-01, v4); null = preskocene alebo vypnute.
+  TextColumn get intent => text()
+      .nullable()
+      .check(intent.isIn(GateIntent.values.map((e) => e.wire)))
+      .map(const WireEnumConverter(GateIntent.values))();
 }
 
 @DataClassName('UnlockEventRow')

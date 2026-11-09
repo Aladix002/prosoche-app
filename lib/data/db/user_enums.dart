@@ -85,6 +85,20 @@ enum GateResult implements WireEnum {
   final String wire;
 }
 
+/// `gate_session.intent` (G-01): odpoved na "Why are you opening {app}?".
+/// Null = otazka bola preskocena alebo vypnuta. Len lokalne, nikdy v
+/// analytike ani logoch.
+enum GateIntent implements WireEnum {
+  boredom,
+  message,
+  work,
+  habit,
+  other;
+
+  @override
+  String get wire => name;
+}
+
 /// `unlock_event.source` (docs/02 D12, bez `schedule`).
 enum UnlockSource implements WireEnum {
   cards,

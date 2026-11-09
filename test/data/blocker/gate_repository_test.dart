@@ -90,6 +90,87 @@ void main() {
     ]);
   });
 
+  group('G-01', () {
+    test('intent is stored with the session, null clears it', () async {
+      final id = await repo.openSession(null);
+      await repo.setIntent(id, GateIntent.boredom);
+      expect((await userDb.blockerDao.session(id))!.intent, GateIntent.boredom);
+      await repo.setIntent(id, null);
+      expect((await userDb.blockerDao.session(id))!.intent, null);
+    });
+
+    test('opensOn counts this app since local midnight', () async {
+      final ig = await userDb.blockerDao.addApp(
+        platformRef: 'com.instagram.android',
+        now: now,
+      );
+      final yt = await userDb.blockerDao.addApp(
+        platformRef: 'com.google.android.youtube',
+        now: now,
+      );
+      Future<void> open(int appId, DateTime at) =>
+          userDb.blockerDao.openSession(appId, at.toUtc());
+      // Den pred polnocou a druha appka sa nepocitaju.
+      await open(ig.id, DateTime(2026, 10, 28, 23, 59, 59));
+      await open(ig.id, DateTime(2026, 10, 29));
+      await open(ig.id, DateTime(2026, 10, 29, 8, 30));
+      await open(yt.id, DateTime(2026, 10, 29, 8, 40));
+      expect(await repo.opensOn(ig.id, date), 2);
+      expect(await repo.opensOn(yt.id, date), 1);
+      expect(await repo.opensOn(ig.id, LocalDate(2026, 10, 28)), 3);
+      expect(await repo.opensOn(ig.id, LocalDate(2026, 10, 30)), 0);
+    });
+
+    test('morningPracticeDone reads practice_log of the day', () async {
+      expect(await repo.morningPracticeDone(date), isFalse);
+      await userDb.practiceLogDao.markDone(date, JournalKind.evening, now);
+      expect(await repo.morningPracticeDone(date), isFalse);
+      await userDb.practiceLogDao.markDone(
+        date.addDays(-1),
+        JournalKind.morning,
+        now,
+      );
+      expect(await repo.morningPracticeDone(date), isFalse);
+      await userDb.practiceLogDao.markDone(date, JournalKind.morning, now);
+      expect(await repo.morningPracticeDone(date), isTrue);
+    });
+
+    test('app maps practice_first', () async {
+      final row = await userDb.blockerDao.addApp(
+        platformRef: 'com.instagram.android',
+        now: now,
+      );
+      expect((await repo.app('com.instagram.android'))!.practiceFirst, isTrue);
+      await userDb.blockerDao.updateApp(row.id, practiceFirst: false);
+      final app = (await repo.app('com.instagram.android'))!;
+      expect(app.practiceFirst, isFalse);
+      expect(
+        app,
+        isNot(
+          GateTarget(
+            id: row.id,
+            ref: 'com.instagram.android',
+            cardsRequired: 3,
+            unlockMinutes: 10,
+          ),
+        ),
+      );
+    });
+
+    test('deleteAllData removes intents and practice_first', () async {
+      final row = await userDb.blockerDao.addApp(
+        platformRef: 'com.instagram.android',
+        now: now,
+      );
+      await userDb.blockerDao.updateApp(row.id, practiceFirst: false);
+      final id = await repo.openSession(row.id);
+      await repo.setIntent(id, GateIntent.habit);
+      await userDb.deleteAllData();
+      expect(await userDb.select(userDb.gateSessions).get(), isEmpty);
+      expect(await userDb.blockerDao.apps(), isEmpty);
+    });
+  });
+
   test('provider builds the drift repository', () {
     final container = ProviderContainer(
       overrides: [

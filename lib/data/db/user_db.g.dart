@@ -2408,6 +2408,18 @@ class $BlockedAppsTable extends BlockedApps
         requiredDuringInsert: true,
       ).withConverter<DateTime>($BlockedAppsTable.$convertercreatedAt);
   @override
+  late final GeneratedColumn<bool> practiceFirst = GeneratedColumn<bool>(
+    'practice_first',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("practice_first" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  @override
   List<GeneratedColumn> get $columns => [
     id,
     platformRef,
@@ -2416,6 +2428,7 @@ class $BlockedAppsTable extends BlockedApps
     unlockMinutes,
     enabled,
     createdAt,
+    practiceFirst,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -2458,6 +2471,10 @@ class $BlockedAppsTable extends BlockedApps
           data['${effectivePrefix}created_at'],
         )!,
       ),
+      practiceFirst: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}practice_first'],
+      )!,
     );
   }
 
@@ -2478,6 +2495,10 @@ class BlockedAppRow extends DataClass implements Insertable<BlockedAppRow> {
   final int unlockMinutes;
   final bool enabled;
   final DateTime createdAt;
+
+  /// Rano zamknuta do rannej pripravy, ked je zapnute "Practice first"
+  /// (`gate.practice_first`, G-01, v4).
+  final bool practiceFirst;
   const BlockedAppRow({
     required this.id,
     required this.platformRef,
@@ -2486,6 +2507,7 @@ class BlockedAppRow extends DataClass implements Insertable<BlockedAppRow> {
     required this.unlockMinutes,
     required this.enabled,
     required this.createdAt,
+    required this.practiceFirst,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -2503,6 +2525,7 @@ class BlockedAppRow extends DataClass implements Insertable<BlockedAppRow> {
         $BlockedAppsTable.$convertercreatedAt.toSql(createdAt),
       );
     }
+    map['practice_first'] = Variable<bool>(practiceFirst);
     return map;
   }
 
@@ -2517,6 +2540,7 @@ class BlockedAppRow extends DataClass implements Insertable<BlockedAppRow> {
       unlockMinutes: Value(unlockMinutes),
       enabled: Value(enabled),
       createdAt: Value(createdAt),
+      practiceFirst: Value(practiceFirst),
     );
   }
 
@@ -2535,6 +2559,7 @@ class BlockedAppRow extends DataClass implements Insertable<BlockedAppRow> {
       createdAt: $BlockedAppsTable.$convertercreatedAt.fromJson(
         serializer.fromJson<int>(json['createdAt']),
       ),
+      practiceFirst: serializer.fromJson<bool>(json['practiceFirst']),
     );
   }
   @override
@@ -2550,6 +2575,7 @@ class BlockedAppRow extends DataClass implements Insertable<BlockedAppRow> {
       'createdAt': serializer.toJson<int>(
         $BlockedAppsTable.$convertercreatedAt.toJson(createdAt),
       ),
+      'practiceFirst': serializer.toJson<bool>(practiceFirst),
     };
   }
 
@@ -2561,6 +2587,7 @@ class BlockedAppRow extends DataClass implements Insertable<BlockedAppRow> {
     int? unlockMinutes,
     bool? enabled,
     DateTime? createdAt,
+    bool? practiceFirst,
   }) => BlockedAppRow(
     id: id ?? this.id,
     platformRef: platformRef ?? this.platformRef,
@@ -2569,6 +2596,7 @@ class BlockedAppRow extends DataClass implements Insertable<BlockedAppRow> {
     unlockMinutes: unlockMinutes ?? this.unlockMinutes,
     enabled: enabled ?? this.enabled,
     createdAt: createdAt ?? this.createdAt,
+    practiceFirst: practiceFirst ?? this.practiceFirst,
   );
   BlockedAppRow copyWithCompanion(BlockedAppsCompanion data) {
     return BlockedAppRow(
@@ -2585,6 +2613,9 @@ class BlockedAppRow extends DataClass implements Insertable<BlockedAppRow> {
           : this.unlockMinutes,
       enabled: data.enabled.present ? data.enabled.value : this.enabled,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      practiceFirst: data.practiceFirst.present
+          ? data.practiceFirst.value
+          : this.practiceFirst,
     );
   }
 
@@ -2597,7 +2628,8 @@ class BlockedAppRow extends DataClass implements Insertable<BlockedAppRow> {
           ..write('cardsRequired: $cardsRequired, ')
           ..write('unlockMinutes: $unlockMinutes, ')
           ..write('enabled: $enabled, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('practiceFirst: $practiceFirst')
           ..write(')'))
         .toString();
   }
@@ -2611,6 +2643,7 @@ class BlockedAppRow extends DataClass implements Insertable<BlockedAppRow> {
     unlockMinutes,
     enabled,
     createdAt,
+    practiceFirst,
   );
   @override
   bool operator ==(Object other) =>
@@ -2622,7 +2655,8 @@ class BlockedAppRow extends DataClass implements Insertable<BlockedAppRow> {
           other.cardsRequired == this.cardsRequired &&
           other.unlockMinutes == this.unlockMinutes &&
           other.enabled == this.enabled &&
-          other.createdAt == this.createdAt);
+          other.createdAt == this.createdAt &&
+          other.practiceFirst == this.practiceFirst);
 }
 
 class BlockedAppsCompanion extends UpdateCompanion<BlockedAppRow> {
@@ -2633,6 +2667,7 @@ class BlockedAppsCompanion extends UpdateCompanion<BlockedAppRow> {
   final Value<int> unlockMinutes;
   final Value<bool> enabled;
   final Value<DateTime> createdAt;
+  final Value<bool> practiceFirst;
   const BlockedAppsCompanion({
     this.id = const Value.absent(),
     this.platformRef = const Value.absent(),
@@ -2641,6 +2676,7 @@ class BlockedAppsCompanion extends UpdateCompanion<BlockedAppRow> {
     this.unlockMinutes = const Value.absent(),
     this.enabled = const Value.absent(),
     this.createdAt = const Value.absent(),
+    this.practiceFirst = const Value.absent(),
   });
   BlockedAppsCompanion.insert({
     this.id = const Value.absent(),
@@ -2650,6 +2686,7 @@ class BlockedAppsCompanion extends UpdateCompanion<BlockedAppRow> {
     this.unlockMinutes = const Value.absent(),
     this.enabled = const Value.absent(),
     required DateTime createdAt,
+    this.practiceFirst = const Value.absent(),
   }) : platformRef = Value(platformRef),
        createdAt = Value(createdAt);
   static Insertable<BlockedAppRow> custom({
@@ -2660,6 +2697,7 @@ class BlockedAppsCompanion extends UpdateCompanion<BlockedAppRow> {
     Expression<int>? unlockMinutes,
     Expression<bool>? enabled,
     Expression<int>? createdAt,
+    Expression<bool>? practiceFirst,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2669,6 +2707,7 @@ class BlockedAppsCompanion extends UpdateCompanion<BlockedAppRow> {
       if (unlockMinutes != null) 'unlock_minutes': unlockMinutes,
       if (enabled != null) 'enabled': enabled,
       if (createdAt != null) 'created_at': createdAt,
+      if (practiceFirst != null) 'practice_first': practiceFirst,
     });
   }
 
@@ -2680,6 +2719,7 @@ class BlockedAppsCompanion extends UpdateCompanion<BlockedAppRow> {
     Value<int>? unlockMinutes,
     Value<bool>? enabled,
     Value<DateTime>? createdAt,
+    Value<bool>? practiceFirst,
   }) {
     return BlockedAppsCompanion(
       id: id ?? this.id,
@@ -2689,6 +2729,7 @@ class BlockedAppsCompanion extends UpdateCompanion<BlockedAppRow> {
       unlockMinutes: unlockMinutes ?? this.unlockMinutes,
       enabled: enabled ?? this.enabled,
       createdAt: createdAt ?? this.createdAt,
+      practiceFirst: practiceFirst ?? this.practiceFirst,
     );
   }
 
@@ -2718,6 +2759,9 @@ class BlockedAppsCompanion extends UpdateCompanion<BlockedAppRow> {
         $BlockedAppsTable.$convertercreatedAt.toSql(createdAt.value),
       );
     }
+    if (practiceFirst.present) {
+      map['practice_first'] = Variable<bool>(practiceFirst.value);
+    }
     return map;
   }
 
@@ -2730,7 +2774,8 @@ class BlockedAppsCompanion extends UpdateCompanion<BlockedAppRow> {
           ..write('cardsRequired: $cardsRequired, ')
           ..write('unlockMinutes: $unlockMinutes, ')
           ..write('enabled: $enabled, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('practiceFirst: $practiceFirst')
           ..write(')'))
         .toString();
   }
@@ -2803,6 +2848,16 @@ class $GateSessionsTable extends GateSessions
         requiredDuringInsert: false,
       ).withConverter<GateResult?>($GateSessionsTable.$converterresultn);
   @override
+  late final GeneratedColumnWithTypeConverter<GateIntent?, String> intent =
+      GeneratedColumn<String>(
+        'intent',
+        aliasedName,
+        true,
+        check: () => intent.isIn(GateIntent.values.map((e) => e.wire)),
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<GateIntent?>($GateSessionsTable.$converterintentn);
+  @override
   List<GeneratedColumn> get $columns => [
     id,
     blockedAppId,
@@ -2810,6 +2865,7 @@ class $GateSessionsTable extends GateSessions
     closedAt,
     cardsSeen,
     result,
+    intent,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -2852,6 +2908,12 @@ class $GateSessionsTable extends GateSessions
           data['${effectivePrefix}result'],
         ),
       ),
+      intent: $GateSessionsTable.$converterintentn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}intent'],
+        ),
+      ),
     );
   }
 
@@ -2870,6 +2932,10 @@ class $GateSessionsTable extends GateSessions
       const WireEnumConverter(GateResult.values);
   static JsonTypeConverter2<GateResult?, String?, String?> $converterresultn =
       JsonTypeConverter2.asNullable($converterresult);
+  static JsonTypeConverter2<GateIntent, String, String> $converterintent =
+      const WireEnumConverter(GateIntent.values);
+  static JsonTypeConverter2<GateIntent?, String?, String?> $converterintentn =
+      JsonTypeConverter2.asNullable($converterintent);
 }
 
 class GateSessionRow extends DataClass implements Insertable<GateSessionRow> {
@@ -2879,6 +2945,9 @@ class GateSessionRow extends DataClass implements Insertable<GateSessionRow> {
   final DateTime? closedAt;
   final int cardsSeen;
   final GateResult? result;
+
+  /// Odpoved na otazku zameru (G-01, v4); null = preskocene alebo vypnute.
+  final GateIntent? intent;
   const GateSessionRow({
     required this.id,
     this.blockedAppId,
@@ -2886,6 +2955,7 @@ class GateSessionRow extends DataClass implements Insertable<GateSessionRow> {
     this.closedAt,
     required this.cardsSeen,
     this.result,
+    this.intent,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -2910,6 +2980,11 @@ class GateSessionRow extends DataClass implements Insertable<GateSessionRow> {
         $GateSessionsTable.$converterresultn.toSql(result),
       );
     }
+    if (!nullToAbsent || intent != null) {
+      map['intent'] = Variable<String>(
+        $GateSessionsTable.$converterintentn.toSql(intent),
+      );
+    }
     return map;
   }
 
@@ -2927,6 +3002,9 @@ class GateSessionRow extends DataClass implements Insertable<GateSessionRow> {
       result: result == null && nullToAbsent
           ? const Value.absent()
           : Value(result),
+      intent: intent == null && nullToAbsent
+          ? const Value.absent()
+          : Value(intent),
     );
   }
 
@@ -2948,6 +3026,9 @@ class GateSessionRow extends DataClass implements Insertable<GateSessionRow> {
       result: $GateSessionsTable.$converterresultn.fromJson(
         serializer.fromJson<String?>(json['result']),
       ),
+      intent: $GateSessionsTable.$converterintentn.fromJson(
+        serializer.fromJson<String?>(json['intent']),
+      ),
     );
   }
   @override
@@ -2966,6 +3047,9 @@ class GateSessionRow extends DataClass implements Insertable<GateSessionRow> {
       'result': serializer.toJson<String?>(
         $GateSessionsTable.$converterresultn.toJson(result),
       ),
+      'intent': serializer.toJson<String?>(
+        $GateSessionsTable.$converterintentn.toJson(intent),
+      ),
     };
   }
 
@@ -2976,6 +3060,7 @@ class GateSessionRow extends DataClass implements Insertable<GateSessionRow> {
     Value<DateTime?> closedAt = const Value.absent(),
     int? cardsSeen,
     Value<GateResult?> result = const Value.absent(),
+    Value<GateIntent?> intent = const Value.absent(),
   }) => GateSessionRow(
     id: id ?? this.id,
     blockedAppId: blockedAppId.present ? blockedAppId.value : this.blockedAppId,
@@ -2983,6 +3068,7 @@ class GateSessionRow extends DataClass implements Insertable<GateSessionRow> {
     closedAt: closedAt.present ? closedAt.value : this.closedAt,
     cardsSeen: cardsSeen ?? this.cardsSeen,
     result: result.present ? result.value : this.result,
+    intent: intent.present ? intent.value : this.intent,
   );
   GateSessionRow copyWithCompanion(GateSessionsCompanion data) {
     return GateSessionRow(
@@ -2994,6 +3080,7 @@ class GateSessionRow extends DataClass implements Insertable<GateSessionRow> {
       closedAt: data.closedAt.present ? data.closedAt.value : this.closedAt,
       cardsSeen: data.cardsSeen.present ? data.cardsSeen.value : this.cardsSeen,
       result: data.result.present ? data.result.value : this.result,
+      intent: data.intent.present ? data.intent.value : this.intent,
     );
   }
 
@@ -3005,14 +3092,22 @@ class GateSessionRow extends DataClass implements Insertable<GateSessionRow> {
           ..write('openedAt: $openedAt, ')
           ..write('closedAt: $closedAt, ')
           ..write('cardsSeen: $cardsSeen, ')
-          ..write('result: $result')
+          ..write('result: $result, ')
+          ..write('intent: $intent')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, blockedAppId, openedAt, closedAt, cardsSeen, result);
+  int get hashCode => Object.hash(
+    id,
+    blockedAppId,
+    openedAt,
+    closedAt,
+    cardsSeen,
+    result,
+    intent,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -3022,7 +3117,8 @@ class GateSessionRow extends DataClass implements Insertable<GateSessionRow> {
           other.openedAt == this.openedAt &&
           other.closedAt == this.closedAt &&
           other.cardsSeen == this.cardsSeen &&
-          other.result == this.result);
+          other.result == this.result &&
+          other.intent == this.intent);
 }
 
 class GateSessionsCompanion extends UpdateCompanion<GateSessionRow> {
@@ -3032,6 +3128,7 @@ class GateSessionsCompanion extends UpdateCompanion<GateSessionRow> {
   final Value<DateTime?> closedAt;
   final Value<int> cardsSeen;
   final Value<GateResult?> result;
+  final Value<GateIntent?> intent;
   const GateSessionsCompanion({
     this.id = const Value.absent(),
     this.blockedAppId = const Value.absent(),
@@ -3039,6 +3136,7 @@ class GateSessionsCompanion extends UpdateCompanion<GateSessionRow> {
     this.closedAt = const Value.absent(),
     this.cardsSeen = const Value.absent(),
     this.result = const Value.absent(),
+    this.intent = const Value.absent(),
   });
   GateSessionsCompanion.insert({
     this.id = const Value.absent(),
@@ -3047,6 +3145,7 @@ class GateSessionsCompanion extends UpdateCompanion<GateSessionRow> {
     this.closedAt = const Value.absent(),
     this.cardsSeen = const Value.absent(),
     this.result = const Value.absent(),
+    this.intent = const Value.absent(),
   }) : openedAt = Value(openedAt);
   static Insertable<GateSessionRow> custom({
     Expression<int>? id,
@@ -3055,6 +3154,7 @@ class GateSessionsCompanion extends UpdateCompanion<GateSessionRow> {
     Expression<int>? closedAt,
     Expression<int>? cardsSeen,
     Expression<String>? result,
+    Expression<String>? intent,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -3063,6 +3163,7 @@ class GateSessionsCompanion extends UpdateCompanion<GateSessionRow> {
       if (closedAt != null) 'closed_at': closedAt,
       if (cardsSeen != null) 'cards_seen': cardsSeen,
       if (result != null) 'result': result,
+      if (intent != null) 'intent': intent,
     });
   }
 
@@ -3073,6 +3174,7 @@ class GateSessionsCompanion extends UpdateCompanion<GateSessionRow> {
     Value<DateTime?>? closedAt,
     Value<int>? cardsSeen,
     Value<GateResult?>? result,
+    Value<GateIntent?>? intent,
   }) {
     return GateSessionsCompanion(
       id: id ?? this.id,
@@ -3081,6 +3183,7 @@ class GateSessionsCompanion extends UpdateCompanion<GateSessionRow> {
       closedAt: closedAt ?? this.closedAt,
       cardsSeen: cardsSeen ?? this.cardsSeen,
       result: result ?? this.result,
+      intent: intent ?? this.intent,
     );
   }
 
@@ -3111,6 +3214,11 @@ class GateSessionsCompanion extends UpdateCompanion<GateSessionRow> {
         $GateSessionsTable.$converterresultn.toSql(result.value),
       );
     }
+    if (intent.present) {
+      map['intent'] = Variable<String>(
+        $GateSessionsTable.$converterintentn.toSql(intent.value),
+      );
+    }
     return map;
   }
 
@@ -3122,7 +3230,8 @@ class GateSessionsCompanion extends UpdateCompanion<GateSessionRow> {
           ..write('openedAt: $openedAt, ')
           ..write('closedAt: $closedAt, ')
           ..write('cardsSeen: $cardsSeen, ')
-          ..write('result: $result')
+          ..write('result: $result, ')
+          ..write('intent: $intent')
           ..write(')'))
         .toString();
   }

@@ -11,6 +11,7 @@ import 'package:prosoche/domain/common/common.dart';
 import 'generated/schema.dart';
 import 'generated/schema_v1.dart' as v1;
 import 'generated/schema_v2.dart' as v2;
+import 'generated/schema_v3.dart' as v3;
 
 /// UserDb s vyssou verziou bez definovaneho kroku migracie.
 class _FutureUserDb extends UserDb {
@@ -27,11 +28,11 @@ void main() {
   setUpAll(() => verifier = SchemaVerifier(GeneratedHelper()));
 
   test('every dumped version is tested', () {
-    expect(GeneratedHelper.versions, [1, 2, UserDb.currentSchemaVersion]);
+    expect(GeneratedHelper.versions, [1, 2, 3, UserDb.currentSchemaVersion]);
   });
 
-  test('current code matches the v3 dump (drift_schemas/user_db)', () async {
-    final schema = await verifier.schemaAt(3);
+  test('current code matches the v4 dump (drift_schemas/user_db)', () async {
+    final schema = await verifier.schemaAt(4);
     final db = UserDb(schema.newConnection());
     addTearDown(db.close);
     await verifier.migrateAndValidate(db, UserDb.currentSchemaVersion);
@@ -80,7 +81,7 @@ void main() {
         legacyJournal: journal.importLegacyRows,
       );
       addTearDown(db.close);
-      await verifier.migrateAndValidate(db, 3);
+      await verifier.migrateAndValidate(db, UserDb.currentSchemaVersion);
       expect(await db.settingsDao.read('ui.locale'), '"en"');
       final tables = await db
           .customSelect(
@@ -119,7 +120,7 @@ void main() {
       final schema = await verifier.schemaAt(2);
       final db = UserDb(schema.newConnection());
       addTearDown(db.close);
-      await verifier.migrateAndValidate(db, 3);
+      await verifier.migrateAndValidate(db, UserDb.currentSchemaVersion);
     });
 
     test('importLegacyJournal writes to a journal.db file', () async {
@@ -166,9 +167,56 @@ void main() {
     );
   });
 
+  group('v3 -> v4 adds gate intent and practice first (G-01)', () {
+    test('existing apps and sessions keep data, new columns default', () async {
+      final schema = await verifier.schemaAt(3);
+      final old = v3.DatabaseAtV3(schema.newConnection());
+      await old.customStatement(
+        'INSERT INTO blocked_app (id, platform_ref, label, cards_required, '
+        "unlock_minutes, enabled, created_at) VALUES (1, 'com.a.b', 'A', 2, "
+        '15, 1, 0)',
+      );
+      await old.customStatement(
+        'INSERT INTO gate_session (id, blocked_app_id, opened_at, closed_at, '
+        "cards_seen, result) VALUES (5, 1, 10, 20, 2, 'passed')",
+      );
+      await old.close();
+
+      final db = UserDb(schema.newConnection());
+      addTearDown(db.close);
+      await verifier.migrateAndValidate(db, UserDb.currentSchemaVersion);
+      final app = (await db.blockerDao.apps()).single;
+      expect(app.cardsRequired, 2);
+      expect(app.practiceFirst, isTrue);
+      final session = (await db.blockerDao.session(5))!;
+      expect(session.result, GateResult.passed);
+      expect(session.cardsSeen, 2);
+      expect(session.intent, null);
+
+      await db.blockerDao.setSessionIntent(5, GateIntent.habit);
+      expect((await db.blockerDao.session(5))!.intent, GateIntent.habit);
+      await db.blockerDao.updateApp(1, practiceFirst: false);
+      expect((await db.blockerDao.apps()).single.practiceFirst, isFalse);
+    });
+
+    test('intent CHECK rejects unknown values', () async {
+      final schema = await verifier.schemaAt(3);
+      final db = UserDb(schema.newConnection());
+      addTearDown(db.close);
+      await verifier.migrateAndValidate(db, UserDb.currentSchemaVersion);
+      final id = await db.blockerDao.openSession(null, DateTime.utc(2026));
+      await expectLater(
+        db.customStatement(
+          "UPDATE gate_session SET intent = 'bogus' WHERE id = $id",
+        ),
+        throwsA(isA<Exception>()),
+      );
+    });
+  });
+
   test('missing migration step fails loudly', () async {
-    expect(userDbSteps.keys, [1, 2]);
-    final schema = await verifier.schemaAt(3);
+    expect(userDbSteps.keys, [1, 2, 3]);
+    final schema = await verifier.schemaAt(4);
     final db = _FutureUserDb(schema.newConnection());
     addTearDown(db.close);
     await expectLater(db.settingsDao.read('x'), throwsStateError);

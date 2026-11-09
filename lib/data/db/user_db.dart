@@ -100,7 +100,7 @@ class UserDb extends _$UserDb {
 
   /// Aktualna verzia schemy. Zvysenie = novy krok v `user_migrations.dart`
   /// + `drift_dev schema dump` (plan 17.4).
-  static const currentSchemaVersion = 3;
+  static const currentSchemaVersion = 4;
 
   @override
   int get schemaVersion => currentSchemaVersion;
