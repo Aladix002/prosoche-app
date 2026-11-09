@@ -11,6 +11,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:prosoche/core/clock/clock_provider.dart';
+import 'package:prosoche/data/repositories/journey/week_repository.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
 import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/feed/feed.dart';
@@ -19,9 +20,11 @@ import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/domain/streak/streak.dart';
 
 import 'fake_library_repositories.dart';
+import 'fake_week_repository.dart';
 import 'in_memory_settings_repository.dart';
 
 export 'fake_library_repositories.dart';
+export 'fake_week_repository.dart';
 
 /// Hodnota, ktora sa da sledovat (posledna hodnota + zmeny).
 class _Watched<T> {
@@ -390,7 +393,9 @@ class FakeRepositories {
     FakeCardActionsRepository? actions,
     FakeLibraryRepository? library,
     FakePracticeRepository? practice,
-  }) : library = library ?? FakeLibraryRepository(),
+    FakeWeekRepository? week,
+  }) : week = week ?? FakeWeekRepository(),
+       library = library ?? FakeLibraryRepository(),
        practice = practice ?? FakePracticeRepository(),
        settings = settings ?? InMemorySettingsRepository(),
        dailySets = dailySets ?? FakeDailySetRepository(),
@@ -407,6 +412,7 @@ class FakeRepositories {
   final FakeCardActionsRepository actions;
   final FakeLibraryRepository library;
   final FakePracticeRepository practice;
+  final FakeWeekRepository week;
 
   /// Override vsetkych repozitarov, hodin, zony a jazyka zariadenia.
   /// Ziadna databaza ani content.db sa neotvara.
@@ -426,6 +432,7 @@ class FakeRepositories {
     cardActionsRepositoryProvider.overrideWithValue(actions),
     libraryRepositoryProvider.overrideWithValue(library),
     practiceRepositoryProvider.overrideWithValue(practice),
+    weekRepositoryProvider.overrideWithValue(week),
   ];
 }
 

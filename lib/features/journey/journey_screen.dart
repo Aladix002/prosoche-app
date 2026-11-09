@@ -8,6 +8,7 @@ import 'package:prosoche/features/journey/intention_dialog.dart';
 import 'package:prosoche/features/journey/journey_calendar.dart';
 import 'package:prosoche/features/journey/journey_providers.dart';
 import 'package:prosoche/features/journey/journey_routes.dart';
+import 'package:prosoche/features/journey/week/week_card.dart';
 import 'package:prosoche/features/shell/settings_button.dart';
 import 'package:prosoche/ui/i18n/i18n.dart';
 import 'package:prosoche/ui/ui.dart';
@@ -100,6 +101,8 @@ class _JourneyScreenState extends ConsumerState<JourneyScreen> {
               const SizedBox(height: SkSpace.space16),
               JourneyStreakSummary(summary: summary),
             ],
+            const SizedBox(height: SkSpace.space24),
+            const JourneyWeekCard(),
           ],
           const SizedBox(height: SkSpace.space24),
           const _SavedButton(),

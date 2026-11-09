@@ -1,0 +1,134 @@
+{
+  "@@locale": "en",
+  "journeyWeekTitle": "This week",
+  "@journeyWeekTitle": {
+    "description": "Eyebrow/title of the weekly summary card on Journey (last 7 days including today). Private, stays on the phone."
+  },
+  "journeyWeekRange": "{from} – {to}",
+  "@journeyWeekRange": {
+    "description": "Date range of the weekly summary, e.g. 'Nov 3 – Nov 9'. Both dates are already formatted.",
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "journeyWeekSince": "Since {date}",
+  "@journeyWeekSince": {
+    "description": "Shown instead of the range in the first week, when the app was first used during the last 7 days. date is already formatted, e.g. 'Nov 6'.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "journeyWeekPaused": "{count, plural, one{pause before an app} other{pauses before apps}}",
+  "@journeyWeekPaused": {
+    "description": "Label next to a number: how many times the gate stopped a blocked app from opening in the last 7 days.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "journeyWeekNotOpened": "{count, plural, one{time you chose not to open it} other{times you chose not to open it}}",
+  "@journeyWeekNotOpened": {
+    "description": "Label next to a number: gate sessions the user ended with Close / Go back without unlocking the app.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "journeyWeekCards": "{count, plural, one{card read} other{cards read}}",
+  "@journeyWeekCards": {
+    "description": "Label next to a number: different cards read in the last 7 days (feed, gate, saved).",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "journeyWeekPracticeDays": "{count, plural, one{day with practice} other{days with practice}}",
+  "@journeyWeekPracticeDays": {
+    "description": "Label next to a number: days with the morning preparation or the evening reflection.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "journeyWeekPracticeDetail": "Morning {morning} · Evening {evening}",
+  "@journeyWeekPracticeDetail": {
+    "description": "Small line under the practice days: number of days with each practice. Numbers are already formatted.",
+    "placeholders": {
+      "morning": {
+        "type": "String"
+      },
+      "evening": {
+        "type": "String"
+      }
+    }
+  },
+  "journeyWeekStreak": "{count, plural, one{day in your streak} other{days in your streak}}",
+  "@journeyWeekStreak": {
+    "description": "Label next to the current streak number. Hidden in Simple mode.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "journeyWeekEmpty": "Your week will gather here: cards you read, days with practice and pauses before apps.",
+  "@journeyWeekEmpty": {
+    "description": "Weekly summary card when there is nothing yet (first days, nothing done this week)."
+  },
+  "journeyWeekShare": "Share",
+  "@journeyWeekShare": {
+    "description": "Button on the weekly summary card. Opens a preview of the image before sharing."
+  },
+  "journeyWeekShareTitle": "Share your week",
+  "@journeyWeekShareTitle": {
+    "description": "Title of the sheet with the preview of the weekly image."
+  },
+  "journeyWeekShareBody": "Only these numbers and a short quote. Nothing from your journal.",
+  "@journeyWeekShareBody": {
+    "description": "Explains what the weekly image contains, under the preview."
+  },
+  "journeyWeekShareApps": "Include app names",
+  "@journeyWeekShareApps": {
+    "description": "Switch in the share sheet. Off by default: adds the most paused app names to the image."
+  },
+  "journeyWeekShareImage": "Share image",
+  "@journeyWeekShareImage": {
+    "description": "Primary button in the share sheet: shares the weekly image via the system share sheet."
+  },
+  "journeyWeekShareClose": "Close",
+  "@journeyWeekShareClose": {
+    "description": "Tooltip of the close button of the share sheet."
+  },
+  "journeyWeekShareFailed": "The image could not be created.",
+  "@journeyWeekShareFailed": {
+    "description": "Snackbar when the weekly image could not be rendered."
+  },
+  "journeyWeekImageTitle": "My week",
+  "@journeyWeekImageTitle": {
+    "description": "Eyebrow on the shared weekly image (shown in capitals)."
+  },
+  "journeyWeekImageApps": "Most paused: {apps}",
+  "@journeyWeekImageApps": {
+    "description": "Line on the shared image, only when the user includes app names. apps is a comma-separated list.",
+    "placeholders": {
+      "apps": {
+        "type": "String"
+      }
+    }
+  },
+  "journeyWeekPreviewLabel": "Preview of the image to share",
+  "@journeyWeekPreviewLabel": {
+    "description": "Screen reader label of the image preview in the share sheet."
+  }
+}
