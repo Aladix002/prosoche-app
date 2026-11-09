@@ -52,4 +52,33 @@ void main() {
     expect(map('prosoche://dev'), '/today');
     expect(map('prosoche://dev/evil'), '/today');
   });
+
+  test('W-01: maps reader with validated work, section and highlight', () {
+    expect(map('prosoche://reader/meditations'), '/reader/meditations');
+    expect(
+      map('prosoche://reader/meditations?section=meditations.4.3'),
+      '/reader/meditations?section=meditations.4.3',
+    );
+    final hl = Uri.parse(
+      map('prosoche://reader/on-anger?section=on-anger.3.36&hl=A%20b%3F')!,
+    );
+    expect(hl.path, '/reader/on-anger');
+    expect(hl.queryParameters, {'section': 'on-anger.3.36', 'hl': 'A b?'});
+  });
+
+  test('W-01: invalid reader targets never reach the reader with bad ids', () {
+    expect(map('prosoche://reader'), '/library');
+    expect(map('prosoche://reader/..'), '/library');
+    expect(map('prosoche://reader/Evil%2F..'), '/library');
+    expect(
+      map('prosoche://reader/meditations?section=../x'),
+      '/reader/meditations',
+    );
+    final long = 'x' * 601;
+    expect(
+      map('prosoche://reader/meditations?hl=$long'),
+      '/reader/meditations',
+    );
+    expect(map('prosoche://reader/meditations?hl=%20'), '/reader/meditations');
+  });
 }

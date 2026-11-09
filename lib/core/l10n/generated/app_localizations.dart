@@ -2727,6 +2727,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{n} of {total}'**
   String skProgressOf(int n, int total);
+
+  /// Small label above the quote in the home screen widget (W-01).
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s quote'**
+  String get widgetEyebrow;
+
+  /// Accessibility label of the home screen widget: tapping it opens the app on the quote (W-01).
+  ///
+  /// In en, this message translates to:
+  /// **'Open Prosoche'**
+  String get widgetOpenApp;
 }
 
 class _AppLocalizationsDelegate

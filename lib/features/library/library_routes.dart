@@ -77,10 +77,36 @@ List<RouteBase> readerRoutes() => [
   GoRoute(
     path: '${LibraryRoutes.readerRoot}/:workId',
     name: LibraryRoutes.readerName,
-    builder: (context, state) => ReaderScreen(
-      workId: state.pathParameters['workId']!,
-      sectionKey: state.uri.queryParameters[LibraryRoutes.sectionParam],
-      highlight: state.extra is String ? state.extra! as String : null,
+    builder: (context, state) => _BackToToday(
+      child: ReaderScreen(
+        workId: state.pathParameters['workId']!,
+        sectionKey: state.uri.queryParameters[LibraryRoutes.sectionParam],
+        // Text z karty (extra) alebo z deep linku widgetu (`hl`, W-01).
+        highlight: state.extra is String
+            ? state.extra! as String
+            : state.uri.queryParameters['hl'],
+      ),
     ),
   ),
 ];
+
+/// W-01: citacka otvorena deep linkom (widget na ploche) nema pod sebou
+/// nic; back vtedy vedie na Dnes namiesto zatvorenia appky (ako feed).
+class _BackToToday extends StatelessWidget {
+  const _BackToToday({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final router = GoRouter.maybeOf(context);
+    final canPop = router?.canPop() ?? true;
+    return PopScope(
+      canPop: canPop,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) router?.go(AppRoutes.today);
+      },
+      child: child,
+    );
+  }
+}

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- W-01: maly widget (2x2, 3x2): kratky citat a referencia. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_background"
+    android:clipToOutline="true"
+    android:orientation="vertical"
+    android:padding="@dimen/widget_padding">
+
+    <TextView
+        android:id="@+id/widget_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:autoSizeMaxTextSize="18sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeStepGranularity="1sp"
+        android:autoSizeTextType="uniform"
+        android:ellipsize="end"
+        android:fontFamily="serif"
+        android:gravity="start|center_vertical"
+        android:lineSpacingMultiplier="1.1"
+        android:maxLines="10"
+        android:textColor="@color/widget_lead" />
+
+    <FrameLayout
+        android:layout_width="24dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="6dp"
+        android:background="@color/widget_deco" />
+
+    <TextView
+        android:id="@+id/widget_reference"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-medium"
+        android:maxLines="1"
+        android:textColor="@color/widget_accent"
+        android:textSize="12sp" />
+</LinearLayout>

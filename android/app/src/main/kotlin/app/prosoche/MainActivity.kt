@@ -3,6 +3,7 @@ package app.prosoche
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import app.prosoche.widget.DailyQuoteWidget
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.FlutterEngineConfigurator
 import io.flutter.embedding.engine.FlutterEngine
@@ -33,6 +34,22 @@ class MainActivity : FlutterActivity() {
                     else -> result.notImplemented()
                 }
             }
+        // W-01: citaty dna pre widget na ploche (DailyQuoteWidget).
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, WIDGET_CHANNEL)
+            .setMethodCallHandler { call, result ->
+                val json = call.arguments as? String
+                if (call.method == "update" && json != null) {
+                    try {
+                        DailyQuoteWidget.save(applicationContext, json)
+                        DailyQuoteWidget.updateAll(applicationContext)
+                        result.success(true)
+                    } catch (e: Exception) {
+                        result.error("widget", e.javaClass.simpleName, null)
+                    }
+                } else {
+                    result.notImplemented()
+                }
+            }
         (application as? FlutterEngineConfigurator)?.configureFlutterEngine(flutterEngine)
     }
 
@@ -43,5 +60,6 @@ class MainActivity : FlutterActivity() {
 
     companion object {
         const val SYSTEM_CHANNEL = "app.prosoche/system"
+        const val WIDGET_CHANNEL = "app.prosoche/widget"
     }
 }

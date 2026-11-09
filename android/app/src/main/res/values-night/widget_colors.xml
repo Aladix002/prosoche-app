@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- W-01: farby widgetu, tmava tema "atramentova noc" (docs/DESIGN.md 2). -->
+<resources>
+    <color name="widget_surface">#161C25</color>
+    <color name="widget_outline">#2A3240</color>
+    <color name="widget_lead">#F3EFE8</color>
+    <color name="widget_secondary">#B9BDC5</color>
+    <color name="widget_tertiary">#9198A3</color>
+    <color name="widget_accent">#E59E80</color>
+    <color name="widget_primary">#A9C0E2</color>
+    <color name="widget_deco">#B3C6A05C</color>
+</resources>
