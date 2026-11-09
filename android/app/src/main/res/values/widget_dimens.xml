@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- W-01: widget na ploche. -->
+    <dimen name="widget_radius">16dp</dimen>
+    <dimen name="widget_padding">14dp</dimen>
+    <dimen name="widget_padding_large">16dp</dimen>
+</resources>

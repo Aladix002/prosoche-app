@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- W-01: farby widgetu, svetla tema "kamen a svetlo" (docs/DESIGN.md 2). -->
+<resources>
+    <color name="widget_surface">#FBFAF7</color>
+    <color name="widget_outline">#D6D0C4</color>
+    <color name="widget_lead">#141A26</color>
+    <color name="widget_secondary">#485061</color>
+    <color name="widget_tertiary">#5C6270</color>
+    <color name="widget_accent">#97482B</color>
+    <color name="widget_primary">#1F3A5F</color>
+    <!-- okra, iba dekor (alfa ~70 %) -->
+    <color name="widget_deco">#B3B3843A</color>
+</resources>

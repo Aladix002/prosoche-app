@@ -19,6 +19,7 @@ import 'package:prosoche/core/logging/logger_provider.dart';
 import 'package:prosoche/core/router/app_router.dart';
 import 'package:prosoche/data/content/content_providers.dart';
 import 'package:prosoche/data/observability/crash_reporter.dart';
+import 'package:prosoche/features/home_widget/home_widget_wiring.dart';
 import 'package:prosoche/ui/foundation/font_licenses.dart';
 
 /// Spolocny start appky pre vsetky flavory.
@@ -66,6 +67,7 @@ Future<void> bootstrap(Flavor flavor, {Edition edition = Edition.lite}) async {
   startObservability(container);
   startScreenViews(container);
   startGateSync(container);
+  startHomeWidget(container);
 
   unawaited(
     startNotifications(

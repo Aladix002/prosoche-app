@@ -1772,4 +1772,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String skProgressOf(int n, int total) {
     return '$n of $total';
   }
+
+  @override
+  String get widgetEyebrow => 'Today\'s quote';
+
+  @override
+  String get widgetOpenApp => 'Open Prosoche';
 }

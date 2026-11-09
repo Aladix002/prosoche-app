@@ -58,6 +58,22 @@
             android:value="false" />
         <!-- P-02: flutter_local_notifications zobrazi naplanovanu notifikaciu
              a po restarte / aktualizacii appky ju znova naplanuje. -->
+        <!-- W-01: widget na ploche s citatom dna (bez povoleni). Zmena casu
+             a zony (vynimky z obmedzenia implicitnych broadcastov) ho
+             prekreslia hned; inak updatePeriodMillis a otvorenie appky. -->
+        <receiver
+            android:name=".widget.DailyQuoteWidget"
+            android:exported="false"
+            android:label="@string/widget_quote_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.intent.action.TIME_SET"/>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/daily_quote_widget_info" />
+        </receiver>
         <receiver
             android:exported="false"
             android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />

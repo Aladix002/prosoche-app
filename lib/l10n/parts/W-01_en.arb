@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "widgetEyebrow": "Today's quote",
+  "@widgetEyebrow": {
+    "description": "Small label above the quote in the home screen widget (W-01)."
+  },
+  "widgetOpenApp": "Open Prosoche",
+  "@widgetOpenApp": {
+    "description": "Accessibility label of the home screen widget: tapping it opens the app on the quote (W-01)."
+  }
+}

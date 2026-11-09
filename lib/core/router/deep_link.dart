@@ -32,6 +32,8 @@ String? mapDeepLink(Uri uri) {
       return AppRoutes.feed;
     case 'library':
       return AppRoutes.library;
+    case 'reader':
+      return _reader(segments, uri.queryParameters);
     case 'practice':
       return AppRoutes.practice;
     case 'journey':
@@ -52,3 +54,26 @@ String? mapDeepLink(Uri uri) {
       return AppRoutes.today;
   }
 }
+
+/// W-01: `prosoche://reader/<workId>?section=<key>&hl=<text>` (widget na
+/// ploche, "Read in context"). Neplatne id diela vedie na Library, neplatna
+/// sekcia sa zahodi, `hl` (zvyrazneny text) ma max. [_maxHighlight] znakov.
+String _reader(List<String> segments, Map<String, String> query) {
+  final work = segments.length > 1 ? segments[1] : null;
+  if (work == null || !_workId.hasMatch(work)) return AppRoutes.library;
+  final section = query['section'];
+  final hl = query['hl'];
+  final params = {
+    if (section != null && _sectionKey.hasMatch(section)) 'section': section,
+    if (hl != null && hl.trim().isNotEmpty && hl.length <= _maxHighlight)
+      'hl': hl,
+  };
+  return Uri(
+    path: '/reader/$work',
+    queryParameters: params.isEmpty ? null : params,
+  ).toString();
+}
+
+final _workId = RegExp(r'^[a-z0-9][a-z0-9_-]{0,63}$');
+final _sectionKey = RegExp(r'^[a-z0-9][a-z0-9_.-]{0,127}$');
+const _maxHighlight = 600;

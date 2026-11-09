@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- W-01: texty widgetu mimo Fluttera (picker widgetov, stav pred prvym
+     spustenim appky). Popisky s citatom posiela Dart z ARB. -->
+<resources>
+    <string name="widget_quote_label">Today\'s quote</string>
+    <string name="widget_quote_description">A short Stoic quote, new every day.</string>
+    <string name="widget_quote_empty">Open Prosoche to see today\'s quote.</string>
+</resources>
