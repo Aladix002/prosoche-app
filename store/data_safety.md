@@ -40,7 +40,7 @@ Super properties on every PostHog event: only `app_version`, `content_version`, 
 | Saved cards, bookmarks, reading position, intention, birth year (memento mori) | Local only. Analytics carries no content IDs or text. | `lib/data/db/` |
 | Location | Not used. No location permission in any flavor (`tool/check_manifest.sh`). GeoIP disabled on PostHog events. | manifests, `posthogGuard` |
 | Personal info (name, e-mail, user IDs) | No account, no form. `sendDefaultPii=false` in Sentry. | `configureSentry` |
-| Installed apps / app activity in other apps | v1.0 `lite` has no gate. v1.1 `full`: usage access is read on device only for the apps the user chose; gate history stays in local `user.db`; nothing sent. No `QUERY_ALL_PACKAGES`. | `android/app/src/full/AndroidManifest.xml` |
+| Installed apps / app activity in other apps | v1.0 `lite` has no gate. v1.1 `full`: usage access is read on device only for the apps the user chose; gate history (sessions, unlocks, optional reason chip "Why are you opening", G-01) stays in local `user.db`; nothing sent, not in analytics or logs. No `QUERY_ALL_PACKAGES`. | `android/app/src/full/AndroidManifest.xml` |
 | Messages, photos, files, contacts, calendar, health, financial, audio, web browsing | Not accessed. Links open in the external browser. | manifests |
 
 Notes for the owner:

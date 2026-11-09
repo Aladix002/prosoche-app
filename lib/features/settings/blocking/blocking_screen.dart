@@ -7,6 +7,7 @@ import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/data/blocker/blocked_apps_repository.dart';
 import 'package:prosoche/features/settings/blocking/blocking_providers.dart';
 import 'package:prosoche/features/settings/blocking/blocking_widgets.dart';
+import 'package:prosoche/features/settings/blocking/gate_behavior.dart';
 import 'package:prosoche/features/settings/settings_paths.dart';
 import 'package:prosoche/features/settings/settings_widgets.dart';
 import 'package:prosoche/ui/i18n/i18n.dart';
@@ -17,6 +18,9 @@ abstract final class BlockingPaths {
   static const String root = SettingsPaths.blocking;
   static const permissions = '$root/permissions';
   static const add = '$root/add';
+
+  /// Ranny zamok "Practice first" (G-01).
+  static const practiceFirst = '$root/practice-first';
 
   static String app(String ref) => '$root/app/${Uri.encodeComponent(ref)}';
 }
@@ -184,6 +188,10 @@ class _BlockingScreenState extends ConsumerState<BlockingScreen> {
             expand: true,
             onPressed: () => unawaited(context.push(BlockingPaths.add)),
           ),
+        ),
+        GateBehaviorSection(
+          onPracticeFirst: () =>
+              unawaited(context.push(BlockingPaths.practiceFirst)),
         ),
         SettingsSection(l10n.blkStatsSection, help: l10n.blkStatsHelp),
         if (stats == null)

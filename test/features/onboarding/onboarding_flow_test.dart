@@ -185,7 +185,18 @@ void main() {
     expect(find.text('Which apps should wait?'), findsOneWidget);
     expect(find.text('Step 4 of 6'), findsOneWidget);
     await tapVisible(tester, find.text('TikTok'));
+    // G-01: Practice first je volitelny a vypnuty.
+    expect(
+      tester
+          .widget<SwitchListTile>(
+            find.byKey(const ValueKey('o5:practice_first')),
+          )
+          .value,
+      isFalse,
+    );
+    await tapVisible(tester, find.byKey(const ValueKey('o5:practice_first')));
     await tapPrimary(tester, 'Continue with 1 app');
+    expect(await settings.get(SettingsKeys.gatePracticeFirst), isTrue);
     expect(h.blockedApps.current.single.ref, 'com.instagram.android');
     expect(h.blockedApps.current.single.cardsRequired, 3);
     expect(h.blockedApps.current.single.unlockMinutes, 10);
@@ -220,6 +231,7 @@ void main() {
     await tapPrimary(tester, 'Continue without the gate');
     expect(find.byType(PrivacyStep), findsOneWidget);
     expect(h.blockedApps.current, isEmpty);
+    expect(await settings.get(SettingsKeys.gatePracticeFirst), isFalse);
     expect(await settings.get(SettingsKeys.blockerEnabled), isFalse);
   });
 

@@ -36,7 +36,7 @@ We have not appointed a data protection officer. [OVERIT: not required for this 
 | Saved cards, bookmarks, reading position, streak, daily intention | Show your progress to you |
 | Birth year for "Memento mori" (optional) | Draw your life in weeks |
 | Settings, random install ID (used to vary daily content) | Run the app |
-| Edition with the app gate only: the apps you chose to gate, history of gate sessions and unlocks | Show the gate before those apps, show your progress |
+| Edition with the app gate only: the apps you chose to gate, history of gate sessions and unlocks, your optional answer to "Why are you opening this app?" (one of five fixed choices, never free text), which apps "Practice first" locks in the morning | Show the gate before those apps, count how often you opened an app today, show your progress |
 
 We have no access to this data. [OVERIT: whether the developer is a controller of purely
 local data.]
@@ -112,7 +112,7 @@ PostHog events: [N] months. Sentry events: [N] days (plan maximum). Then deleted
   other apps and a foreground service. They are used only on your phone to notice when you
   open an app you chose and to show the gate before it. The app reads usage only for the
   apps you chose. It keeps a local history of gate sessions and unlocks (which chosen app,
-  when, how many cards) for your progress; it stays on your phone and is never sent to us
+  when, how many cards, the reason you tapped if any) for your progress; it stays on your phone and is never sent to us
   or anyone else.
 - The app does not request location, contacts, accessibility services or a list of all
   installed apps.
