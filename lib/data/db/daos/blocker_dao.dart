@@ -48,6 +48,7 @@ class BlockerDao extends DatabaseAccessor<UserDb> with _$BlockerDaoMixin {
     int? unlockMinutes,
     bool? enabled,
     String? label,
+    bool? practiceFirst,
   }) async {
     final n = await (update(blockedApps)..where((t) => t.id.equals(id))).write(
       BlockedAppsCompanion(
@@ -55,6 +56,7 @@ class BlockerDao extends DatabaseAccessor<UserDb> with _$BlockerDaoMixin {
         unlockMinutes: Value.absentIfNull(unlockMinutes),
         enabled: Value.absentIfNull(enabled),
         label: Value.absentIfNull(label),
+        practiceFirst: Value.absentIfNull(practiceFirst),
       ),
     );
     return n > 0;
@@ -86,6 +88,28 @@ class BlockerDao extends DatabaseAccessor<UserDb> with _$BlockerDaoMixin {
       closedAt: Value(now),
     ),
   );
+
+  /// Zamer otvorenia (G-01); null = preskocene.
+  Future<void> setSessionIntent(int sessionId, GateIntent? intent) =>
+      (update(gateSessions)..where((t) => t.id.equals(sessionId))).write(
+        GateSessionsCompanion(intent: Value(intent)),
+      );
+
+  /// Pocet otvoreni brany appky [blockedAppId] od [since] (vratane),
+  /// pocitadlo "{n}th time today" (G-01).
+  Future<int> sessionCountSince(int blockedAppId, DateTime since) async {
+    final c = gateSessions.id.count();
+    final q = selectOnly(gateSessions)
+      ..addColumns([c])
+      ..where(
+        gateSessions.blockedAppId.equals(blockedAppId) &
+            gateSessions.openedAt.isBiggerOrEqualValue(
+              since.millisecondsSinceEpoch,
+            ),
+      );
+    final rows = await q.get();
+    return rows.isEmpty ? 0 : rows.first.read<int>(c) ?? 0;
+  }
 
   Future<GateSessionRow?> session(int id) =>
       (select(gateSessions)..where((t) => t.id.equals(id))).getSingleOrNull();

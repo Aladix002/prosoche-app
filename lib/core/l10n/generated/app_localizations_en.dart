@@ -1524,6 +1524,125 @@ class AppLocalizationsEn extends AppLocalizations {
   String get setFeedback => 'Send feedback';
 
   @override
+  String gateIntentQuestion(String app) {
+    return 'Why are you opening $app?';
+  }
+
+  @override
+  String get gateIntentQuestionGeneric => 'Why are you opening this app?';
+
+  @override
+  String get gateIntentNote =>
+      'Noticing your reason is already a choice of your own.';
+
+  @override
+  String get gateIntentBoredom => 'Boredom';
+
+  @override
+  String get gateIntentMessage => 'A message';
+
+  @override
+  String get gateIntentWork => 'Work';
+
+  @override
+  String get gateIntentHabit => 'Habit';
+
+  @override
+  String get gateIntentOther => 'Something else';
+
+  @override
+  String get gateIntentSkip => 'Skip';
+
+  @override
+  String get gateIntentChoicesA11y => 'Reason for opening';
+
+  @override
+  String gateOpenCount(int count, String form, String app) {
+    String _temp0 = intl.Intl.selectLogic(form, {
+      'one': 'This is your ${count}st time opening $app today.',
+      'two': 'This is your ${count}nd time opening $app today.',
+      'few': 'This is your ${count}rd time opening $app today.',
+      'other': 'This is your ${count}th time opening $app today.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String gateOpenCountGeneric(int count, String form) {
+    String _temp0 = intl.Intl.selectLogic(form, {
+      'one': 'This is your ${count}st time opening this app today.',
+      'two': 'This is your ${count}nd time opening this app today.',
+      'few': 'This is your ${count}rd time opening this app today.',
+      'other': 'This is your ${count}th time opening this app today.',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get gateFrictionNote =>
+      'Each return today asks for a little more time.';
+
+  @override
+  String get gatePracticeFirstTitle => 'Practice first';
+
+  @override
+  String gatePracticeFirstBody(String app, String time) {
+    return '$app stays closed until you finish your morning preparation, or until $time.';
+  }
+
+  @override
+  String gatePracticeFirstBodyGeneric(String time) {
+    return 'This app stays closed until you finish your morning preparation, or until $time.';
+  }
+
+  @override
+  String get gatePracticeFirstWhy =>
+      'You chose to start the day with your own thoughts before anyone else\'s.';
+
+  @override
+  String get gatePracticeFirstStart => 'Start morning preparation';
+
+  @override
+  String get blkGateSection => 'At the gate';
+
+  @override
+  String get blkAskIntent => 'Ask why I\'m opening an app';
+
+  @override
+  String get blkAskIntentHelp => 'One tap or skip. Answers stay on this phone.';
+
+  @override
+  String get blkFriction => 'Rising friction';
+
+  @override
+  String get blkFrictionHelp =>
+      'Shows how often you opened an app today. Each return waits a little longer, up to twice as long, with one more card from the 4th time.';
+
+  @override
+  String get blkPracticeFirst => 'Practice first';
+
+  @override
+  String get blkPracticeFirstHelp =>
+      'In the morning, chosen apps stay closed until you finish your morning preparation in Practice. Emergency still works.';
+
+  @override
+  String blkPracticeFirstOn(String time) {
+    return 'On until $time';
+  }
+
+  @override
+  String get blkPracticeFirstOff => 'Off';
+
+  @override
+  String get blkPracticeFirstUntil => 'Lock ends at';
+
+  @override
+  String get blkPracticeFirstApps => 'Apps locked in the morning';
+
+  @override
+  String get blkPracticeFirstAppsNone => 'Add apps to the gate first.';
+
+  @override
   String get readerTextSize => 'Reading size';
 
   @override

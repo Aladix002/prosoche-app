@@ -13,6 +13,7 @@ import 'package:prosoche/data/blocker/gate_repository.dart';
 import 'package:prosoche/data/content/content_providers.dart';
 import 'package:prosoche/data/content/remote_config_policy.dart';
 import 'package:prosoche/data/repositories/repositories.dart';
+import 'package:prosoche/domain/blocker/gate_friction.dart';
 import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/feed/feed.dart';
 import 'package:prosoche/domain/settings/settings_repository.dart';
@@ -66,9 +67,31 @@ final Provider<GateDeps> gateDepsProvider = Provider<GateDeps>(
     freeReading: ref.watch(gateFreeReadingProvider),
     overlayEnabled: () => ref.read(gateOverlayEnabledProvider),
     syncQuests: (date) => ref.read(questRepositoryProvider).syncAuto(date),
+    options: ref.watch(gateOptionsProvider),
   ),
   name: 'gateDepsProvider',
 );
+
+/// Nastavenia brany G-01 citane pri kazdom otvoreni (engine brany ma
+/// cerstve hodnoty z disku, P-03). Chyba = vsetko vypnute.
+final Provider<Future<GateOptions> Function()> gateOptionsProvider =
+    Provider<Future<GateOptions> Function()>((ref) {
+      return () async {
+        try {
+          final s = ref.read(settingsRepositoryProvider);
+          return GateOptions(
+            askIntent: await s.get(SettingsKeys.gateAskIntent),
+            risingFriction: await s.get(SettingsKeys.gateRisingFriction),
+            practiceFirst: PracticeFirstRule(
+              enabled: await s.get(SettingsKeys.gatePracticeFirst),
+              until: await s.get(SettingsKeys.gatePracticeFirstUntil),
+            ),
+          );
+        } on Object {
+          return const GateOptions();
+        }
+      };
+    }, name: 'gateOptionsProvider');
 
 /// Brana pred blokovanou appkou (docs/02 A4, docs/01 5.3).
 ///
@@ -84,6 +107,7 @@ class GateScreen extends ConsumerStatefulWidget {
     required this.app,
     this.source = 'monitor',
     this.onClosed,
+    this.onPractice,
     super.key,
   });
 
@@ -95,6 +119,9 @@ class GateScreen extends ConsumerStatefulWidget {
 
   /// Brana sa zavrela (nativ uz prepina aktivitu).
   final VoidCallback? onClosed;
+
+  /// Zavreta cez "Start morning preparation" (G-01); null = [onClosed].
+  final VoidCallback? onPractice;
 
   @override
   ConsumerState<GateScreen> createState() => _GateScreenState();
@@ -114,6 +141,7 @@ class _GateScreenState extends ConsumerState<GateScreen> {
       ref: widget.app,
       deps: ref.read(gateDepsProvider),
       onClosed: widget.onClosed,
+      onPractice: widget.onPractice,
     )..addListener(_onChange);
     _slowTimer = Timer(const Duration(seconds: 1), () {
       if (mounted) setState(() => _slow = true);
@@ -211,9 +239,45 @@ class _GateScreenState extends ConsumerState<GateScreen> {
           app: _label,
           onContinue: () => unawaited(_c.continueAfterError()),
         );
+      case GatePhase.intent:
+        return GateIntentView(
+          app: _label,
+          opensNote: _opensNote(context),
+          onChoose: (i) => unawaited(_c.chooseIntent(i)),
+          onEmergency: _c.startEmergency,
+          onEmergencyA11y: () => unawaited(_emergencyA11y()),
+        );
+      case GatePhase.practiceFirst:
+        return GatePracticeFirstView(
+          app: _label,
+          until: TimeOfDay(
+            hour: _c.practiceUntilMinutes ~/ 60,
+            minute: _c.practiceUntilMinutes % 60,
+          ),
+          onStart: () => unawaited(_c.openPractice()),
+          onBack: () => unawaited(_c.goBack()),
+          onEmergency: _c.startEmergency,
+          onEmergencyA11y: () => unawaited(_emergencyA11y()),
+        );
       case GatePhase.cards:
         return _cards(context);
     }
+  }
+
+  /// "This is your {n}th time opening {app} today" (+ poznamka o odpore);
+  /// null = pocitadlo vypnute (G-01).
+  String? _opensNote(BuildContext context) {
+    final opens = _c.opensToday;
+    if (opens == null) return null;
+    final l10n = context.l10n;
+    final count = l10n.gateOpenCountFor(
+      _label,
+      opens,
+      Localizations.localeOf(context),
+    );
+    final friction = _c.friction;
+    if (friction.dwellFactor <= 1 && friction.extraCards == 0) return count;
+    return '$count ${l10n.gateFrictionNote}';
   }
 
   /// Gate karty dokoncili sadu (zobrazi sa namiesto B10, docs/02 A4).
@@ -243,6 +307,7 @@ class _GateScreenState extends ConsumerState<GateScreen> {
           total: _c.cardsRequired,
           freeReading: current is FreeReadingItem,
           onBack: () => unawaited(_c.goBack()),
+          note: _c.unlocked ? null : _opensNote(context),
           onContinue: _c.unlocked ? () => unawaited(_c.continueToApp()) : null,
           continueLabel: _c.unlocked ? l10n.gateContinueFor(_label) : null,
         ),

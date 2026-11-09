@@ -7,7 +7,8 @@ import 'package:prosoche/data/repositories/infra/databases.dart';
 import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/domain/quests/quests.dart' as q;
 
-export 'package:prosoche/data/db/user_enums.dart' show GateResult, UnlockSource;
+export 'package:prosoche/data/db/user_enums.dart'
+    show GateIntent, GateResult, UnlockSource;
 
 /// Blokovana appka, ako ju vidi brana (`blocked_app`, docs/02 A4, D12).
 @immutable
@@ -19,6 +20,7 @@ final class GateTarget {
     required this.unlockMinutes,
     this.label,
     this.enabled = true,
+    this.practiceFirst = true,
   });
 
   final int id;
@@ -30,6 +32,9 @@ final class GateTarget {
   final int unlockMinutes;
   final bool enabled;
 
+  /// Plati pre nu ranny zamok "Practice first" (G-01).
+  final bool practiceFirst;
+
   @override
   bool operator ==(Object other) =>
       other is GateTarget &&
@@ -38,11 +43,19 @@ final class GateTarget {
       other.label == label &&
       other.cardsRequired == cardsRequired &&
       other.unlockMinutes == unlockMinutes &&
-      other.enabled == enabled;
+      other.enabled == enabled &&
+      other.practiceFirst == practiceFirst;
 
   @override
-  int get hashCode =>
-      Object.hash(id, ref, label, cardsRequired, unlockMinutes, enabled);
+  int get hashCode => Object.hash(
+    id,
+    ref,
+    label,
+    cardsRequired,
+    unlockMinutes,
+    enabled,
+    practiceFirst,
+  );
 }
 
 /// Zapisy brany do user.db: `gate_session`, `unlock_event` a volne citanie
@@ -71,6 +84,16 @@ abstract interface class GateRepository {
   /// Karta volneho citania v brane (B11): `card_event{seen, context=gate,
   /// pos=null}`.
   Future<void> markFreeReading(LocalDate date, CardId card);
+
+  /// Zamer otvorenia k session (G-01); null = preskocene.
+  Future<void> setIntent(int sessionId, GateIntent? intent);
+
+  /// Kolkokrat sa brana appky [appId] otvorila od lokalnej polnoci dna
+  /// [date] (vratane aktualnej session, G-01).
+  Future<int> opensOn(int appId, LocalDate date);
+
+  /// Ranna priprava dna [date] je dokoncena (`practice_log`, G-01).
+  Future<bool> morningPracticeDone(LocalDate date);
 }
 
 class DriftGateRepository implements GateRepository {
@@ -91,6 +114,7 @@ class DriftGateRepository implements GateRepository {
       cardsRequired: row.cardsRequired,
       unlockMinutes: row.unlockMinutes,
       enabled: row.enabled,
+      practiceFirst: row.practiceFirst,
     );
   }
 
@@ -133,6 +157,20 @@ class DriftGateRepository implements GateRepository {
       now: _clock.now(),
     );
   }
+
+  @override
+  Future<void> setIntent(int sessionId, GateIntent? intent) =>
+      _db.blockerDao.setSessionIntent(sessionId, intent);
+
+  @override
+  Future<int> opensOn(int appId, LocalDate date) =>
+      _db.blockerDao.sessionCountSince(appId, date.toLocalDateTime().toUtc());
+
+  @override
+  Future<bool> morningPracticeDone(LocalDate date) async =>
+      (await _db.practiceLogDao.watchDone(date).first).contains(
+        JournalKind.morning,
+      );
 }
 
 /// Zapisy brany. V testoch `gateRepositoryProvider.overrideWithValue(...)`.

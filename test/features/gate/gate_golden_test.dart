@@ -3,6 +3,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/features/gate/gate_views.dart';
 
 import '../../helpers/golden/golden.dart';
@@ -86,5 +87,62 @@ void main() {
     'emergency',
     (context) =>
         GateEmergencyView(app: 'Instagram', secondsLeft: 7, onCancel: noop),
+  );
+
+  // G-01: pocitadlo s odporom v hlavicke, otazka zameru, ranny zamok.
+  screen(
+    'cards_friction',
+    (context) => Column(
+      children: [
+        GateHeader(
+          app: 'Instagram',
+          done: 1,
+          total: 4,
+          onBack: noop,
+          note: [
+            context.l10n.gateOpenCountFor(
+              'Instagram',
+              4,
+              Localizations.localeOf(context),
+            ),
+            context.l10n.gateFrictionNote,
+          ].join(' '),
+        ),
+        const Expanded(child: SizedBox.expand()),
+        GateFooter(
+          secondsLeft: 7,
+          onNext: null,
+          onEmergency: noop,
+          onEmergencyA11y: noop,
+        ),
+      ],
+    ),
+  );
+
+  screen(
+    'intent',
+    (context) => GateIntentView(
+      app: 'Instagram',
+      opensNote: context.l10n.gateOpenCountFor(
+        'Instagram',
+        2,
+        Localizations.localeOf(context),
+      ),
+      onChoose: (_) {},
+      onEmergency: noop,
+      onEmergencyA11y: noop,
+    ),
+  );
+
+  screen(
+    'practice_first',
+    (context) => GatePracticeFirstView(
+      app: 'Instagram',
+      until: const TimeOfDay(hour: 10, minute: 0),
+      onStart: noop,
+      onBack: noop,
+      onEmergency: noop,
+      onEmergencyA11y: noop,
+    ),
   );
 }

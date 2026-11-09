@@ -59,6 +59,7 @@ class FakeBlockedAppsRepository implements BlockedAppsRepository {
               cardsRequired: cardsRequired,
               unlockMinutes: unlockMinutes,
               enabled: o.enabled,
+              practiceFirst: o.practiceFirst,
             )
           else
             _new(a, cardsRequired, unlockMinutes),
@@ -81,14 +82,10 @@ class FakeBlockedAppsRepository implements BlockedAppsRepository {
   Future<void> update(int id, BlockedAppPatch patch) async {
     final i = _apps.indexWhere((a) => a.id == id);
     if (i < 0) return;
-    final o = _apps[i];
-    _apps[i] = BlockedApp(
-      id: o.id,
-      ref: o.ref,
-      label: o.label,
-      cardsRequired: patch.cardsRequired ?? o.cardsRequired,
-      unlockMinutes: patch.unlockMinutes ?? o.unlockMinutes,
-      enabled: o.enabled,
+    _apps[i] = _apps[i].copyWith(
+      cardsRequired: patch.cardsRequired,
+      unlockMinutes: patch.unlockMinutes,
+      practiceFirst: patch.practiceFirst,
     );
     await sync();
   }

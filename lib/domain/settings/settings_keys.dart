@@ -130,6 +130,31 @@ abstract final class SettingsKeys {
     defaultValue: false,
   );
 
+  /// Brana sa spyta "Why are you opening {app}?" (G-01).
+  static final SettingKey<bool> gateAskIntent = SettingKey.boolean(
+    'gate.ask_intent',
+    defaultValue: true,
+  );
+
+  /// Pocitadlo otvoreni dna a rastuci odpor (G-01).
+  static final SettingKey<bool> gateRisingFriction = SettingKey.boolean(
+    'gate.rising_friction',
+    defaultValue: true,
+  );
+
+  /// Ranny zamok "Practice first" (G-01), opt-in.
+  static final SettingKey<bool> gatePracticeFirst = SettingKey.boolean(
+    'gate.practice_first',
+    defaultValue: false,
+  );
+
+  /// Koniec ranneho zamku `HH:mm` (G-01).
+  static final SettingKey<String> gatePracticeFirstUntil = SettingKey.string(
+    'gate.practice_first.until',
+    defaultValue: '10:00',
+    pattern: RegExp(r'^([01]\d|2[0-3]):[0-5]\d$'),
+  );
+
   // Sukromie
   static final SettingKey<bool> analyticsOptIn = SettingKey.boolean(
     'analytics_opt_in',
@@ -173,6 +198,10 @@ abstract final class SettingsKeys {
     practiceBirthYear,
     contentUpdateWifiOnly,
     blockerEnabled,
+    gateAskIntent,
+    gateRisingFriction,
+    gatePracticeFirst,
+    gatePracticeFirstUntil,
     analyticsOptIn,
     crashReports,
   ];

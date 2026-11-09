@@ -543,6 +543,11 @@ interface BlockerHostApi {
   /** Zavrie branu. true: cielova appka, false: home screen. */
   fun closeGate(openTarget: Boolean)
   /**
+   * Zavrie branu a otvori Practice v hlavnej appke (`prosoche://practice`,
+   * ranny zamok "Practice first", G-01). V hlavnom engine nic.
+   */
+  fun openPractice()
+  /**
    * Zmaze vsetky odomknutia (`UnlockStore`), napr. po "Delete all my
    * data" (A10.9).
    */
@@ -740,6 +745,22 @@ interface BlockerHostApi {
             val openTargetArg = args[0] as Boolean
             val wrapped: List<Any?> = try {
               api.closeGate(openTargetArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              BlockerApiPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.prosoche.BlockerHostApi.openPractice$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            val wrapped: List<Any?> = try {
+              api.openPractice()
               listOf(null)
             } catch (exception: Throwable) {
               BlockerApiPigeonUtils.wrapError(exception)

@@ -24,10 +24,14 @@ void main() {
       'practice.birth_year',
       'content.update_wifi_only',
       'blocker.enabled',
+      'gate.ask_intent',
+      'gate.rising_friction',
+      'gate.practice_first',
+      'gate.practice_first.until',
       'analytics_opt_in',
       'crash_reports',
     });
-    expect(SettingsKeys.all.map((k) => k.name).toSet(), hasLength(22));
+    expect(SettingsKeys.all.map((k) => k.name).toSet(), hasLength(26));
   });
 
   test('defaults', () {
@@ -42,6 +46,10 @@ void main() {
     expect(SettingsKeys.notifPrivateLockscreen.defaultValue, isTrue);
     expect(SettingsKeys.analyticsOptIn.defaultValue, isFalse);
     expect(SettingsKeys.crashReports.defaultValue, isFalse);
+    expect(SettingsKeys.gateAskIntent.defaultValue, isTrue);
+    expect(SettingsKeys.gateRisingFriction.defaultValue, isTrue);
+    expect(SettingsKeys.gatePracticeFirst.defaultValue, isFalse);
+    expect(SettingsKeys.gatePracticeFirstUntil.defaultValue, '10:00');
     expect(SettingsKeys.installId.defaultValue, isNull);
     expect(SettingsKeys.intentionText.defaultValue, isNull);
     expect(SettingsKeys.onboardingSteps, contains('intention'));

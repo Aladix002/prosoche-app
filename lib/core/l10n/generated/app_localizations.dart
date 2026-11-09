@@ -2332,6 +2332,186 @@ abstract class AppLocalizations {
   /// **'Send feedback'**
   String get setFeedback;
 
+  /// Gate (G-01): optional one-tap question before the cards. {app} is the app name. Neutral, never judging.
+  ///
+  /// In en, this message translates to:
+  /// **'Why are you opening {app}?'**
+  String gateIntentQuestion(String app);
+
+  /// Gate intent question when the app name is unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Why are you opening this app?'**
+  String get gateIntentQuestionGeneric;
+
+  /// Short calm line under the intent question: attention to one's own choices. No preaching, no quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Noticing your reason is already a choice of your own.'**
+  String get gateIntentNote;
+
+  /// Intent chip: opening the app out of boredom.
+  ///
+  /// In en, this message translates to:
+  /// **'Boredom'**
+  String get gateIntentBoredom;
+
+  /// Intent chip: opening the app to read or answer a message.
+  ///
+  /// In en, this message translates to:
+  /// **'A message'**
+  String get gateIntentMessage;
+
+  /// Intent chip: opening the app for work.
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get gateIntentWork;
+
+  /// Intent chip: opening the app out of habit.
+  ///
+  /// In en, this message translates to:
+  /// **'Habit'**
+  String get gateIntentHabit;
+
+  /// Intent chip: any other reason.
+  ///
+  /// In en, this message translates to:
+  /// **'Something else'**
+  String get gateIntentOther;
+
+  /// Skips the intent question; nothing is saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get gateIntentSkip;
+
+  /// Accessibility label of the group of intent chips.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason for opening'**
+  String get gateIntentChoicesA11y;
+
+  /// Gate (G-01): how many times the app was opened today, as an English ordinal (1st, 2nd, 3rd, 4th, 11th, 21st...). {form} is the CLDR ordinal category of {count} for the UI language (one, two, few, many, other); translate each branch with the right ordinal form.
+  ///
+  /// In en, this message translates to:
+  /// **'{form, select, one{This is your {count}st time opening {app} today.} two{This is your {count}nd time opening {app} today.} few{This is your {count}rd time opening {app} today.} other{This is your {count}th time opening {app} today.}}'**
+  String gateOpenCount(int count, String form, String app);
+
+  /// Same as gateOpenCount when the app name is unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'{form, select, one{This is your {count}st time opening this app today.} two{This is your {count}nd time opening this app today.} few{This is your {count}rd time opening this app today.} other{This is your {count}th time opening this app today.}}'**
+  String gateOpenCountGeneric(int count, String form);
+
+  /// Gate (G-01): shown when rising friction made the wait longer. Calm, not scolding.
+  ///
+  /// In en, this message translates to:
+  /// **'Each return today asks for a little more time.'**
+  String get gateFrictionNote;
+
+  /// Gate (G-01) morning lock title (same as the setting name).
+  ///
+  /// In en, this message translates to:
+  /// **'Practice first'**
+  String get gatePracticeFirstTitle;
+
+  /// Gate morning lock body. {app} is the app name, {time} the local end of the lock, e.g. 10:00 AM.
+  ///
+  /// In en, this message translates to:
+  /// **'{app} stays closed until you finish your morning preparation, or until {time}.'**
+  String gatePracticeFirstBody(String app, String time);
+
+  /// Gate morning lock body when the app name is unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'This app stays closed until you finish your morning preparation, or until {time}.'**
+  String gatePracticeFirstBodyGeneric(String time);
+
+  /// Gate morning lock: short reason, reminding the user it was their own choice. No preaching.
+  ///
+  /// In en, this message translates to:
+  /// **'You chose to start the day with your own thoughts before anyone else\'s.'**
+  String get gatePracticeFirstWhy;
+
+  /// Gate morning lock: opens Practice in the app.
+  ///
+  /// In en, this message translates to:
+  /// **'Start morning preparation'**
+  String get gatePracticeFirstStart;
+
+  /// Settings > Gate (G-01): section with gate behaviour switches.
+  ///
+  /// In en, this message translates to:
+  /// **'At the gate'**
+  String get blkGateSection;
+
+  /// Settings switch (G-01): the gate asks for a reason (one tap, can be skipped).
+  ///
+  /// In en, this message translates to:
+  /// **'Ask why I\'m opening an app'**
+  String get blkAskIntent;
+
+  /// Help under the intent switch.
+  ///
+  /// In en, this message translates to:
+  /// **'One tap or skip. Answers stay on this phone.'**
+  String get blkAskIntentHelp;
+
+  /// Settings switch (G-01): each repeat opening of the same app today waits longer.
+  ///
+  /// In en, this message translates to:
+  /// **'Rising friction'**
+  String get blkFriction;
+
+  /// Help under the rising friction switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Shows how often you opened an app today. Each return waits a little longer, up to twice as long, with one more card from the 4th time.'**
+  String get blkFrictionHelp;
+
+  /// Settings (G-01): morning lock until the morning preparation in Practice is done.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice first'**
+  String get blkPracticeFirst;
+
+  /// Help for the Practice first setting.
+  ///
+  /// In en, this message translates to:
+  /// **'In the morning, chosen apps stay closed until you finish your morning preparation in Practice. Emergency still works.'**
+  String get blkPracticeFirstHelp;
+
+  /// Value of the Practice first tile when on. {time} is the local end time, e.g. 10:00 AM.
+  ///
+  /// In en, this message translates to:
+  /// **'On until {time}'**
+  String blkPracticeFirstOn(String time);
+
+  /// Value of the Practice first tile when off.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get blkPracticeFirstOff;
+
+  /// Practice first: tile with the time when the morning lock ends anyway.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock ends at'**
+  String get blkPracticeFirstUntil;
+
+  /// Practice first: section with the blocked apps the lock applies to.
+  ///
+  /// In en, this message translates to:
+  /// **'Apps locked in the morning'**
+  String get blkPracticeFirstApps;
+
+  /// Practice first: no blocked apps yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Add apps to the gate first.'**
+  String get blkPracticeFirstAppsNone;
+
   /// Tooltip of the text size button in the Library reader, title of the size picker, and the section in Settings > Display.
   ///
   /// In en, this message translates to:

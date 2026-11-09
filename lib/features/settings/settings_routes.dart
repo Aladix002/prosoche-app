@@ -4,6 +4,7 @@ import 'package:prosoche/core/router/placeholder_route.dart';
 import 'package:prosoche/features/settings/about_screen.dart';
 import 'package:prosoche/features/settings/blocking/blocking_screen.dart';
 import 'package:prosoche/features/settings/blocking/blocking_subscreens.dart';
+import 'package:prosoche/features/settings/blocking/gate_behavior.dart';
 import 'package:prosoche/features/settings/display_settings_screen.dart';
 import 'package:prosoche/features/settings/notification_settings_screen.dart';
 import 'package:prosoche/features/settings/privacy_settings_screen.dart';
@@ -48,6 +49,11 @@ List<RouteBase> settingsRoutes({required bool gate}) => [
               'add',
               'settings_blocking_add',
               () => const BlockingAddScreen(),
+            ),
+            _route(
+              'practice-first',
+              'settings_blocking_practice_first',
+              () => const PracticeFirstScreen(),
             ),
             GoRoute(
               path: 'app/:ref',

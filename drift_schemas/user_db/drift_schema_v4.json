@@ -1,0 +1,1631 @@
+{
+  "_meta": {
+    "description": "This file contains a serialized version of schema entities for drift.",
+    "version": "1.3.0"
+  },
+  "options": {
+    "store_date_time_values_as_text": false
+  },
+  "entities": [
+    {
+      "id": 0,
+      "references": [],
+      "type": "table",
+      "data": {
+        "name": "settings",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "key",
+            "getter_name": "key",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "value_json",
+            "getter_name": "valueJson",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [],
+        "explicit_pk": [
+          "key"
+        ]
+      }
+    },
+    {
+      "id": 1,
+      "references": [],
+      "type": "table",
+      "data": {
+        "name": "daily_set",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "date",
+            "getter_name": "date",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const LocalDateConverter()",
+              "dart_type_name": "LocalDate"
+            }
+          },
+          {
+            "name": "seed",
+            "getter_name": "seed",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "cards_json",
+            "getter_name": "cardsJson",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "cursor",
+            "getter_name": "cursor",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('0')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "started_at",
+            "getter_name": "startedAt",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const UtcMillisConverter()",
+              "dart_type_name": "DateTime"
+            }
+          },
+          {
+            "name": "completed_at",
+            "getter_name": "completedAt",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const UtcMillisConverter()",
+              "dart_type_name": "DateTime"
+            }
+          },
+          {
+            "name": "generator_version",
+            "getter_name": "generatorVersion",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "content_version",
+            "getter_name": "contentVersion",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "tz",
+            "getter_name": "tz",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "phase",
+            "getter_name": "phase",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "check": {
+                  "dart_expression": {
+                    "elements": [
+                      {
+                        "lexeme": "phase",
+                        "tag": "phase"
+                      },
+                      ".isIn(",
+                      {
+                        "lexeme": "DayPhase",
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
+                      },
+                      ".values.map((e) => e.wire))"
+                    ]
+                  }
+                }
+              }
+            ],
+            "type_converter": {
+              "dart_expr": "const WireEnumConverter(DayPhase.values)",
+              "dart_type_name": "DayPhase"
+            }
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [],
+        "explicit_pk": [
+          "date"
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "references": [],
+      "type": "table",
+      "data": {
+        "name": "card_event",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "PRIMARY KEY AUTOINCREMENT",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "PRIMARY KEY AUTOINCREMENT"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              "auto-increment"
+            ]
+          },
+          {
+            "name": "date",
+            "getter_name": "date",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const LocalDateConverter()",
+              "dart_type_name": "LocalDate"
+            }
+          },
+          {
+            "name": "card_id",
+            "getter_name": "cardId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "type",
+            "getter_name": "type",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "check": {
+                  "dart_expression": {
+                    "elements": [
+                      {
+                        "lexeme": "type",
+                        "tag": "type"
+                      },
+                      ".isIn(const ['intro','quote','passage','practice','prompt','concept','author','done'])"
+                    ]
+                  }
+                }
+              }
+            ],
+            "type_converter": {
+              "dart_expr": "const CardTypeConverter()",
+              "dart_type_name": "CardType"
+            }
+          },
+          {
+            "name": "context",
+            "getter_name": "context",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "check": {
+                  "dart_expression": {
+                    "elements": [
+                      {
+                        "lexeme": "context",
+                        "tag": "context"
+                      },
+                      ".isIn(",
+                      {
+                        "lexeme": "CardContext",
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
+                      },
+                      ".values.map((e) => e.wire))"
+                    ]
+                  }
+                }
+              }
+            ],
+            "type_converter": {
+              "dart_expr": "const WireEnumConverter(CardContext.values)",
+              "dart_type_name": "CardContext"
+            }
+          },
+          {
+            "name": "action",
+            "getter_name": "action",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "check": {
+                  "dart_expression": {
+                    "elements": [
+                      {
+                        "lexeme": "action",
+                        "tag": "action"
+                      },
+                      ".isIn(",
+                      {
+                        "lexeme": "CardAction",
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
+                      },
+                      ".values.map((e) => e.wire))"
+                    ]
+                  }
+                }
+              }
+            ],
+            "type_converter": {
+              "dart_expr": "const WireEnumConverter(CardAction.values)",
+              "dart_type_name": "CardAction"
+            }
+          },
+          {
+            "name": "pos",
+            "getter_name": "pos",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "value",
+            "getter_name": "value",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "correct",
+            "getter_name": "correct",
+            "moor_type": "bool",
+            "nullable": true,
+            "customConstraints": null,
+            "defaultConstraints": "CHECK (\"correct\" IN (0, 1))",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "CHECK (\"correct\" IN (0, 1))"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "ts",
+            "getter_name": "ts",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const UtcMillisConverter()",
+              "dart_type_name": "DateTime"
+            }
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": []
+      }
+    },
+    {
+      "id": 3,
+      "references": [],
+      "type": "table",
+      "data": {
+        "name": "quest_log",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "date",
+            "getter_name": "date",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const LocalDateConverter()",
+              "dart_type_name": "LocalDate"
+            }
+          },
+          {
+            "name": "slot",
+            "getter_name": "slot",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "check": {
+                  "dart_expression": {
+                    "elements": [
+                      {
+                        "lexeme": "slot",
+                        "tag": "slot"
+                      },
+                      ".isIn(",
+                      {
+                        "lexeme": "QuestSlotKind",
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
+                      },
+                      ".values.map((e) => e.wire))"
+                    ]
+                  }
+                }
+              }
+            ],
+            "type_converter": {
+              "dart_expr": "const WireEnumConverter(QuestSlotKind.values)",
+              "dart_type_name": "QuestSlotKind"
+            }
+          },
+          {
+            "name": "quest_id",
+            "getter_name": "questId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "status",
+            "getter_name": "status",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('\\'open\\'')",
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "check": {
+                  "dart_expression": {
+                    "elements": [
+                      {
+                        "lexeme": "status",
+                        "tag": "status"
+                      },
+                      ".isIn(",
+                      {
+                        "lexeme": "QuestStatus",
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
+                      },
+                      ".values.map((e) => e.wire))"
+                    ]
+                  }
+                }
+              }
+            ],
+            "type_converter": {
+              "dart_expr": "const WireEnumConverter(QuestStatus.values)",
+              "dart_type_name": "QuestStatus"
+            }
+          },
+          {
+            "name": "done_at",
+            "getter_name": "doneAt",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const UtcMillisConverter()",
+              "dart_type_name": "DateTime"
+            }
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [],
+        "explicit_pk": [
+          "date",
+          "slot"
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "references": [],
+      "type": "table",
+      "data": {
+        "name": "day_log",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "date",
+            "getter_name": "date",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const LocalDateConverter()",
+              "dart_type_name": "LocalDate"
+            }
+          },
+          {
+            "name": "status",
+            "getter_name": "status",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "check": {
+                  "dart_expression": {
+                    "elements": [
+                      {
+                        "lexeme": "status",
+                        "tag": "status"
+                      },
+                      ".isIn(",
+                      {
+                        "lexeme": "DayStatus",
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
+                      },
+                      ".values.map((e) => e.wire))"
+                    ]
+                  }
+                }
+              }
+            ],
+            "type_converter": {
+              "dart_expr": "const WireEnumConverter(DayStatus.values)",
+              "dart_type_name": "DayStatus"
+            }
+          },
+          {
+            "name": "sources",
+            "getter_name": "sources",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [],
+        "explicit_pk": [
+          "date"
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "references": [],
+      "type": "table",
+      "data": {
+        "name": "streak_state",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "check": {
+                  "dart_expression": {
+                    "elements": [
+                      {
+                        "lexeme": "id",
+                        "tag": "id"
+                      },
+                      ".equals(1)"
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "current",
+            "getter_name": "current",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('0')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "longest",
+            "getter_name": "longest",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('0')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "grace_left",
+            "getter_name": "graceLeft",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('0')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "grace_refill_at",
+            "getter_name": "graceRefillAt",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const LocalDateConverter()",
+              "dart_type_name": "LocalDate"
+            }
+          },
+          {
+            "name": "last_evaluated_date",
+            "getter_name": "lastEvaluatedDate",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const LocalDateConverter()",
+              "dart_type_name": "LocalDate"
+            }
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [],
+        "explicit_pk": [
+          "id"
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "references": [],
+      "type": "table",
+      "data": {
+        "name": "blocked_app",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "PRIMARY KEY AUTOINCREMENT",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "PRIMARY KEY AUTOINCREMENT"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              "auto-increment"
+            ]
+          },
+          {
+            "name": "platform_ref",
+            "getter_name": "platformRef",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "UNIQUE",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "UNIQUE"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              "unique"
+            ]
+          },
+          {
+            "name": "label",
+            "getter_name": "label",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "cards_required",
+            "getter_name": "cardsRequired",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('3')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "unlock_minutes",
+            "getter_name": "unlockMinutes",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('10')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "enabled",
+            "getter_name": "enabled",
+            "moor_type": "bool",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "CHECK (\"enabled\" IN (0, 1))",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "CHECK (\"enabled\" IN (0, 1))"
+            },
+            "default_dart": "const CustomExpression('1')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "created_at",
+            "getter_name": "createdAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const UtcMillisConverter()",
+              "dart_type_name": "DateTime"
+            }
+          },
+          {
+            "name": "practice_first",
+            "getter_name": "practiceFirst",
+            "moor_type": "bool",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "CHECK (\"practice_first\" IN (0, 1))",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "CHECK (\"practice_first\" IN (0, 1))"
+            },
+            "default_dart": "const CustomExpression('1')",
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": []
+      }
+    },
+    {
+      "id": 7,
+      "references": [
+        6
+      ],
+      "type": "table",
+      "data": {
+        "name": "gate_session",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "PRIMARY KEY AUTOINCREMENT",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "PRIMARY KEY AUTOINCREMENT"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              "auto-increment"
+            ]
+          },
+          {
+            "name": "blocked_app_id",
+            "getter_name": "blockedAppId",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES blocked_app (id) ON DELETE SET NULL",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES blocked_app (id) ON DELETE SET NULL"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "blocked_app",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": "setNull"
+                }
+              }
+            ]
+          },
+          {
+            "name": "opened_at",
+            "getter_name": "openedAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const UtcMillisConverter()",
+              "dart_type_name": "DateTime"
+            }
+          },
+          {
+            "name": "closed_at",
+            "getter_name": "closedAt",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const UtcMillisConverter()",
+              "dart_type_name": "DateTime"
+            }
+          },
+          {
+            "name": "cards_seen",
+            "getter_name": "cardsSeen",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('0')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "result",
+            "getter_name": "result",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "check": {
+                  "dart_expression": {
+                    "elements": [
+                      {
+                        "lexeme": "result",
+                        "tag": "result"
+                      },
+                      ".isIn(",
+                      {
+                        "lexeme": "GateResult",
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
+                      },
+                      ".values.map((e) => e.wire))"
+                    ]
+                  }
+                }
+              }
+            ],
+            "type_converter": {
+              "dart_expr": "const WireEnumConverter(GateResult.values)",
+              "dart_type_name": "GateResult"
+            }
+          },
+          {
+            "name": "intent",
+            "getter_name": "intent",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "check": {
+                  "dart_expression": {
+                    "elements": [
+                      {
+                        "lexeme": "intent",
+                        "tag": "intent"
+                      },
+                      ".isIn(",
+                      {
+                        "lexeme": "GateIntent",
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
+                      },
+                      ".values.map((e) => e.wire))"
+                    ]
+                  }
+                }
+              }
+            ],
+            "type_converter": {
+              "dart_expr": "const WireEnumConverter(GateIntent.values)",
+              "dart_type_name": "GateIntent"
+            }
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": []
+      }
+    },
+    {
+      "id": 8,
+      "references": [
+        6
+      ],
+      "type": "table",
+      "data": {
+        "name": "unlock_event",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "PRIMARY KEY AUTOINCREMENT",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "PRIMARY KEY AUTOINCREMENT"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              "auto-increment"
+            ]
+          },
+          {
+            "name": "blocked_app_id",
+            "getter_name": "blockedAppId",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES blocked_app (id) ON DELETE SET NULL",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES blocked_app (id) ON DELETE SET NULL"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "blocked_app",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": "setNull"
+                }
+              }
+            ]
+          },
+          {
+            "name": "ts",
+            "getter_name": "ts",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const UtcMillisConverter()",
+              "dart_type_name": "DateTime"
+            }
+          },
+          {
+            "name": "source",
+            "getter_name": "source",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "check": {
+                  "dart_expression": {
+                    "elements": [
+                      {
+                        "lexeme": "source",
+                        "tag": "source"
+                      },
+                      ".isIn(",
+                      {
+                        "lexeme": "UnlockSource",
+                        "import_uri": "package:prosoche/data/db/user_enums.dart"
+                      },
+                      ".values.map((e) => e.wire))"
+                    ]
+                  }
+                }
+              }
+            ],
+            "type_converter": {
+              "dart_expr": "const WireEnumConverter(UnlockSource.values)",
+              "dart_type_name": "UnlockSource"
+            }
+          },
+          {
+            "name": "minutes",
+            "getter_name": "minutes",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": []
+      }
+    },
+    {
+      "id": 9,
+      "references": [],
+      "type": "table",
+      "data": {
+        "name": "saved_card",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "card_id",
+            "getter_name": "cardId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "saved_at",
+            "getter_name": "savedAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const UtcMillisConverter()",
+              "dart_type_name": "DateTime"
+            }
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [],
+        "explicit_pk": [
+          "card_id"
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "references": [],
+      "type": "table",
+      "data": {
+        "name": "practice_log",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "date",
+            "getter_name": "date",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const LocalDateConverter()",
+              "dart_type_name": "LocalDate"
+            }
+          },
+          {
+            "name": "routine",
+            "getter_name": "routine",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "check": {
+                  "dart_expression": {
+                    "elements": [
+                      {
+                        "lexeme": "routine",
+                        "tag": "routine"
+                      },
+                      ".isIn(['morning','evening'])"
+                    ]
+                  }
+                }
+              }
+            ],
+            "type_converter": {
+              "dart_expr": "const WireEnumConverter(JournalKind.values)",
+              "dart_type_name": "JournalKind"
+            }
+          },
+          {
+            "name": "done_at",
+            "getter_name": "doneAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const UtcMillisConverter()",
+              "dart_type_name": "DateTime"
+            }
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [],
+        "explicit_pk": [
+          "date",
+          "routine"
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "references": [],
+      "type": "table",
+      "data": {
+        "name": "reading_position",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "work_id",
+            "getter_name": "workId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "section_key",
+            "getter_name": "sectionKey",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "offset",
+            "getter_name": "offset",
+            "moor_type": "double",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('0.0')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "updated_at",
+            "getter_name": "updatedAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const UtcMillisConverter()",
+              "dart_type_name": "DateTime"
+            }
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [],
+        "explicit_pk": [
+          "work_id"
+        ]
+      }
+    },
+    {
+      "id": 12,
+      "references": [],
+      "type": "table",
+      "data": {
+        "name": "section_bookmark",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "section_key",
+            "getter_name": "sectionKey",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "work_id",
+            "getter_name": "workId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "created_at",
+            "getter_name": "createdAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [],
+            "type_converter": {
+              "dart_expr": "const UtcMillisConverter()",
+              "dart_type_name": "DateTime"
+            }
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [],
+        "explicit_pk": [
+          "section_key"
+        ]
+      }
+    },
+    {
+      "id": 13,
+      "references": [
+        2
+      ],
+      "type": "index",
+      "data": {
+        "on": 2,
+        "name": "card_event_date",
+        "sql": null,
+        "unique": false,
+        "columns": [
+          {
+            "column": "date",
+            "order_by": null
+          }
+        ]
+      }
+    },
+    {
+      "id": 14,
+      "references": [
+        2
+      ],
+      "type": "index",
+      "data": {
+        "on": 2,
+        "name": "card_event_card_id",
+        "sql": null,
+        "unique": false,
+        "columns": [
+          {
+            "column": "card_id",
+            "order_by": null
+          }
+        ]
+      }
+    },
+    {
+      "id": 15,
+      "references": [
+        2
+      ],
+      "type": "index",
+      "data": {
+        "on": 2,
+        "name": "card_event_type_action",
+        "sql": null,
+        "unique": false,
+        "columns": [
+          {
+            "column": "type",
+            "order_by": null
+          },
+          {
+            "column": "action",
+            "order_by": null
+          },
+          {
+            "column": "card_id",
+            "order_by": null
+          }
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "references": [
+        2
+      ],
+      "type": "index",
+      "data": {
+        "on": 2,
+        "name": "card_event_seen_unique",
+        "sql": "CREATE UNIQUE INDEX card_event_seen_unique ON card_event (date, card_id, context) WHERE \"action\" = 'seen'",
+        "unique": true,
+        "columns": []
+      }
+    },
+    {
+      "id": 17,
+      "references": [
+        8
+      ],
+      "type": "index",
+      "data": {
+        "on": 8,
+        "name": "unlock_event_ts",
+        "sql": null,
+        "unique": false,
+        "columns": [
+          {
+            "column": "ts",
+            "order_by": null
+          }
+        ]
+      }
+    },
+    {
+      "id": 18,
+      "references": [
+        9
+      ],
+      "type": "index",
+      "data": {
+        "on": 9,
+        "name": "saved_card_saved_at",
+        "sql": null,
+        "unique": false,
+        "columns": [
+          {
+            "column": "saved_at",
+            "order_by": null
+          }
+        ]
+      }
+    },
+    {
+      "id": 19,
+      "references": [
+        12
+      ],
+      "type": "index",
+      "data": {
+        "on": 12,
+        "name": "section_bookmark_created",
+        "sql": null,
+        "unique": false,
+        "columns": [
+          {
+            "column": "created_at",
+            "order_by": null
+          }
+        ]
+      }
+    }
+  ],
+  "fixed_sql": [
+    {
+      "name": "settings",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"settings\" (\"key\" TEXT NOT NULL, \"value_json\" TEXT NOT NULL, PRIMARY KEY (\"key\"));"
+        }
+      ]
+    },
+    {
+      "name": "daily_set",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"daily_set\" (\"date\" TEXT NOT NULL, \"seed\" INTEGER NOT NULL, \"cards_json\" TEXT NOT NULL, \"cursor\" INTEGER NOT NULL DEFAULT 0, \"started_at\" INTEGER NULL, \"completed_at\" INTEGER NULL, \"generator_version\" INTEGER NOT NULL, \"content_version\" TEXT NOT NULL, \"tz\" TEXT NOT NULL, \"phase\" TEXT NOT NULL CHECK(\"phase\" IN ('morning', 'day', 'evening', 'night')), PRIMARY KEY (\"date\"));"
+        }
+      ]
+    },
+    {
+      "name": "card_event",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"card_event\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"date\" TEXT NOT NULL, \"card_id\" TEXT NOT NULL, \"type\" TEXT NOT NULL CHECK(\"type\" IN ('intro', 'quote', 'passage', 'practice', 'prompt', 'concept', 'author', 'done')), \"context\" TEXT NOT NULL CHECK(\"context\" IN ('feed', 'gate', 'reader', 'saved')), \"action\" TEXT NOT NULL CHECK(\"action\" IN ('seen', 'answered', 'saved', 'unsaved', 'skipped', 'shared', 'source_opened', 'reported')), \"pos\" INTEGER NULL, \"value\" INTEGER NULL, \"correct\" INTEGER NULL CHECK (\"correct\" IN (0, 1)), \"ts\" INTEGER NOT NULL);"
+        }
+      ]
+    },
+    {
+      "name": "quest_log",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"quest_log\" (\"date\" TEXT NOT NULL, \"slot\" TEXT NOT NULL CHECK(\"slot\" IN ('read', 'learn', 'act')), \"quest_id\" TEXT NOT NULL, \"status\" TEXT NOT NULL DEFAULT 'open' CHECK(\"status\" IN ('open', 'done', 'skipped')), \"done_at\" INTEGER NULL, PRIMARY KEY (\"date\", \"slot\"));"
+        }
+      ]
+    },
+    {
+      "name": "day_log",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"day_log\" (\"date\" TEXT NOT NULL, \"status\" TEXT NOT NULL CHECK(\"status\" IN ('done', 'grace', 'missed', 'excused')), \"sources\" TEXT NULL, PRIMARY KEY (\"date\"));"
+        }
+      ]
+    },
+    {
+      "name": "streak_state",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"streak_state\" (\"id\" INTEGER NOT NULL CHECK(\"id\" = 1), \"current\" INTEGER NOT NULL DEFAULT 0, \"longest\" INTEGER NOT NULL DEFAULT 0, \"grace_left\" INTEGER NOT NULL DEFAULT 0, \"grace_refill_at\" TEXT NULL, \"last_evaluated_date\" TEXT NULL, PRIMARY KEY (\"id\"));"
+        }
+      ]
+    },
+    {
+      "name": "blocked_app",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"blocked_app\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"platform_ref\" TEXT NOT NULL UNIQUE, \"label\" TEXT NULL, \"cards_required\" INTEGER NOT NULL DEFAULT 3, \"unlock_minutes\" INTEGER NOT NULL DEFAULT 10, \"enabled\" INTEGER NOT NULL DEFAULT 1 CHECK (\"enabled\" IN (0, 1)), \"created_at\" INTEGER NOT NULL, \"practice_first\" INTEGER NOT NULL DEFAULT 1 CHECK (\"practice_first\" IN (0, 1)));"
+        }
+      ]
+    },
+    {
+      "name": "gate_session",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"gate_session\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"blocked_app_id\" INTEGER NULL REFERENCES blocked_app (id) ON DELETE SET NULL, \"opened_at\" INTEGER NOT NULL, \"closed_at\" INTEGER NULL, \"cards_seen\" INTEGER NOT NULL DEFAULT 0, \"result\" TEXT NULL CHECK(\"result\" IN ('passed', 'emergency', 'dismissed', 'error')), \"intent\" TEXT NULL CHECK(\"intent\" IN ('boredom', 'message', 'work', 'habit', 'other')));"
+        }
+      ]
+    },
+    {
+      "name": "unlock_event",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"unlock_event\" (\"id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, \"blocked_app_id\" INTEGER NULL REFERENCES blocked_app (id) ON DELETE SET NULL, \"ts\" INTEGER NOT NULL, \"source\" TEXT NOT NULL CHECK(\"source\" IN ('cards', 'emergency', 'error')), \"minutes\" INTEGER NOT NULL);"
+        }
+      ]
+    },
+    {
+      "name": "saved_card",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"saved_card\" (\"card_id\" TEXT NOT NULL, \"saved_at\" INTEGER NOT NULL, PRIMARY KEY (\"card_id\"));"
+        }
+      ]
+    },
+    {
+      "name": "practice_log",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"practice_log\" (\"date\" TEXT NOT NULL, \"routine\" TEXT NOT NULL CHECK(\"routine\" IN ('morning', 'evening')), \"done_at\" INTEGER NOT NULL, PRIMARY KEY (\"date\", \"routine\"));"
+        }
+      ]
+    },
+    {
+      "name": "reading_position",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"reading_position\" (\"work_id\" TEXT NOT NULL, \"section_key\" TEXT NOT NULL, \"offset\" REAL NOT NULL DEFAULT 0.0, \"updated_at\" INTEGER NOT NULL, PRIMARY KEY (\"work_id\"));"
+        }
+      ]
+    },
+    {
+      "name": "section_bookmark",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"section_bookmark\" (\"section_key\" TEXT NOT NULL, \"work_id\" TEXT NOT NULL, \"created_at\" INTEGER NOT NULL, PRIMARY KEY (\"section_key\"));"
+        }
+      ]
+    },
+    {
+      "name": "card_event_date",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX card_event_date ON card_event (date)"
+        }
+      ]
+    },
+    {
+      "name": "card_event_card_id",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX card_event_card_id ON card_event (card_id)"
+        }
+      ]
+    },
+    {
+      "name": "card_event_type_action",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX card_event_type_action ON card_event (type, \"action\", card_id)"
+        }
+      ]
+    },
+    {
+      "name": "card_event_seen_unique",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE UNIQUE INDEX card_event_seen_unique ON card_event (date, card_id, context) WHERE \"action\" = 'seen'"
+        }
+      ]
+    },
+    {
+      "name": "unlock_event_ts",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX unlock_event_ts ON unlock_event (ts)"
+        }
+      ]
+    },
+    {
+      "name": "saved_card_saved_at",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX saved_card_saved_at ON saved_card (saved_at)"
+        }
+      ]
+    },
+    {
+      "name": "section_bookmark_created",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX section_bookmark_created ON section_bookmark (created_at)"
+        }
+      ]
+    }
+  ]
+}

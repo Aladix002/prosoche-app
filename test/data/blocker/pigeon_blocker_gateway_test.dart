@@ -208,8 +208,13 @@ void main() {
       expect(targets.first.hashCode, isNot(targets.last.hashCode));
     });
 
-    test('setEnabled, unlockFor, closeGate', () async {
-      for (final m in ['setEnabled', 'unlockFor', 'closeGate']) {
+    test('setEnabled, unlockFor, closeGate, openPractice', () async {
+      for (final m in [
+        'setEnabled',
+        'unlockFor',
+        'closeGate',
+        'openPractice',
+      ]) {
         native.on(m, (_) => null);
       }
       expect((await gateway.setEnabled(enabled: true)).isOk, isTrue);
@@ -220,6 +225,9 @@ void main() {
 
       expect((await gateway.closeGate(openTarget: false)).isOk, isTrue);
       expect(native.received['closeGate'], [false]);
+
+      expect((await gateway.openPractice()).isOk, isTrue);
+      expect(native.received.containsKey('openPractice'), isTrue);
     });
   });
 

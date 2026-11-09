@@ -8,6 +8,7 @@ import 'package:prosoche/data/blocker/blocked_apps_repository.dart';
 import 'package:prosoche/data/blocker/fake_blocker_gateway.dart';
 import 'package:prosoche/features/settings/blocking/blocking_screen.dart';
 import 'package:prosoche/features/settings/blocking/blocking_subscreens.dart';
+import 'package:prosoche/features/settings/blocking/gate_behavior.dart';
 import 'package:prosoche/ui/theme/prosoche_theme.dart';
 
 import '../../../helpers/golden/golden.dart';
@@ -56,6 +57,17 @@ void main() {
     builder: (_) => scoped(
       BlockingHarness(apps: const [igApp]),
       BlockingAppScreen(appRef: igApp.ref),
+    ),
+  );
+
+  goldenAllLocales(
+    'PracticeFirstScreen',
+    fileName: 'g01_practice_first',
+    theme: theme,
+    constraints: screen,
+    builder: (_) => scoped(
+      BlockingHarness(apps: const [igApp]),
+      const PracticeFirstScreen(),
     ),
   );
 }

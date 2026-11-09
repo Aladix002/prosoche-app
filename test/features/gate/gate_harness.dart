@@ -14,6 +14,7 @@ import 'package:prosoche/data/blocker/fake_blocker_gateway.dart';
 import 'package:prosoche/data/blocker/gate_repository.dart';
 import 'package:prosoche/domain/common/common.dart';
 import 'package:prosoche/features/gate/gate_app.dart';
+import 'package:prosoche/features/gate/gate_controller.dart';
 import 'package:prosoche/features/gate/gate_screen.dart';
 import 'package:prosoche/ui/foundation/sk_ui_strings.dart';
 import 'package:prosoche/ui/theme/prosoche_theme.dart';
@@ -54,6 +55,17 @@ class FakeGateRepository implements GateRepository {
   bool hang = false;
 
   final sessions = <int, ({GateResult? result, int cardsSeen})>{};
+
+  /// Zamer podla session (G-01).
+  final intents = <int, GateIntent?>{};
+
+  /// Otvorenia appky dnes pred testom (G-01, pocitadlo).
+  int opensBefore = 0;
+
+  /// Ranna priprava dna je hotova (G-01).
+  bool morningDone = false;
+  final morningChecks = <LocalDate>[];
+  final opensChecks = <(int, LocalDate)>[];
   final unlocks = <(int?, UnlockSource, int)>[];
   final freeReading = <CardId>[];
 
@@ -89,6 +101,22 @@ class FakeGateRepository implements GateRepository {
   Future<void> markFreeReading(LocalDate date, CardId card) async =>
       freeReading.add(card);
 
+  @override
+  Future<void> setIntent(int sessionId, GateIntent? intent) async =>
+      intents[sessionId] = intent;
+
+  @override
+  Future<int> opensOn(int appId, LocalDate date) async {
+    opensChecks.add((appId, date));
+    return opensBefore + sessions.length;
+  }
+
+  @override
+  Future<bool> morningPracticeDone(LocalDate date) async {
+    morningChecks.add(date);
+    return morningDone;
+  }
+
   GateResult? get lastResult => sessions.values.lastOrNull?.result;
 }
 
@@ -105,6 +133,7 @@ class GateTest {
     FakeBlockerGateway? blocker,
     List<CardId>? extra,
     this.externalChanges = _noChanges,
+    this.options = const GateOptions(),
   }) : extra = extra ?? [for (var i = 101; i <= 110; i++) fakeQuoteId(i)],
        repos = repos ?? FakeRepositories(),
        gates = gates ?? FakeGateRepository(),
@@ -116,6 +145,11 @@ class GateTest {
 
   /// Karty volneho citania po konci sady.
   final List<CardId> extra;
+
+  /// Nastavenia G-01 (zamer, odpor, ranny zamok); default vypnute, aby
+  /// starsie scenare isli rovno na karty. Settings appky ich cita cez
+  /// [gateOptionsProvider], ten test pokryva zvlast.
+  GateOptions options;
 
   /// Signal o zmenach user.db z hlavnej appky (P-03); bez user.db nic.
   final void Function() externalChanges;
@@ -136,6 +170,7 @@ class GateTest {
     gateOverlayEnabledProvider.overrideWithValue(overlayEnabled),
     gateFreeReadingProvider.overrideWithValue(() async => this.extra),
     gateExternalChangesProvider.overrideWithValue(externalChanges),
+    gateOptionsProvider.overrideWithValue(() async => options),
     ...extra,
   ];
 
@@ -144,6 +179,7 @@ class GateTest {
   Future<void> pump(
     WidgetTester tester, {
     Widget? child,
+    Widget? home,
     bool overlayEnabled = true,
     Locale locale = const Locale('en'),
     List<Override> extra = const [],
@@ -182,7 +218,7 @@ class GateTest {
                   ),
                 ),
               ),
-              home: GateScreen(app: igRef, onClosed: () => closed++),
+              home: home ?? GateScreen(app: igRef, onClosed: () => closed++),
             ),
       ),
     );

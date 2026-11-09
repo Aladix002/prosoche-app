@@ -42,6 +42,9 @@ class FakeBlockerGateway implements BlockerGateway {
   /// Posledne `closeGate(openTarget)`, null ak este nebolo.
   bool? lastCloseOpenTarget;
 
+  /// Pocet `openPractice()` (G-01).
+  int practiceOpened = 0;
+
   /// Nazvy volanych metod v poradi.
   final calls = <String>[];
 
@@ -136,6 +139,10 @@ class FakeBlockerGateway implements BlockerGateway {
   @override
   Future<Result<void>> closeGate({required bool openTarget}) async =>
       _run('closeGate', () => lastCloseOpenTarget = openTarget);
+
+  @override
+  Future<Result<void>> openPractice() async =>
+      _run('openPractice', () => practiceOpened++);
 
   @override
   Future<Result<void>> clearUnlocks() async =>

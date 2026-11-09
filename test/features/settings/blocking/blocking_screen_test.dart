@@ -40,7 +40,13 @@ void main() {
       expect(find.byType(BlockingScreen), findsOneWidget);
       await tester.pumpAndSettle();
       expect(find.text('Pause before chosen apps'), findsOneWidget);
-      expect(find.text('Off'), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byKey(const ValueKey('blocking:switch')),
+          matching: find.text('Off'),
+        ),
+        findsOneWidget,
+      );
       expect(
         find.text('No apps yet. Add the apps that should wait.'),
         findsOneWidget,

@@ -31,6 +31,7 @@ final class BlockedApp {
     required this.unlockMinutes,
     this.label,
     this.enabled = true,
+    this.practiceFirst = true,
   });
 
   final int id;
@@ -42,7 +43,24 @@ final class BlockedApp {
   final int unlockMinutes;
   final bool enabled;
 
+  /// Zamknuta rano do rannej pripravy pri "Practice first" (G-01).
+  final bool practiceFirst;
+
   String get displayName => label ?? ref;
+
+  BlockedApp copyWith({
+    int? cardsRequired,
+    int? unlockMinutes,
+    bool? practiceFirst,
+  }) => BlockedApp(
+    id: id,
+    ref: ref,
+    label: label,
+    cardsRequired: cardsRequired ?? this.cardsRequired,
+    unlockMinutes: unlockMinutes ?? this.unlockMinutes,
+    enabled: enabled,
+    practiceFirst: practiceFirst ?? this.practiceFirst,
+  );
 
   @override
   bool operator ==(Object other) =>
@@ -52,11 +70,19 @@ final class BlockedApp {
       other.label == label &&
       other.cardsRequired == cardsRequired &&
       other.unlockMinutes == unlockMinutes &&
-      other.enabled == enabled;
+      other.enabled == enabled &&
+      other.practiceFirst == practiceFirst;
 
   @override
-  int get hashCode =>
-      Object.hash(id, ref, label, cardsRequired, unlockMinutes, enabled);
+  int get hashCode => Object.hash(
+    id,
+    ref,
+    label,
+    cardsRequired,
+    unlockMinutes,
+    enabled,
+    practiceFirst,
+  );
 }
 
 /// Lokalna statistika brany (A10.1). Nikdy neodchadza z telefonu.
@@ -99,10 +125,15 @@ final class GateStats {
 /// Zmena nastaveni appky (A10.2); null pole sa nemeni.
 @immutable
 final class BlockedAppPatch {
-  const BlockedAppPatch({this.cardsRequired, this.unlockMinutes});
+  const BlockedAppPatch({
+    this.cardsRequired,
+    this.unlockMinutes,
+    this.practiceFirst,
+  });
 
   final int? cardsRequired;
   final int? unlockMinutes;
+  final bool? practiceFirst;
 }
 
 /// Blokovane appky v user.db (zdroj pravdy) a ich zrkadlo v nativnej
@@ -155,6 +186,7 @@ class DriftBlockedAppsRepository implements BlockedAppsRepository {
     cardsRequired: r.cardsRequired,
     unlockMinutes: r.unlockMinutes,
     enabled: r.enabled,
+    practiceFirst: r.practiceFirst,
   );
 
   @override
@@ -222,6 +254,7 @@ class DriftBlockedAppsRepository implements BlockedAppsRepository {
         BlockedAppLimits.minMinutes,
         BlockedAppLimits.maxMinutes,
       ),
+      practiceFirst: patch.practiceFirst,
     );
     await sync();
   }

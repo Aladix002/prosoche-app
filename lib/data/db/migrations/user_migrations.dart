@@ -35,6 +35,9 @@ MigrationStrategy userDbMigration() => MigrationStrategy(
 /// Riadky `journal_entry` sa najprv zapisu cez [UserDb.legacyJournal]
 /// (idempotentne), az potom sa tabulka v user.db zmaze. Bez prijemcu a s
 /// neprazdnym dennikom migracia zlyha, aby sa dennik nestratil.
+///
+/// v3 -> v4 (G-01): `gate_session.intent` (zamer otvorenia, nullable) a
+/// `blocked_app.practice_first` (default 1). Len nove stlpce.
 final Map<int, Future<void> Function(Migrator m)> userDbSteps = {
   1: (m) async {
     final db = m.database as UserDb;
@@ -64,5 +67,10 @@ final Map<int, Future<void> Function(Migrator m)> userDbSteps = {
     }
     await db.customStatement('DROP INDEX IF EXISTS journal_entry_date');
     await db.customStatement('DROP TABLE journal_entry');
+  },
+  3: (m) async {
+    final db = m.database as UserDb;
+    await m.addColumn(db.gateSessions, db.gateSessions.intent);
+    await m.addColumn(db.blockedApps, db.blockedApps.practiceFirst);
   },
 };

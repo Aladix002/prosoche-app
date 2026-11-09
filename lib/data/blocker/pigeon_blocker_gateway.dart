@@ -108,6 +108,10 @@ class PigeonBlockerGateway implements BlockerGateway {
       _guard('closeGate', () => _api.closeGate(openTarget));
 
   @override
+  Future<Result<void>> openPractice() =>
+      _guard('openPractice', _api.openPractice);
+
+  @override
   Future<Result<void>> clearUnlocks() =>
       _guard('clearUnlocks', _api.clearUnlocks);
 

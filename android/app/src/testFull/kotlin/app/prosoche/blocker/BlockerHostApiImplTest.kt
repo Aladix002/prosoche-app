@@ -43,8 +43,14 @@ class BlockerHostApiImplTest {
         var closed: Boolean? = null
         override val gateTarget: String? = IG
 
+        var practice = 0
+
         override fun finishGate(openTarget: Boolean) {
             closed = openTarget
+        }
+
+        override fun openPractice() {
+            practice++
         }
     }
 
@@ -174,6 +180,15 @@ class BlockerHostApiImplTest {
         val gate = FakeGate()
         BlockerHostApiImpl(context, gate, prefs, unlocks, permissions, service).closeGate(false)
         assertEquals(false, gate.closed)
+    }
+
+    @Test
+    fun `openPractice goes to gate host, no-op in main engine`() {
+        api.openPractice() // bez brany nic
+        val gate = FakeGate()
+        BlockerHostApiImpl(context, gate, prefs, unlocks, permissions, service).openPractice()
+        assertEquals(1, gate.practice)
+        assertNull(gate.closed)
     }
 
     @Test

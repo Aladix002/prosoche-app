@@ -145,6 +145,10 @@ abstract class BlockerHostApi {
   /// Zavrie branu. true: cielova appka, false: home screen.
   void closeGate(bool openTarget);
 
+  /// Zavrie branu a otvori Practice v hlavnej appke (`prosoche://practice`,
+  /// ranny zamok "Practice first", G-01). V hlavnom engine nic.
+  void openPractice();
+
   /// Zmaze vsetky odomknutia (`UnlockStore`), napr. po "Delete all my
   /// data" (A10.9).
   void clearUnlocks();

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prosoche/core/l10n/l10n.dart';
 import 'package:prosoche/data/blocker/blocked_apps_repository.dart';
+import 'package:prosoche/data/repositories/settings/settings_providers.dart';
+import 'package:prosoche/domain/settings/settings_repository.dart';
 import 'package:prosoche/features/onboarding/onboarding_controller.dart';
 import 'package:prosoche/features/onboarding/onboarding_screen.dart';
 import 'package:prosoche/features/settings/blocking/blocking_providers.dart';
@@ -33,6 +35,9 @@ class _GateAppsStepState extends ConsumerState<GateAppsStep> {
   bool _preselect = true;
   bool _busy = false;
 
+  /// Ranny zamok "Practice first" (G-01), opt-in.
+  bool _practiceFirst = false;
+
   @override
   void initState() {
     super.initState();
@@ -42,8 +47,12 @@ class _GateAppsStepState extends ConsumerState<GateAppsStep> {
   /// Navrat cez "Back": vyber z `blocked_app` namiesto predvyberu.
   Future<void> _loadExisting() async {
     final existing = await ref.read(blockedAppsRepositoryProvider).apps();
+    final practiceFirst = await ref
+        .read(settingsRepositoryProvider)
+        .get(SettingsKeys.gatePracticeFirst);
     if (!mounted) return;
     setState(() {
+      _practiceFirst = practiceFirst;
       if (existing.isNotEmpty) {
         _preselect = false;
         _selected = {for (final a in existing) a.ref};
@@ -69,6 +78,9 @@ class _GateAppsStepState extends ConsumerState<GateAppsStep> {
             cardsRequired: _cards,
             unlockMinutes: _minutes,
           );
+      await ref
+          .read(settingsRepositoryProvider)
+          .set(SettingsKeys.gatePracticeFirst, _practiceFirst);
       // Len pocet, nikdy nazvy appiek (docs/02 O5).
       ref.read(onboardingControllerProvider).track('gate_apps_selected', {
         'count': selected.length,
@@ -109,6 +121,14 @@ class _GateAppsStepState extends ConsumerState<GateAppsStep> {
           step: BlockedAppLimits.minutesStep,
           format: (v) => formatMinutes(context, v),
           onChanged: (v) => setState(() => _minutes = v),
+        ),
+        SwitchListTile(
+          key: const ValueKey('o5:practice_first'),
+          contentPadding: EdgeInsets.zero,
+          title: Text(l10n.blkPracticeFirst),
+          subtitle: Text(l10n.blkPracticeFirstHelp),
+          value: _practiceFirst,
+          onChanged: _loaded ? (v) => setState(() => _practiceFirst = v) : null,
         ),
         const SizedBox(height: SkSpace.space8),
         if (_loaded)

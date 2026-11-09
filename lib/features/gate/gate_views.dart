@@ -1,6 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:prosoche/core/l10n/l10n.dart';
+import 'package:prosoche/data/blocker/gate_repository.dart' show GateIntent;
 import 'package:prosoche/ui/ui.dart';
+
+/// CLDR kategoria radovej cislovky [n] pre jazyk [locale] (`one`, `two`,
+/// `few`, `other`) pre ICU `select` v `gateOpenCount`. gen-l10n
+/// `selectordinal` nepodporuje. Pravidla ma zatial len EN (appka je len
+/// EN); ine jazyky dostanu `other`.
+String ordinalCategory(Locale locale, int n) {
+  if (locale.languageCode != 'en') return 'other';
+  final mod10 = n % 10;
+  final mod100 = n % 100;
+  if (mod10 == 1 && mod100 != 11) return 'one';
+  if (mod10 == 2 && mod100 != 12) return 'two';
+  if (mod10 == 3 && mod100 != 13) return 'few';
+  return 'other';
+}
 
 /// Texty brany s nazvom appky alebo bez neho (appka bez `label`).
 extension GateTexts on AppLocalizations {
@@ -29,6 +44,29 @@ extension GateTexts on AppLocalizations {
 
   String gateEmptyFor(String? app) =>
       app == null ? gateEmptyGeneric : gateEmpty(app);
+
+  String gateIntentQuestionFor(String? app) =>
+      app == null ? gateIntentQuestionGeneric : gateIntentQuestion(app);
+
+  /// "This is your {n}th time opening {app} today." (G-01).
+  String gateOpenCountFor(String? app, int count, Locale locale) {
+    final form = ordinalCategory(locale, count);
+    return app == null
+        ? gateOpenCountGeneric(count, form)
+        : gateOpenCount(count, form, app);
+  }
+
+  String gatePracticeFirstBodyFor(String? app, String time) => app == null
+      ? gatePracticeFirstBodyGeneric(time)
+      : gatePracticeFirstBody(app, time);
+
+  String gateIntentLabel(GateIntent intent) => switch (intent) {
+    GateIntent.boredom => gateIntentBoredom,
+    GateIntent.message => gateIntentMessage,
+    GateIntent.work => gateIntentWork,
+    GateIntent.habit => gateIntentHabit,
+    GateIntent.other => gateIntentOther,
+  };
 }
 
 /// Hlavicka brany: nazov, kolko kariet, progres (docs/02 A4).
@@ -41,10 +79,14 @@ class GateHeader extends StatelessWidget {
     this.freeReading = false,
     this.continueLabel,
     this.onContinue,
+    this.note,
     super.key,
   });
 
   final String? app;
+
+  /// Pocitadlo otvoreni dna a odpor (G-01); null = nic.
+  final String? note;
   final int done;
   final int total;
   final VoidCallback onBack;
@@ -118,6 +160,18 @@ class GateHeader extends StatelessWidget {
                 ),
               ),
             ),
+            // Pri velkom texte sa nevojde (miesto patri karte); pocitadlo
+            // ostava na obrazovke zameru.
+            if (note != null && !sk.largeText) ...[
+              const SizedBox(height: SkSpace.space8),
+              Text(
+                note!,
+                key: const ValueKey('gate:opens'),
+                style: sk.text.bodySmall!.copyWith(
+                  color: sk.colors.textSecondary,
+                ),
+              ),
+            ],
           ],
           if (freeReading) ...[
             const SizedBox(height: SkSpace.space8),
@@ -217,8 +271,11 @@ class _GateMessage extends StatelessWidget {
     this.body,
     this.extra,
     this.icon,
+    this.eyebrow,
   });
 
+  /// Maly text nad titulkom (pocitadlo otvoreni, G-01).
+  final String? eyebrow;
   final String title;
   final String? body;
   final String? extra;
@@ -244,6 +301,17 @@ class _GateMessage extends StatelessWidget {
               if (icon != null) ...[
                 Icon(icon, size: 40, color: sk.colors.primary),
                 const SizedBox(height: SkSpace.space16),
+              ],
+              if (eyebrow != null) ...[
+                Text(
+                  eyebrow!,
+                  key: const ValueKey('gate:opens'),
+                  textAlign: TextAlign.center,
+                  style: sk.text.bodyMedium!.copyWith(
+                    color: sk.colors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: SkSpace.space12),
               ],
               Semantics(
                 header: true,
@@ -458,6 +526,149 @@ class GateLoadingView extends StatelessWidget {
           ],
         ],
       ),
+    );
+  }
+}
+
+/// Emergency podrzanim (G-01: aj pri otazke zameru a rannom zamku).
+class GateEmergencyButton extends StatelessWidget {
+  const GateEmergencyButton({
+    required this.onEmergency,
+    required this.onEmergencyA11y,
+    super.key,
+  });
+
+  final VoidCallback onEmergency;
+  final VoidCallback onEmergencyA11y;
+
+  @override
+  Widget build(BuildContext context) => Center(
+    child: SkHoldToConfirmButton(
+      label: context.l10n.gateEmergency,
+      icon: Icons.lock_open,
+      onConfirmed: onEmergency,
+      onAccessibleConfirm: onEmergencyA11y,
+    ),
+  );
+}
+
+/// "Why are you opening {app}?" (G-01): jeden tuk na cip alebo "Skip",
+/// ziadny volny text. Odpoved ostava v telefone.
+class GateIntentView extends StatelessWidget {
+  const GateIntentView({
+    required this.app,
+    required this.onChoose,
+    required this.onEmergency,
+    required this.onEmergencyA11y,
+    this.opensNote,
+    super.key,
+  });
+
+  final String? app;
+
+  /// Pocitadlo otvoreni dna (null = vypnute).
+  final String? opensNote;
+
+  /// Volba; null = "Skip".
+  final ValueChanged<GateIntent?> onChoose;
+  final VoidCallback onEmergency;
+  final VoidCallback onEmergencyA11y;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final sk = context.sk;
+    return _GateMessage(
+      title: l10n.gateIntentQuestionFor(app),
+      body: l10n.gateIntentNote,
+      eyebrow: opensNote,
+      actions: [
+        Semantics(
+          container: true,
+          label: l10n.gateIntentChoicesA11y,
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            spacing: SkSpace.space8,
+            runSpacing: SkSpace.space8,
+            children: [
+              for (final intent in GateIntent.values)
+                ActionChip(
+                  key: ValueKey('gate:intent:${intent.wire}'),
+                  label: Text(l10n.gateIntentLabel(intent)),
+                  labelStyle: sk.text.labelLarge,
+                  onPressed: () => onChoose(intent),
+                ),
+            ],
+          ),
+        ),
+        SkButton.tertiary(
+          key: const ValueKey('gate:intent:skip'),
+          label: l10n.gateIntentSkip,
+          onPressed: () => onChoose(null),
+          expand: true,
+        ),
+        const SizedBox(height: SkSpace.space8),
+        GateEmergencyButton(
+          onEmergency: onEmergency,
+          onEmergencyA11y: onEmergencyA11y,
+        ),
+      ],
+    );
+  }
+}
+
+/// Ranny zamok "Practice first" (G-01): namiesto kariet ponuka rannej
+/// pripravy v Practice, "Go back" a emergency.
+class GatePracticeFirstView extends StatelessWidget {
+  const GatePracticeFirstView({
+    required this.app,
+    required this.until,
+    required this.onStart,
+    required this.onBack,
+    required this.onEmergency,
+    required this.onEmergencyA11y,
+    super.key,
+  });
+
+  final String? app;
+
+  /// Koniec zamku (lokalny cas).
+  final TimeOfDay until;
+  final VoidCallback onStart;
+  final VoidCallback onBack;
+  final VoidCallback onEmergency;
+  final VoidCallback onEmergencyA11y;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final time = MaterialLocalizations.of(context).formatTimeOfDay(
+      until,
+      alwaysUse24HourFormat: MediaQuery.alwaysUse24HourFormatOf(context),
+    );
+    return _GateMessage(
+      icon: Icons.wb_twilight,
+      title: l10n.gatePracticeFirstTitle,
+      body: l10n.gatePracticeFirstBodyFor(app, time),
+      extra: l10n.gatePracticeFirstWhy,
+      actions: [
+        SkButton.primary(
+          key: const ValueKey('gate:practice:start'),
+          label: l10n.gatePracticeFirstStart,
+          onPressed: onStart,
+          expand: true,
+        ),
+        SkButton.secondary(
+          label: l10n.gateBack,
+          onPressed: onBack,
+          expand: true,
+        ),
+        const SizedBox(height: SkSpace.space8),
+        GateEmergencyButton(
+          onEmergency: onEmergency,
+          onEmergencyA11y: onEmergencyA11y,
+        ),
+      ],
     );
   }
 }
