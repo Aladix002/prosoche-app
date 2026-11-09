@@ -1733,6 +1733,116 @@ class AppLocalizationsEn extends AppLocalizations {
   String get setGateNeedsAttention => 'Needs attention';
 
   @override
+  String get journeyWeekTitle => 'This week';
+
+  @override
+  String journeyWeekRange(String from, String to) {
+    return '$from – $to';
+  }
+
+  @override
+  String journeyWeekSince(String date) {
+    return 'Since $date';
+  }
+
+  @override
+  String journeyWeekPaused(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'pauses before apps',
+      one: 'pause before an app',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String journeyWeekNotOpened(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'times you chose not to open it',
+      one: 'time you chose not to open it',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String journeyWeekCards(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'cards read',
+      one: 'card read',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String journeyWeekPracticeDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'days with practice',
+      one: 'day with practice',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String journeyWeekPracticeDetail(String morning, String evening) {
+    return 'Morning $morning · Evening $evening';
+  }
+
+  @override
+  String journeyWeekStreak(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'days in your streak',
+      one: 'day in your streak',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get journeyWeekEmpty =>
+      'Your week will gather here: cards you read, days with practice and pauses before apps.';
+
+  @override
+  String get journeyWeekShare => 'Share';
+
+  @override
+  String get journeyWeekShareTitle => 'Share your week';
+
+  @override
+  String get journeyWeekShareBody =>
+      'Only these numbers and a short quote. Nothing from your journal.';
+
+  @override
+  String get journeyWeekShareApps => 'Include app names';
+
+  @override
+  String get journeyWeekShareImage => 'Share image';
+
+  @override
+  String get journeyWeekShareClose => 'Close';
+
+  @override
+  String get journeyWeekShareFailed => 'The image could not be created.';
+
+  @override
+  String get journeyWeekImageTitle => 'My week';
+
+  @override
+  String journeyWeekImageApps(String apps) {
+    return 'Most paused: $apps';
+  }
+
+  @override
+  String get journeyWeekPreviewLabel => 'Preview of the image to share';
+
+  @override
   String get notifChannelDaily => 'Daily reminder';
 
   @override

@@ -2650,6 +2650,126 @@ abstract class AppLocalizations {
   /// **'Needs attention'**
   String get setGateNeedsAttention;
 
+  /// Eyebrow/title of the weekly summary card on Journey (last 7 days including today). Private, stays on the phone.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get journeyWeekTitle;
+
+  /// Date range of the weekly summary, e.g. 'Nov 3 – Nov 9'. Both dates are already formatted.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} – {to}'**
+  String journeyWeekRange(String from, String to);
+
+  /// Shown instead of the range in the first week, when the app was first used during the last 7 days. date is already formatted, e.g. 'Nov 6'.
+  ///
+  /// In en, this message translates to:
+  /// **'Since {date}'**
+  String journeyWeekSince(String date);
+
+  /// Label next to a number: how many times the gate stopped a blocked app from opening in the last 7 days.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{pause before an app} other{pauses before apps}}'**
+  String journeyWeekPaused(int count);
+
+  /// Label next to a number: gate sessions the user ended with Close / Go back without unlocking the app.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{time you chose not to open it} other{times you chose not to open it}}'**
+  String journeyWeekNotOpened(int count);
+
+  /// Label next to a number: different cards read in the last 7 days (feed, gate, saved).
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{card read} other{cards read}}'**
+  String journeyWeekCards(int count);
+
+  /// Label next to a number: days with the morning preparation or the evening reflection.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{day with practice} other{days with practice}}'**
+  String journeyWeekPracticeDays(int count);
+
+  /// Small line under the practice days: number of days with each practice. Numbers are already formatted.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning {morning} · Evening {evening}'**
+  String journeyWeekPracticeDetail(String morning, String evening);
+
+  /// Label next to the current streak number. Hidden in Simple mode.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{day in your streak} other{days in your streak}}'**
+  String journeyWeekStreak(int count);
+
+  /// Weekly summary card when there is nothing yet (first days, nothing done this week).
+  ///
+  /// In en, this message translates to:
+  /// **'Your week will gather here: cards you read, days with practice and pauses before apps.'**
+  String get journeyWeekEmpty;
+
+  /// Button on the weekly summary card. Opens a preview of the image before sharing.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get journeyWeekShare;
+
+  /// Title of the sheet with the preview of the weekly image.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your week'**
+  String get journeyWeekShareTitle;
+
+  /// Explains what the weekly image contains, under the preview.
+  ///
+  /// In en, this message translates to:
+  /// **'Only these numbers and a short quote. Nothing from your journal.'**
+  String get journeyWeekShareBody;
+
+  /// Switch in the share sheet. Off by default: adds the most paused app names to the image.
+  ///
+  /// In en, this message translates to:
+  /// **'Include app names'**
+  String get journeyWeekShareApps;
+
+  /// Primary button in the share sheet: shares the weekly image via the system share sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Share image'**
+  String get journeyWeekShareImage;
+
+  /// Tooltip of the close button of the share sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get journeyWeekShareClose;
+
+  /// Snackbar when the weekly image could not be rendered.
+  ///
+  /// In en, this message translates to:
+  /// **'The image could not be created.'**
+  String get journeyWeekShareFailed;
+
+  /// Eyebrow on the shared weekly image (shown in capitals).
+  ///
+  /// In en, this message translates to:
+  /// **'My week'**
+  String get journeyWeekImageTitle;
+
+  /// Line on the shared image, only when the user includes app names. apps is a comma-separated list.
+  ///
+  /// In en, this message translates to:
+  /// **'Most paused: {apps}'**
+  String journeyWeekImageApps(String apps);
+
+  /// Screen reader label of the image preview in the share sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview of the image to share'**
+  String get journeyWeekPreviewLabel;
+
   /// Android notification channel name for the morning reminder.
   ///
   /// In en, this message translates to:
